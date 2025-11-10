@@ -136,7 +136,7 @@ void Recombinant3WayWilkinson::buildRecombinant3Way_IdealTL() {
   R3.val["R"] = num2str(this->R2, Resistance);
   Schematic.appendComponent(R3);
 
-  // Central output transmission line
+  // Lower output transmission line
   ComponentInfo TL10(QString("TLIN10"), TransmissionLine, 90, TL_pos[9]);
   TL10.val["Z0"] = num2str(Z5, Resistance);
   TL10.val["Length"] = ConvertLengthFromM(Specification.units, lambda4);
@@ -349,6 +349,22 @@ void Recombinant3WayWilkinson::buildRecombinant3Way_Microstrip() {
   MLIN4.val["tand"] = num2str(Specification.MS_Subs.tand);
   Schematic.appendComponent(MLIN4);
 
+  // Upper output transmission line
+  // Z2 impedance lines (4 lines)
+  MicrostripClass MSL_Z5;
+  MSL_Z5.Substrate = Specification.MS_Subs;
+  MSL_Z5.synthesizeMicrostrip(Z5, lambda4 * 1e3, Specification.freq);
+
+  ComponentInfo MLIN8(QString("MLIN8"), MicrostripLine, 90, TL_pos[7]);
+  MLIN8.val["Width"] = ConvertLengthFromM("mm", MSL_Z5.Results.width);
+  MLIN8.val["Length"] = ConvertLengthFromM("mm", MSL_Z5.Results.length * 1e-3);
+  MLIN8.val["er"] = num2str(Specification.MS_Subs.er);
+  MLIN8.val["h"] = num2str(Specification.MS_Subs.height);
+  MLIN8.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+  MLIN8.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+  MLIN8.val["tand"] = num2str(Specification.MS_Subs.tand);
+  Schematic.appendComponent(MLIN8);
+
   // First output node
   ComponentInfo TermSpar2(QString("T2"), Term, 180, Ports_pos[1]);
   TermSpar2.val["Z"] = num2str(Specification.Z0, Resistance);
@@ -375,6 +391,17 @@ void Recombinant3WayWilkinson::buildRecombinant3Way_Microstrip() {
   R2.val["R"] = num2str(this->R2, Resistance);
   Schematic.appendComponent(R2);
 
+  // Central output transmission line
+  ComponentInfo MLIN9(QString("MLIN9"), MicrostripLine, 90, TL_pos[8]);
+  MLIN9.val["Width"] = ConvertLengthFromM("mm", MSL_Z5.Results.width);
+  MLIN9.val["Length"] = ConvertLengthFromM("mm", MSL_Z5.Results.length * 1e-3);
+  MLIN9.val["er"] = num2str(Specification.MS_Subs.er);
+  MLIN9.val["h"] = num2str(Specification.MS_Subs.height);
+  MLIN9.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+  MLIN9.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+  MLIN9.val["tand"] = num2str(Specification.MS_Subs.tand);
+  Schematic.appendComponent(MLIN9);
+
   // Central output port
   ComponentInfo TermSpar3(QString("T3"), Term, 180, Ports_pos[2]);
   TermSpar3.val["Z"] = num2str(Specification.Z0, Resistance);
@@ -382,8 +409,8 @@ void Recombinant3WayWilkinson::buildRecombinant3Way_Microstrip() {
 
   // Second section. Lower branch. Top.
   ComponentInfo MLIN6(QString("MLIN6"), MicrostripLine, 90, TL_pos[5]);
-  MLIN6.val["Width"] = ConvertLengthFromM("mm", MSL_Z2.Results.width);
-  MLIN6.val["Length"] = ConvertLengthFromM("mm", MSL_Z2.Results.length * 1e-3);
+  MLIN6.val["Width"] = ConvertLengthFromM("mm", MSL_Z4.Results.width);
+  MLIN6.val["Length"] = ConvertLengthFromM("mm", MSL_Z4.Results.length * 1e-3);
   MLIN6.val["er"] = num2str(Specification.MS_Subs.er);
   MLIN6.val["h"] = num2str(Specification.MS_Subs.height);
   MLIN6.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
@@ -392,9 +419,13 @@ void Recombinant3WayWilkinson::buildRecombinant3Way_Microstrip() {
   Schematic.appendComponent(MLIN6);
 
   // Second section. Lower branch. Bottom
+  MicrostripClass MSL_Z3;
+  MSL_Z3.Substrate = Specification.MS_Subs;
+  MSL_Z3.synthesizeMicrostrip(Z3, lambda4 * 1e3, Specification.freq);
+
   ComponentInfo MLIN7(QString("MLIN7"), MicrostripLine, 90, TL_pos[6]);
-  MLIN7.val["Width"] = ConvertLengthFromM("mm", MSL_Z4.Results.width);
-  MLIN7.val["Length"] = ConvertLengthFromM("mm", MSL_Z4.Results.length * 1e-3);
+  MLIN7.val["Width"] = ConvertLengthFromM("mm", MSL_Z3.Results.width);
+  MLIN7.val["Length"] = ConvertLengthFromM("mm", MSL_Z3.Results.length * 1e-3);
   MLIN7.val["er"] = num2str(Specification.MS_Subs.er);
   MLIN7.val["h"] = num2str(Specification.MS_Subs.height);
   MLIN7.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
@@ -406,6 +437,17 @@ void Recombinant3WayWilkinson::buildRecombinant3Way_Microstrip() {
   ComponentInfo R3(QString("R3"), Resistor, 0, Riso_pos[2]);
   R3.val["R"] = num2str(this->R2, Resistance);
   Schematic.appendComponent(R3);
+
+  // Lower output transmission line
+  ComponentInfo MLIN10(QString("MLIN10"), MicrostripLine, 90, TL_pos[9]);
+  MLIN10.val["Width"] = ConvertLengthFromM("mm", MSL_Z5.Results.width);
+  MLIN10.val["Length"] = ConvertLengthFromM("mm", MSL_Z5.Results.length * 1e-3);
+  MLIN10.val["er"] = num2str(Specification.MS_Subs.er);
+  MLIN10.val["h"] = num2str(Specification.MS_Subs.height);
+  MLIN10.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
+  MLIN10.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
+  MLIN10.val["tand"] = num2str(Specification.MS_Subs.tand);
+  Schematic.appendComponent(MLIN10);
 
   // Bottom output port
   ComponentInfo TermSpar4(QString("T4"), Term, 180, Ports_pos[3]);
@@ -516,7 +558,10 @@ void Recombinant3WayWilkinson::buildRecombinant3Way_Microstrip() {
   // Connections to N10
   Schematic.appendWire(N10.ID, 0, MLIN4.ID, 1);
   Schematic.appendWire(N10.ID, 0, R2.ID, 1);
-  Schematic.appendWire(N10.ID, 0, TermSpar2.ID, 0);
+  Schematic.appendWire(N10.ID, 0, MLIN8.ID, 0);
+
+  // Upper output
+  Schematic.appendWire(MLIN8.ID, 1, TermSpar2.ID, 0);
 
   // Connections to N11
   Schematic.appendWire(N11.ID, 0, MLIN5.ID, 1);
@@ -524,17 +569,23 @@ void Recombinant3WayWilkinson::buildRecombinant3Way_Microstrip() {
   Schematic.appendWire(N11.ID, 0, N12.ID, 0);
 
   // Connections to N12
-  Schematic.appendWire(N12.ID, 0, TermSpar3.ID, 0);
+  Schematic.appendWire(N12.ID, 0, MLIN9.ID, 0);
   Schematic.appendWire(N12.ID, 0, N13.ID, 0);
+
+  // Central output
+  Schematic.appendWire(MLIN9.ID, 1, TermSpar3.ID, 0);
 
   // Connections to N13
   Schematic.appendWire(N13.ID, 0, MLIN6.ID, 1);
   Schematic.appendWire(N13.ID, 0, R3.ID, 1);
 
   // Connections to N14
-  Schematic.appendWire(N14.ID, 0, TermSpar4.ID, 0);
+  Schematic.appendWire(N14.ID, 0, MLIN10.ID, 0);
   Schematic.appendWire(N14.ID, 0, R3.ID, 0);
   Schematic.appendWire(N14.ID, 0, MLIN7.ID, 1);
+
+  // Bottom output
+  Schematic.appendWire(MLIN10.ID, 1, TermSpar4.ID, 0);
 }
 
 void Recombinant3WayWilkinson::setComponentsLocation() {
