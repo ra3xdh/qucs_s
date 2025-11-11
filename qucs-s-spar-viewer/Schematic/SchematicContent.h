@@ -107,6 +107,7 @@ class SchematicContent {
         QString addSubstrateBox(QList<MS_Substrate> subs_list, int x_bottom, int y_bottom);
         QString parseMicrostripLine_QucsS(ComponentInfo);
         QString parseMicrostripStep_QucsS(ComponentInfo);
+        QString parseMicrostripOpen_QucsS(ComponentInfo);
 
         // Wire processing
         QString processWires_QucsS();

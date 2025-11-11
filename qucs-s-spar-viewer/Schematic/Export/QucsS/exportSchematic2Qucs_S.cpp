@@ -133,6 +133,13 @@ QString SchematicContent::processComponents_QucsS() {
       componentLine = parseMicrostripStep_QucsS(Comps[i]);
       break;
     }
+
+    case MicrostripOpen: {
+      MS_Substrate subs = get_MS_Substrate(Comps[i]);
+      MS_Substrate_List.append(subs);
+      componentLine = parseMicrostripOpen_QucsS(Comps[i]);
+      break;
+    }
       ///////////////////////////////////////////////
 
     default:

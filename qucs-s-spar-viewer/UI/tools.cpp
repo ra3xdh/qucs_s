@@ -60,7 +60,9 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
 
   // Export formats
   ComboExportSchematic = new QComboBox();
-  ComboExportSchematic->addItem("Qucsator-RF");
+  ComboExportSchematic->addItem("Qucs-S: Qucsator-RF");
+  // ComboExportSchematic->addItem("Qucs-S: NGSpice");
+  // ComboExportSchematic->addItem("Qucs-S: Xyce");
 
   QLabel *exportArrowLabel = new QLabel("→");
   exportArrowLabel->setStyleSheet(
@@ -326,7 +328,7 @@ void Qucs_S_SPAR_Viewer::cleanToolsDatasets(const QString &excludeDataset) {
 void Qucs_S_SPAR_Viewer::exportSchematic() {
   QString formatToExport = ComboExportSchematic->currentText();
   QString schematicText; // Output netlist
-  if (formatToExport == QString("Qucsator-RF")) {
+  if (formatToExport == QString("Qucs-S: Qucsator-RF")) {
     schematicText = Circuit.export2QucsS();
   }
 
