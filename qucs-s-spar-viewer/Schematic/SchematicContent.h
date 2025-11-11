@@ -21,6 +21,7 @@
 #include <QGraphicsTextItem>
 #include <QPen>
 #include <QRegularExpression>
+#include <QMessageBox> // Needed to show warnings during export process
 
 #include "../Misc/general.h"
 #include "infoclasses.h"
@@ -99,6 +100,7 @@ class SchematicContent {
         QString parseCapacitor_QucsS(ComponentInfo);
         QString parseGND_QucsS(ComponentInfo);
         QString parseIdealTransmissionLine_QucsS(ComponentInfo);
+        QString parseShortStub_QucsS(ComponentInfo);
 
         // Microstrip components
         MS_Substrate get_MS_Substrate(ComponentInfo Comp);

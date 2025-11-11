@@ -60,6 +60,11 @@ QString SchematicContent::processComponents_QucsS() {
                          // substrates, but at least, this handles the
                          // possibility
 
+  // Unsupported components list. When the parser founds something it can't
+  // parse, it put's the ID here to show that to the user at the end of the
+  // export process
+  QList<QString> unsupported_components_list;
+
   for (int i = 0; i < Comps.length(); i++) {
 
     // Update circuit bottom-left coordinate
@@ -96,8 +101,13 @@ QString SchematicContent::processComponents_QucsS() {
       componentLine = parseInductor_QucsS(Comps[i]);
       break;
 
+    case OpenStub:
     case TransmissionLine:
       componentLine = parseIdealTransmissionLine_QucsS(Comps[i]);
+      break;
+
+    case ShortStub:
+      componentLine = parseShortStub_QucsS(Comps[i]);
       break;
 
     case Term:
@@ -126,14 +136,21 @@ QString SchematicContent::processComponents_QucsS() {
       ///////////////////////////////////////////////
 
     default:
-      componentLine =
-          QString(".* Unsupported component: %1\n").arg(Comps[i].ID);
+      unsupported_components_list.append(Comps[i].ID);
+
       break;
     }
 
     if (!componentLine.isEmpty()) {
       qucs_S_Components_Netlist += componentLine;
     }
+  }
+
+  // Show components with parsing problems
+  if (!unsupported_components_list.isEmpty()) {
+    QString message = "Unsupported components found:\n" +
+                      unsupported_components_list.join("\n");
+    QMessageBox::information(nullptr, "Parsing error", message);
   }
 
   // Add extra room for the S-parameter simulation box, substrate and equations
