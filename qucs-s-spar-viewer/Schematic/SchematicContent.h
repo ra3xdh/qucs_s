@@ -108,6 +108,7 @@ class SchematicContent {
         QString parseMicrostripLine_QucsS(ComponentInfo);
         QString parseMicrostripStep_QucsS(ComponentInfo);
         QString parseMicrostripOpen_QucsS(ComponentInfo);
+        QString parseMicrostripVia_QucsS(ComponentInfo);
 
         // Wire processing
         QString processWires_QucsS();

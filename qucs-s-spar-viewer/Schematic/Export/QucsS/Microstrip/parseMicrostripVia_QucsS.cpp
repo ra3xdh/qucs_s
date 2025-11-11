@@ -1,28 +1,35 @@
 #include "./../../../SchematicContent.h"
 
 // Microstrip open circuit model
-QString SchematicContent::parseMicrostripOpen_QucsS(ComponentInfo Comp) {
-  //  Open model example
-  // <MOPEN MS8 1 550 540 15 -12 0 1 "Sub1" 0 "0.13 mm" 1 "Hammerstad" 0
-  // "Kirschning" 0 "Kirschning" 0>
-  int status = 1;
-  int x_pos = Comp.Coordinates.at(0) * scale_x_QucsS_export;
-  int y_pos = Comp.Coordinates.at(1) * scale_y_QucsS_export + 30;
+QString SchematicContent::parseMicrostripVia_QucsS(ComponentInfo Comp) {
+  // Format: <MVIA ID status x y text_x text_y vertical_mirror rotation
+  // substrate substrate_visibility diameter diameter_visibility
+  //  MS via example
+  // <MVIA MS4 1 -660 1290 -85 -40 0 2 "Sub1" 0 "0.5 mm" 1 "26.85" 0>
+
+  int status = 5; // Active. Name hidden
+  int x_pos = Comp.Coordinates.at(0) * scale_x_QucsS_export - 20;
+  int y_pos = Comp.Coordinates.at(1) * scale_y_QucsS_export - .0;
   int x_text = 25;
   int y_text = 0;
 
   // Parameters
-  QString Width = Comp.val["Width"];
-  int Width_visibility = 1;
+  QString Diameter = Comp.val["D"];
+  int Diameter_visibility = 0;
 
-  x_text = 20;
-  y_text = -30;
+  // Number of vias
+  // Ideally, the export code should be able to put an array of vias. Currently,
+  // it's not possible.
+  // int N_vias = Comp.val["N"].toInt();
+
+  x_text = 0;
+  y_text = 30;
 
   // Save pin position. This is needed for wiring later
-  ComponentPinMap[Comp.ID][0] = QPoint(x_pos, y_pos - 30); // Pin 1
+  ComponentPinMap[Comp.ID][0] = QPoint(x_pos + 20, y_pos); // Pin 1
 
   QString componentLine =
-      QString("<MOPEN %1 %2 %3 %4 %5 %6 1 3 \"Subst1\" 0 \"%7\" %8 "
+      QString("<MVIA %1 %2 %3 %4 %5 %6 1 2 \"Subst1\" 0 \"%7\" %8 "
               "\"Hammerstad\" 0 \"Kirschning\" 0 \"Kirschning\" 0>\n")
           .arg(Comp.ID)
           .arg(status)
@@ -30,8 +37,8 @@ QString SchematicContent::parseMicrostripOpen_QucsS(ComponentInfo Comp) {
           .arg(y_pos)
           .arg(x_text)
           .arg(y_text)
-          .arg(Width)
-          .arg(Width_visibility);
+          .arg(Diameter)
+          .arg(Diameter_visibility);
 
   return componentLine;
 }
