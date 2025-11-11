@@ -238,15 +238,18 @@ void QucsApp::slotEditDelete(bool on)
 void QucsApp::slotEditStretch(bool on)
 {
   Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
-  if(!on || Doc->currentSelection().isEmpty()) {
-    // Can't perform action without selection
+  if (!on || Doc->currentSelection().isEmpty()) {
+    // if we were already on, or selection is empty
+    // cancel action and return to select mode
     editStretch->blockSignals(true);
     editStretch->setChecked(false);
     editStretch->blockSignals(false);
+
+    activeAction = nullptr;
+
+    slotEscape();
     return;
   }
-  // Add undo entry in case we cancel move action
-  Doc->setChanged(true, true);
 
   performToggleAction(on, editStretch, nullptr,
     &MouseActions::MMoveMoving, nullptr);
@@ -257,11 +260,16 @@ void QucsApp::slotEditStretch(bool on)
 void QucsApp::slotEditMove(bool on)
 {
   Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
-  if(!on || Doc->currentSelection().isEmpty()) {
-    // Can't perform action without selection
+  if (!on || Doc->currentSelection().isEmpty()) {
+    // if we were already on, or selection is emtpy
+    // cancel action and return to select mode
     editMove->blockSignals(true);
     editMove->setChecked(false);
     editMove->blockSignals(false);
+
+    activeAction = nullptr;
+
+    slotEscape();
     return;
   }
 

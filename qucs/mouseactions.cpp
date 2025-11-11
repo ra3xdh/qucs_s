@@ -1442,14 +1442,24 @@ void MouseActions::MReleaseMoving(Schematic *Doc, QMouseEvent* event)
     Doc->viewport()->update();
     Doc->releaseKeyboard(); // allow keyboard inputs again
 
+    // Clear move action
     QucsMain->MouseMoveAction = nullptr;
-    QucsMain->MousePressAction = &MouseActions::MPressSelect;
-    QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
-    QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
+
     QucsMain->editRotate->setChecked(false);
     QucsMain->editRotate->blockSignals(false);
     QucsMain->insLabel->blockSignals(false);
     QucsMain->setMarker->blockSignals(false);
+
+    // if we used drag 'n' drop, we might already be in select mode
+    // -> Manually re-enter select mode
+    if (QucsMain->activeAction == QucsMain->select) {
+        QucsMain->MousePressAction = &MouseActions::MPressSelect;
+        QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
+        QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
+        return;
+    }
+    // If we're in keyboard based movement, go back to select mode by slotting
+    QucsMain->slotEscape();
 }
 // -----------------------------------------------------------
 // Is called after move-free (move with disconnection) operation
@@ -1472,11 +1482,9 @@ void MouseActions::MReleaseMoveFree(Schematic *Doc, QMouseEvent *Event)
     QucsMain->MouseReleaseAction = nullptr;
     QucsMain->MouseDoubleClickAction = nullptr;
 
-    QucsMain->editMove->blockSignals(true);
-    QucsMain->editMove->setChecked(false);
-    QucsMain->editMove->blockSignals(false);
-
-    QucsMain->slotSelect(false);
+    // Go back to select mode
+    // NOTE: This turns off @activeAction
+    QucsMain->slotEscape();
 }
 
 // -----------------------------------------------------------
