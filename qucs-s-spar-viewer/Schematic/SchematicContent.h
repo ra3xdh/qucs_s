@@ -42,7 +42,7 @@ class SchematicContent {
         QList<WireInfo> Wires;
         QList<NodeInfo> Nodes;
 
-        QString export2QucsS(); // Convert the schematic content to Qucs-S format
+        QString export2QucsS(QString); // Convert the schematic content to Qucs-S format
 
         void setFrequencySweep(QString, QString, int);
 
@@ -93,7 +93,7 @@ class SchematicContent {
         // Component processing
         int scale_x_QucsS_export, scale_y_QucsS_export;
         QMap<QString, QList<QPoint>> ComponentPinMap; // Keep information of the pins position of a component
-        QString processComponents_QucsS();
+        QString processComponents_QucsS(QString);
         QString parseTerm_QucsS(ComponentInfo);
         QString parseResistor_QucsS(ComponentInfo);
         QString parseInductor_QucsS(ComponentInfo);
@@ -109,6 +109,10 @@ class SchematicContent {
         QString parseMicrostripStep_QucsS(ComponentInfo);
         QString parseMicrostripOpen_QucsS(ComponentInfo);
         QString parseMicrostripVia_QucsS(ComponentInfo);
+        
+        // Export blacklist
+        // List of components not supported by the backenb simulator (Qucsator, NGspice, Xyce)
+        QMap<QString, QList<ComponentType>> Export_Blacklists;
 
         // Wire processing
         QString processWires_QucsS();

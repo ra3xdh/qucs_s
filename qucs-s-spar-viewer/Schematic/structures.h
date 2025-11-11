@@ -20,6 +20,7 @@
 
 #include <QString>
 #include <QStringList>
+#include <QMap>
 #include <array>
 #include <complex.h>
 #include <complex>
@@ -46,6 +47,9 @@ enum ComponentType {
   ComplexImpedance,
   SPAR_Block
 };
+
+// Function for getting the component name as text
+QString ComponentTypeToString(ComponentType type);
 
 enum ResponseType {
   Butterworth,

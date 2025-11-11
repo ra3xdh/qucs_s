@@ -22,7 +22,8 @@
 
 #include "./../../SchematicContent.h"
 
-QString SchematicContent::export2QucsS() {
+QString SchematicContent::export2QucsS(QString backend_simulator) {
+
   if (Comps.isEmpty()) {
     return QString("");
   }
@@ -33,7 +34,7 @@ QString SchematicContent::export2QucsS() {
   qucsNetlist += QString("<Qucs Schematic %1>\n").arg(PACKAGE_VERSION);
 
   // Process components
-  qucsNetlist += processComponents_QucsS();
+  qucsNetlist += processComponents_QucsS(backend_simulator);
 
   // Process nodes. They are needed for the wiring
   processNodes_QucsS();
@@ -45,7 +46,7 @@ QString SchematicContent::export2QucsS() {
   return qucsNetlist;
 }
 
-QString SchematicContent::processComponents_QucsS() {
+QString SchematicContent::processComponents_QucsS(QString backend_simulator) {
 
   QString qucs_S_Components_Netlist = QString("");
   qucs_S_Components_Netlist += QString("<Components>\n");
@@ -63,10 +64,18 @@ QString SchematicContent::processComponents_QucsS() {
   // Unsupported components list. When the parser founds something it can't
   // parse, it put's the ID here to show that to the user at the end of the
   // export process
-  QList<QString> unsupported_components_list;
+  QList<QPair<QString, ComponentType>> unsupported_components_list;
+
+  // Get the blacklist for this backend
+  const QList<ComponentType> &blacklist = Export_Blacklists[backend_simulator];
 
   for (int i = 0; i < Comps.length(); i++) {
-
+    // Check if the component if supported by the simulator back-end
+    ComponentType type = Comps[i].Type;
+    if (blacklist.contains(type)) {
+      unsupported_components_list.append(qMakePair(Comps[i].ID, type));
+      continue;
+    }
     // Update circuit bottom-left coordinate
     std::vector<double> coordinates = Comps[i].Coordinates;
     if (coordinates[0] < x_bottom) {
@@ -150,7 +159,7 @@ QString SchematicContent::processComponents_QucsS() {
       ///////////////////////////////////////////////
 
     default:
-      unsupported_components_list.append(Comps[i].ID);
+      unsupported_components_list.append(qMakePair(Comps[i].ID, Comps[i].Type));
 
       break;
     }
@@ -162,8 +171,19 @@ QString SchematicContent::processComponents_QucsS() {
 
   // Show components with parsing problems
   if (!unsupported_components_list.isEmpty()) {
-    QString message = "Unsupported components found:\n" +
-                      unsupported_components_list.join("\n");
+    QStringList messageLines;
+    messageLines << "Unsupported components found:";
+
+    for (const auto &pair : unsupported_components_list) {
+      QString id = pair.first;
+      ComponentType type = pair.second;
+
+      QString line =
+          QString("• %1 (Type: %2)").arg(id).arg(ComponentTypeToString(type));
+      messageLines << line;
+    }
+
+    QString message = messageLines.join("\n");
     QMessageBox::information(nullptr, "Parsing error", message);
   }
 

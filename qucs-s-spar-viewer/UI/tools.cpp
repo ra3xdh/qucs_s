@@ -61,8 +61,8 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   // Export formats
   ComboExportSchematic = new QComboBox();
   ComboExportSchematic->addItem("Qucs-S: Qucsator-RF");
-  // ComboExportSchematic->addItem("Qucs-S: NGSpice");
-  // ComboExportSchematic->addItem("Qucs-S: Xyce");
+  ComboExportSchematic->addItem("Qucs-S: NGSpice");
+  ComboExportSchematic->addItem("Qucs-S: Xyce");
 
   QLabel *exportArrowLabel = new QLabel("→");
   exportArrowLabel->setStyleSheet(
@@ -326,10 +326,19 @@ void Qucs_S_SPAR_Viewer::cleanToolsDatasets(const QString &excludeDataset) {
 }
 // Manage the schematic exportExport schematic
 void Qucs_S_SPAR_Viewer::exportSchematic() {
-  QString formatToExport = ComboExportSchematic->currentText();
+  int formatToExport = ComboExportSchematic->currentIndex();
   QString schematicText; // Output netlist
-  if (formatToExport == QString("Qucs-S: Qucsator-RF")) {
-    schematicText = Circuit.export2QucsS();
+
+  switch (formatToExport) {
+  case 0: // Front-end: Qucs-S, Back-end: Qucsator-RF
+    schematicText = Circuit.export2QucsS(QString("Qucsator"));
+    break;
+  case 1: // Front-end: Qucs-S, Back-end: NGspice
+    schematicText = Circuit.export2QucsS(QString("NGspice"));
+    break;
+  case 2: // Front-end: Qucs-S, Back-end: Xyce
+    schematicText = Circuit.export2QucsS(QString("Xyce"));
+    break;
   }
 
   // Output method: File or clipboard
