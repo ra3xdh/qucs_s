@@ -124,6 +124,8 @@ void CanonicalFilter::SynthesizeLPF() {
           Cshunt.val["Length"] = ConvertLengthFromM("mm", L_ci);
           Schematic.appendComponent(Cshunt);
 
+          Schematic.appendWire(NI.ID, 1, ConnectionAux, 1);
+
         } else if (Specification.TL_implementation ==
                    TransmissionLineType::MLIN) {
           // Microstrip transmission line
@@ -173,6 +175,8 @@ void CanonicalFilter::SynthesizeLPF() {
 
           Schematic.appendWire(Cshunt.ID, 0, MSOPEN.ID,
                                0); // Wire: Stub to open circuit model
+
+          Schematic.appendWire(NI.ID, 1, ConnectionAux, 1);
         }
       } else {
         // Lumped capacitor
@@ -190,17 +194,16 @@ void CanonicalFilter::SynthesizeLPF() {
         //***** GND to capacitor *****
         Schematic.appendWire(Ground.ID, 0, Cshunt.ID, 0);
         Schematic.appendComponent(Cshunt);
+
+        Schematic.appendWire(NI.ID, 1, ConnectionAux, 0);
       }
 
       // Wires
       //***** Capacitor to node *****
       Schematic.appendWire(NI.ID, 0, Cshunt.ID, 1);
 
-      //***** Capacitor to the previous Lseries/Term *****
-      Schematic.appendWire(NI.ID, 1, ConnectionAux, 0);
-
-      ConnectionAux = NI.ID; // The series inductor of the next section must be
-                             // connected to this node
+      ConnectionAux = NI.ID; // The series inductor of the next section must
+                             // be connected to this node
     } else {
       // Series inductor
       gi[k + 1] *= Specification.ZS / (2 * M_PI * Specification.fc);
@@ -214,9 +217,10 @@ void CanonicalFilter::SynthesizeLPF() {
         if (Specification.TL_implementation == TransmissionLineType::Ideal) {
           Lseries.setParams(QString("TLIN%1").arg(
                                 ++Schematic.NumberComponents[TransmissionLine]),
-                            TransmissionLine, -90, posx, 0);
+                            TransmissionLine, 90, posx, 0);
           Lseries.val["Z0"] = num2str(Specification.maxZ, Resistance);
           Lseries.val["Length"] = ConvertLengthFromM("mm", L_li);
+          Schematic.appendWire(ConnectionAux, 0, Lseries.ID, 0);
 
         } else if (Specification.TL_implementation ==
                    TransmissionLineType::MLIN) {
@@ -238,7 +242,7 @@ void CanonicalFilter::SynthesizeLPF() {
           // Physical parameters
           Lseries.setParams(QString("MLIN%1").arg(
                                 ++Schematic.NumberComponents[MicrostripLine]),
-                            MicrostripLine, -90, posx, 0);
+                            MicrostripLine, 90, posx, 0);
           Lseries.val["Width"] = ConvertLengthFromM("mm", MS_Width);
           Lseries.val["Length"] = ConvertLengthFromM("mm", MS_Length);
 
@@ -249,6 +253,8 @@ void CanonicalFilter::SynthesizeLPF() {
               num2str(Specification.MS_Subs.MetalConductivity);
           Lseries.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
           Lseries.val["tand"] = num2str(Specification.MS_Subs.tand);
+
+          Schematic.appendWire(ConnectionAux, 0, Lseries.ID, 0);
         }
       } else {
         Lseries.setParams(
@@ -256,10 +262,11 @@ void CanonicalFilter::SynthesizeLPF() {
             Inductor, -90, posx, 0);
 
         Lseries.val["L"] = num2str(gi[k + 1], Inductance);
+        Schematic.appendWire(ConnectionAux, 0, Lseries.ID, 1);
       }
       Schematic.appendComponent(Lseries);
       // Wiring
-      Schematic.appendWire(ConnectionAux, 0, Lseries.ID, 1);
+
       ConnectionAux = Lseries.ID;
     }
     posx += 50;
