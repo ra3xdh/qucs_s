@@ -115,6 +115,10 @@ QString SchematicContent::processComponents_QucsS(QString backend_simulator) {
       componentLine = parseIdealTransmissionLine_QucsS(Comps[i]);
       break;
 
+    case CoupledLines:
+      componentLine = parseIdealCoupledTransmissionLines_QucsS(Comps[i]);
+      break;
+
     case ShortStub:
       componentLine = parseShortStub_QucsS(Comps[i]);
       break;

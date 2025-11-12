@@ -100,6 +100,7 @@ class SchematicContent {
         QString parseCapacitor_QucsS(ComponentInfo);
         QString parseGND_QucsS(ComponentInfo);
         QString parseIdealTransmissionLine_QucsS(ComponentInfo);
+        QString parseIdealCoupledTransmissionLines_QucsS(ComponentInfo);
         QString parseShortStub_QucsS(ComponentInfo);
 
         // Microstrip components
