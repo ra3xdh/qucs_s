@@ -40,6 +40,10 @@ SchematicContent::SchematicContent() {
   scale_x_QucsS_export = 2;
   scale_y_QucsS_export = 1.2;
 
+  // Global offsets for export
+  x_offset_export = 0;
+  y_offset_export = 0;
+
   // Create lists of unsupported component for export, depending on the
   // simulator
   Export_Blacklists.clear();

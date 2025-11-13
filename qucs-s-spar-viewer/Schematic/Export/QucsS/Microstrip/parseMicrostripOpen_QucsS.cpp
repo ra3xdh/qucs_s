@@ -6,8 +6,9 @@ QString SchematicContent::parseMicrostripOpen_QucsS(ComponentInfo Comp) {
   // <MOPEN MS8 1 550 540 15 -12 0 1 "Sub1" 0 "0.13 mm" 1 "Hammerstad" 0
   // "Kirschning" 0 "Kirschning" 0>
   int status = 1;
-  int x_pos = Comp.Coordinates.at(0) * scale_x_QucsS_export;
-  int y_pos = Comp.Coordinates.at(1) * scale_y_QucsS_export + 30;
+  int x_pos = Comp.Coordinates.at(0) * scale_x_QucsS_export + x_offset_export;
+  int y_pos =
+      Comp.Coordinates.at(1) * scale_y_QucsS_export + 30 + y_offset_export;
   int x_text = 25;
   int y_text = 0;
 

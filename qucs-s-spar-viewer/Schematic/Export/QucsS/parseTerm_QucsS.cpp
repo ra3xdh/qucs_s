@@ -22,10 +22,10 @@ QString SchematicContent::parseTerm_QucsS(ComponentInfo Comp) {
   // MHz" 0 "26.85" 0 "true" 0>
 
   int status = 1;
-  int x_pos = Comp.Coordinates.at(0) * scale_x_QucsS_export;
-  int y_pos = Comp.Coordinates.at(1) * scale_y_QucsS_export +
-              50; // Needs adjusting because in the synthesis tool the port size
-                  // is much smaller than in Qucs-S
+  int x_pos = Comp.Coordinates.at(0) * scale_x_QucsS_export + x_offset_export;
+  int y_pos = Comp.Coordinates.at(1) * scale_y_QucsS_export + +y_offset_export +
+              50; // Needs extra adjusting (+50) because in the synthesis tool
+                  // the port size is much smaller than in Qucs-S
   int x_text = 25;
   int y_text = 0;
   int Num = Comp.ID.mid(1).toInt(); // Returns all but "T". Port number

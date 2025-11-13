@@ -90,6 +90,8 @@ class SchematicContent {
     private:
         // Qucs-S parsing functions
 
+        int x_offset_export, y_offset_export;
+
         // Component processing
         int scale_x_QucsS_export, scale_y_QucsS_export;
         QMap<QString, QList<QPoint>> ComponentPinMap; // Keep information of the pins position of a component
@@ -107,6 +109,7 @@ class SchematicContent {
         MS_Substrate get_MS_Substrate(ComponentInfo Comp);
         QString addSubstrateBox(QList<MS_Substrate> subs_list, int x_bottom, int y_bottom);
         QString parseMicrostripLine_QucsS(ComponentInfo);
+        QString parseMicrostripCoupledLines_QucsS(ComponentInfo);
         QString parseMicrostripStep_QucsS(ComponentInfo);
         QString parseMicrostripOpen_QucsS(ComponentInfo);
         QString parseMicrostripVia_QucsS(ComponentInfo);

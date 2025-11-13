@@ -84,7 +84,7 @@ QString SchematicContent::processComponents_QucsS(QString backend_simulator) {
     if (coordinates[1] > y_bottom) {
       if (Comps[i].Type == Term) {
         y_bottom =
-            coordinates[1] +
+            coordinates[1] + y_offset_export +
             90; //  Terms in the internal schematic have no y-axis
                 //  dimmension. It's needed to add some extra room accounting
                 //  for the port's y-axis dimmension in Qucs-S and its GND
@@ -137,6 +137,13 @@ QString SchematicContent::processComponents_QucsS(QString backend_simulator) {
       MS_Substrate subs = get_MS_Substrate(Comps[i]);
       MS_Substrate_List.append(subs);
       componentLine = parseMicrostripLine_QucsS(Comps[i]);
+      break;
+    }
+
+    case MicrostripCoupledLines: {
+      MS_Substrate subs = get_MS_Substrate(Comps[i]);
+      MS_Substrate_List.append(subs);
+      componentLine = parseMicrostripCoupledLines_QucsS(Comps[i]);
       break;
     }
 

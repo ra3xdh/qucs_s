@@ -13,10 +13,10 @@ QString SchematicContent::parseGND_QucsS(ComponentInfo Comp) {
   // Example: <GND * 1 60 350 0 0 0 0>
 
   int status = 1;
-  int x_pos = Comp.Coordinates.at(0) * scale_x_QucsS_export;
-  int y_pos = Comp.Coordinates.at(1) * scale_y_QucsS_export -
-              20; // Additional correction needed: The GND in the internal
-                  // schematic was a small wire connection
+  int x_pos = Comp.Coordinates.at(0) * scale_x_QucsS_export + x_offset_export;
+  int y_pos = Comp.Coordinates.at(1) * scale_y_QucsS_export - 20 +
+              y_offset_export; // Additional correction needed: The GND in the
+                               // internal schematic was a small wire connection
   int mirror = 0;
 
   if (Comp.Rotation == 180) {

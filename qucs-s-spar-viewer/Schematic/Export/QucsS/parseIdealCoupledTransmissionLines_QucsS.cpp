@@ -22,8 +22,8 @@ SchematicContent::parseIdealCoupledTransmissionLines_QucsS(ComponentInfo Comp) {
   // "1" 0 "1" 0 "0 dB" 0 "0 dB" 0 "26.85" 0>
 
   int status = 1;
-  int x_pos = Comp.Coordinates.at(0) * scale_x_QucsS_export;
-  int y_pos = Comp.Coordinates.at(1) * scale_y_QucsS_export;
+  int x_pos = Comp.Coordinates.at(0) * scale_x_QucsS_export + x_offset_export;
+  int y_pos = Comp.Coordinates.at(1) * scale_y_QucsS_export + y_offset_export;
   int x_text = 25;
   int y_text = 0;
   int rotation = static_cast<int>(Comp.Rotation / 90) + 1;
