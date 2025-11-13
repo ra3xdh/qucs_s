@@ -1,6 +1,23 @@
-#include "./../../SchematicContent.h"
+/*
+ *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
-QString SchematicContent::parseGND_QucsS(ComponentInfo Comp) {
+#include "./../QucsS/QucsSExporter.h"
+
+QString QucsSExporter::parseGND_QucsS(ComponentInfo Comp) {
   // Format: <GND * status x y 0 0 0 0>
   // status:
   //         0 -> opened
@@ -13,10 +30,11 @@ QString SchematicContent::parseGND_QucsS(ComponentInfo Comp) {
   // Example: <GND * 1 60 350 0 0 0 0>
 
   int status = 1;
-  int x_pos = Comp.Coordinates.at(0) * scale_x_QucsS_export + x_offset_export;
-  int y_pos = Comp.Coordinates.at(1) * scale_y_QucsS_export - 20 +
-              y_offset_export; // Additional correction needed: The GND in the
-                               // internal schematic was a small wire connection
+
+  int x_pos = Comp.Coordinates.at(0) * scale_x + x_offset;
+  int y_pos = Comp.Coordinates.at(1) * scale_y + y_offset -
+              20; // Additional correction needed: The GND in the
+                  // internal schematic was a small wire connection
   int mirror = 0;
 
   if (Comp.Rotation == 180) {

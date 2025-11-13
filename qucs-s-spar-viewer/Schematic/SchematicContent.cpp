@@ -679,3 +679,15 @@ int SchematicContent::getComponentCounter(ComponentType Comp) {
   // Returns 0 if the type doesn't exist in the map
   return NumberComponents.value(Comp, 0);
 }
+
+// This function manages the schematic export process
+QString SchematicContent::exportSchematic(QString environment,
+                                          QString backend) {
+
+  QString schematic;
+  if (environment == QString("Qucs-S")) {
+    // Qucs-S frontend
+    QucsSExporter QE;
+    schematic = QE.exportSchematic(this);
+  }
+}

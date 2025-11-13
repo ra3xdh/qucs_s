@@ -1,6 +1,6 @@
-#include "./../../SchematicContent.h"
+#include "./../QucsS/QucsSExporter.h"
 
-QString SchematicContent::parseResistor_QucsS(ComponentInfo Comp) {
+QString QucsSExporter::parseResistor_QucsS(ComponentInfo Comp) {
   // Format: <R ID status x y text_x text_y 0 rotation C C_visibility>
   // ID: e.g. Rx, where x is a positive integer
   // status:
@@ -20,8 +20,8 @@ QString SchematicContent::parseResistor_QucsS(ComponentInfo Comp) {
   // "0.0" 0 "26.85" 0 "US" 0>
 
   int status = 1;
-  int x_pos = Comp.Coordinates.at(0) * scale_x_QucsS_export + x_offset_export;
-  int y_pos = Comp.Coordinates.at(1) * scale_y_QucsS_export + y_offset_export;
+  int x_pos = Comp.Coordinates.at(0) * scale_x + x_offset;
+  int y_pos = Comp.Coordinates.at(1) * scale_y + y_offset;
   int x_text = 25;
   int y_text = 0;
   int rotation = static_cast<int>(Comp.Rotation / 90) + 1;

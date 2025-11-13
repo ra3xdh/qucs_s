@@ -27,6 +27,8 @@
 #include "infoclasses.h"
 #include "structures.h"
 
+#include "Export/QucsS/QucsSExporter.h"
+
 class Component;
 class SchematicContent {
     public:
@@ -41,6 +43,9 @@ class SchematicContent {
         QList<ComponentInfo> Comps;
         QList<WireInfo> Wires;
         QList<NodeInfo> Nodes;
+
+        // Export schematic
+        QString exportSchematic(QString environment, QString backend);
 
         QString export2QucsS(QString); // Convert the schematic content to Qucs-S format
 
@@ -92,7 +97,7 @@ class SchematicContent {
 
         int x_offset_export, y_offset_export;
 
-        // Component processing
+      /*  // Component processing
         int scale_x_QucsS_export, scale_y_QucsS_export;
         QMap<QString, QList<QPoint>> ComponentPinMap; // Keep information of the pins position of a component
         QString processComponents_QucsS(QString);
@@ -112,17 +117,17 @@ class SchematicContent {
         QString parseMicrostripCoupledLines_QucsS(ComponentInfo);
         QString parseMicrostripStep_QucsS(ComponentInfo);
         QString parseMicrostripOpen_QucsS(ComponentInfo);
-        QString parseMicrostripVia_QucsS(ComponentInfo);
+        QString parseMicrostripVia_QucsS(ComponentInfo);*/
         
         // Export blacklist
         // List of components not supported by the backenb simulator (Qucsator, NGspice, Xyce)
         QMap<QString, QList<ComponentType>> Export_Blacklists;
 
-        // Wire processing
+       /* // Wire processing
         QString processWires_QucsS();
 
         // Process internal nodes
-        void processNodes_QucsS();
+        void processNodes_QucsS();*/
 };
 
 #endif // SCHEMATICCONTENT_H

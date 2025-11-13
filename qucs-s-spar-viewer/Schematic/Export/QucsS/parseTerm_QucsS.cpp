@@ -1,6 +1,23 @@
-#include "./../../SchematicContent.h"
+/*
+ *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
-QString SchematicContent::parseTerm_QucsS(ComponentInfo Comp) {
+#include "./../QucsS/QucsSExporter.h"
+
+QString QucsSExporter::parseTerm_QucsS(ComponentInfo Comp) {
   // Format: <Pac ID status x y text_x text_y Num Num_visibility Z0
   // Z0_visibility> ID: e.g. Lx, where x is a positive integer
   // status:
@@ -22,10 +39,13 @@ QString SchematicContent::parseTerm_QucsS(ComponentInfo Comp) {
   // MHz" 0 "26.85" 0 "true" 0>
 
   int status = 1;
-  int x_pos = Comp.Coordinates.at(0) * scale_x_QucsS_export + x_offset_export;
-  int y_pos = Comp.Coordinates.at(1) * scale_y_QucsS_export + +y_offset_export +
-              50; // Needs extra adjusting (+50) because in the synthesis tool
-                  // the port size is much smaller than in Qucs-S
+
+  int x_pos = Comp.Coordinates.at(0) * scale_x + x_offset;
+  int y_pos =
+      Comp.Coordinates.at(1) * scale_y + y_offset +
+      50; // The term component needs extra adjusting (+50) because in the
+          // synthesis tool the port size is much smaller than in Qucs-S
+
   int x_text = 25;
   int y_text = 0;
   int Num = Comp.ID.mid(1).toInt(); // Returns all but "T". Port number

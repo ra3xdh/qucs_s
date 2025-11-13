@@ -1,6 +1,23 @@
-#include "./../../SchematicContent.h"
+/*
+ *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
-QString SchematicContent::parseIdealTransmissionLine_QucsS(ComponentInfo Comp) {
+#include "./../QucsS/QucsSExporter.h"
+
+QString QucsSExporter::parseIdealTransmissionLine_QucsS(ComponentInfo Comp) {
   // Format: <TLIN ID status x y text_x text_y vertical_mirror rotation Z0
   // Z0_Visibility Length Length_Visibility Alpha Alpha_Visibility Temp
   // Temp_Visibility> ID: e.g. Lx, where x is a positive integer status:

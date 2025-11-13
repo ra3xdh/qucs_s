@@ -1,7 +1,24 @@
-#include "./../../SchematicContent.h"
+/*
+ *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+#include "./../QucsS/QucsSExporter.h"
 
 QString
-SchematicContent::parseIdealCoupledTransmissionLines_QucsS(ComponentInfo Comp) {
+QucsSExporter::parseIdealCoupledTransmissionLines_QucsS(ComponentInfo Comp) {
   // Format: <CTLIN ID status x y text_x text_y vertical_mirror rotation Z0e
   // Z0e_Visibility Z0e Z0o_Visibility Length Length_Visibility ...>
   // Temp_Visibility> ID: e.g. Lx, where x is a positive integer status:
@@ -22,8 +39,8 @@ SchematicContent::parseIdealCoupledTransmissionLines_QucsS(ComponentInfo Comp) {
   // "1" 0 "1" 0 "0 dB" 0 "0 dB" 0 "26.85" 0>
 
   int status = 1;
-  int x_pos = Comp.Coordinates.at(0) * scale_x_QucsS_export + x_offset_export;
-  int y_pos = Comp.Coordinates.at(1) * scale_y_QucsS_export + y_offset_export;
+  int x_pos = Comp.Coordinates.at(0) * scale_x + x_offset;
+  int y_pos = Comp.Coordinates.at(1) * scale_y + y_offset;
   int x_text = 25;
   int y_text = 0;
   int rotation = static_cast<int>(Comp.Rotation / 90) + 1;
