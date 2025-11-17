@@ -20,21 +20,34 @@
 
 #include "../SchematicExporter.h"
 
+// This is needed for catching the current Qucs-S version
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 
 class QucsSExporter : public SchematicExporter {
 public:
-     QucsSExporter();
+    explicit QucsSExporter(SchematicContent& owner);
     ~QucsSExporter();
 
     void setSchematiContent(const SchematicContent& schematic);
 
     QString exportSchematic();
+    QString backend_simulator;
 
 
 private:
-    const SchematicContent * schematic;
+    SchematicContent& schematic;
 
 private:
+        // These variables apply a general offset in the Qucs-S schematic export process
+        int x_offset, y_offset;
+
+        // General schematic scaling versus the tool's schematic
+        int scale_x, scale_y;
+
+        // Component processing
         QString processComponents_QucsS(QString);
         QString parseTerm_QucsS(ComponentInfo);
         QString parseResistor_QucsS(ComponentInfo);
@@ -59,6 +72,10 @@ private:
 
         // Process internal nodes
         void processNodes_QucsS();
+
+        // Export blacklist
+        // List of components not supported by the backenb simulator (Qucsator, NGspice, Xyce)
+        QMap<QString, QList<ComponentType>> Export_Blacklists;
 };
 
 #endif // QUCSSEXPORTER_H

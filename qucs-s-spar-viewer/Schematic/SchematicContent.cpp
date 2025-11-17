@@ -35,32 +35,6 @@ SchematicContent::SchematicContent() {
   NumberComponents[ShortStub] = 0;
   NumberComponents[SPAR_Block] = 0;
   NumberWires = 0;
-
-  // Scale factors for QucsatorRF export
-  scale_x_QucsS_export = 2;
-  scale_y_QucsS_export = 1.2;
-
-  // Global offsets for export
-  x_offset_export = 0;
-  y_offset_export = 0;
-
-  // Create lists of unsupported component for export, depending on the
-  // simulator
-  Export_Blacklists.clear();
-
-  // NGSpice
-  // NGspice cannot handle some microstrip components
-  Export_Blacklists["NGspice"].append(MicrostripVia);
-  Export_Blacklists["NGspice"].append(MicrostripStep);
-  Export_Blacklists["NGspice"].append(MicrostripCoupledLines);
-
-  // Xyce
-  // Xyce cannot handle miscrostrip components
-  Export_Blacklists["Xyce"].append(MicrostripLine);
-  Export_Blacklists["Xyce"].append(MicrostripOpen);
-  Export_Blacklists["Xyce"].append(MicrostripVia);
-  Export_Blacklists["Xyce"].append(MicrostripStep);
-  Export_Blacklists["Xyce"].append(MicrostripCoupledLines);
 }
 
 SchematicContent::~SchematicContent() {}
@@ -687,7 +661,9 @@ QString SchematicContent::exportSchematic(QString environment,
   QString schematic;
   if (environment == QString("Qucs-S")) {
     // Qucs-S frontend
-    QucsSExporter QE;
-    schematic = QE.exportSchematic(this);
+    QucsSExporter QE(*this);
+    QE.backend_simulator = backend;
+    schematic = QE.exportSchematic();
   }
+  return schematic;
 }

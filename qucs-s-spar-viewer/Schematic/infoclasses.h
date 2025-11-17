@@ -54,7 +54,7 @@ public:
   double Rotation;
   QString Net1, Net2; // ID of the nodes where the component is connected
   std::vector<double> Coordinates;
-  int getNumberOfPorts() {
+  int getNumberOfPorts() const {
     switch (Type) {
     case MicrostripCoupledLines:
     case CoupledLines:

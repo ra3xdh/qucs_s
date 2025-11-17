@@ -51,12 +51,12 @@ class SchematicContent {
 
         void setFrequencySweep(QString, QString, int);
 
-    private:
-        void assignNetToWiresConnectedToNode(QString, QString);
-
         // Frequency sweep settings (required for exporting)
         QString f_start, f_stop;
         int n_points;
+
+    private:
+        void assignNetToWiresConnectedToNode(QString, QString);
 
     public:
         // Setter getter functions
@@ -91,43 +91,6 @@ class SchematicContent {
         QList<QGraphicsTextItem*> Texts;
         QString Description;
         QString netlist;
-
-    private:
-        // Qucs-S parsing functions
-
-        int x_offset_export, y_offset_export;
-
-      /*  // Component processing
-        int scale_x_QucsS_export, scale_y_QucsS_export;
-        QMap<QString, QList<QPoint>> ComponentPinMap; // Keep information of the pins position of a component
-        QString processComponents_QucsS(QString);
-        QString parseTerm_QucsS(ComponentInfo);
-        QString parseResistor_QucsS(ComponentInfo);
-        QString parseInductor_QucsS(ComponentInfo);
-        QString parseCapacitor_QucsS(ComponentInfo);
-        QString parseGND_QucsS(ComponentInfo);
-        QString parseIdealTransmissionLine_QucsS(ComponentInfo);
-        QString parseIdealCoupledTransmissionLines_QucsS(ComponentInfo);
-        QString parseShortStub_QucsS(ComponentInfo);
-
-        // Microstrip components
-        MS_Substrate get_MS_Substrate(ComponentInfo Comp);
-        QString addSubstrateBox(QList<MS_Substrate> subs_list, int x_bottom, int y_bottom);
-        QString parseMicrostripLine_QucsS(ComponentInfo);
-        QString parseMicrostripCoupledLines_QucsS(ComponentInfo);
-        QString parseMicrostripStep_QucsS(ComponentInfo);
-        QString parseMicrostripOpen_QucsS(ComponentInfo);
-        QString parseMicrostripVia_QucsS(ComponentInfo);*/
-        
-        // Export blacklist
-        // List of components not supported by the backenb simulator (Qucsator, NGspice, Xyce)
-        QMap<QString, QList<ComponentType>> Export_Blacklists;
-
-       /* // Wire processing
-        QString processWires_QucsS();
-
-        // Process internal nodes
-        void processNodes_QucsS();*/
 };
 
 #endif // SCHEMATICCONTENT_H
