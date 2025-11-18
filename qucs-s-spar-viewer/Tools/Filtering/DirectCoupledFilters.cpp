@@ -39,7 +39,7 @@ void DirectCoupledFilters::synthesize() {
 void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
   WireInfo WI;
   ComponentInfo Cseries, Lshunt, Ground, Cshunt;
-  NodeInfo NI;
+  NodeInfo NI, NLeft, NRight, Ncenter;
 
   int N = Specification.order;
   std::deque<double> L(N), Cp(N);
@@ -119,47 +119,82 @@ void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
   //***** Port to capacitor *****
   Schematic.appendWire(TermSpar1.ID, 0, Cseries.ID, 0);
 
+  QPoint Pos_L, Pos_C, PosCenter;
+
   for (int k = 0; k < N; k++) {
+    // Advance the x-axis index to the new cell
     posx += 25;
+
+    // Set components' positions
+    Pos_L = QPoint(posx, 60);         // Inductor
+    PosCenter = QPoint(posx + 25, 0); // Central node on the main line
+    Pos_C = QPoint(posx + 50, 60);    // Capacitor
+
+    //////////////////////////////////////////////////////////////////////
+    // Create nodes
+    // Virtual node above the inductor
+    NLeft.setParams(
+        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        Pos_L.x(), Pos_L.y() - 40);
+    NLeft.visible = false;
+    Schematic.appendNode(NLeft);
+
+    // Virtual node in between the inductor and the capacitor
+    Ncenter.setParams(
+        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        PosCenter.x(), Pos_L.y() - 40);
+    Ncenter.visible = false;
+    Schematic.appendNode(Ncenter);
+
+    // Node in the main line
+    NI.setParams(
+        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        PosCenter);
+    Schematic.appendNode(NI);
+
+    // Virtual node above the capacitor
+    NRight.setParams(
+        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+        Pos_C.x(), Pos_C.y() - 40);
+    NRight.visible = false;
+    Schematic.appendNode(NRight);
+    //////////////////////////////////////////////////////////////////////
+
+    // Node to the previous series capacitor
+    Schematic.appendWire(NI.ID, 0, Cseries.ID, 1);
+
     // Shunt resonator
     // Shunt inductor
     Lshunt.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
-                     Inductor, 0, posx, 50);
+                     Inductor, Pos_L);
     Lshunt.val["L"] = num2str(L[k], Inductance);
     Schematic.appendComponent(Lshunt);
 
     // GND
     Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                     GND, 0, posx, 100);
+                     GND, 0, Pos_L.x(), Pos_L.y() + 50);
     Schematic.appendComponent(Ground);
 
+    // Shunt inductor to GND
     Schematic.appendWire(Lshunt.ID, 0, Ground.ID, 0);
-
-    posx += 25;
-
-    // Node
-    NI.setParams(
-        QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]), posx,
-        0);
-    Schematic.appendNode(NI);
-
-    // Node to the previous series capacitor
-    Schematic.appendWire(NI.ID, 0, Cseries.ID, 1);
 
     posx += 25;
     // Shunt capacitor
     Cshunt.setParams(
         QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
-        0, posx, 50);
+        Pos_C);
     Cshunt.val["C"] = num2str(Cp[k], Capacitance);
     Schematic.appendComponent(Cshunt);
 
     // GND
     Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                     GND, 0, posx, 100);
+                     GND, 0, Pos_C.x(), Pos_C.y() + 50);
     Schematic.appendComponent(Ground);
 
-    posx += 25;
+    // Shunt capacitor to GND
+    Schematic.appendWire(Cshunt.ID, 0, Ground.ID, 0);
+
+    posx += 50;
     // Series capacitor
     Cseries.setParams(
         QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
@@ -168,10 +203,25 @@ void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
     Schematic.appendComponent(Cseries);
     Ni++;
 
-    Schematic.appendWire(NI.ID, 0, Lshunt.ID, 1);
-    Schematic.appendWire(NI.ID, 0, Cshunt.ID, 1);
+    // Cell wiring
+
+    // Node to the series capacitor
     Schematic.appendWire(NI.ID, 0, Cseries.ID, 0);
-    Schematic.appendWire(Cshunt.ID, 0, Ground.ID, 0);
+
+    // Central node in th main line to the central virtual line
+    Schematic.appendWire(NI.ID, 0, Ncenter.ID, 0);
+
+    // Central virtual node to the left virtual node
+    Schematic.appendWire(Ncenter.ID, 0, NLeft.ID, 0);
+
+    // Central virtual node to the right virtual node
+    Schematic.appendWire(Ncenter.ID, 0, NRight.ID, 0);
+
+    // Left virtual node to inductor
+    Schematic.appendWire(NLeft.ID, 0, Lshunt.ID, 1);
+
+    // Right virtual node to capacitor
+    Schematic.appendWire(NRight.ID, 0, Cshunt.ID, 1);
   }
 
   posx += 40;

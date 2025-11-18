@@ -84,6 +84,15 @@ public:
       Coordinates[1] = P.y();
   }
 
+  void setParams(QString ID_, ComponentType Type_, QPoint P) // Coordinates
+  {
+      ID             = ID_;
+      Type           = Type_;
+      Rotation       = 0;
+      Coordinates[0] = P.x();
+      Coordinates[1] = P.y();
+  }
+
   QMap<QString, QString> val; // freq, L1.L, C1.C,...
   double getVal(QString);
 };
@@ -142,6 +151,13 @@ public:
     Coordinates[0] = x;
     Coordinates[1] = y;
   }
+
+  void setParams(QString ID_, QPoint P) {
+      ID             = ID_;
+      Coordinates[0] = P.x();
+      Coordinates[1] = P.y();
+  }
+
   QString ID;
   QString Net;
   std::vector<double> Coordinates;
