@@ -57,7 +57,14 @@ QString QucsSExporter::exportSchematic() {
   qucsNetlist += QString("<Qucs Schematic %1>\n").arg(PACKAGE_VERSION);
 
   // Process components
-  qucsNetlist += processComponents_QucsS(backend_simulator);
+  QString components = processComponents_QucsS(backend_simulator);
+
+  // Was component processing ok?
+  if (components == QString("-1")) {
+    // Unsupported components were found -> Abort export
+    return QString("-1");
+  }
+  qucsNetlist += components;
 
   // Process nodes. They are needed for the wiring
   processNodes_QucsS();
@@ -224,6 +231,9 @@ QString QucsSExporter::processComponents_QucsS(QString backend_simulator) {
 
     QString message = messageLines.join("\n");
     QMessageBox::information(nullptr, "Parsing error", message);
+
+    // Unsupported components found. Abort export process
+    return QString("-1");
   }
 
   // Add extra room for the S-parameter simulation box, substrate and equations
