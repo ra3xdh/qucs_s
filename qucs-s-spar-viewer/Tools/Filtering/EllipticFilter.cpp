@@ -1330,9 +1330,14 @@ void EllipticFilter::Insert_HighpassMinL_Section(
   if (Cseries_LP->at(j) != 0) {
     Lshunt.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
                      Inductor, 0, posx, 30);
+
   } else {
     Lshunt.setParams(QString("L%1").arg(++Schematic.NumberComponents[Inductor]),
                      Inductor, 0, posx, 30);
+    // GND
+    Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
+                     GND, 0, posx, 80);
+    Schematic.appendComponent(Ground);
   }
   Lshunt.val["L"] = num2str(Lshunt_HP_MINL, Inductance);
   Schematic.appendComponent(Lshunt);
@@ -1344,12 +1349,12 @@ void EllipticFilter::Insert_HighpassMinL_Section(
         0, posx, 100);
     Cshunt.val["C"] = num2str(Cshunt_HP_MINL, Capacitance);
     Schematic.appendComponent(Cshunt);
-  }
 
-  // GND
-  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, posx, 140);
-  Schematic.appendComponent(Ground);
+    // GND
+    Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
+                     GND, 0, posx, 150);
+    Schematic.appendComponent(Ground);
+  }
 
   //***** Inductor to node *****
   Schematic.appendWire(NI.ID, 0, Lshunt.ID, 1);
