@@ -452,7 +452,12 @@ void CanonicalFilter::SynthesizeHPF() {
 // Synthesis of bandpass filters
 void CanonicalFilter::SynthesizeBPF() {
   ComponentInfo Cshunt, Lshunt, Ground1, Ground2, Cseries, Lseries;
-  NodeInfo NI;
+  NodeInfo NI; // Main line node.
+  NodeInfo NLeft, NCenter,
+      NRight; // Virtual nodes, they make easier the export logic for Qucs-S
+
+  QPoint PosC, PosL;
+
   // Synthesize CLC of LCL network
   int N = Specification.order; // Number of elements
   int posx = 0;
@@ -478,44 +483,79 @@ void CanonicalFilter::SynthesizeBPF() {
 
     if (((Specification.isCLC) && (k % 2 == 0)) ||
         ((!Specification.isCLC) && (k % 2 != 0))) {
+
+      // Set up component's position
+      PosC = QPoint(posx - 25, 60); // Shunt capacitor
+      PosL = QPoint(posx + 25, 60); // Shunt inductor
+
       // Shunt capacitor
       Cshunt.setParams(
           QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
-          Capacitor, 0, posx - 25, 50);
+          Capacitor, PosC);
       Cshunt.val["C"] =
           num2str(gi[k + 1] / (delta * Specification.ZS), Capacitance);
       Schematic.appendComponent(Cshunt);
 
       // GND
       Ground1.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                        GND, 0, posx - 25, 100);
+                        GND, 0, PosC.x(), PosC.y() + 50);
       Schematic.appendComponent(Ground1);
 
       // Shunt inductor
       Lshunt.setParams(
           QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor,
-          0, posx + 25, 50);
+          PosL);
       Lshunt.val["L"] =
           num2str(Specification.ZS * delta / (w0 * w0 * gi[k + 1]), Inductance);
       Schematic.appendComponent(Lshunt);
 
       // GND
       Ground2.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]),
-                        GND, 0, posx + 25, 100);
+                        GND, 0, PosL.x(), PosL.y() + 50);
       Schematic.appendComponent(Ground2);
 
-      // Node
+      // Main line node
       NI.setParams(
           QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
           posx, 0);
       Schematic.appendNode(NI);
 
-      // Wires
-      //***** Capacitor to node *****
-      Schematic.appendWire(NI.ID, 1, Cshunt.ID, 1);
+      // Resonator left virtual node
+      NLeft.setParams(
+          QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+          PosC.x(), PosC.y() - 40);
+      NLeft.visible = false;
+      Schematic.appendNode(NLeft);
 
-      //***** Inductor to node *****
-      Schematic.appendWire(NI.ID, 1, Lshunt.ID, 1);
+      // Resonator center virtual node
+      NCenter.setParams(
+          QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+          posx, PosC.y() - 40);
+      NCenter.visible = false;
+      Schematic.appendNode(NCenter);
+
+      // Resonator right virtual node
+      NRight.setParams(
+          QString("N%1").arg(++Schematic.NumberComponents[ConnectionNodes]),
+          PosL.x(), PosL.y() - 40);
+      NRight.visible = false;
+      Schematic.appendNode(NRight);
+
+      // Wires
+      // Main line node to resonator center node
+      Schematic.appendWire(NI.ID, 0, NCenter.ID, 0);
+
+      // Resonator center node to capacitor node
+      Schematic.appendWire(NCenter.ID, 0, NLeft.ID, 0);
+
+      // Node above the capacitor to the capacitor
+      Schematic.appendWire(NLeft.ID, 0, Cshunt.ID, 1);
+
+      // Resonator center node to inductor node
+      Schematic.appendWire(NCenter.ID, 0, NRight.ID, 0);
+
+      // Node above the capacitor to the capacitor
+      Schematic.appendWire(NRight.ID, 0, Lshunt.ID, 1);
 
       //***** GND to capacitor *****
       Schematic.appendWire(Ground1.ID, 0, Cshunt.ID, 0);
