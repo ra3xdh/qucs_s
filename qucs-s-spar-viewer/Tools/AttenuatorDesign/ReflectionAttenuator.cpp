@@ -43,20 +43,36 @@ void ReflectionAttenuator::synthesize() {
 void ReflectionAttenuator::buildNetwork() {
   ComponentInfo Ground, Res1, Res2, Coup;
 
+  //
+  // T1 ----    ----- T2
+  //        |   |
+  //       -------
+  //       |     |
+  //       |     |
+  //       -------
+  //        |   |
+  //       R1   R2
+
+  // Define components' position
+  QPoint posT1 = QPoint(0, 0);
+  QPoint posCoupler = QPoint(posT1.x() + 60, 50);
+  QPoint posR1 = QPoint(posCoupler.x() - 30, posCoupler.y() + 75);
+  QPoint posR2 = QPoint(posCoupler.x() + 30, posR1.y());
+  QPoint posT2 = QPoint(posCoupler.x() + 60, posT1.y());
+
+  // Nodes (all virtual)
+
   // Input terminal
-  ComponentInfo TermSparIN(
-      QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
+  ComponentInfo TermSparIN(QString("T1"), Term, posT1);
   TermSparIN.val["Z"] = num2str(Specification.Zin, Resistance);
   Schematic.appendComponent(TermSparIN);
 
   // First shunt resistor
-  Res1.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
-                 Resistor, 0, 50, 100);
+  Res1.setParams(QString("R1"), Resistor, posR1);
   Res1.val["R"] = num2str(Ri, Resistance);
   Schematic.appendComponent(Res1);
 
-  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, 50, 150);
+  Ground.setParams(QString("GND1"), GND, 0, posR1.x(), posR1.y() + 50);
   Schematic.appendComponent(Ground);
 
   Schematic.appendWire(Res1.ID, 0, Ground.ID, 0);
@@ -67,9 +83,7 @@ void ReflectionAttenuator::buildNetwork() {
   ConnectionNodes.append(QString("NR1"));
   ConnectionNodes.append(QString("NR2"));
   ConnectionNodes.append(QString("N1"));
-  Coup.setParams(
-      QString("COUPLER%1").arg(++Schematic.NumberComponents[Coupler]), Coupler,
-      0, 100, 50);
+  Coup.setParams(QString("COUPLER1"), Coupler, posCoupler);
   Coup.val["k"] = num2str(0.7071, NoUnits);
   Coup.val["Z0"] = num2str(Specification.Zin, Resistance);
   Coup.val["phase"] = num2str(90, NoUnits);
@@ -78,13 +92,11 @@ void ReflectionAttenuator::buildNetwork() {
   Schematic.appendWire(Res1.ID, 1, Coup.ID, 0);
 
   // Second shunt resistor
-  Res2.setParams(QString("R%1").arg(++Schematic.NumberComponents[Resistor]),
-                 Resistor, 0, 150, 100);
+  Res2.setParams(QString("R2"), Resistor, posR2);
   Res2.val["R"] = num2str(Ri, Resistance);
   Schematic.appendComponent(Res2);
 
-  Ground.setParams(QString("GND%1").arg(++Schematic.NumberComponents[GND]), GND,
-                   0, 150, 150);
+  Ground.setParams(QString("GND2"), GND, 0, posR2.x(), posR2.y() + 50);
   Schematic.appendComponent(Ground);
 
   Schematic.appendWire(Res2.ID, 1, Coup.ID, 3);
@@ -92,8 +104,7 @@ void ReflectionAttenuator::buildNetwork() {
 
   // Output terminal
   ComponentInfo TermSpar2;
-  TermSpar2.setParams(QString("T%1").arg(++Schematic.NumberComponents[Term]),
-                      Term, 180, 200, 0);
+  TermSpar2.setParams(QString("T2"), Term, 180, posT2);
   TermSpar2.val["Z"] = num2str(Specification.Zout, Resistance);
   Schematic.appendComponent(TermSpar2);
 

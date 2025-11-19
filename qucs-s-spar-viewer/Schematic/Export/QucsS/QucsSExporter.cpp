@@ -20,13 +20,8 @@
 #include <QRegularExpression>
 
 QucsSExporter::QucsSExporter(SchematicContent &sch)
-    : schematic(sch) // store the reference
-      ,
-      scale_x(2.0) // scaling factors
-      ,
-      scale_y(1.2), x_offset(0.0) // offsets (default 0)
-      ,
-      y_offset(0.0) {
+    : schematic(sch), // store the reference
+      x_offset(0.0), y_offset(0.0), scale_x(2.0), scale_y(1.2) {
   // Start with a clean map – Qt containers are empty by default,
   // but clearing makes the intention obvious.
   Export_Blacklists.clear();
@@ -36,6 +31,7 @@ QucsSExporter::QucsSExporter(SchematicContent &sch)
   Export_Blacklists["NGspice"].append(MicrostripVia);
   Export_Blacklists["NGspice"].append(MicrostripStep);
   Export_Blacklists["NGspice"].append(MicrostripCoupledLines);
+  Export_Blacklists["NGspice"].append(Coupler);
 
   // ---------------------------- Xyce ------------------------------------
   // Xyce cannot handle several microstrip components.
@@ -44,6 +40,7 @@ QucsSExporter::QucsSExporter(SchematicContent &sch)
   Export_Blacklists["Xyce"].append(MicrostripVia);
   Export_Blacklists["Xyce"].append(MicrostripStep);
   Export_Blacklists["Xyce"].append(MicrostripCoupledLines);
+  Export_Blacklists["Xyce"].append(Coupler);
 }
 
 QString QucsSExporter::exportSchematic() {
@@ -163,6 +160,10 @@ QString QucsSExporter::processComponents_QucsS(QString backend_simulator) {
 
     case GND:
       componentLine = parseGND_QucsS(schematic.Comps[i]);
+      break;
+
+    case Coupler:
+      componentLine = parseIdealCoupler_QucsS(schematic.Comps[i]);
       break;
 
       ///////////////////////////////////////////////
