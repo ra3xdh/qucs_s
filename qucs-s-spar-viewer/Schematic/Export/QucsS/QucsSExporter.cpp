@@ -83,6 +83,12 @@ QString QucsSExporter::processComponents_QucsS(QString backend_simulator) {
   // there)
   int x_bottom = 1e6, y_bottom = -1e6;
 
+  // System impedance
+  // This is used for the complex impedance component (RFEDD), which requires a
+  // Z0. This value is initialized as 50 Ohm (the most common case) and updated
+  // when the port component is found.
+  double Z0 = 50;
+
   QList<MS_Substrate>
       MS_Substrate_List; // Contains all substrates used in the design. So far
                          // the tool doesn't synthesize designs with multiple
@@ -130,6 +136,10 @@ QString QucsSExporter::processComponents_QucsS(QString backend_simulator) {
     switch (schematic.Comps[i].Type) {
     case Resistor:
       componentLine = parseResistor_QucsS(schematic.Comps[i]);
+      break;
+
+    case ComplexImpedance:
+      componentLine = parseComplexImpedance_QucsS(schematic.Comps[i], Z0);
       break;
 
     case Capacitor:
