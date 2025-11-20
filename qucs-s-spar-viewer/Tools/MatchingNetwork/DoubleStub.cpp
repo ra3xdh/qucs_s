@@ -20,7 +20,7 @@
 DoubleStub::DoubleStub() {}
 
 DoubleStub::DoubleStub(MatchingNetworkDesignParameters AS, double freq) {
-  Specs   = AS;
+  Specs = AS;
   f_match = freq;
 }
 
@@ -30,12 +30,12 @@ DoubleStub::~DoubleStub() {}
 // Edition. Pg 241-245
 void DoubleStub::synthesize() {
   double lambda = SPEED_OF_LIGHT / f_match;
-  double Z0     = Specs.Z0;
-  double RL     = Specs.ZL.real();
-  double XL     = Specs.ZL.imag();
+  double Z0 = Specs.Z0;
+  double RL = Specs.ZL.real();
+  double XL = Specs.ZL.imag();
 
   // Calculate susceptances and stub lengths
-  double d              = lambda / 8; // Fixed spacing between stubs
+  double d = lambda / 8; // Fixed spacing between stubs
   auto [lstub1, lstub2] = calculateStubLengths(lambda, Z0, RL, XL, d);
 
   // Dispatch to appropriate implementation
@@ -50,11 +50,11 @@ std::pair<double, double> DoubleStub::calculateStubLengths(double lambda,
                                                            double Z0, double RL,
                                                            double XL,
                                                            double d) {
-  double Y0   = 1.0 / Z0;
-  double GL   = (1 / ((RL * RL) + (XL * XL))) * RL;
-  double BL   = -(1 / ((RL * RL) + (XL * XL))) * XL;
+  double Y0 = 1.0 / Z0;
+  double GL = (1 / ((RL * RL) + (XL * XL))) * RL;
+  double BL = -(1 / ((RL * RL) + (XL * XL))) * XL;
   double beta = (2 * M_PI) / lambda;
-  double t    = tan(beta * d);
+  double t = tan(beta * d);
 
   // Check if load can be matched using double stub method
   if (GL > Y0 * ((1 + t * t) / (2 * t * t))) {
@@ -143,7 +143,7 @@ void DoubleStub::buildMatchingNetwork_Ideal(double d, double lstub1,
         QString("SSTUB%1").arg(++Schematic.NumberComponents[ShortStub]),
         ShortStub, 0, 50, 50);
   }
-  Stub1.val["Z0"]     = num2str(Z0, Resistance);
+  Stub1.val["Z0"] = num2str(Z0, Resistance);
   Stub1.val["Length"] = ConvertLengthFromM("mm", lstub1);
   Schematic.appendComponent(Stub1);
 
@@ -151,8 +151,8 @@ void DoubleStub::buildMatchingNetwork_Ideal(double d, double lstub1,
   ComponentInfo TLine;
   TLine.setParams(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, -90, 112, 0);
-  TLine.val["Z0"]     = num2str(Z0, Resistance);
+      TransmissionLine, 90, 112, 0);
+  TLine.val["Z0"] = num2str(Z0, Resistance);
   TLine.val["Length"] = ConvertLengthFromM("mm", d);
   Schematic.appendComponent(TLine);
 
@@ -167,15 +167,15 @@ void DoubleStub::buildMatchingNetwork_Ideal(double d, double lstub1,
         QString("SSTUB%1").arg(++Schematic.NumberComponents[ShortStub]),
         ShortStub, 0, 175, 50);
   }
-  Stub2.val["Z0"]     = num2str(Z0, Resistance);
+  Stub2.val["Z0"] = num2str(Z0, Resistance);
   Stub2.val["Length"] = ConvertLengthFromM("mm", lstub2);
   Schematic.appendComponent(Stub2);
 
   // Wires
   Schematic.appendWire(TermSpar1.ID, 0, NI1.ID, 0);
   Schematic.appendWire(NI1.ID, 0, Stub1.ID, 1);
-  Schematic.appendWire(NI1.ID, 0, TLine.ID, 1);
-  Schematic.appendWire(TLine.ID, 0, NI2.ID, 0);
+  Schematic.appendWire(NI1.ID, 0, TLine.ID, 0);
+  Schematic.appendWire(TLine.ID, 1, NI2.ID, 0);
   Schematic.appendWire(NI2.ID, 0, Stub2.ID, 1);
   Schematic.appendWire(Zload.ID, 1, NI2.ID, 0);
   Schematic.appendWire(Zload.ID, 0, GND_ZL.ID, 0);
@@ -221,21 +221,21 @@ void DoubleStub::buildMatchingNetwork_Microstrip(double d, double lstub1,
   MicrostripClass MSL_Line;
   MSL_Line.Substrate = Specs.MS_Subs;
   MSL_Line.synthesizeMicrostrip(Z0, d * 1e3, f_match);
-  double MS_Line_Width  = MSL_Line.Results.width;
+  double MS_Line_Width = MSL_Line.Results.width;
   double MS_Line_Length = MSL_Line.Results.length * 1e-3;
 
   ComponentInfo TLine;
   TLine.setParams(
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
-      MicrostripLine, -90, 112, 0);
+      MicrostripLine, 90, 112, 0);
   // Physical parameters
-  TLine.val["Width"]  = ConvertLengthFromM("mm", MS_Line_Width);
+  TLine.val["Width"] = ConvertLengthFromM("mm", MS_Line_Width);
   TLine.val["Length"] = ConvertLengthFromM("mm", MS_Line_Length);
   // Substrate-related parameters
-  TLine.val["er"]   = num2str(Specs.MS_Subs.er);
-  TLine.val["h"]    = num2str(Specs.MS_Subs.height);
+  TLine.val["er"] = num2str(Specs.MS_Subs.er);
+  TLine.val["h"] = num2str(Specs.MS_Subs.height);
   TLine.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
-  TLine.val["th"]   = num2str(Specs.MS_Subs.MetalThickness);
+  TLine.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
   TLine.val["tand"] = num2str(Specs.MS_Subs.tand);
   Schematic.appendComponent(TLine);
 
@@ -243,7 +243,7 @@ void DoubleStub::buildMatchingNetwork_Microstrip(double d, double lstub1,
   MicrostripClass MSL_Stub1;
   MSL_Stub1.Substrate = Specs.MS_Subs;
   MSL_Stub1.synthesizeMicrostrip(Z0, lstub1 * 1e3, f_match);
-  double MS_Stub1_Width  = MSL_Stub1.Results.width;
+  double MS_Stub1_Width = MSL_Stub1.Results.width;
   double MS_Stub1_Length = MSL_Stub1.Results.length * 1e-3;
 
   ComponentInfo Stub1;
@@ -251,13 +251,13 @@ void DoubleStub::buildMatchingNetwork_Microstrip(double d, double lstub1,
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
       MicrostripLine, 0, 50, 50);
   // Physical parameters
-  Stub1.val["Width"]  = ConvertLengthFromM("mm", MS_Stub1_Width);
+  Stub1.val["Width"] = ConvertLengthFromM("mm", MS_Stub1_Width);
   Stub1.val["Length"] = ConvertLengthFromM("mm", MS_Stub1_Length);
   // Substrate-related parameters
-  Stub1.val["er"]   = num2str(Specs.MS_Subs.er);
-  Stub1.val["h"]    = num2str(Specs.MS_Subs.height);
+  Stub1.val["er"] = num2str(Specs.MS_Subs.er);
+  Stub1.val["h"] = num2str(Specs.MS_Subs.height);
   Stub1.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
-  Stub1.val["th"]   = num2str(Specs.MS_Subs.MetalThickness);
+  Stub1.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
   Stub1.val["tand"] = num2str(Specs.MS_Subs.tand);
   Schematic.appendComponent(Stub1);
 
@@ -265,7 +265,7 @@ void DoubleStub::buildMatchingNetwork_Microstrip(double d, double lstub1,
   MicrostripClass MSL_Stub2;
   MSL_Stub2.Substrate = Specs.MS_Subs;
   MSL_Stub2.synthesizeMicrostrip(Z0, lstub2 * 1e3, f_match);
-  double MS_Stub2_Width  = MSL_Stub2.Results.width;
+  double MS_Stub2_Width = MSL_Stub2.Results.width;
   double MS_Stub2_Length = MSL_Stub2.Results.length * 1e-3;
 
   ComponentInfo Stub2;
@@ -273,13 +273,13 @@ void DoubleStub::buildMatchingNetwork_Microstrip(double d, double lstub1,
       QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
       MicrostripLine, 0, 175, 50);
   // Physical parameters
-  Stub2.val["Width"]  = ConvertLengthFromM("mm", MS_Stub2_Width);
+  Stub2.val["Width"] = ConvertLengthFromM("mm", MS_Stub2_Width);
   Stub2.val["Length"] = ConvertLengthFromM("mm", MS_Stub2_Length);
   // Substrate-related parameters
-  Stub2.val["er"]   = num2str(Specs.MS_Subs.er);
-  Stub2.val["h"]    = num2str(Specs.MS_Subs.height);
+  Stub2.val["er"] = num2str(Specs.MS_Subs.er);
+  Stub2.val["h"] = num2str(Specs.MS_Subs.height);
   Stub2.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
-  Stub2.val["th"]   = num2str(Specs.MS_Subs.MetalThickness);
+  Stub2.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
   Stub2.val["tand"] = num2str(Specs.MS_Subs.tand);
   Schematic.appendComponent(Stub2);
 
@@ -292,10 +292,10 @@ void DoubleStub::buildMatchingNetwork_Microstrip(double d, double lstub1,
     // Physical parameters
     MSOPEN1.val["Width"] = ConvertLengthFromM("mm", MS_Stub1_Width);
     // Substrate-related parameters
-    MSOPEN1.val["er"]   = num2str(Specs.MS_Subs.er);
-    MSOPEN1.val["h"]    = num2str(Specs.MS_Subs.height);
+    MSOPEN1.val["er"] = num2str(Specs.MS_Subs.er);
+    MSOPEN1.val["h"] = num2str(Specs.MS_Subs.height);
     MSOPEN1.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
-    MSOPEN1.val["th"]   = num2str(Specs.MS_Subs.MetalThickness);
+    MSOPEN1.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
     MSOPEN1.val["tand"] = num2str(Specs.MS_Subs.tand);
     Schematic.appendComponent(MSOPEN1);
 
@@ -306,10 +306,10 @@ void DoubleStub::buildMatchingNetwork_Microstrip(double d, double lstub1,
     // Physical parameters
     MSOPEN2.val["Width"] = ConvertLengthFromM("mm", MS_Stub2_Width);
     // Substrate-related parameters
-    MSOPEN2.val["er"]   = num2str(Specs.MS_Subs.er);
-    MSOPEN2.val["h"]    = num2str(Specs.MS_Subs.height);
+    MSOPEN2.val["er"] = num2str(Specs.MS_Subs.er);
+    MSOPEN2.val["h"] = num2str(Specs.MS_Subs.height);
     MSOPEN2.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
-    MSOPEN2.val["th"]   = num2str(Specs.MS_Subs.MetalThickness);
+    MSOPEN2.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
     MSOPEN2.val["tand"] = num2str(Specs.MS_Subs.tand);
     Schematic.appendComponent(MSOPEN2);
 
@@ -317,8 +317,8 @@ void DoubleStub::buildMatchingNetwork_Microstrip(double d, double lstub1,
     Schematic.appendWire(TermSpar1.ID, 0, NI1.ID, 0);
     Schematic.appendWire(NI1.ID, 0, Stub1.ID, 1);
     Schematic.appendWire(Stub1.ID, 0, MSOPEN1.ID, 0);
-    Schematic.appendWire(NI1.ID, 0, TLine.ID, 1);
-    Schematic.appendWire(TLine.ID, 0, NI2.ID, 0);
+    Schematic.appendWire(NI1.ID, 0, TLine.ID, 0);
+    Schematic.appendWire(TLine.ID, 1, NI2.ID, 0);
     Schematic.appendWire(NI2.ID, 0, Stub2.ID, 1);
     Schematic.appendWire(Stub2.ID, 0, MSOPEN2.ID, 0);
     Schematic.appendWire(Zload.ID, 1, NI2.ID, 0);
@@ -332,10 +332,10 @@ void DoubleStub::buildMatchingNetwork_Microstrip(double d, double lstub1,
     MSVIA1.val["D"] = ConvertLengthFromM("mm", 0.5e-3); // Default: 0.5 mm
     MSVIA1.val["N"] = QString::number(4); // Number of vias in parallel (4 vias)
     // Substrate-related parameters
-    MSVIA1.val["er"]   = num2str(Specs.MS_Subs.er);
-    MSVIA1.val["h"]    = num2str(Specs.MS_Subs.height);
+    MSVIA1.val["er"] = num2str(Specs.MS_Subs.er);
+    MSVIA1.val["h"] = num2str(Specs.MS_Subs.height);
     MSVIA1.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
-    MSVIA1.val["th"]   = num2str(Specs.MS_Subs.MetalThickness);
+    MSVIA1.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
     MSVIA1.val["tand"] = num2str(Specs.MS_Subs.tand);
     Schematic.appendComponent(MSVIA1);
 
@@ -347,10 +347,10 @@ void DoubleStub::buildMatchingNetwork_Microstrip(double d, double lstub1,
     MSVIA2.val["D"] = ConvertLengthFromM("mm", 0.5e-3); // Default: 0.5 mm
     MSVIA2.val["N"] = QString::number(4); // Number of vias in parallel (4 vias)
     // Substrate-related parameters
-    MSVIA2.val["er"]   = num2str(Specs.MS_Subs.er);
-    MSVIA2.val["h"]    = num2str(Specs.MS_Subs.height);
+    MSVIA2.val["er"] = num2str(Specs.MS_Subs.er);
+    MSVIA2.val["h"] = num2str(Specs.MS_Subs.height);
     MSVIA2.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
-    MSVIA2.val["th"]   = num2str(Specs.MS_Subs.MetalThickness);
+    MSVIA2.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
     MSVIA2.val["tand"] = num2str(Specs.MS_Subs.tand);
     Schematic.appendComponent(MSVIA2);
 
@@ -358,8 +358,8 @@ void DoubleStub::buildMatchingNetwork_Microstrip(double d, double lstub1,
     Schematic.appendWire(TermSpar1.ID, 0, NI1.ID, 0);
     Schematic.appendWire(NI1.ID, 0, Stub1.ID, 1);
     Schematic.appendWire(Stub1.ID, 0, MSVIA1.ID, 0);
-    Schematic.appendWire(NI1.ID, 0, TLine.ID, 1);
-    Schematic.appendWire(TLine.ID, 0, NI2.ID, 0);
+    Schematic.appendWire(NI1.ID, 0, TLine.ID, 0);
+    Schematic.appendWire(TLine.ID, 1, NI2.ID, 0);
     Schematic.appendWire(NI2.ID, 0, Stub2.ID, 1);
     Schematic.appendWire(Stub2.ID, 0, MSVIA2.ID, 0);
     Schematic.appendWire(Zload.ID, 1, NI2.ID, 0);

@@ -21,7 +21,7 @@ MultisectionQuarterWave::MultisectionQuarterWave() {}
 MultisectionQuarterWave::~MultisectionQuarterWave() {}
 MultisectionQuarterWave::MultisectionQuarterWave(
     MatchingNetworkDesignParameters AS, double freq) {
-  Specs   = AS;
+  Specs = AS;
   f_match = freq;
 }
 
@@ -35,26 +35,26 @@ int MultisectionQuarterWave::BinomialCoeff(int n, int k) {
 }
 
 // Binomial weighting design
-void MultisectionQuarterWave::designBinomial(std::vector<double>& Zs) {
-  double RL   = Specs.ZL.real();     // Load resistance only
-  double Z0   = Specs.Z0;            // Source port reference
-  int N       = Specs.NSections + 1; // Number of sections
+void MultisectionQuarterWave::designBinomial(std::vector<double> &Zs) {
+  double RL = Specs.ZL.real(); // Load resistance only
+  double Z0 = Specs.Z0;        // Source port reference
+  int N = Specs.NSections + 1; // Number of sections
   double Zaux = Z0;
 
   for (int i = 1; i < N; i++) {
     double Ci = BinomialCoeff(N - 1, i - 1);
     double Zi = std::exp(std::log(Zaux) +
                          (Ci / std::pow(2, N - 1)) * std::log(RL / Z0));
-    Zaux      = Zi;
+    Zaux = Zi;
     Zs.push_back(Zi);
   }
 }
 
 // Chebyshev weighting design
-void MultisectionQuarterWave::designChebyshev(std::vector<double>& Zs) {
-  double RL    = Specs.ZL.real();
-  double Z0    = Specs.Z0;
-  int N        = Specs.NSections; // number of sections
+void MultisectionQuarterWave::designChebyshev(std::vector<double> &Zs) {
+  double RL = Specs.ZL.real();
+  double Z0 = Specs.Z0;
+  int N = Specs.NSections; // number of sections
   double gamma = Specs.gamma_MAX;
 
   double log_ratio = std::log(RL / Z0) / (2.0 * gamma);
@@ -120,8 +120,8 @@ void MultisectionQuarterWave::designChebyshev(std::vector<double>& Zs) {
   double Zaux = Z0, Zi;
 
   for (int i = 0; i < N; i++) {
-    Zi   = (RL < Z0) ? std::exp(std::log(Zaux) - gamma * w[i])
-                     : std::exp(std::log(Zaux) + gamma * w[i]);
+    Zi = (RL < Z0) ? std::exp(std::log(Zaux) - gamma * w[i])
+                   : std::exp(std::log(Zaux) + gamma * w[i]);
     Zaux = Zi;
     Zs.push_back(Zi);
   }
@@ -146,7 +146,7 @@ void MultisectionQuarterWave::synthesize() {
   }
 }
 
-void MultisectionQuarterWave::synthesizeIdealTL(const std::vector<double>& Zi,
+void MultisectionQuarterWave::synthesizeIdealTL(const std::vector<double> &Zi,
                                                 double lambda4) {
   // Create source termination
   ComponentInfo TermSrc(QString("T%1").arg(++Schematic.NumberComponents[Term]),
@@ -155,7 +155,7 @@ void MultisectionQuarterWave::synthesizeIdealTL(const std::vector<double>& Zi,
   Schematic.appendComponent(TermSrc);
 
   ComponentInfo TL;
-  int xpos                  = 50;
+  int xpos = 50;
   QString PreviousComponent = TermSrc.ID;
 
   // Place transmission line sections
@@ -163,18 +163,18 @@ void MultisectionQuarterWave::synthesizeIdealTL(const std::vector<double>& Zi,
     // Ideal transmission line
     TL.setParams(
         QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-        TransmissionLine, -90, xpos, 0);
-    TL.val["Z0"]     = num2str(Zi[i], Resistance);
+        TransmissionLine, 90, xpos, 0);
+    TL.val["Z0"] = num2str(Zi[i], Resistance);
     TL.val["Length"] = ConvertLengthFromM("mm", lambda4);
     Schematic.appendComponent(TL);
 
     // Wire previous to this
     if (i == 0) {
       // The previous component is the port
-      Schematic.appendWire(PreviousComponent, 0, TL.ID, 1);
+      Schematic.appendWire(PreviousComponent, 0, TL.ID, 0);
     } else {
       // The previous component is another TLIN
-      Schematic.appendWire(PreviousComponent, 0, TL.ID, 1);
+      Schematic.appendWire(PreviousComponent, 1, TL.ID, 0);
     }
 
     xpos += 50;
@@ -195,12 +195,12 @@ void MultisectionQuarterWave::synthesizeIdealTL(const std::vector<double>& Zi,
   Schematic.appendComponent(GND_ZL);
 
   // Connect last TL to load
-  Schematic.appendWire(Zload.ID, 1, PreviousComponent, 0);
+  Schematic.appendWire(Zload.ID, 1, PreviousComponent, 1);
   Schematic.appendWire(Zload.ID, 0, GND_ZL.ID, 0);
 }
 
 void MultisectionQuarterWave::synthesizeMicrostripTL(
-    const std::vector<double>& Zi, double lambda4) {
+    const std::vector<double> &Zi, double lambda4) {
   // Create source termination
   ComponentInfo TermSrc(QString("T%1").arg(++Schematic.NumberComponents[Term]),
                         Term, 0, 0, 0);
@@ -208,7 +208,7 @@ void MultisectionQuarterWave::synthesizeMicrostripTL(
   Schematic.appendComponent(TermSrc);
 
   ComponentInfo MStep, TL;
-  int xpos                  = 50;
+  int xpos = 50;
   QString PreviousComponent = TermSrc.ID;
 
   // Place transmission line sections
@@ -223,8 +223,8 @@ void MultisectionQuarterWave::synthesizeMicrostripTL(
 
       MStep.ID =
           QString("MSTEP%1").arg(++Schematic.NumberComponents[MicrostripStep]);
-      MStep.Type        = MicrostripStep;
-      MStep.Rotation    = 0;
+      MStep.Type = MicrostripStep;
+      MStep.Rotation = 0;
       MStep.Coordinates = {static_cast<double>(xpos), 0};
 
       // Add its properties
@@ -233,10 +233,10 @@ void MultisectionQuarterWave::synthesizeMicrostripTL(
       // MStep.val["W2"] = <This needs to be calculated later>
 
       // Substrate-related parameters
-      MStep.val["er"]   = num2str(Specs.MS_Subs.er);
-      MStep.val["h"]    = num2str(Specs.MS_Subs.height);
+      MStep.val["er"] = num2str(Specs.MS_Subs.er);
+      MStep.val["h"] = num2str(Specs.MS_Subs.height);
       MStep.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
-      MStep.val["th"]   = num2str(Specs.MS_Subs.MetalThickness);
+      MStep.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
       MStep.val["tand"] = num2str(Specs.MS_Subs.tand);
 
       xpos += 60; // Advance the x-axis drawing index
@@ -256,14 +256,14 @@ void MultisectionQuarterWave::synthesizeMicrostripTL(
     TL.setParams(
         QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
         MicrostripLine, 90, xpos, 0);
-    TL.val["Width"]  = ConvertLengthFromM("mm", MS_Width);
+    TL.val["Width"] = ConvertLengthFromM("mm", MS_Width);
     TL.val["Length"] = ConvertLengthFromM("mm", MS_Length);
 
     // Substrate-related parameters
-    TL.val["er"]   = num2str(Specs.MS_Subs.er);
-    TL.val["h"]    = num2str(Specs.MS_Subs.height);
+    TL.val["er"] = num2str(Specs.MS_Subs.er);
+    TL.val["h"] = num2str(Specs.MS_Subs.height);
     TL.val["cond"] = num2str(Specs.MS_Subs.MetalConductivity);
-    TL.val["th"]   = num2str(Specs.MS_Subs.MetalThickness);
+    TL.val["th"] = num2str(Specs.MS_Subs.MetalThickness);
     TL.val["tand"] = num2str(Specs.MS_Subs.tand);
     Schematic.appendComponent(TL);
     xpos += 60;
