@@ -168,6 +168,10 @@ QString QucsSExporter::processComponents_QucsS(QString backend_simulator) {
       componentLine = parseTerm_QucsS(schematic.Comps[i]);
       break;
 
+    case SPAR_Block:
+      componentLine = parseSPAR_Block_QucsS(schematic.Comps[i]);
+      break;
+
     case GND:
       componentLine = parseGND_QucsS(schematic.Comps[i]);
       break;

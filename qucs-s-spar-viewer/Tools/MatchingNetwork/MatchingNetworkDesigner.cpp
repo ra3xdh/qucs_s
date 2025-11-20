@@ -46,7 +46,7 @@ SchematicContent MatchingNetworkDesigner::synthesize_One_Port(
   switch (NetworkParams.Topology) {
 
   case 0: { // L-section
-    Lsection* L = new Lsection(NetworkParams, f_match);
+    Lsection *L = new Lsection(NetworkParams, f_match);
     L->synthesize();
     Schematic = L->Schematic;
     delete L;
@@ -54,7 +54,7 @@ SchematicContent MatchingNetworkDesigner::synthesize_One_Port(
   }
 
   case 1: { // Single-stub
-    SingleStub* SSM = new SingleStub(NetworkParams, f_match);
+    SingleStub *SSM = new SingleStub(NetworkParams, f_match);
     SSM->synthesize();
     Schematic = SSM->Schematic;
     delete SSM;
@@ -62,7 +62,7 @@ SchematicContent MatchingNetworkDesigner::synthesize_One_Port(
   }
 
   case 2: { // Double-stub
-    DoubleStub* DSM = new DoubleStub(NetworkParams, f_match);
+    DoubleStub *DSM = new DoubleStub(NetworkParams, f_match);
     DSM->synthesize();
     Schematic = DSM->Schematic;
     delete DSM;
@@ -70,7 +70,7 @@ SchematicContent MatchingNetworkDesigner::synthesize_One_Port(
   }
 
   case 3: { // Multisection lambda/4
-    MultisectionQuarterWave* MSL4 =
+    MultisectionQuarterWave *MSL4 =
         new MultisectionQuarterWave(NetworkParams, f_match);
     MSL4->synthesize();
     Schematic = MSL4->Schematic;
@@ -79,7 +79,7 @@ SchematicContent MatchingNetworkDesigner::synthesize_One_Port(
   }
 
   case 4: { // Cascaded LC sections
-    CascadedLCSections* CLCM = new CascadedLCSections(NetworkParams, f_match);
+    CascadedLCSections *CLCM = new CascadedLCSections(NetworkParams, f_match);
     CLCM->synthesize();
     Schematic = CLCM->Schematic;
     delete CLCM;
@@ -87,7 +87,7 @@ SchematicContent MatchingNetworkDesigner::synthesize_One_Port(
   }
 
   case 5: { // lambda/8 + lambda/4
-    Lambda8Lambda4* L8L4 = new Lambda8Lambda4(NetworkParams, f_match);
+    Lambda8Lambda4 *L8L4 = new Lambda8Lambda4(NetworkParams, f_match);
     L8L4->synthesize();
     Schematic = L8L4->Schematic;
     delete L8L4;
@@ -108,7 +108,7 @@ void MatchingNetworkDesigner::synthesize_Two_Ports() {
   SchematicContent IMN_Schematic = synthesize_One_Port(NetworkParams, f_match);
 
   // 3) Design the output matching network
-  NetworkParams                  = Specs.OutputNetworkParameters;
+  NetworkParams = Specs.OutputNetworkParameters;
   SchematicContent OMN_Schematic = synthesize_One_Port(NetworkParams, f_match);
 
   // 4) Flip vertically the output matching network with respect to the load
@@ -116,7 +116,7 @@ void MatchingNetworkDesigner::synthesize_Two_Ports() {
   // 4.1 Find Zloads of the input/output matching networks and get the x-axis
   // position
   double zl_input = 0;
-  for (auto& comp : IMN_Schematic.Comps) {
+  for (auto &comp : IMN_Schematic.Comps) {
     if (comp.ID == "Z1") {
       zl_input = comp.Coordinates[0];
       break;
@@ -124,7 +124,7 @@ void MatchingNetworkDesigner::synthesize_Two_Ports() {
   }
 
   double zl_output = 0;
-  for (auto& comp : OMN_Schematic.Comps) {
+  for (auto &comp : OMN_Schematic.Comps) {
     if (comp.ID == "Z1") {
       zl_output = comp.Coordinates[0];
       break;
@@ -139,30 +139,30 @@ void MatchingNetworkDesigner::synthesize_Two_Ports() {
       replace_ID; // A map is needed to assign the new component IDs once the
                   // output matching network is created
 
-  for (auto& comp : OMN_Schematic.Comps) {
+  for (auto &comp : OMN_Schematic.Comps) {
 
     if (comp.ID == "Z1") {
       // This component need to be removed
-      comp.ID             = "Z2";
+      comp.ID = "Z2";
       comp.Coordinates[0] = zl_output + x_offset;
-      comp.Rotation       = 180;
+      comp.Rotation = 180;
       continue;
     }
 
-    x_pos    = comp.Coordinates[0];
+    x_pos = comp.Coordinates[0];
     distance = zl_output -
                x_pos; // zl_output > x_pos (The load is always on the right)
     comp.Coordinates[0] = OMN_Start + distance +
                           x_offset; // Update the component's x-axis position
 
     if (comp.ID == "T1") {
-      comp.Rotation = 0;
-      comp.ID       = "T2";
+      comp.Rotation = 180;
+      comp.ID = "T2";
     } else {
 
-      if (comp.Rotation == -90) {
+      if ((comp.Rotation == -90) || (comp.Rotation == 90)) {
         // If the component is on a series branch, it need to be mirrored
-        for (auto& wire : OMN_Schematic.Wires) {
+        for (auto &wire : OMN_Schematic.Wires) {
           // Inspect all wires. If the beginning or the end of the wire matches
           // with the current component (to be mirrored), then change the
           // connection pins
@@ -201,13 +201,13 @@ void MatchingNetworkDesigner::synthesize_Two_Ports() {
         if (i < comp.ID.length() - 1) {
           QString prefix = comp.ID.left(i + 1); // Everything before the number
           replace_ID[comp.ID] = prefix + QString::number(new_comp_number);
-          comp.ID             = replace_ID[comp.ID];
+          comp.ID = replace_ID[comp.ID];
         }
       }
     }
   }
 
-  for (auto& wire : OMN_Schematic.Wires) {
+  for (auto &wire : OMN_Schematic.Wires) {
     // Update name (otherwise it'll be a mesh when composing the final network)
     wire.ID = QString("%1out").arg(wire.ID);
 
@@ -245,7 +245,7 @@ void MatchingNetworkDesigner::synthesize_Two_Ports() {
   }
 
   // 4.3 Flip all nodes
-  for (auto& node : OMN_Schematic.Nodes) {
+  for (auto &node : OMN_Schematic.Nodes) {
     x_pos = node.Coordinates[0];
     distance =
         zl_output - x_pos; // z1_x > x_pos (The load is always on the right)
@@ -307,20 +307,20 @@ void MatchingNetworkDesigner::synthesize_Two_Ports() {
   for (auto it = Schematic.Wires.begin(); it != Schematic.Wires.end();) {
     // Change connection pins if matching the component to be mirrored
     if (it->OriginID == "Z1") {
-      it->OriginID   = "SPAR1";
+      it->OriginID = "SPAR1";
       it->PortOrigin = 0;
     }
     if (it->OriginID == "Z2") {
-      it->OriginID   = "SPAR1";
+      it->OriginID = "SPAR1";
       it->PortOrigin = 1;
     }
     if (it->DestinationID == "Z1") {
       it->DestinationID = "SPAR1";
-      it->PortOrigin    = 0;
+      it->PortOrigin = 0;
     }
     if (it->DestinationID == "Z2") {
       it->DestinationID = "SPAR1";
-      it->PortOrigin    = 0;
+      it->PortOrigin = 0;
     }
 
     // Remove wires if OriginID or DestinationID contains "GND_ZL"

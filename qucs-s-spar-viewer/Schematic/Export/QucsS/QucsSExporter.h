@@ -59,6 +59,7 @@ private:
         QString parseShortStub_QucsS(ComponentInfo);
         QString parseIdealCoupler_QucsS(ComponentInfo);
         QString parseComplexImpedance_QucsS(ComponentInfo, double);
+        QString parseSPAR_Block_QucsS(ComponentInfo);
         
                 // Microstrip components
         MS_Substrate get_MS_Substrate(ComponentInfo Comp);
