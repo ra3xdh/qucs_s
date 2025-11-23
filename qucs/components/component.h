@@ -66,11 +66,15 @@ public:
   QRect   boundingRectIncludingProperties() const noexcept;
   bool    getSelected(int x, int y) const { return boundingRect().contains(x, y); }
   int     getTextSelected(int, int);
+  bool    moveCenter(int, int)   noexcept override;
   bool    rotate() noexcept override;
   bool    mirrorX() noexcept override;
   bool    mirrorY() noexcept override;
   QString save();
   bool    load(const QString&);
+
+  // helper function that sets the node of the port to the same center as the port
+  bool setNodePortCenter(Port* p);
 
   // to hold track of the component appearance for saving and copying
   bool mirroredX;   // is it mirrored about X axis or not
