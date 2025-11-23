@@ -1699,6 +1699,7 @@ bool Schematic::elementsOnGrid(Selection selection, bool doHeal)
         any_set = internal::snapLabelToGrid(this, label) || any_set;
     });
     std::ranges::for_each(selection.markers, onGridSetter);
+    // NOTE: when using setP1/setP2, connected nodes are also moved
     std::ranges::for_each(selection.wires, [&any_set, this](Wire* w) {
         auto p1_moved = w->setP1(setOnGrid(w->P1()));
         auto p2_moved = w->setP2(setOnGrid(w->P2()));
@@ -1773,7 +1774,8 @@ bool Schematic::rotateElements(Selection selection, bool doHeal)
     std::ranges::for_each(selection.diagrams, rotator);
     std::ranges::for_each(selection.labels, rotator);
     std::ranges::for_each(selection.markers, rotator);
-    std::ranges::for_each(selection.nodes, rotator);
+    // NOTE: nodes are synced through their owner (components/wires)
+    // std::ranges::for_each(selection.nodes, rotator);
 
     if (!any_rotated) return false;
 
@@ -1825,7 +1827,8 @@ bool Schematic::mirrorXComponents(Selection selection, bool doHeal)
     std::ranges::for_each(selection.diagrams, mirrorer);
     std::ranges::for_each(selection.labels, mirrorer);
     std::ranges::for_each(selection.markers, mirrorer);
-    std::ranges::for_each(selection.nodes, mirrorer);
+    // NOTE: nodes are synced through their owner (components/wires)
+    // std::ranges::for_each(selection.nodes, mirrorer);
 
     if (!any_mirrored) return false;
 
@@ -1876,7 +1879,8 @@ bool Schematic::mirrorYComponents(Selection selection, bool doHeal)
     std::ranges::for_each(selection.diagrams, mirrorer);
     std::ranges::for_each(selection.labels, mirrorer);
     std::ranges::for_each(selection.markers, mirrorer);
-    std::ranges::for_each(selection.nodes, mirrorer);
+    // NOTE: nodes are synced through their owner (components/wires)
+    // std::ranges::for_each(selection.nodes, mirrorer);
 
     if (!any_mirrored) return false;
 
