@@ -480,7 +480,7 @@ QString XmlComponent::spice_netlist(spicecompat::SpiceDialect dialect /* = spice
             << " netlist of XML component " << a_name << " is empty";
     }
 
-    return netlist(a_ngspiceNetList, a_ngspiceNetListInclude, dialect);
+    return netlist(netList, netListInclude, dialect);
 }
 
 QString XmlComponent::cdl_netlist()
