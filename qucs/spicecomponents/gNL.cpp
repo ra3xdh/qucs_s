@@ -86,8 +86,8 @@ QString gNL::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::S
     Q_UNUSED(dialect);
 
     QString s = spicecompat::check_refdes(Name,SpiceModel);
-    s += " " + spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
-    s += " " + spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+    s += " " + spicecompat::normalize_node_name(Ports.at(1)->Connection->getName());
+    s += " " + spicecompat::normalize_node_name(Ports.at(0)->Connection->getName());
     QString G= Props.at(0)->Value;
     QString Line_2 = Props.at(1)->Value;
     QString Line_3 = Props.at(2)->Value;

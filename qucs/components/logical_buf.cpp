@@ -48,8 +48,8 @@ Logical_Buf::Logical_Buf()
 // -------------------------------------------------------
 QString Logical_Buf::vhdlCode(int NumPorts)
 {
-  QString s = "  " + Ports.first()->Connection->Name + " <= " +
-              Ports.last()->Connection->Name;
+  QString s = "  " + Ports.first()->Connection->getName() + " <= " +
+              Ports.last()->Connection->getName();
 
   if(NumPorts <= 0) { // no truth table simulation ?
     QString td = Props.at(1)->Value;
@@ -77,9 +77,9 @@ QString Logical_Buf::verilogCode(int NumPorts)
       s += td;
     }
     s += " ";
-    s += pp->Connection->Name + " = ";  // output port
+    s += pp->Connection->getName() + " = ";  // output port
     pp = Ports.at(1);
-    s += pp->Connection->Name;          // input port
+    s += pp->Connection->getName();          // input port
     s += ";\n";
   }
   return s;
@@ -142,8 +142,8 @@ QString Logical_Buf::spice_netlist(spicecompat::SpiceDialect dialect /* = spicec
     QString s = SpiceModel + Name;
     QString tmp_model = "model_" + Name;
     QString td = spicecompat::normalize_value(getProperty("t")->Value);
-    s += " " + Ports.at(1)->Connection->Name;
-    s += " " + Ports.at(0)->Connection->Name;
+    s += " " + Ports.at(1)->Connection->getName();
+    s += " " + Ports.at(0)->Connection->getName();
     s += " " + tmp_model + "\n";
     s += QStringLiteral(".model %1 d_buffer(rise_delay=%2 fall_delay=%2 input_load=5e-13)\n")
             .arg(tmp_model).arg(td);

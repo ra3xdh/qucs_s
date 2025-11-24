@@ -88,8 +88,8 @@ QString Ampere_ac::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecom
 
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
-    QString plus = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
-    QString minus = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+    QString plus = spicecompat::normalize_node_name(Ports.at(1)->Connection->getName());
+    QString minus = spicecompat::normalize_node_name(Ports.at(0)->Connection->getName());
     s += QStringLiteral(" %1 %2 ").arg(plus).arg(minus);
 
     QString amperes = spicecompat::normalize_value(Props.at(0)->Value);

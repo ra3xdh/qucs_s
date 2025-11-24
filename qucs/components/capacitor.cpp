@@ -58,8 +58,8 @@ QString Capacitor::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecom
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
-    s += QStringLiteral(" %1 %2 ").arg(Ports.at(0)->Connection->Name)
-            .arg(Ports.at(1)->Connection->Name); // output  nodes
+    s += QStringLiteral(" %1 %2 ").arg(Ports.at(0)->Connection->getName())
+            .arg(Ports.at(1)->Connection->getName()); // output  nodes
     s.replace(" gnd ", " 0 ");
 
     s += " "+spicecompat::normalize_value(Props.at(0)->Value) + " ";
@@ -80,8 +80,8 @@ QString Capacitor::cdl_netlist()
 QString Capacitor::va_code()
 {
     QString val = vacompat::normalize_value(Props.at(0)->Value);
-    QString plus =  Ports.at(0)->Connection->Name;
-    QString minus = Ports.at(1)->Connection->Name;
+    QString plus =  Ports.at(0)->Connection->getName();
+    QString minus = Ports.at(1)->Connection->getName();
     QString s = "";
     QString Vpm = vacompat::normalize_voltage(plus,minus);
     if (Vpm.startsWith("(-")) Vpm.remove(1,1); // Make capacitor unipolar, remove starting minus

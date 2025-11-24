@@ -95,7 +95,7 @@ QString vSffm::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat:
 
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
-        QString nam = p1->Connection->Name;
+        QString nam = p1->Connection->getName();
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }

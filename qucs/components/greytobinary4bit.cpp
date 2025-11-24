@@ -13,7 +13,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
- * 
+ *
  */
 #include "greytobinary4bit.h"
 #include "node.h"
@@ -41,7 +41,7 @@ greytobinary4bit::greytobinary4bit()
 Component * greytobinary4bit::newOne()
 {
   greytobinary4bit * p = new greytobinary4bit();
-  p->Props.front()->Value = Props.front()->Value; 
+  p->Props.front()->Value = Props.front()->Value;
   p->recreate();
   return p;
 }
@@ -110,15 +110,15 @@ QString greytobinary4bit::vhdlCode( int )
   if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
   td += ";\n";
 
-  QString G0 = Ports.at(0)->Connection->Name;
-  QString G1 = Ports.at(1)->Connection->Name;
-  QString G2 = Ports.at(2)->Connection->Name;
-  QString G3 = Ports.at(3)->Connection->Name;
-  QString B3 = Ports.at(4)->Connection->Name;
-  QString B2 = Ports.at(5)->Connection->Name;
-  QString B1 = Ports.at(6)->Connection->Name;
-  QString B0 = Ports.at(7)->Connection->Name;
- 
+  QString G0 = Ports.at(0)->Connection->getName();
+  QString G1 = Ports.at(1)->Connection->getName();
+  QString G2 = Ports.at(2)->Connection->getName();
+  QString G3 = Ports.at(3)->Connection->getName();
+  QString B3 = Ports.at(4)->Connection->getName();
+  QString B2 = Ports.at(5)->Connection->getName();
+  QString B1 = Ports.at(6)->Connection->getName();
+  QString B0 = Ports.at(7)->Connection->getName();
+
   s = "\n  " + Name + ":process ("+G0+", "+G1+", "+G2+", "+G3+")\n"+
       "  begin\n"+
       "    "+B3+" <= "+G3+td+
@@ -134,22 +134,22 @@ QString greytobinary4bit::verilogCode( int )
   QString td = Props.at(1)->Value;        // delay time
   if(!misc::Verilog_Delay(td, Name)) return td; // time does not have VHDL format
 
-  QString G0 = Ports.at(0)->Connection->Name;
-  QString G1 = Ports.at(1)->Connection->Name;
-  QString G2 = Ports.at(2)->Connection->Name;
-  QString G3 = Ports.at(3)->Connection->Name;
-  QString B3 = Ports.at(4)->Connection->Name;
-  QString B2 = Ports.at(5)->Connection->Name;
-  QString B1 = Ports.at(6)->Connection->Name;
-  QString B0 = Ports.at(7)->Connection->Name; 
- 
+  QString G0 = Ports.at(0)->Connection->getName();
+  QString G1 = Ports.at(1)->Connection->getName();
+  QString G2 = Ports.at(2)->Connection->getName();
+  QString G3 = Ports.at(3)->Connection->getName();
+  QString B3 = Ports.at(4)->Connection->getName();
+  QString B2 = Ports.at(5)->Connection->getName();
+  QString B1 = Ports.at(6)->Connection->getName();
+  QString B0 = Ports.at(7)->Connection->getName();
+
   QString l = "";
- 
+
   QString B0R = "net_reg" + Name + B0;
   QString B1R = "net_reg" + Name + B1;
   QString B2R = "net_reg" + Name + B2;
   QString B3R = "net_reg" + Name + B3;
-  
+
   l = "\n  // " + Name + " 4bit Gray to binary\n" +
       "  assign  " + B0 + " = " + B0R + ";\n" +
       "  reg     " + B0R + " = 0;\n" +

@@ -93,7 +93,7 @@ QString S4Q_Ieqndef::spice_netlist(spicecompat::SpiceDialect dialect /* = spicec
 
     QString s = spicecompat::check_refdes(Name,SpiceModel);
     for (Port *p1 : Ports) {
-        QString nam = p1->Connection->Name;
+        QString nam = p1->Connection->getName();
         if (nam=="gnd") nam = "0";
         s += " "+ nam  + " ";   // node names
     }
@@ -118,8 +118,8 @@ QString S4Q_Ieqndef::spice_netlist(spicecompat::SpiceDialect dialect /* = spicec
 QString S4Q_Ieqndef::va_code()
 {
     QString s;
-    QString plus = Ports.at(0)->Connection->Name;
-    QString minus = Ports.at(1)->Connection->Name;
+    QString plus = Ports.at(0)->Connection->getName();
+    QString minus = Ports.at(1)->Connection->getName();
     QString Src;
     if (Props.at(0)->Name=="I") Src = vacompat::normalize_current(plus,minus,true);
     else Src = vacompat::normalize_voltage(plus,minus); // Voltage contribution is reserved for future

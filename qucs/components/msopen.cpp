@@ -82,7 +82,7 @@ QString MSopen::spice_netlist(spicecompat::SpiceDialect dialect)
   QString s;
   if (dialect != spicecompat::SPICEDefault) return s;
   QString subline = getSpiceSubstrateLine();
-  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+  QString p1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->getName());
 
   QString W = spicecompat::normalize_value(getProperty("W")->Value);
 

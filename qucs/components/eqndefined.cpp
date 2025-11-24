@@ -85,7 +85,7 @@ QString EqnDefined::netlist()
 
   // output all node names
   for (Port *p1 : Ports)
-    s += " "+p1->Connection->Name;   // node names
+    s += " "+p1->Connection->getName();   // node names
 
   // output all properties
   for(int i = 2;i<Props.size();i++) {
@@ -127,8 +127,8 @@ QString EqnDefined::spice_netlist(spicecompat::SpiceDialect dialect /* = spiceco
             spicecompat::convert_functions(Itokens, dialect == spicecompat::SPICEXyce);
             subsVoltages(Itokens,Nbranch);
             subsCurrents(Itokens);
-            QString plus = Ports.at(2*i)->Connection->Name;
-            QString minus = Ports.at(2*i+1)->Connection->Name;
+            QString plus = Ports.at(2*i)->Connection->getName();
+            QString minus = Ports.at(2*i+1)->Connection->getName();
             if (used_currents.contains(i)) { // if current is used add sensing source V=0
                 s += QStringLiteral("V_%1sens_%2 %3 %4 DC 0\n").arg(Name).arg(i).arg(plus).arg(plus+"_sens");
                 plus = plus+"_sens";
@@ -165,8 +165,8 @@ QString EqnDefined::va_code()
 
         for (int i=0;i<Nbranch;i++) {
             QString Ieqn = Props.at(2*(i+1))->Value; // parse current equation
-            QString plus = Ports.at(2*i)->Connection->Name;
-            QString minus = Ports.at(2*i+1)->Connection->Name;
+            QString plus = Ports.at(2*i)->Connection->getName();
+            QString minus = Ports.at(2*i+1)->Connection->getName();
             QString Ipm = vacompat::normalize_current(plus,minus,true);
             if (Ieqn!="0") { // check for default
                 QStringList Itokens;
@@ -207,8 +207,8 @@ void EqnDefined::subsVoltages(QStringList &tokens, int Nbranch)
             volt.remove('V');
             int branch = volt.toInt();
             if (branch<=Nbranch) {
-                QString plus = Ports.at(2*(branch-1))->Connection->Name;
-                QString minus = Ports.at(2*(branch-1)+1)->Connection->Name;
+                QString plus = Ports.at(2*(branch-1))->Connection->getName();
+                QString minus = Ports.at(2*(branch-1)+1)->Connection->getName();
                 *it = vacompat::normalize_voltage(plus,minus);
             }
         }

@@ -94,12 +94,12 @@ QString Mutual::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
     QString ind1 = spicecompat::normalize_value(getProperty("L1")->Value);
     QString ind2 = spicecompat::normalize_value(getProperty("L2")->Value);
     QString s = QStringLiteral("%1 %2 %3 %4\n").arg(l1)
-            .arg(spicecompat::normalize_node_name(Ports.at(0)->Connection->Name))
-            .arg(spicecompat::normalize_node_name(Ports.at(3)->Connection->Name))
+            .arg(spicecompat::normalize_node_name(Ports.at(0)->Connection->getName()))
+            .arg(spicecompat::normalize_node_name(Ports.at(3)->Connection->getName()))
             .arg(ind1);
     s += QStringLiteral("%1 %2 %3 %4\n").arg(l2)
-            .arg(spicecompat::normalize_node_name(Ports.at(1)->Connection->Name))
-            .arg(spicecompat::normalize_node_name(Ports.at(2)->Connection->Name))
+            .arg(spicecompat::normalize_node_name(Ports.at(1)->Connection->getName()))
+            .arg(spicecompat::normalize_node_name(Ports.at(2)->Connection->getName()))
             .arg(ind2);
     s += QStringLiteral("%1 %2 %3 %4\n").arg(k1).arg(l1).arg(l2)
             .arg(spicecompat::normalize_value(getProperty("k")->Value));

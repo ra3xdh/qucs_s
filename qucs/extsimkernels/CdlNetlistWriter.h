@@ -24,13 +24,20 @@
 #include <QMap>
 #include <QStringList>
 #include <QTextStream>
+#include <QList>
+#include <QPair>
+#include <QString>
 
 class Schematic;
 
 class CdlNetlistWriter
 {
 public:
-    CdlNetlistWriter(QTextStream& netlistStream, Schematic* schematic, bool resolveSpicePrefix);
+    CdlNetlistWriter(
+            QTextStream& netlistStream,
+            Schematic* schematic,
+            bool resolveSpicePrefix,
+            const QString& subCircuitName);
     ~CdlNetlistWriter() {};
 
     bool write();
@@ -47,6 +54,8 @@ private:
     QString a_netListString;
     QTextStream a_netListStringStream;
     QTextStream& a_effectiveNetlistStream;
+    QList<QPair<QString, QString>> a_pinInfo;
+    const QString a_subCircuitName;
 };
 
 #endif // CDL_NETLIST_WRITER_H

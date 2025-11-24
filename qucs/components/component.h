@@ -18,12 +18,14 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
+#include "extsimkernels/spicecompat.h"
+#include "element.h"
+#include "property.h"
+
 // QObject is needed here to be transitively included
 // from component implementations. Some how non-Linux
 // builds fail without explicit QObject inclusion
 #include <QObject>
-#include "extsimkernels/spicecompat.h"
-
 #include <QList>
 #include <QMap>
 #include <QChar>
@@ -31,11 +33,11 @@
 #include "element.h"
 #include "property.h"
 
+#include <QString>
+#include <QPen>
+#include <QPair>
 
 class Schematic;
-class QString;
-class QPen;
-
 
 class Component : public Element {
 public:
@@ -85,6 +87,9 @@ public:
   // set the pointer scematic associated with the component
   virtual void setSchematic (Schematic* p) { containingSchematic = p; }
   virtual Schematic* getSchematic () {return containingSchematic; }
+
+  virtual void setNetNameMapping(QList<QPair<QString, QString>>& pinInfo) { Q_UNUSED(pinInfo) }
+  virtual void resetNetNameMapping() {}
 
   QList<qucs::Line *>     Lines;
   QList<qucs::Polyline *> Polylines;

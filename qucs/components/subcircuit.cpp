@@ -208,7 +208,7 @@ QString Subcircuit::netlist() {
 
   // output all node names
   for (Port *p1 : Ports)
-    s += " " + p1->Connection->Name; // node names
+    s += " " + p1->Connection->getName(); // node names
 
   // type for subcircuit
   QString f = misc::properFileName(Props.at(0)->Value);
@@ -228,7 +228,7 @@ QString Subcircuit::spice_netlist(spicecompat::SpiceDialect dialect /* = spiceco
   QString f = misc::properFileName(Props.at(0)->Value);
   s += spicecompat::check_refdes(Name, SpiceModel);
   for (Port *p1 : Ports) {
-    QString nam = p1->Connection->Name;
+    QString nam = p1->Connection->getName();
     if (nam == "gnd")
       nam = "0";
     s += " " + nam; // node names
@@ -267,10 +267,10 @@ QString Subcircuit::vhdlCode(int) {
   QListIterator<Port *> iport(Ports);
   Port *pp = iport.next();
   if (pp)
-    s += pp->Connection->Name;
+    s += pp->Connection->getName();
   while (iport.hasNext()) {
     pp = iport.next();
-    s += ", " + pp->Connection->Name; // node names
+    s += ", " + pp->Connection->getName(); // node names
   }
 
   s += ");\n";
@@ -296,10 +296,10 @@ QString Subcircuit::verilogCode(int) {
   QListIterator<Port *> iport(Ports);
   Port *pp = iport.next();
   if (pp)
-    s += pp->Connection->Name;
+    s += pp->Connection->getName();
   while (iport.hasNext()) {
     pp = iport.next();
-    s += ", " + pp->Connection->Name; // node names
+    s += ", " + pp->Connection->getName(); // node names
   }
 
   s += ");\n";
