@@ -1967,7 +1967,7 @@ void MouseActions::MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, floa
 // **********                                                   **********
 // ***********************************************************************
 
-void MouseActions::mirrorXMovingElements(Schematic* Doc)
+void MouseActions::mirrorXMovingElements(Schematic* Doc, bool doPaint)
 {
     if (!movingState.selection.isValid()) {
         return;
@@ -1977,11 +1977,13 @@ void MouseActions::mirrorXMovingElements(Schematic* Doc)
     // Save transformation
     movingState.mirrorX = !movingState.mirrorX;
 
-    paintElementsScheme(Doc);
+    if (doPaint) {
+        paintElementsScheme(Doc);
+    }
     Doc->viewport()->update();
 }
 
-void MouseActions::mirrorYMovingElements(Schematic* Doc)
+void MouseActions::mirrorYMovingElements(Schematic* Doc, bool doPaint)
 {
     if (!movingState.selection.isValid()) {
         return;
@@ -1991,11 +1993,13 @@ void MouseActions::mirrorYMovingElements(Schematic* Doc)
     // Save transformation
     movingState.mirrorY = !movingState.mirrorY;
 
-    paintElementsScheme(Doc);
+    if (doPaint) {
+        paintElementsScheme(Doc);
+    }
     Doc->viewport()->update();
 }
 
-void MouseActions::rotateMovingElements(Schematic* Doc)
+void MouseActions::rotateMovingElements(Schematic* Doc, bool doPaint)
 {
     if (!movingState.selection.isValid()) {
         return;
@@ -2006,7 +2010,9 @@ void MouseActions::rotateMovingElements(Schematic* Doc)
     movingState.rotated++;
     movingState.rotated &= 3;
 
-    paintElementsScheme(Doc);
+    if (doPaint) {
+        paintElementsScheme(Doc);
+    }
     Doc->viewport()->update();
 }
 

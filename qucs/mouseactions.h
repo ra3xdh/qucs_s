@@ -136,9 +136,9 @@ public:
   void rightPressMenu(Schematic*, QMouseEvent*, float, float);
 
   // Transformation of moving elements
-  void mirrorXMovingElements(Schematic*);
-  void mirrorYMovingElements(Schematic*);
-  void rotateMovingElements(Schematic*);
+  void mirrorXMovingElements(Schematic*, bool doPaint=false);
+  void mirrorYMovingElements(Schematic*, bool doPaint=false);
+  void rotateMovingElements(Schematic*, bool doPaint=false);
 
   // Helper functions
   QPoint updateMouseMove(Schematic*, QMouseEvent*, bool onGrid=true);

@@ -143,7 +143,9 @@ void QucsApp::slotEditRotate(bool on)
 
     Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
     if (Doc != nullptr) {
-      view->rotateMovingElements(Doc);
+      // enable painting in case we're in paste mode
+      bool doPaint = MouseMoveAction == &MouseActions::MMovePaste2;
+      view->rotateMovingElements(Doc, doPaint);
     }
     return;
   }
@@ -164,7 +166,9 @@ void QucsApp::slotEditMirrorX(bool on)
 
     Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
     if (Doc != nullptr) {
-      view->mirrorXMovingElements(Doc);
+      // enable painting in case we're in paste mode
+      bool doPaint = MouseMoveAction == &MouseActions::MMovePaste2;
+      view->mirrorXMovingElements(Doc, doPaint);
     }
     return;
   }
@@ -185,7 +189,9 @@ void QucsApp::slotEditMirrorY(bool on)
 
     Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
     if (Doc != nullptr) {
-      view->mirrorYMovingElements(Doc);
+      // enable painting in case we're in paste mode
+      bool doPaint = MouseMoveAction == &MouseActions::MMovePaste2;
+      view->mirrorYMovingElements(Doc, doPaint);
     }
     return;
   }
