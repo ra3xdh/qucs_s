@@ -109,14 +109,14 @@ QString mux4to1::vhdlCode( int )
   if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
   td += ";\n";
 
-  QString En = Ports.at(0)->Connection->Name;
-  QString A  = Ports.at(1)->Connection->Name;
-  QString B  = Ports.at(2)->Connection->Name;
-  QString D0 = Ports.at(3)->Connection->Name;
-  QString D1 = Ports.at(4)->Connection->Name;
-  QString D2 = Ports.at(5)->Connection->Name;
-  QString D3 = Ports.at(6)->Connection->Name;
-  QString y  = Ports.at(7)->Connection->Name;
+  QString En = Ports.at(0)->Connection->getName();
+  QString A  = Ports.at(1)->Connection->getName();
+  QString B  = Ports.at(2)->Connection->getName();
+  QString D0 = Ports.at(3)->Connection->getName();
+  QString D1 = Ports.at(4)->Connection->getName();
+  QString D2 = Ports.at(5)->Connection->getName();
+  QString D3 = Ports.at(6)->Connection->getName();
+  QString y  = Ports.at(7)->Connection->getName();
 
   s = "\n  " + Name + ":process (" + En + ", " +  A + ", " + B + ", " +
                               D0 + ", " +  D1 + ", " + D2 + ", " + D3 + ")\n"  +
@@ -136,14 +136,14 @@ QString mux4to1::verilogCode( int )
   
   QString l = "";
 
-  QString En = Ports.at(0)->Connection->Name;
-  QString A  = Ports.at(1)->Connection->Name;
-  QString B  = Ports.at(2)->Connection->Name;
-  QString D0 = Ports.at(3)->Connection->Name;
-  QString D1 = Ports.at(4)->Connection->Name;
-  QString D2 = Ports.at(5)->Connection->Name;
-  QString D3 = Ports.at(6)->Connection->Name;
-  QString y  = Ports.at(7)->Connection->Name;
+  QString En = Ports.at(0)->Connection->getName();
+  QString A  = Ports.at(1)->Connection->getName();
+  QString B  = Ports.at(2)->Connection->getName();
+  QString D0 = Ports.at(3)->Connection->getName();
+  QString D1 = Ports.at(4)->Connection->getName();
+  QString D2 = Ports.at(5)->Connection->getName();
+  QString D3 = Ports.at(6)->Connection->getName();
+  QString y  = Ports.at(7)->Connection->getName();
 
   QString v = "net_reg" + Name + y;
   

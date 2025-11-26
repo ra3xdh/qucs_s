@@ -256,7 +256,7 @@ void Module::registerXmlComponents(const QString& componentPath)
                         it->y1().get(),
                         it->x2().get(),
                         it->y2().get(),
-                        QString::fromUtf8(it->color().get()),
+                        QString::fromUtf8(it->color()),
                         static_cast<uint32_t>(it->width().get()),
                         it->style().get(),
                         QString::fromUtf8(it->condition())
@@ -277,7 +277,7 @@ void Module::registerXmlComponents(const QString& componentPath)
                         it->height().get(),
                         it->angle().get(),
                         it->len().get(),
-                        QString::fromUtf8(it->color().get()),
+                        QString::fromUtf8(it->color()),
                         static_cast<uint32_t>(it->width()),
                         it->style()
                 );

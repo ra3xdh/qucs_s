@@ -426,7 +426,7 @@ QString XmlComponent::netlist(
     QString nets;
     foreach (const Port* port, Ports)
     {
-        nets += QString::fromUtf8("%1%2").arg(nets.isEmpty() ? "" : " ").arg(port->Connection->Name);
+        nets += QString::fromUtf8("%1%2").arg(nets.isEmpty() ? "" : " ").arg(port->Connection->getName());
     }
 
     nets.replace(" gnd ", " 0 ");
@@ -480,7 +480,7 @@ QString XmlComponent::spice_netlist(spicecompat::SpiceDialect dialect /* = spice
             << " netlist of XML component " << a_name << " is empty";
     }
 
-    return netlist(a_ngspiceNetList, a_ngspiceNetListInclude, dialect);
+    return netlist(netList, netListInclude, dialect);
 }
 
 QString XmlComponent::cdl_netlist()

@@ -155,7 +155,7 @@ QString XspiceGeneric::spice_netlist(spicecompat::SpiceDialect dialect /* = spic
 
     int i=0;
     for(QString t_port : t_ports) {
-        QString nod =  spicecompat::normalize_node_name(Ports.at(i)->Connection->Name);
+        QString nod =  spicecompat::normalize_node_name(Ports.at(i)->Connection->getName());
 
         if (t_port.contains('[')) { // Process array ports
             t_port.remove('[');  // Defined by brackets
@@ -167,7 +167,7 @@ QString XspiceGeneric::spice_netlist(spicecompat::SpiceDialect dialect /* = spic
         if ((t_port.remove(' ').endsWith('d'))&&
             (t_port!="d")) {
             i++;
-            QString nod1 =  spicecompat::normalize_node_name(Ports.at(i)->Connection->Name);
+            QString nod1 =  spicecompat::normalize_node_name(Ports.at(i)->Connection->getName());
             s += QStringLiteral(" %%1(%2 %3) ").arg(t_port).arg(nod).arg(nod1);
         } else {
             s += QStringLiteral(" %%1(%2) ").arg(t_port).arg(nod);

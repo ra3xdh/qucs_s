@@ -135,8 +135,8 @@ void Xyce::createNetlist(
     if (a_DC_OP_only) {
         // Add all remaining nodes, because XYCE has no equivalent for PRINT ALL
         for(Node* pn : *a_schematic->a_Nodes) {
-            if ((!vars.contains(pn->Name))&&(pn->Name!="gnd")) {
-                vars.append(pn->Name);
+            if ((!vars.contains(pn->getName()))&&(pn->getName()!="gnd")) {
+                vars.append(pn->getName());
             }
         }
         // Add DC sources

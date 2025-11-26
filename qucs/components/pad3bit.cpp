@@ -79,9 +79,9 @@ QString pad3bit::vhdlCode( int )
   QString v = Props.at(0)->Value;
   QString s1, s2, s3, s ="";
 
-  QString A    = Ports.at(0)->Connection->Name;
-  QString B    = Ports.at(1)->Connection->Name;
-  QString C    = Ports.at(2)->Connection->Name;
+  QString A    = Ports.at(0)->Connection->getName();
+  QString B    = Ports.at(1)->Connection->getName();
+  QString C    = Ports.at(2)->Connection->getName();
 
   s1 = "\n  "+Name+":process\n"+
        "  variable n_" + Name + " : integer := " + v + ";\n" +
@@ -110,9 +110,9 @@ QString pad3bit::verilogCode( int )
   QString l = "";
   QString l1, l2, l3;
 
-  QString A   = Ports.at(0)->Connection->Name;
-  QString B   = Ports.at(1)->Connection->Name;
-  QString C   = Ports.at(2)->Connection->Name;
+  QString A   = Ports.at(0)->Connection->getName();
+  QString B   = Ports.at(1)->Connection->getName();
+  QString C   = Ports.at(2)->Connection->getName();
 
   QString AR  = "A_reg"  + Name + A;
   QString BR  = "Y_reg"  + Name + B;

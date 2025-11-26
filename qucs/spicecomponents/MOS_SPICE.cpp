@@ -231,7 +231,7 @@ QString MOS_SPICE::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecom
 
     QString s = spicecompat::check_refdes(Name,Props.at(0)->Value);
     for (Port *p1 : Ports) {
-        QString nam = p1->Connection->Name;
+        QString nam = p1->Connection->getName();
         if (nam=="gnd") nam = "0";
         s += " "+ nam+" ";   // node names
     }

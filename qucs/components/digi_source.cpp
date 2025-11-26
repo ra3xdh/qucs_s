@@ -87,7 +87,7 @@ QString Digi_Source::netlist()
   QString s = Model+":"+Name;
 
   // output node names
-  s += " "+Ports.first()->Connection->Name;
+  s += " "+Ports.first()->Connection->getName();
 
   // output all properties
      // first property not needed
@@ -106,7 +106,7 @@ QString Digi_Source::netlist()
 QString Digi_Source::vhdlCode(int NumPorts)
 {
   QString s, t;
-  QString Out("    " + Ports.first()->Connection->Name + " <= '");
+  QString Out("    " + Ports.first()->Connection->getName() + " <= '");
 
   s  = "\n  " + Name + ":process\n  begin\n";
 
@@ -151,7 +151,7 @@ QString Digi_Source::verilogCode(int NumPorts)
 {
   QString s, t, n, r;
 
-  n = Ports.first()->Connection->Name;
+  n = Ports.first()->Connection->getName();
   r = "net_src" + Name + n;
   s = "\n  // " + Name + " digital source\n";
   s += "  assign " + n + " = " + r + ";\n";
@@ -196,7 +196,7 @@ QString Digi_Source::spice_netlist(spicecompat::SpiceDialect dialect /* = spicec
   Q_UNUSED(dialect);
 
   QString s    = SpiceModel + Name;
-  QString port = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
+  QString port = spicecompat::normalize_node_name(Ports.at(0)->Connection->getName());
   s += " " + port + " 0 "; // node names
 
   QString V    = spicecompat::normalize_value(getProperty("V")->Value);

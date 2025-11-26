@@ -123,7 +123,7 @@
                             <xs:attribute type="xs:int" name="y1"/>
                             <xs:attribute type="xs:int" name="x2"/>
                             <xs:attribute type="xs:int" name="y2"/>
-                            <xs:attribute type="xs:string" name="color" use="optional"/>
+                            <xs:attribute type="xs:string" name="color" use="optional" default="#000000"/>
                             <xs:attribute type="xs:int" name="width" use="optional"/>
                             <xs:attribute type="xs:byte" name="style" use="optional"/>
                             <xs:attribute type="xs:string" name="condition" use="optional" default=""/>
@@ -141,7 +141,7 @@
                             <xs:attribute type="xs:int" name="height"/>
                             <xs:attribute type="xs:int" name="angle"/>
                             <xs:attribute type="xs:int" name="len"/>
-                            <xs:attribute type="xs:string" name="color" use="optional"/>
+                            <xs:attribute type="xs:string" name="color" use="optional" default="#000000"/>
                             <xs:attribute type="xs:int" name="width" use="optional" default="2"/>
                             <xs:attribute type="xs:byte" name="style" use="optional" default="1"/>
                           </xs:extension>

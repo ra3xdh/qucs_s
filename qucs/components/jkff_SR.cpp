@@ -108,13 +108,13 @@ QString jkff_SR::vhdlCode( int )
   if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
   td += ";\n";
 
-  QString S     = Ports.at(0)->Connection->Name;
-  QString J     = Ports.at(1)->Connection->Name;
-  QString CLK   = Ports.at(2)->Connection->Name;
-  QString K     = Ports.at(3)->Connection->Name;
-  QString R     = Ports.at(4)->Connection->Name;
-  QString QB    = Ports.at(5)->Connection->Name;
-  QString Q     = Ports.at(6)->Connection->Name;
+  QString S     = Ports.at(0)->Connection->getName();
+  QString J     = Ports.at(1)->Connection->getName();
+  QString CLK   = Ports.at(2)->Connection->getName();
+  QString K     = Ports.at(3)->Connection->getName();
+  QString R     = Ports.at(4)->Connection->getName();
+  QString QB    = Ports.at(5)->Connection->getName();
+  QString Q     = Ports.at(6)->Connection->getName();
 
   s = "\n  "+Name+":process ("+S+", "+CLK+", "+R+") is\n"+
       "  variable state : std_logic;\n"+
@@ -140,13 +140,13 @@ QString jkff_SR::verilogCode( int )
 
   QString l = "";
 
-  QString S     = Ports.at(0)->Connection->Name;
-  QString J     = Ports.at(1)->Connection->Name;
-  QString CLK   = Ports.at(2)->Connection->Name;
-  QString K     = Ports.at(3)->Connection->Name;
-  QString R     = Ports.at(4)->Connection->Name;
-  QString QB    = Ports.at(5)->Connection->Name;
-  QString Q     = Ports.at(6)->Connection->Name;
+  QString S     = Ports.at(0)->Connection->getName();
+  QString J     = Ports.at(1)->Connection->getName();
+  QString CLK   = Ports.at(2)->Connection->getName();
+  QString K     = Ports.at(3)->Connection->getName();
+  QString R     = Ports.at(4)->Connection->getName();
+  QString QB    = Ports.at(5)->Connection->getName();
+  QString Q     = Ports.at(6)->Connection->getName();
 
   QString QR   = "Q_reg"  + Name + Q;
   QString QBR  = "QB_reg"  + Name + QB;
@@ -192,13 +192,13 @@ QString jkff_SR::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompa
     QString tmp_model = "model_" + Name;
     QString td = spicecompat::normalize_value(getProperty("Delay")->Value);
 
-    QString SET     = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
-    QString J       = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
-    QString CLK     = spicecompat::normalize_node_name(Ports.at(2)->Connection->Name);
-    QString K       = spicecompat::normalize_node_name(Ports.at(3)->Connection->Name);
-    QString RESET   = spicecompat::normalize_node_name(Ports.at(4)->Connection->Name);
-    QString QB      = spicecompat::normalize_node_name(Ports.at(5)->Connection->Name);
-    QString Q       = spicecompat::normalize_node_name(Ports.at(6)->Connection->Name);
+    QString SET     = spicecompat::normalize_node_name(Ports.at(0)->Connection->getName());
+    QString J       = spicecompat::normalize_node_name(Ports.at(1)->Connection->getName());
+    QString CLK     = spicecompat::normalize_node_name(Ports.at(2)->Connection->getName());
+    QString K       = spicecompat::normalize_node_name(Ports.at(3)->Connection->getName());
+    QString RESET   = spicecompat::normalize_node_name(Ports.at(4)->Connection->getName());
+    QString QB      = spicecompat::normalize_node_name(Ports.at(5)->Connection->getName());
+    QString Q       = spicecompat::normalize_node_name(Ports.at(6)->Connection->getName());
 
     s += " " + J + " " + K + " " + CLK + " " + SET + " " + RESET + " " + Q + " " + QB;
 

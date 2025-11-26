@@ -116,14 +116,14 @@ QString symTrafo::spice_netlist(spicecompat::SpiceDialect dialect)
 {
   Q_UNUSED(dialect);
 
-  QString p1 = Ports.at(1)->Connection->Name;
-  QString p2 = Ports.at(2)->Connection->Name;
+  QString p1 = Ports.at(1)->Connection->getName();
+  QString p2 = Ports.at(2)->Connection->getName();
 
-  QString s1p = Ports.at(4)->Connection->Name;
-  QString s1m = Ports.at(3)->Connection->Name;
+  QString s1p = Ports.at(4)->Connection->getName();
+  QString s1m = Ports.at(3)->Connection->getName();
 
-  QString s2p = Ports.at(0)->Connection->Name;
-  QString s2m = Ports.at(5)->Connection->Name;
+  QString s2p = Ports.at(0)->Connection->getName();
+  QString s2m = Ports.at(5)->Connection->getName();
 
   QString s;
   s = "X_" + Name + "_W1 ";

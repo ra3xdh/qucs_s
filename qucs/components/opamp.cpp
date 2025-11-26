@@ -76,11 +76,11 @@ Element* OpAmp::info(QString& Name, char* &BitmapFile, bool getNewOne)
 
 QString OpAmp::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::SPICEDefault */)
 {
-    QString in_m = Ports.at(0)->Connection->Name;
+    QString in_m = Ports.at(0)->Connection->getName();
     if (in_m=="gnd") in_m="0";
-    QString in_p = Ports.at(1)->Connection->Name;
+    QString in_p = Ports.at(1)->Connection->getName();
     if (in_p=="gnd") in_p="0";
-    QString out = Ports.at(2)->Connection->Name;
+    QString out = Ports.at(2)->Connection->getName();
     if (out=="gnd") out="0";
 
     QString G = spicecompat::normalize_value(Props.at(0)->Value);

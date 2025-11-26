@@ -13,7 +13,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
- * 
+ *
  */
 #include "binarytogrey4bit.h"
 #include "node.h"
@@ -41,7 +41,7 @@ binarytogrey4bit::binarytogrey4bit()
 Component * binarytogrey4bit::newOne()
 {
   binarytogrey4bit * p = new binarytogrey4bit();
-  p->Props.front()->Value = Props.front()->Value; 
+  p->Props.front()->Value = Props.front()->Value;
   p->recreate();
   return p;
 }
@@ -92,7 +92,7 @@ void binarytogrey4bit::createSymbol()
   Ports.append(new Port( 50,-30));
   Lines.append(new qucs::Line( 30,-30, 50,-30,QPen(Qt::darkBlue,2)));
   Texts.append(new Text( 18,-38, "0", Qt::darkBlue, 12.0));
- 
+
   Texts.append(new Text(-16,-59, "B", Qt::darkBlue, 12.0));
   Texts.append(new Text( -2,-59, "/", Qt::darkBlue, 12.0));
   Texts.append(new Text(  5,-59, "G", Qt::darkBlue, 12.0));
@@ -109,16 +109,16 @@ QString binarytogrey4bit::vhdlCode( int )
   if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
   td += ";\n";
 
-  QString B0 = Ports.at(0)->Connection->Name;
-  QString B1 = Ports.at(1)->Connection->Name;
-  QString B2 = Ports.at(2)->Connection->Name;
-  QString B3 = Ports.at(3)->Connection->Name;
-  QString G3 = Ports.at(4)->Connection->Name;
-  QString G2 = Ports.at(5)->Connection->Name;
-  QString G1 = Ports.at(6)->Connection->Name;
-  QString G0 = Ports.at(7)->Connection->Name;
- 
- 
+  QString B0 = Ports.at(0)->Connection->getName();
+  QString B1 = Ports.at(1)->Connection->getName();
+  QString B2 = Ports.at(2)->Connection->getName();
+  QString B3 = Ports.at(3)->Connection->getName();
+  QString G3 = Ports.at(4)->Connection->getName();
+  QString G2 = Ports.at(5)->Connection->getName();
+  QString G1 = Ports.at(6)->Connection->getName();
+  QString G0 = Ports.at(7)->Connection->getName();
+
+
   s = "\n  "+Name + ":process ("+B0+", "+B1+", "+B2+", "+B3+")\n" +
       "  begin\n"+
       "    "+G0+" <= "+B0+" xor "+B1+td+
@@ -133,23 +133,23 @@ QString binarytogrey4bit::verilogCode( int )
 {
   QString td = Props.at(1)->Value;        // delay time
   if(!misc::Verilog_Delay(td, Name)) return td; // time does not have VHDL format
-  
-  QString B0 = Ports.at(0)->Connection->Name;
-  QString B1 = Ports.at(1)->Connection->Name;
-  QString B2 = Ports.at(2)->Connection->Name;
-  QString B3 = Ports.at(3)->Connection->Name;
-  QString G3 = Ports.at(4)->Connection->Name;
-  QString G2 = Ports.at(5)->Connection->Name;
-  QString G1 = Ports.at(6)->Connection->Name;
-  QString G0 = Ports.at(7)->Connection->Name; 
- 
+
+  QString B0 = Ports.at(0)->Connection->getName();
+  QString B1 = Ports.at(1)->Connection->getName();
+  QString B2 = Ports.at(2)->Connection->getName();
+  QString B3 = Ports.at(3)->Connection->getName();
+  QString G3 = Ports.at(4)->Connection->getName();
+  QString G2 = Ports.at(5)->Connection->getName();
+  QString G1 = Ports.at(6)->Connection->getName();
+  QString G0 = Ports.at(7)->Connection->getName();
+
   QString l = "";
- 
+
   QString G0R = "net_reg" + Name + G0;
   QString G1R = "net_reg" + Name + G1;
   QString G2R = "net_reg" + Name + G2;
   QString G3R = "net_reg" + Name + G3;
-  
+
   l = "\n  // " + Name + " 4bit binary to Gray\n" +
       "  assign  " + G0 + " = " + G0R + ";\n" +
       "  reg     " + G0R + " = 0;\n" +

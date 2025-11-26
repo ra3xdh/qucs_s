@@ -941,7 +941,7 @@ void Schematic::simpleInsertComponent(Component *c)
 
     pn->connect(c);  // connect schematic node to component node
     if (!pp->Type.isEmpty()) {
-      pn->DType = pp->Type;
+      pn->setDType(pp->Type);
     }
 
     pp->Connection = pn;  // connect component node to schematic node
@@ -1359,7 +1359,7 @@ void Schematic::createNodeSet(QStringList& Collect, int& countInit,
   if(pw->hasLabel())
     if(!pw->label()->initValue.isEmpty())
       Collect.append("NodeSet:NS" + QString::number(countInit++) + " " +
-                     p1->Name + " U=\"" + pw->label()->initValue + "\"");
+                     p1->getName() + " U=\"" + pw->label()->initValue + "\"");
 }
 
 // ---------------------------------------------------
@@ -1369,23 +1369,23 @@ void Schematic::throughAllNodes(bool User, QStringList& Collect,
   int z=0;
 
   for(Node* pn : a_DocNodes) {
-    if(pn->Name.isEmpty() == User) {
+    if(pn->getName().isEmpty() == User) {
       continue;  // already named ?
     }
     if(!User) {
       if(a_isAnalog)
-        pn->Name = "_net";
+        pn->setName("_net");
       else
-        pn->Name = "net_net";   // VHDL names must not begin with '_'
-      pn->Name += QString::number(z++);  // create numbered node name
+        pn->setName("net_net");   // VHDL names must not begin with '_'
+      pn->addName(QString::number(z++));  // create numbered node name
     }
-    else if(pn->State) {
+    else if(pn->getState()) {
       continue;  // already worked on
     }
 
     if(a_isAnalog) createNodeSet(Collect, countInit, pn, pn);
 
-    pn->State = 1;
+    pn->setState(1);
     propagateNode(Collect, countInit, pn);
   }
 }
@@ -1461,11 +1461,11 @@ int Schematic::testFile(const QString& DocName)
 void Schematic::collectDigitalSignals(void)
 {
   for(auto* pn : a_DocNodes) {
-    DigMap::Iterator it = a_Signals.find(pn->Name);
+    DigMap::Iterator it = a_Signals.find(pn->getName());
     if(it == a_Signals.end()) { // avoid redeclaration of signal
-      a_Signals.insert(pn->Name, DigSignal(pn->Name, pn->DType));
-    } else if (!pn->DType.isEmpty()) {
-      it.value().Type = pn->DType;
+      a_Signals.insert(pn->getName(), DigSignal(pn->getName(), pn->getDType()));
+    } else if (!pn->getDType().isEmpty()) {
+      it.value().Type = pn->getDType();
     }
   }
 }
@@ -1484,17 +1484,17 @@ void Schematic::propagateNode(QStringList& Collect,
 
     for (auto* wire : node->wires()) {
       if (node != wire->Port1) {
-        if (wire->Port1->Name.isEmpty()) {
-          wire->Port1->Name = start_node->Name;
-          wire->Port1->State = 1;
+        if (wire->Port1->getName().isEmpty()) {
+          wire->Port1->setName(start_node->getName());
+          wire->Port1->setState(1);
           Cons.push_back(wire->Port1);
           setName = true;
         }
       }
       else {
-        if (wire->Port2->Name.isEmpty()) {
-          wire->Port2->Name = start_node->Name;
-          wire->Port2->State = 1;
+        if (wire->Port2->getName().isEmpty()) {
+          wire->Port2->setName(start_node->getName());
+          wire->Port2->setState(1);
           Cons.push_back(wire->Port2);
           setName = true;
         }
@@ -1549,7 +1549,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
 
     // handle ground symbol
     if(pc->Model == "GND") {
-      pc->Ports.first()->Connection->Name = "gnd";
+      pc->Ports.first()->Connection->setName("gnd");
       continue;
     }
 
@@ -1570,7 +1570,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
           for (Port *pp : pc->Ports)
           {
             pp->Type = it.value().PortTypes[i];
-            pp->Connection->DType = pp->Type;
+            pp->Connection->setDType(pp->Type);
             i++;
           }
         }
@@ -1609,7 +1609,7 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
         {
             //if(i>=d->a_PortTypes.count())break;
             pp->Type = d->a_PortTypes[i];
-            pp->Connection->DType = pp->Type;
+            pp->Connection->setDType(pp->Type);
             i++;
         }
         sub.PortTypes = d->a_PortTypes;
@@ -1753,23 +1753,23 @@ bool Schematic::giveNodeNames(QTextStream *stream, int& countInit,
 {
   // delete the node names
   for(Node *pn : a_DocNodes) {
-    pn->State = 0;
+    pn->setState(0);
     if(pn->hasLabel()) {
       if(a_isAnalog)
-        pn->Name = pn->label()->Name;
+        pn->setName(pn->label()->Name);
       else
-        pn->Name = "net" + pn->label()->Name;
+        pn->setName("net" + pn->label()->Name);
     }
-    else pn->Name = "";
+    else pn->setName("");
   }
 
   // set the wire names to the connected node
   for(Wire *pw : a_DocWires)
     if(pw->hasLabel()) {
       if(a_isAnalog)
-        pw->Port1->Name = pw->label()->Name;
+        pw->Port1->setName(pw->label()->Name);
       else  // avoid to use reserved VHDL words
-        pw->Port1->Name = "net" + pw->label()->Name;
+        pw->Port1->setName("net" + pw->label()->Name);
     }
 
   // go through components
@@ -1788,6 +1788,22 @@ bool Schematic::giveNodeNames(QTextStream *stream, int& countInit,
     collectDigitalSignals();
 
   return true;
+}
+
+void Schematic::setNetNameMapping(QList<QPair<QString, QString>>& pinInfo) const
+{
+    for (auto* component : a_DocComps)
+    {
+        component->setNetNameMapping(pinInfo);
+    }
+}
+
+void Schematic::resetNetNameMapping()
+{
+    for (auto* component : a_DocComps)
+    {
+        component->resetNetNameMapping();
+    }
 }
 
 // ---------------------------------------------------
@@ -1879,12 +1895,12 @@ void Schematic::createSubNetlistPlain(QTextStream *stream, QPlainTextEdit *ErrTe
         it_name++;
         it_type++;
       }
-      (*it_name) = pc->Ports.first()->Connection->Name;
+      (*it_name) = pc->Ports.first()->Connection->getName();
       DigMap::Iterator it = a_Signals.find(*it_name);
       if(it!=a_Signals.end())
         (*it_type) = it.value().Type;
       // propagate type to port symbol
-      pc->Ports.first()->Connection->DType = *it_type;
+      pc->Ports.first()->Connection->setDType(*it_type);
 
       if(!a_isAnalog) {
         if (a_isVerilog) {

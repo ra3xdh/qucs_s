@@ -31,6 +31,7 @@
 #include <ranges>
 #include <set>
 #include <unordered_map>
+#include <unordered_set>
 
 struct Schematic::HealingParams
 {
@@ -320,20 +321,35 @@ bool geometryIsInOrder(const std::list<Component*>* components, const std::list<
    *****              Actions handling the nodes                 *****
    *****                                                         *****
    ******************************************************************* */
+Node* Schematic::createNode(int x, int y) const
+{
+    Node* node = new Node(x, y);
+    a_Nodes->push_back(node);
+    return node;
+}
+
+// Returns Node* at (x,y), else nullptr
+Node* Schematic::findNode(int x, int y) const
+{
+    for (auto* node : *a_Nodes) {
+        if (node->isOverlapping(x, y)) {
+            return node;
+        }
+    }
+    return nullptr;
+}
 
 // Provides a node located at given coordinates, either new or existing one
 Node* Schematic::provideNode(int x, int y)
 {
     // Check if there is a node at given coordinates
-    for (auto* node : *a_Nodes) {
-      if (node->x() == x && node->y() == y) {
+    Node* node = findNode(x, y);
+    if (node != nullptr) {
         return node;
-      }
     }
 
     // Create new node, if no existing one at given coordinates
-    Node *new_node = new Node(x, y);
-    a_Nodes->push_back(new_node);
+    Node* new_node = createNode(x, y);
 
     // Check if the new node lies upon an existing wire
     for (auto* wire : *a_Wires)
@@ -381,6 +397,57 @@ Node* find_redundant_node(NodeContainer* nodes) {
     }
 
     return nullptr;
+}
+
+template<typename NodeContainer>
+std::vector<std::vector<Node*>> sameloc_nodes(NodeContainer& nodes) {
+    std::set<Node*> processed;
+    std::vector<std::vector<Node*>> ret;
+
+    for (auto* n1 : nodes) {
+        if (processed.contains(n1)) continue;
+
+        std::vector<Node*> s;
+        for (auto* n2 : nodes) {
+            if (n1->isOverlapping(n2)) {
+                s.push_back(n2);
+                processed.insert(n2);
+            }
+        }
+        if (!s.empty()) {
+            s.push_back(n1);
+            ret.push_back(s);
+        }
+    }
+    return ret;
+}
+
+
+// Check for overlapping nodes in @nodes,
+// remove the donor nodes from both @nodes and @globalList
+template<typename NodeContainer>
+bool mergeOverlappingNodes(NodeContainer& nodes, NodeContainer& globalList) {
+    bool anyChanges = false;
+    for (auto nodeGroup : sameloc_nodes(nodes)) {
+        auto recipient = nodeGroup.front();
+        for (auto donor = (nodeGroup.begin() + 1);
+        donor != nodeGroup.end(); donor++) {
+            recipient->merge(*donor);
+            nodes.remove(*donor);
+            // NOTE: doesn't do anything if nodes == globalList
+            globalList.remove(*donor);
+            delete *donor;
+            anyChanges = true;
+        }
+    }
+    return anyChanges;
+}
+
+// Override: Used for checking and removing from the same container, @nodes
+// typical use case is checking: @a_Nodes
+template<typename NodeContainer>
+bool mergeOverlappingNodes(NodeContainer& nodes) {
+    return mergeOverlappingNodes(nodes, nodes);
 }
 
 Wire* merge_wires_at_node(Node* node) {
@@ -545,22 +612,98 @@ Wire* Schematic::splitWire(Wire *source_wire, Node *splitter_node)
 // become orphan after removing the wires.
 void Schematic::deleteWire(Wire *w, bool remove_orphans)
 {
-    w->Port1->disconnect(w);
-    // Delete node if it has become an orphan
-    if (remove_orphans && w->Port1->conn_count() == 0) {
-        a_Nodes->remove(w->Port1);
+    auto wireStatus = disconnectWire(w, remove_orphans, /*keepNodeLabel=*/false);
+    // Delete nodes if it has become an orphan
+    if (wireStatus.port1.removed) {
         delete w->Port1;
     }
 
-    w->Port2->disconnect(w);
-    // Delete node if it has become an orphan
-    if (remove_orphans && w->Port2->conn_count() == 0) {
-        a_Nodes->remove(w->Port2);
+    if (wireStatus.port2.removed) {
         delete w->Port2;
     }
 
     a_Wires->remove(w);
     delete w;
+}
+
+/** Disconnects a wire from the schematic by disconnecting both its port nodes.
+ *
+ * @param wire The wire to disconnect.
+ * @param remove_orphans If true, orphaned nodes are removed from a_Nodes. Default: true
+ * @param keepNodeLabel If true, nodes with labels are preserved (not disconnected). Default: false
+ * @return WireDisconnectResult containing disconnection status for both ports; {port1, port2}
+ *
+ * @note No memory is deallocated here; caller is responsible for cleanup
+ */
+Schematic::WireDisconnectResult Schematic::disconnectWire(Wire* wire, bool remove_orphans, bool keepNodeLabel)
+{
+    NodeDisconnectResult p1 = disconnectNode(wire->Port1, wire, remove_orphans, keepNodeLabel);
+    NodeDisconnectResult p2 = disconnectNode(wire->Port2, wire, remove_orphans, keepNodeLabel);
+
+    return {p1, p2};
+}
+
+/** Decouples a wire by disconnecting it and providing new isolated nodes
+ *
+ * @param wire The wire to decouple
+ * @param keepNodeLabel If true, nodes with labels are preserved. Default: false.
+ *
+ * @note: Caller is responsible for reconnecting the wire, or deallocating it. 
+ */
+void Schematic::decoupleWire(Wire* wire, bool keepNodeLabel)
+{
+    // Store coordinates for ports
+    QPoint P1 = wire->P1();
+    QPoint P2 = wire->P2();
+
+    // Disconnect wire ports
+    auto wireStatus = disconnectWire(wire, /*remove_orphans=*/true, keepNodeLabel);
+
+    // Create and connect new isolated port to Port1 if it was disconnected
+    if (wireStatus.port1.disconnected) {
+        wire->connectPort1(createNode(P1));
+    }
+
+    // Create and connect new isolated port to Port2 if it was disconnected
+    if (wireStatus.port2.disconnected) {
+        wire->connectPort2(createNode(P2));
+    }
+}
+
+/** Disconnects a node from a wire and optionally removed orphaned nodes.
+ *
+ * @param  node The node to disconnect. if nullptr, returns {false, false}.
+ * @param  elem The element (Wire or Component) to disconnect the node from.
+ * @param  remove_orphans If true, orphaned nodes are removed from a_Nodes. Default: true
+ * @param  keepNodeLabel If true, nodes with labels are preserved (not disconnected). Default: false
+ * @return NodeDisconnectResult with {disconnected, removed} flags. 
+ *
+ * @note No memory is deallocated here; caller is responsible for cleanup.
+ */
+Schematic::NodeDisconnectResult Schematic::disconnectNode(Node* node, Element* elem, bool remove_orphans, bool keepNodeLabel) const
+{
+    if (node == nullptr) return {false, false};
+
+    // Preserve nodes with labels if requested
+    if (keepNodeLabel && node->hasLabel()) {
+        return {false, false};
+    }
+
+    // Disconnect from wire or component
+    if (auto* wire = dynamic_cast<Wire*>(elem)) {
+        node->disconnect(wire);
+    } else if (auto* component = dynamic_cast<Component*>(elem)) {
+        node->disconnect(component);
+    } else {
+        return {false, false};
+    }
+
+    // Remove if orphaned and flag is set
+    if (remove_orphans && node->conn_count() == 0) {
+        a_Nodes->remove(node);
+        return {true, true};
+    }
+    return {true, false};
 }
 
 /* *******************************************************************
@@ -1537,9 +1680,9 @@ bool snapLabelToGrid(Schematic* sch, WireLabel* label)
 // Sets selected elements on grid.
 bool Schematic::elementsOnGrid()
 {
-    return elementsOnGrid(currentSelection());
+    return elementsOnGrid(currentSelection(), /*doHeal=*/true);
 }
-bool Schematic::elementsOnGrid(Selection selection)
+bool Schematic::elementsOnGrid(Selection selection, bool doHeal)
 {
     const auto count = internal::total_count(selection);
     if (count == 0) return false;
@@ -1564,7 +1707,9 @@ bool Schematic::elementsOnGrid(Selection selection)
 
     if (!any_set) return false;
 
-    heal(&noninteractiveMutationParams);
+    if (doHeal) {
+        heal(&noninteractiveMutationParams);
+    }
     setChanged(true, true);
     return true;
 }
@@ -1592,11 +1737,11 @@ bool symbolElementsOnGrid(Schematic* sch, const std::vector<Painting*>& painting
 // Rotates all selected components around their midpoint.
 bool Schematic::rotateElements()
 {
-    return rotateElements(currentSelection());
+    return rotateElements(currentSelection(), /*doHeal=*/true);
 }
 
 // Rotates a selection of components around their midpoint.
-bool Schematic::rotateElements(Selection selection)
+bool Schematic::rotateElements(Selection selection, bool doHeal)
 {
 
     const auto count = internal::total_count(selection);
@@ -1638,8 +1783,10 @@ bool Schematic::rotateElements(Selection selection)
     } else {
         // elementsOnGrid heals and adds undo-entry by its own
         // if it changes something
-        if (!elementsOnGrid(selection)) {
-            heal(&noninteractiveMutationParams);
+        if (!elementsOnGrid(selection, doHeal)) {
+            if (doHeal) {
+                heal(&noninteractiveMutationParams);
+            }
             setChanged(true, true);
         }
     }
@@ -1650,11 +1797,11 @@ bool Schematic::rotateElements(Selection selection)
 // Mirrors all selected components along X-axis
 bool Schematic::mirrorXComponents()
 {
-    return mirrorXComponents(currentSelection());
+    return mirrorXComponents(currentSelection(), /*doHeal=*/true);
 }
 
 // Mirrors selection of components along X-axis
-bool Schematic::mirrorXComponents(Selection selection)
+bool Schematic::mirrorXComponents(Selection selection, bool doHeal)
 {
 
     const auto count = internal::total_count(selection);
@@ -1688,8 +1835,10 @@ bool Schematic::mirrorXComponents(Selection selection)
     } else {
         // elementsOnGrid heals and adds undo-entry by its own
         // if it changes something
-        if (!elementsOnGrid(selection)) {
-            heal(&noninteractiveMutationParams);
+        if (!elementsOnGrid(selection, doHeal)) {
+            if (doHeal) {
+                heal(&noninteractiveMutationParams);
+            }
             setChanged(true, true);
         }
     }
@@ -1704,7 +1853,7 @@ bool Schematic::mirrorYComponents()
 }
 
 // Mirrors selection of components along Y-axis
-bool Schematic::mirrorYComponents(Selection selection)
+bool Schematic::mirrorYComponents(Selection selection, bool doHeal)
 {
     const auto count = internal::total_count(selection);
 
@@ -1737,13 +1886,40 @@ bool Schematic::mirrorYComponents(Selection selection)
     } else {
         // elementsOnGrid heals and adds undo-entry by its own
         // if it changes something
-        if (!elementsOnGrid(selection)) {
-            heal(&noninteractiveMutationParams);
+        if (!elementsOnGrid(selection, doHeal)) {
+            if (doHeal) {
+                heal(&noninteractiveMutationParams);
+            }
             setChanged(true, true);
         }
     }
 
     return true;
+}
+
+void Schematic::decoupleElements(Selection selection, bool keepNodeLabel)
+{
+    // store all new nodes created during decoupling
+    std::unordered_set<Node*> nodeSet;
+
+    // decouple all components and save nodes
+    for (auto* pc : selection.components) {
+        decoupleComp(pc, keepNodeLabel);
+        for (auto* port : pc->Ports) {
+            nodeSet.insert(port->Connection);
+        }
+    }
+
+    // decouple all wire segments and save nodes
+    for (auto* pw : selection.wires) {
+        decoupleWire(pw, keepNodeLabel);
+        nodeSet.insert(pw->Port1);
+        nodeSet.insert(pw->Port2);
+    }
+
+    // Remove all overlapping nodes
+    std::list<Node*> nodeList(nodeSet.begin(), nodeSet.end());
+    internal::mergeOverlappingNodes(nodeList, *a_Nodes);
 }
 
 /* *******************************************************************
@@ -2068,16 +2244,15 @@ Component* Schematic::searchSelSubcircuit()
 // Disconnect component and remove it from the list of schematic components.
 // Component is not deleted, pointer remains valid after call. It is responsibility
 // of the caller to handle it by deleting, reinstalling, etc.
-void Schematic::detachComp(Component *c)
+void Schematic::detachComp(Component *c, bool remove_orphans, bool keepNodeLabel)
 {
-    // delete all port connections
-    for (auto* port : c->Ports) {
-        port->Connection->disconnect(c);
+    // disconnect all ports from component, and remove them if remove_orphans=True
+    auto compStatus = disconnectComp(c, remove_orphans, keepNodeLabel);
 
-        // Remove node if it has become orphan
-        if (port->Connection->conn_count() == 0) {
-            a_Nodes->remove(port->Connection);
-            delete port->Connection;
+    // loop over all ports, and delete if orphan
+    for (size_t i = 0; i < c->Ports.size(); ++i) {
+        if (compStatus.ports[i].removed) {
+            delete c->Ports[i]->Connection;
         }
     }
     emit signalComponentDeleted(c);
@@ -2085,10 +2260,55 @@ void Schematic::detachComp(Component *c)
 }
 
 // Deletes the component 'c'.
-void Schematic::deleteComp(Component *c)
+void Schematic::deleteComp(Component *c, bool remove_orphans)
 {
-    detachComp(c);
+    detachComp(c, remove_orphans, /*keepNodeLabel=*/false);
     delete c;
+}
+
+/** Disconnects a component from the schematic by disconnecting all of its ports.
+ *
+ * @param component The component to disconnect.
+ * @param remove_orphans If true, orphaned nodes are removed from a_Nodes. Default: true
+ * @param keepNodeLabel If true, nodes with labels are preserved (not disconnected). Default: false
+ * @return CompDisonnectResult containing disconnection status for all ports stored in a vector.
+ *
+ * @note No memory is deallocated here; caller is responsible for cleanup
+ */
+Schematic::CompDisconnectResult Schematic::disconnectComp(Component* component, bool remove_orphans, bool keepNodeLabel)
+{
+    CompDisconnectResult result;
+    for (auto* port : component->Ports) {
+        result.ports.push_back(disconnectNode(port->Connection,  component, remove_orphans, keepNodeLabel));
+    }
+    return result;
+}
+
+/** Decouples a component by disconnecting it and providing new isolated nodes
+ *
+ * @param component The component to decouple
+ * @param keepNodeLabel If true, nodes with labels are preserved. Default: false.
+ *
+ * @note: Caller is responsible for reconnecting the component ports, or deallocating them. 
+ */
+void Schematic::decoupleComp(Component* component, bool keepNodeLabel)
+{
+    // store all port position
+    std::vector<QPoint> portPos;
+    for (auto* port : component->Ports) {
+        portPos.push_back(port->Connection->center());
+    }
+
+    auto compStatus = disconnectComp(component, /*remove_orphans=*/true, keepNodeLabel);
+
+    // Loop over all ports, and create new (isolated) nodes for all ports that got disconnected
+    for (size_t i = 0; i < component->Ports.size(); ++i) {
+        if (compStatus.ports[i].disconnected) {
+            Node* new_node = createNode(portPos[i]);
+            new_node->connect(component);
+            component->Ports[i]->Connection = new_node;
+        }
+    }
 }
 
 Component *Schematic::getComponentByName(const QString& compname) const
@@ -2191,7 +2411,6 @@ int Schematic::placeNodeLabel(WireLabel *pl)
 // labeled element.
 Element* Schematic::getWireLabel(Node *pn_)
 {
-    Wire *pw;
     Node *pNode;
     std::list<Node*> Cons;
 
@@ -2518,28 +2737,6 @@ public:
     }
 };
 
-template<typename NodeContainer>
-std::vector<std::vector<Node*>> sameloc_nodes(NodeContainer* nodes) {
-    std::set<Node*> processed;
-    std::vector<std::vector<Node*>> ret;
-
-    for (auto* n1 : *nodes) {
-        if (processed.contains(n1)) continue;
-
-        std::vector<Node*> s;
-        for (auto* n2 : *nodes) {
-            if (n1 != n2 && n1->center() == n2->center()) {
-                s.push_back(n2);
-                processed.insert(n2);
-            }
-        }
-        if (!s.empty()) {
-            s.push_back(n1);
-            ret.push_back(s);
-        }
-    }
-    return ret;
-}
 }
 
 void Schematic::displayMutations() {
@@ -2581,16 +2778,7 @@ bool Schematic::heal(const HealingParams* params) {
 
 
     // Merge nodes having the same location
-    for (auto sameloc_node_group : internal::sameloc_nodes(a_Nodes)) {
-        auto recipient = sameloc_node_group.front();
-
-        for (auto donor = (sameloc_node_group.begin() + 1); donor != sameloc_node_group.end(); donor++) {
-            recipient->merge(*donor);
-            a_Nodes->remove(*donor);
-            delete *donor;
-            thereWereChanges = true;
-        }
-    }
+    thereWereChanges = internal::mergeOverlappingNodes(*a_Nodes) || thereWereChanges;
 
     // Fix "node above wire" anomalies
     {

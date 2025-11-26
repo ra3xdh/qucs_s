@@ -13,7 +13,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
- * 
+ *
  */
 #include "fa2b.h"
 #include "node.h"
@@ -29,7 +29,7 @@ fa2b::fa2b()
   Props.append (new Property ("Delay", "1 ns", false,
     QObject::tr ("output delay")
     +" ("+QObject::tr ("s")+")"));
- 
+
   createSymbol ();
   tx = x1 + 19;
   ty = y2 + 4;
@@ -41,7 +41,7 @@ fa2b::fa2b()
 Component * fa2b::newOne()
 {
   fa2b * p = new fa2b();
-  p->Props.front()->Value = Props.front()->Value; 
+  p->Props.front()->Value = Props.front()->Value;
   p->recreate();
   return p;
 }
@@ -120,20 +120,20 @@ QString fa2b::vhdlCode( int )
   if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
   td += ";\n";
 
-  QString D    = Ports.at(0)->Connection->Name;
-  QString C    = Ports.at(1)->Connection->Name;
-  QString B    = Ports.at(2)->Connection->Name;
-  QString A    = Ports.at(3)->Connection->Name;
-  QString E   = Ports.at(4)->Connection->Name;
-  QString CO   = Ports.at(5)->Connection->Name;
-  QString S1   = Ports.at(6)->Connection->Name;
-  QString S0   = Ports.at(7)->Connection->Name; 
+  QString D    = Ports.at(0)->Connection->getName();
+  QString C    = Ports.at(1)->Connection->getName();
+  QString B    = Ports.at(2)->Connection->getName();
+  QString A    = Ports.at(3)->Connection->getName();
+  QString E   = Ports.at(4)->Connection->getName();
+  QString CO   = Ports.at(5)->Connection->getName();
+  QString S1   = Ports.at(6)->Connection->getName();
+  QString S0   = Ports.at(7)->Connection->getName();
 
   s = "\n  "+Name+":process ("+A+", "+B+", "+C+", "+D+", "+E+ ")\n"+
       "  begin\n" +
-      "    "+CO+" <= ("+A+" and "+C+") or (("+A+" or "+C+") and (("+B+" and "+D+") or ("+E+" and "+B+") or ("+E+" and "+ D +")))"+td+ 
+      "    "+CO+" <= ("+A+" and "+C+") or (("+A+" or "+C+") and (("+B+" and "+D+") or ("+E+" and "+B+") or ("+E+" and "+ D +")))"+td+
       "    "+S1+" <= (("+B+" and "+D+") or ("+E+" and "+B+") or ("+E+" and "+D+"))"+" xor ("+A+" xor "+C+")"+td+
-      "    "+S0+" <= "+E+" xor ("+B+" xor "+D+")"+td+ 
+      "    "+S0+" <= "+E+" xor ("+B+" xor "+D+")"+td+
       "  end process;\n";
   return s;
 }
@@ -145,14 +145,14 @@ QString fa2b::verilogCode( int )
 
   QString l = "";
 
-  QString D    = Ports.at(0)->Connection->Name;
-  QString C    = Ports.at(1)->Connection->Name;
-  QString B    = Ports.at(2)->Connection->Name;
-  QString A    = Ports.at(3)->Connection->Name;
-  QString E   = Ports.at(4)->Connection->Name;
-  QString CO   = Ports.at(5)->Connection->Name;
-  QString S1   = Ports.at(6)->Connection->Name;
-  QString S0   = Ports.at(7)->Connection->Name; 
+  QString D    = Ports.at(0)->Connection->getName();
+  QString C    = Ports.at(1)->Connection->getName();
+  QString B    = Ports.at(2)->Connection->getName();
+  QString A    = Ports.at(3)->Connection->getName();
+  QString E   = Ports.at(4)->Connection->getName();
+  QString CO   = Ports.at(5)->Connection->getName();
+  QString S1   = Ports.at(6)->Connection->getName();
+  QString S0   = Ports.at(7)->Connection->getName();
 
   QString COR  = "CO_reg" + Name + CO;
   QString S1R  = "S1_reg" + Name + S1;

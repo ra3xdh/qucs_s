@@ -20,6 +20,9 @@
 
 #include "conductor.h"
 #include <list>
+#include <optional>
+
+#include <QPainter>
 
 class Component;
 class Wire;
@@ -35,44 +38,53 @@ public:
 
   // Add an element to the node's connections.
   // No-op if element is already connected.
-  void connect(Wire* wire) { if (!is_connected(wire)) m_wires.emplace_front(wire); }
-  void connect(Component* comp) { if (!is_connected(comp)) m_components.emplace_front(comp); }
+  void connect(Wire* wire) { if (!is_connected(wire)) a_wires.emplace_front(wire); }
+  void connect(Component* comp) { if (!is_connected(comp)) a_components.emplace_front(comp); }
 
   // Remove element from the node's connections.
-  void disconnect(Wire* wire) { m_wires.remove(wire); }
-  void disconnect(Component* comp) { m_components.remove(comp); }
+  void disconnect(Wire* wire) { a_wires.remove(wire); }
+  void disconnect(Component* comp) { a_components.remove(comp); }
 
   // Tells if an element is among node's connections.
-  bool is_connected(Wire* wire) const { return std::ranges::find(m_wires, wire) != m_wires.end(); }
-  bool is_connected(Component* comp) const { return std::ranges::find(m_components, comp) != m_components.end(); }
+  bool is_connected(Wire* wire) const { return std::ranges::find(a_wires, wire) != a_wires.end(); }
+  bool is_connected(Component* comp) const { return std::ranges::find(a_components, comp) != a_components.end(); }
 
-  std::size_t conn_count() const { return m_wires.size() + m_components.size(); }
+  bool isOverlapping(int, int) const;
+  bool isOverlapping(const Node*) const;
 
-  Wire* anyWire() const { return m_wires.empty() ? nullptr : m_wires.front(); }
-  Component* anyComp() const { return m_components.empty() ? nullptr : m_components.front(); }
+  std::size_t conn_count() const { return a_wires.size() + a_components.size(); }
+
+  Wire* anyWire() const { return a_wires.empty() ? nullptr : a_wires.front(); }
+  Component* anyComp() const { return a_components.empty() ? nullptr : a_components.front(); }
 
   // Returns an element from node's connections which is
   // not equal to e; nullptr if there is no such element
   Wire* other_than(Wire* wire) const
   {
-    auto other = std::ranges::find_if(m_wires, [wire](auto other){ return other != wire; });
-    return other == m_wires.end() ? nullptr : *other;
+    auto other = std::ranges::find_if(a_wires, [wire](auto other){ return other != wire; });
+    return other == a_wires.end() ? nullptr : *other;
   }
 
-
   bool moveCenter(int dx, int dy) noexcept override;
-
-  QString Name;  // node name used by creation of netlist
-  QString DType; // type of node (used by digital files)
-  int State;	 // remember some things during some operations
 
   int x() const { return cx; }
   int y() const { return cy; }
 
-  const std::list<Wire*>& wires() const { return m_wires; }
-  const std::list<Component*>& components() const { return m_components; }
+  const std::list<Wire*>& wires() const { return a_wires; }
+  const std::list<Component*>& components() const { return a_components; }
 
   Node* merge(Node* other);
+
+  inline void setName(const QString& name) { a_name = name; }
+  inline void addName(const QString& name) { a_name += name; }
+  inline QString getName() const { return a_mappedName.has_value() ? a_mappedName.value() : a_name; }
+  inline void setDType(const QString& dtype) { a_dtype = dtype; }
+  inline QString getDType() const { return a_dtype; }
+  inline void setState(int state) { a_state = state; }
+  inline int getState() const { return a_state; }
+
+  void setNetNameMapping(const QString& netName);
+  void resetNetNameMapping();
 
 private:
   // Nodes usually have quite a few connections. In ideal case, when all wire
@@ -83,8 +95,13 @@ private:
   // all that I think the doubly-linked list is a good choice here.
   //
   // A node doesn't claim ownership of any connected object, storing raw pointers is OK.
-  std::list<Wire*> m_wires;
-  std::list<Component*> m_components;
+  std::list<Wire*> a_wires;
+  std::list<Component*> a_components;
+
+  QString a_dtype;  // type of node (used by digital files)
+  int a_state;      // remember some things during some operations
+  QString a_name;   // node name used by creation of netlist
+  std::optional<QString> a_mappedName;
 };
 
 #endif

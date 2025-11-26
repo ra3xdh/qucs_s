@@ -34,6 +34,7 @@
 #include "qt3_compat/q3scrollview.h"
 #include <QVector>
 #include <QStringList>
+#include <QPair>
 
 class QTextStream;
 class QTextEdit;
@@ -88,7 +89,7 @@ public:
 
   void setName(const QString&);
   void setChanged(bool, bool fillStack=false, char Op='*');
-  void print(QPrinter*, QPainter*, bool printAll, bool fitToPage, QMargins margins={});
+  virtual void print(QPrinter*, QPainter*, bool printAll, bool fitToPage, QMargins margins={});
 
   void paintSchToViewpainter(QPainter* painter, bool printAll);
 
@@ -112,18 +113,19 @@ public:
   using Selection = SchematicSelection;
   Selection  currentSelection() const;
   Selection  elementsToSelection(const std::list<Element*>&) const;
+  void  decoupleElements(Selection selection, bool keepNodeLabel=false);
   bool  rotateElements();
   bool  mirrorXComponents();
   bool  mirrorYComponents();
   // Same as above - but with an arbitrary selection
-  bool  rotateElements(Selection selection);
-  bool  mirrorXComponents(Selection selection);
-  bool  mirrorYComponents(Selection selection);
+  bool  rotateElements(Selection selection, bool doHeal=true);
+  bool  mirrorXComponents(Selection selection, bool doHeal=true);
+  bool  mirrorYComponents(Selection selection, bool doHeal=true);
 
   QPoint setOnGrid(const QPoint& p);
   void  setOnGrid(int&, int&);
   bool  elementsOnGrid();
-  bool  elementsOnGrid(Selection selection);
+  bool  elementsOnGrid(Selection selection, bool doHeal=true);
 
   /**
     Zoom around a "zooming center". Zooming center is a point on the canvas,
@@ -419,6 +421,23 @@ private:
    ******************************************************************** */
 
 public:
+  // structs for node creation/deletion
+  struct NodeDisconnectResult {
+    bool disconnected;
+    bool removed;
+  };
+  struct WireDisconnectResult {
+    NodeDisconnectResult port1;
+    NodeDisconnectResult port2;
+  };
+  struct CompDisconnectResult {
+    std::vector<NodeDisconnectResult> ports;
+  };
+
+  Node* createNode(int, int) const;
+  Node* createNode(const QPoint& p) const { return createNode(p.x(), p.y()); }
+  Node* findNode(int, int) const;
+  Node* findNode(const QPoint& p) const { return findNode(p.x(), p.y()); }
   Node* provideNode(int, int);
   Node* provideNode(const QPoint& p) { return provideNode(p.x(), p.y()); }
   Node* selectedNode(int, int);
@@ -442,6 +461,8 @@ public:
   Wire* selectedWire(int, int);
   Wire* splitWire(Wire*, Node*);
   void  deleteWire(Wire*, bool remove_orphans=true);
+  WireDisconnectResult disconnectWire(Wire*, bool remove_orphans=true, bool keepNodeLabel=false);
+  void  decoupleWire(Wire*, bool keepNodeLabel=false);
 
   Marker* setMarker(int, int);
   void    markerLeftRight(bool, const std::vector<Marker*>& markers);
@@ -465,9 +486,11 @@ public:
   bool       activateSelectedComponents();
   Component* selectCompText(int, int, int&, int&) const;
   Component* searchSelSubcircuit();
-  void       deleteComp(Component*);
-  void       detachComp(Component*);
+  void       deleteComp(Component*, bool remove_orphans=true);
+  void       detachComp(Component*, bool remove_orphans=true, bool keepNodeLabel=false);
+  void       decoupleComp(Component*, bool keepNodeLabel=false);
   Component* getComponentByName(const QString& compname) const;
+  CompDisconnectResult disconnectComp(Component*, bool remove_orphans=true, bool keepNodeLabel=false);
 
   void     oneLabel(Node*);
   int      placeNodeLabel(WireLabel*);
@@ -478,6 +501,7 @@ public:
 
 private:
   void insertComponentNodes(Component*, bool);
+  NodeDisconnectResult disconnectNode(Node*, Element*, bool remove_orphans=true, bool keepNodeLabel=false) const;
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****
@@ -503,6 +527,8 @@ public:
   void setIsVerilog(bool value) { a_isVerilog = value; }
   bool getIsVerilog() const { return a_isVerilog; }
   bool giveNodeNames(QTextStream *, int&, QStringList&, QPlainTextEdit*, int);
+  void setNetNameMapping(QList<QPair<QString, QString>>& pinInfo) const;
+  void resetNetNameMapping();
 
 private:
   int  saveDocument();

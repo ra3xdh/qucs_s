@@ -107,7 +107,7 @@ QString Diode::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat:
     pin_seq<<1<<0; // Pin sequence: CBE
     // output all node names
     for (int pin : pin_seq) {
-        QString nam = Ports.at(pin)->Connection->Name;
+        QString nam = Ports.at(pin)->Connection->getName();
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }

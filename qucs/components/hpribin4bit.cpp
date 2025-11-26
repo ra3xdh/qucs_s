@@ -104,13 +104,13 @@ QString hpribin4bit::vhdlCode( int )
   if(!misc::VHDL_Delay(td, Name)) return td; // time has not VHDL format
   td += ";\n";
 
-  QString A    = Ports.at(0)->Connection->Name;
-  QString B    = Ports.at(1)->Connection->Name;
-  QString C    = Ports.at(2)->Connection->Name;
-  QString D    = Ports.at(3)->Connection->Name;
-  QString V    = Ports.at(4)->Connection->Name;
-  QString Y    = Ports.at(5)->Connection->Name;
-  QString X    = Ports.at(6)->Connection->Name;
+  QString A    = Ports.at(0)->Connection->getName();
+  QString B    = Ports.at(1)->Connection->getName();
+  QString C    = Ports.at(2)->Connection->getName();
+  QString D    = Ports.at(3)->Connection->getName();
+  QString V    = Ports.at(4)->Connection->getName();
+  QString Y    = Ports.at(5)->Connection->getName();
+  QString X    = Ports.at(6)->Connection->getName();
 
   s = "\n  "+Name+":process ("+A+", "+B+", "+C+", "+D+")\n"+
       "  begin\n" +
@@ -128,13 +128,13 @@ QString hpribin4bit::verilogCode( int )
   
   QString l = "";
 
-  QString A    = Ports.at(0)->Connection->Name;
-  QString B    = Ports.at(1)->Connection->Name;
-  QString C    = Ports.at(2)->Connection->Name;
-  QString D    = Ports.at(3)->Connection->Name;
-  QString V    = Ports.at(4)->Connection->Name;
-  QString Y    = Ports.at(5)->Connection->Name;
-  QString X    = Ports.at(6)->Connection->Name;
+  QString A    = Ports.at(0)->Connection->getName();
+  QString B    = Ports.at(1)->Connection->getName();
+  QString C    = Ports.at(2)->Connection->getName();
+  QString D    = Ports.at(3)->Connection->getName();
+  QString V    = Ports.at(4)->Connection->getName();
+  QString Y    = Ports.at(5)->Connection->getName();
+  QString X    = Ports.at(6)->Connection->getName();
 
   QString VR  = "V_reg"  + Name + V;
   QString YR  = "Y_reg"  + Name + Y;
