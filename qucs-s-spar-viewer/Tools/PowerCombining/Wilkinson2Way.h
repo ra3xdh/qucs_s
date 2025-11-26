@@ -40,6 +40,29 @@ class Wilkinson2Way : public Network {
         void buildWilkinson_LumpedLC();
         void buildWilkinson_IdealTL();
         void buildWilkinson_Microstrip();
+
+    private:
+
+        // This function sets the component's location before the schematic is built
+        void setComponentsLocation();
+
+        // Private variables for components location
+        int x_spacing, y_spacing; // General components spacing
+
+        // Ports
+        QPoint Port_in;
+        QPoint Port_out1, Port_out2;
+
+        // Isolation resistor
+        QPoint Riso_pos;
+        QPoint GND_Riso_pos;
+
+        // Transmission lines
+        QPoint TL1_pos, TL2_pos, TL3_pos, TL4_pos, TL5_pos;
+
+        // Nodes
+        QPoint N1_pos, N2_pos, N3_pos, N4_pos, N5_pos;
+
 };
 
 #endif // WILKINSON2WAY_H

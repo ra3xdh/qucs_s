@@ -33,6 +33,20 @@ public:
     Coordinates[0] = x;
     Coordinates[1] = y;
   }
+
+  ComponentInfo(QString ID_, ComponentType Type_, double rot_, QPoint P)
+      : ID(ID_), Type(Type_), Rotation(rot_), Coordinates(2) {
+      Coordinates[0] = P.x();
+      Coordinates[1] = P.y();
+  }
+
+  ComponentInfo(QString ID_, ComponentType Type_, QPoint P)
+      : ID(ID_), Type(Type_), Coordinates(2) {
+      Coordinates[0] = P.x();
+      Coordinates[1] = P.y();
+      Rotation = 0;
+  }
+
   ~ComponentInfo() {}
 
   QString ID;
@@ -40,7 +54,7 @@ public:
   double Rotation;
   QString Net1, Net2; // ID of the nodes where the component is connected
   std::vector<double> Coordinates;
-  int getNumberOfPorts() {
+  int getNumberOfPorts() const {
     switch (Type) {
     case MicrostripCoupledLines:
     case CoupledLines:
@@ -61,81 +75,24 @@ public:
     Coordinates[1] = y;
   }
 
-  QString getQucsCode() {
-    QString code;
-    switch (Type) {
-    case GND:
-      return QString(""); // Grounds are interpreted as a component in the
-                          // sense they have a graphical representation,
-      // but they have no meaning in terms of the Qucs netlist
-    case Capacitor:
-      code = "C";
-      break;
-    case Inductor:
-      code = "L";
-      break;
-    case CoupledLines:
-      code = "CTLIN";
-      break;
-    case OpenStub:
-    case ShortStub:
-    case TransmissionLine:
-      code = "TLIN";
-      break;
-    case Term:
-      code       = "Pac";
-      val["Num"] = QString(ID).remove("T");
-      val["f"]   = "1 GHz";
-      break;
-    case Resistor:
-      code = "R";
-      break;
-    case Coupler:
-      code = "Coupler";
-      break;
-    default:
-      break;
-    }
-    code += QString(":%1").arg(ID);
-    return code;
+  void setParams(QString ID_, ComponentType Type_, double Rotation_, QPoint P) // Coordinates
+      {
+      ID             = ID_;
+      Type           = Type_;
+      Rotation       = Rotation_;
+      Coordinates[0] = P.x();
+      Coordinates[1] = P.y();
   }
-  QString getQucsProperties() {
-    QMap<QString, QString>::iterator it = val.begin();
-    QString code;
-    QString prop; // Temporal variable to translate the internal property
-                  // names to Qucs property names
-    while (it != val.end()) {
-      prop = it.key();
-      switch (Type) {
-      case OpenStub:
-      case ShortStub:
-      case TransmissionLine:
-      case CoupledLines:
-        if (prop == "Length") {
-          prop = "L";
-        }
-        if (prop == "Z0") {
-          prop = "Z";
-        }
-        code += QString(" %1=\"%2\"").arg(prop).arg(it.value());
-        break;
 
-      case Term:
-        if (prop == "Z0") {
-          prop = "Z";
-        }
-        code += QString(" %1=\"%2\"").arg(prop).arg(it.value());
-        break;
+  void setParams(QString ID_, ComponentType Type_, QPoint P) // Coordinates
+  {
+      ID             = ID_;
+      Type           = Type_;
+      Rotation       = 0;
+      Coordinates[0] = P.x();
+      Coordinates[1] = P.y();
+  }
 
-      case Coupler:
-      default:
-        code += QString(" %1=\"%2\"").arg(it.key()).arg(it.value());
-      }
-      it++;
-    }
-    code += "\n";
-    return code;
-  };
   QMap<QString, QString> val; // freq, L1.L, C1.C,...
   double getVal(QString);
 };
@@ -182,14 +139,29 @@ public:
     Coordinates[0] = x;
     Coordinates[1] = y;
   }
+
+  NodeInfo(QString ID_, QPoint P) : ID(ID_), Coordinates(2) {
+      Coordinates[0] = P.x();
+      Coordinates[1] = P.y();
+  }
+
+
   void setParams(QString ID_, double x, double y) {
     ID             = ID_;
     Coordinates[0] = x;
     Coordinates[1] = y;
   }
+
+  void setParams(QString ID_, QPoint P) {
+      ID             = ID_;
+      Coordinates[0] = P.x();
+      Coordinates[1] = P.y();
+  }
+
   QString ID;
   QString Net;
   std::vector<double> Coordinates;
+  bool visible = true;
 };
 
 class TextInfo {

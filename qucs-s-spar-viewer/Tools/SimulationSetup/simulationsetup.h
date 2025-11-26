@@ -45,7 +45,9 @@ public:
 
   // Frequency sweep methods
   double getFstart();
+  QString getFstart_as_Text();
   double getFstop();
+  QString getFstop_as_Text();
   int getNpoints();
 
   // Substrate properties methods

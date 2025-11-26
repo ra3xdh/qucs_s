@@ -39,6 +39,42 @@ private:
   void calculateParams();
   void buildGysel_IdealTL();
   void buildGysel_Microstrip();
+
+  private:
+
+  // Components' locations
+
+  // These variables are put as class private because these positions are shared between TLIN and MS implemenations
+
+  // This function sets the component's location before the schematic is built
+  void setComponentsLocation();
+
+  // Private variables for components location
+  int x_spacing, y_spacing; // General components spacing
+
+  // Ports
+  QPoint Port_in;
+  QPoint Port_out_up;
+  QPoint Port_out_bottom;
+
+  // Nodes
+  QPoint N1_pos; // Node in front of the input port
+  QPoint N2_pos; // Node in front of the upper output port
+  QPoint N3_pos; // Node in front of the lower output port
+  QPoint N4_pos; // Node in front of the upper resistor
+  QPoint N5_pos; // Node in front of the lower resistor
+
+  // Transmission lines
+  QPoint TL1_pos;
+  QPoint TL2_pos;
+  QPoint TL3_pos;
+  QPoint TL4_pos;
+  QPoint TL5_pos;
+
+  // Resistors
+  QPoint R_top, R_GND_top;
+  QPoint R_bottom, R_GND_bottom;
+
 };
 
 #endif // GYSEL_H

@@ -43,11 +43,31 @@ private:
   PowerCombinerParams Specification;
   
   double lambda4;
-  double Z1, Z2, Z4, Z5;
+  double Z1, Z2, Z3, Z4, Z5;
   
   void calculateParams();
   void buildLimEom_IdealTL();
   void buildLimEom_Microstrip();
+
+private:
+  // This function sets the component's location before the schematic is built
+  void setComponentsLocation();
+
+         // Private variables for components location
+  int x_spacing, y_spacing; // General components spacing
+
+         // Ports
+  QVector<QPoint> Ports_pos;
+
+         // Isolation resistor
+  QVector<QPoint> Riso_pos;
+  QVector<QPoint> GND_Riso_pos;
+
+         // Transmission lines
+  QVector<QPoint> TL_pos;
+
+         // Nodes
+  QVector<QPoint> N_pos;
 };
 
 #endif // LIM_EOM_H

@@ -113,6 +113,9 @@ file(GLOB CUSTOM_WIDGETS_HEADERS
 
 file(GLOB SCHEMATIC_SOURCES
      Schematic/*.cpp
+     Schematic/Export/*.cpp
+     Schematic/Export/QucsS/*.cpp
+     Schematic/Export/QucsS/Microstrip/*.cpp
      Schematic/PaintingFunctions/*.cpp
      Schematic/PaintingFunctions/Microstrip/*.cpp
      Schematic/PaintingFunctions/IdealTransmissionLines/*.cpp

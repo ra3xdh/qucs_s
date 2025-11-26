@@ -40,11 +40,11 @@ void SteppedImpedanceFilter::synthesize() {
   }
 }
 
-void SteppedImpedanceFilter::buildFilter_IdealTL(const std::deque<double>& gi) {
-  int N        = Specification.order; // Number of elements
-  int posx     = 0;
-  double beta  = 2 * M_PI * Specification.fc / SPEED_OF_LIGHT;
-  double Zlow  = Specification.minZ;
+void SteppedImpedanceFilter::buildFilter_IdealTL(const std::deque<double> &gi) {
+  int N = Specification.order; // Number of elements
+  int posx = 0;
+  double beta = 2 * M_PI * Specification.fc / SPEED_OF_LIGHT;
+  double Zlow = Specification.minZ;
   double Zhigh = Specification.maxZ;
 
   // Add Term 1
@@ -69,11 +69,11 @@ void SteppedImpedanceFilter::buildFilter_IdealTL(const std::deque<double>& gi) {
     if (((Specification.isCLC) && (k % 2 == Kcontrol)) ||
         ((!Specification.isCLC) && (k % 2 != Kcontrol))) {
       // Replace shunt capacitor
-      Zline     = Zlow;
+      Zline = Zlow;
       TL_length = gi[k + 1] * Zlow / (beta * Specification.ZS);
     } else {
       // Replace series inductor
-      Zline     = Zhigh;
+      Zline = Zhigh;
       TL_length = gi[k + 1] * Specification.ZS / (beta * Zhigh);
     }
 
@@ -82,7 +82,7 @@ void SteppedImpedanceFilter::buildFilter_IdealTL(const std::deque<double>& gi) {
     TL.setParams(
         QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
         TransmissionLine, 90, posx, 0);
-    TL.val["Z0"]     = num2str(Zline, Resistance);
+    TL.val["Z0"] = num2str(Zline, Resistance);
     TL.val["Length"] = ConvertLengthFromM("mm", TL_length);
     Schematic.appendComponent(TL);
 
@@ -109,11 +109,11 @@ void SteppedImpedanceFilter::buildFilter_IdealTL(const std::deque<double>& gi) {
 }
 
 void SteppedImpedanceFilter::buildFilter_Microstrip(
-    const std::deque<double>& gi) {
-  int N        = Specification.order; // Number of elements
-  int posx     = 0;
-  double beta  = 2 * M_PI * Specification.fc / SPEED_OF_LIGHT;
-  double Zlow  = Specification.minZ;
+    const std::deque<double> &gi) {
+  int N = Specification.order; // Number of elements
+  int posx = 0;
+  double beta = 2 * M_PI * Specification.fc / SPEED_OF_LIGHT;
+  double Zlow = Specification.minZ;
   double Zhigh = Specification.maxZ;
 
   // Add Term 1
@@ -139,11 +139,11 @@ void SteppedImpedanceFilter::buildFilter_Microstrip(
     if (((Specification.isCLC) && (k % 2 == Kcontrol)) ||
         ((!Specification.isCLC) && (k % 2 != Kcontrol))) {
       // Replace shunt capacitor
-      Zline     = Zlow;
+      Zline = Zlow;
       TL_length = gi[k + 1] * Zlow / (beta * Specification.ZS);
     } else {
       // Replace series inductor
-      Zline     = Zhigh;
+      Zline = Zhigh;
       TL_length = gi[k + 1] * Specification.ZS / (beta * Zhigh);
     }
 
@@ -154,8 +154,8 @@ void SteppedImpedanceFilter::buildFilter_Microstrip(
 
       MStep.ID =
           QString("MSTEP%1").arg(++Schematic.NumberComponents[MicrostripStep]);
-      MStep.Type        = MicrostripStep;
-      MStep.Rotation    = 0;
+      MStep.Type = MicrostripStep;
+      MStep.Rotation = 0;
       MStep.Coordinates = {static_cast<double>(posx), 0};
 
       // Add its properties
@@ -164,10 +164,10 @@ void SteppedImpedanceFilter::buildFilter_Microstrip(
       // MStep.val["W2"] will be set after next microstrip line is synthesized
 
       // Substrate-related parameters
-      MStep.val["er"]   = num2str(Specification.MS_Subs.er);
-      MStep.val["h"]    = num2str(Specification.MS_Subs.height);
+      MStep.val["er"] = num2str(Specification.MS_Subs.er);
+      MStep.val["h"] = num2str(Specification.MS_Subs.height);
       MStep.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
-      MStep.val["th"]   = num2str(Specification.MS_Subs.MetalThickness);
+      MStep.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
       MStep.val["tand"] = num2str(Specification.MS_Subs.tand);
 
       posx += 60; // Advance the x-axis drawing index
@@ -178,21 +178,21 @@ void SteppedImpedanceFilter::buildFilter_Microstrip(
     MSL.Substrate = Specification.MS_Subs;
     MSL.synthesizeMicrostrip(Zline, TL_length * 1e3, Specification.fc);
 
-    double MS_Width  = MSL.Results.width;
+    double MS_Width = MSL.Results.width;
     double MS_Length = MSL.Results.length * 1e-3;
 
     // Create microstrip line component
     TL.setParams(
         QString("MLIN%1").arg(++Schematic.NumberComponents[MicrostripLine]),
         MicrostripLine, 90, posx, 0);
-    TL.val["Width"]  = ConvertLengthFromM("mm", MS_Width);
+    TL.val["Width"] = ConvertLengthFromM("mm", MS_Width);
     TL.val["Length"] = ConvertLengthFromM("mm", MS_Length);
 
     // Substrate-related parameters
-    TL.val["er"]   = num2str(Specification.MS_Subs.er);
-    TL.val["h"]    = num2str(Specification.MS_Subs.height);
+    TL.val["er"] = num2str(Specification.MS_Subs.er);
+    TL.val["h"] = num2str(Specification.MS_Subs.height);
     TL.val["cond"] = num2str(Specification.MS_Subs.MetalConductivity);
-    TL.val["th"]   = num2str(Specification.MS_Subs.MetalThickness);
+    TL.val["th"] = num2str(Specification.MS_Subs.MetalThickness);
     TL.val["tand"] = num2str(Specification.MS_Subs.tand);
     Schematic.appendComponent(TL);
 

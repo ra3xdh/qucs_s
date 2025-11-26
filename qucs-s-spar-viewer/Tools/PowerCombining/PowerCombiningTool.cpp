@@ -243,11 +243,14 @@ void PowerCombiningTool::UpdateDesignParameters() {
 
   Specs.Type = TopoCombo->currentText();
   Specs.Noutputs = BranchesCombo->currentText().toInt();
+
+  Specs.OutputRatio.clear();
   Specs.OutputRatio.push_back(pow(10, K1Spinbox->value() / 20.));
   if (Specs.Type == "Lim-Eom") { // Supports arbitrary 3 way split ratio
     Specs.OutputRatio.push_back(pow(10, K2Spinbox->value() / 20.));
     Specs.OutputRatio.push_back(pow(10, K3Spinbox->value() / 20.));
   }
+
   Specs.alpha = AlphaSpinbox->value();
   Specs.units = UnitsCombo->currentText();
   Specs.Nstages = NStagesSpinbox->value();
@@ -714,10 +717,26 @@ void PowerCombiningTool::setSettings_LimEom() {
 
 void PowerCombiningTool::setSettings_Wilkinson_3_Way_Improved_Isolation() {
   setDefaultSettings();
+
+  // Adjust available transmission line implementations
+  TL_Implementation_Combo->blockSignals(true);
+  TL_Implementation_Combo->clear();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  // TL_Implementation_Combo->addItem("Lumped");
+  TL_Implementation_Combo->blockSignals(false);
 }
 
 void PowerCombiningTool::setSettings_Recombinant_3_Way_Wilkinson() {
   setDefaultSettings();
+
+  // Adjust available transmission line implementations
+  TL_Implementation_Combo->blockSignals(true);
+  TL_Implementation_Combo->clear();
+  TL_Implementation_Combo->addItem("Ideal");
+  TL_Implementation_Combo->addItem("Microstrip");
+  // TL_Implementation_Combo->addItem("Lumped");
+  TL_Implementation_Combo->blockSignals(false);
 }
 
 void PowerCombiningTool::setSettings_Travelling_Wave() {

@@ -21,62 +21,76 @@
 #include <QGraphicsTextItem>
 #include <QPen>
 #include <QRegularExpression>
+#include <QMessageBox> // Needed to show warnings during export process
 
 #include "../Misc/general.h"
 #include "infoclasses.h"
 #include "structures.h"
 
+#include "Export/QucsS/QucsSExporter.h"
+
 class Component;
-
 class SchematicContent {
-public:
-  SchematicContent();
-  ~SchematicContent();
+    public:
+        SchematicContent();
+        ~SchematicContent();
 
-  QString getSParameterNetlist();
-  void setNetlist(QString);
-  QString Name;
-  QString Type;
+        QString getSParameterNetlist();
+        void setNetlist(QString);
+        QString Name;
+        QString Type;
 
-  QList<ComponentInfo> Comps;
-  QList<WireInfo> Wires;
-  QList<NodeInfo> Nodes;
+        QList<ComponentInfo> Comps;
+        QList<WireInfo> Wires;
+        QList<NodeInfo> Nodes;
 
-private:
-  void assignNetToWiresConnectedToNode(QString, QString);
+        // Export schematic
+        QString exportSchematic(QString environment, QString backend);
 
-public:
-  // Setter getter functions
+        QString export2QucsS(QString); // Convert the schematic content to Qucs-S format
 
-  // Components, wires and nodes
-  void appendComponent(ComponentInfo);
-  void appendWire(WireInfo);
-  void appendWire(QString, int, QString, int);
-  void appendWire(QString, int, QString, int, QColor);
-  void appendNode(NodeInfo);
-  void appendText(QGraphicsTextItem* text);
+        void setFrequencySweep(QString, QString, int);
 
-  double getZin();
-  double getZout();
-  QString getZinString();
-  QString getZoutString();
+        // Frequency sweep settings (required for exporting)
+        QString f_start, f_stop;
+        int n_points;
 
-  QList<ComponentInfo> getComponents();
-  void setComponents(QList<ComponentInfo> C);
+    private:
+        void assignNetToWiresConnectedToNode(QString, QString);
 
-  QList<WireInfo> getWires();
-  QList<NodeInfo> getNodes();
-  void setNodes(QList<NodeInfo> N);
-  QList<QGraphicsTextItem*> getTexts();
+    public:
+        // Setter getter functions
 
-  QMap<ComponentType, int>
-      NumberComponents; // List for assigning IDs to the filter components
-  unsigned int NumberWires;
+        // Components, wires and nodes
+        void appendComponent(ComponentInfo);
+        void appendWire(WireInfo);
+        void appendWire(QString, int, QString, int);
+        void appendWire(QString, int, QString, int, QColor);
+        void appendNode(NodeInfo);
+        void appendText(QGraphicsTextItem* text);
 
-private:
-  QList<QGraphicsTextItem*> Texts;
-  QString Description;
-  QString netlist;
+        double getZin();
+        double getZout();
+        QString getZinString();
+        QString getZoutString();
+
+        QList<ComponentInfo> getComponents();
+        void setComponents(QList<ComponentInfo> C);
+
+        QList<WireInfo> getWires();
+        QList<NodeInfo> getNodes();
+        void setNodes(QList<NodeInfo> N);
+        QList<QGraphicsTextItem*> getTexts();
+
+        int getComponentCounter(ComponentType);
+        QMap<ComponentType, int>
+            NumberComponents; // Indicates how many components of each type the schematic are in teh schematic
+        unsigned int NumberWires;
+
+    private:
+        QList<QGraphicsTextItem*> Texts;
+        QString Description;
+        QString netlist;
 };
 
 #endif // SCHEMATICCONTENT_H

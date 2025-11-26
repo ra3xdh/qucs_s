@@ -20,6 +20,7 @@
 
 #include <QString>
 #include <QStringList>
+#include <QMap>
 #include <array>
 #include <complex.h>
 #include <complex>
@@ -46,6 +47,9 @@ enum ComponentType {
   ComplexImpedance,
   SPAR_Block
 };
+
+// Function for getting the component name as text
+QString ComponentTypeToString(ComponentType type);
 
 enum ResponseType {
   Butterworth,
@@ -99,6 +103,11 @@ struct MS_Substrate {
         MetalConductivity(MetalConductivity), MetalThickness(MetalThickness) {
   } // RO4003C, 20 mils
 };
+
+
+bool operator==(const MS_Substrate& a, const MS_Substrate& b);
+QList<MS_Substrate> removeDuplicates(const QList<MS_Substrate>& list);
+
 
 struct FilterSpecifications {
   FilterClass FilterType;      // Lowpass, Highpass, Bandpass, Bandstop

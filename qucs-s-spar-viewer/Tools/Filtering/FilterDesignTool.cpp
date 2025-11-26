@@ -80,12 +80,13 @@ FilterDesignTool::FilterDesignTool(QWidget *parent) : QWidget(parent) {
 
   //************ Filter class ****************
   layout_row++;
+  ClassLabel = new QLabel("Class");
   FilterClassCombo = new QComboBox();
   FilterClassCombo->addItem("Lowpass");
   FilterClassCombo->addItem("Highpass");
   FilterClassCombo->addItem("Bandpass");
   FilterClassCombo->addItem("Bandstop");
-  FilterDesignLayout->addWidget(new QLabel("Class"), layout_row, 0);
+  FilterDesignLayout->addWidget(ClassLabel, layout_row, 0);
   FilterDesignLayout->addWidget(FilterClassCombo, layout_row, 1);
 
   //*************** Order *******************
@@ -451,26 +452,31 @@ void FilterDesignTool::ResposeComboChanged() {
     OrderSpinBox->setMaximum(10);
     RippleLabel->hide();
     RippleSpinbox->hide();
+    RippledBLabel->hide();
   } else {
     if (!Response.compare("Gaussian")) {
       OrderSpinBox->setMinimum(3);
       OrderSpinBox->setMaximum(10);
       RippleLabel->hide();
       RippleSpinbox->hide();
+      RippledBLabel->hide();
     } else {
       if (!Response.compare("Legendre")) {
         OrderSpinBox->setMinimum(4);
         OrderSpinBox->setMaximum(10);
         RippleLabel->hide();
         RippleSpinbox->hide();
+        RippledBLabel->hide();
       } else {
         if (!Response.compare("Butterworth")) {
           RippleLabel->hide();
           RippleSpinbox->hide();
+          RippledBLabel->hide();
         } else {
           // Elliptic and Chebyshev
           RippleLabel->show();
           RippleSpinbox->show();
+          RippledBLabel->show();
         }
       }
     }
@@ -635,6 +641,8 @@ void FilterDesignTool::setSettings_LC_Ladder() {
   FilterClassCombo->addItem("Highpass");
   FilterClassCombo->addItem("Bandpass");
   FilterClassCombo->addItem("Bandstop");
+  ClassLabel->show();
+  FilterClassCombo->show();
 
   FilterClassCombo->setEnabled(true);
   QString CurrentResponse = FilterResponseTypeCombo->currentText();
@@ -695,6 +703,8 @@ void FilterDesignTool::setSettings_LC_Direct_Coupled() {
   FilterClassCombo->clear();
   FilterClassCombo->addItem("Bandpass");
   FilterClassCombo->setCurrentIndex(0);
+  ClassLabel->hide();
+  FilterClassCombo->hide();
 
   // Set default filter responses. Elliptic type is not implementable using the
   // direct coupled topology
@@ -705,6 +715,11 @@ void FilterDesignTool::setSettings_LC_Direct_Coupled() {
   // Hide semilumped type combobox
   SemiLumpedImplementationCombo->hide();
   SemiLumpedImplementationLabel->hide();
+
+  // Check on filter parameters to ensure successful synthesis
+  const double max_rel_bw =
+      0.1; // Threshold for maximum relative bandwidth (10%)
+  adjustRelativeBW(max_rel_bw);
 
   // Unblock signals
   FilterClassCombo->blockSignals(false);
@@ -747,6 +762,8 @@ void FilterDesignTool::setSettings_Stepped_Z_LPF() {
   FilterClassCombo->clear();
   FilterClassCombo->addItem("Lowpass");
   FilterClassCombo->setCurrentIndex(0);
+  ClassLabel->hide();
+  FilterClassCombo->hide();
 
   // Hide semilumped type combobox
   SemiLumpedImplementationCombo->hide();
@@ -806,6 +823,8 @@ void FilterDesignTool::setSettings_Quarterwavelength_BPF_BSF() {
   FilterClassCombo->addItem("Bandpass");
   FilterClassCombo->addItem("Bandstop");
   FilterClassCombo->setCurrentIndex(0);
+  ClassLabel->show();
+  FilterClassCombo->show();
 
   // Hide semilumped type combobox
   SemiLumpedImplementationCombo->hide();
@@ -863,6 +882,8 @@ void FilterDesignTool::setSettings_EndCoupled_BPF() {
   FilterClassCombo->clear();
   FilterClassCombo->addItem("Bandpass");
   FilterClassCombo->setCurrentIndex(0);
+  ClassLabel->hide();
+  FilterClassCombo->hide();
 
   // Hide semilumped type combobox
   SemiLumpedImplementationCombo->hide();
@@ -920,6 +941,8 @@ void FilterDesignTool::setSettings_CCoupledShuntResonators_BPF() {
   FilterClassCombo->clear();
   FilterClassCombo->addItem("Bandpass");
   FilterClassCombo->setCurrentIndex(0);
+  ClassLabel->hide();
+  FilterClassCombo->hide();
 
   // Hide semilumped type combobox
   SemiLumpedImplementationCombo->hide();
@@ -990,6 +1013,8 @@ void FilterDesignTool::setSettings_Semilumped() {
     FilterClassCombo->clear();
     FilterClassCombo->addItem("Lowpass");
     FilterClassCombo->addItem("Highpass");
+    ClassLabel->show();
+    FilterClassCombo->show();
 
     // Show semilumped type combobox
     SemiLumpedImplementationCombo->show();
@@ -1008,6 +1033,8 @@ void FilterDesignTool::setSettings_Semilumped() {
     FilterClassCombo->clear();
     FilterClassCombo->addItem("Lowpass");
     FilterClassCombo->addItem("Highpass");
+    ClassLabel->show();
+    FilterClassCombo->show();
 
     // Show semilumped type combobox
     SemiLumpedImplementationCombo->show();
@@ -1061,6 +1088,8 @@ void FilterDesignTool::setSettings_SideCoupled_BPF() {
   FilterClassCombo->clear();
   FilterClassCombo->addItem("Bandpass");
   FilterClassCombo->setCurrentIndex(0);
+  ClassLabel->hide();
+  FilterClassCombo->hide();
 
   // Hide semilumped type combobox
   SemiLumpedImplementationCombo->hide();

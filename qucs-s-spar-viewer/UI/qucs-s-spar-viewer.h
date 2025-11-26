@@ -381,6 +381,11 @@ private:
                // i.e. in this case there's no SchematicContent object to emit
   NetlistScratchPad* Netlist_Tool;
 
+  // Export schematic
+  QLabel* LabelExportSchematic;
+  QPushButton* ButtonExportSchematic;
+  QComboBox* ComboExportSchematic, *ComboExportOutputMethod;
+
   void
   updateSchematicContent(); // This is called by the updateSimulation() function
 
@@ -479,6 +484,7 @@ private slots:
       SchematicContent SI); // Updates the traces from the designer tools
   void updateSimulation();
   void updateSubstrate();
+  void exportSchematic(); // to Qucs-S or whatever
 };
 
 #endif

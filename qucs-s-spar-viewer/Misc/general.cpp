@@ -20,7 +20,7 @@
 // Rounds a double number using the minimum number of decimal places
 QString RoundVariablePrecision(double val) {
   int precision = 0; // By default, it takes 2 decimal places
-  int sign      = 1;
+  int sign = 1;
   if (val < 0) {
     sign = -1;
   }
@@ -50,7 +50,7 @@ QString num2str(std::complex<double> Z, Units CompType) {
 }
 
 QString num2str(double Num, Units CompType) {
-  char c     = 0;
+  char c = 0;
   double cal = std::abs(Num);
   if (cal > 1e-20) {
     cal = std::log10(cal) / 3.0;
@@ -123,7 +123,7 @@ QString num2str(double Num, Units CompType) {
 }
 
 QString num2str(double Num) {
-  char c     = 0;
+  char c = 0;
   double cal = std::abs(Num);
 
   if (Num == 0) {
@@ -184,27 +184,59 @@ QString num2str(double Num) {
 }
 
 std::complex<double> Str2Complex(QString num) {
+  // Remove suffixes: "Ohm" and "Ω"
+  num.replace("Ohm", "");
+  num.replace("Ω", "");
+  num = num.trimmed();
 
-  // Remove the suffix
-  if (num.indexOf("Ohm") != -1) {
-    num.remove(num.indexOf("Ohm"), 3);
-  }
-  int index = num.indexOf("j"); // Indicates where the j is.
-  if (index == -1)              // Actually, num is a real number
-  {
-    return std::complex<double>(num.toDouble(), 0);
+  int jpos = num.indexOf('j');
+
+  // No imaginary part → purely real
+  if (jpos == -1) {
+    return std::complex<double>(num.toDouble(), 0.0);
   }
 
-  // Need to separate the real from the imaginary part
-  double sign = 1;
-  if (num[index - 1] == '-') {
-    sign = -1;
+  QString realStr;
+  QString imagStr;
+
+  // Case: "j50" or "-j50"
+  if (jpos == 0 || (jpos == 1 && (num[0] == '+' || num[0] == '-'))) {
+    realStr = "0";
+    imagStr = num.mid(jpos + 1); // characters after 'j'
+
+    // If imag part is empty (e.g. "j"), it's 1
+    if (imagStr.isEmpty())
+      imagStr = "1";
+
+    // Apply sign if it was "-j50"
+    if (num.startsWith('-'))
+      imagStr.prepend('-');
+
+    return std::complex<double>(0.0, imagStr.toDouble());
   }
-  double realpart =
-      num.left(index - 1)
-          .toDouble(); // Notice  we have to take into account the sign
-  double imagpart = num.right(index).toDouble();
-  return std::complex<double>(realpart, sign * imagpart);
+
+  // Find last '+' or '-' before the 'j'
+  // But not counting the very beginning (to allow "-3+4j")
+  int signPos = -1;
+  for (int i = jpos - 1; i > 0; --i) {
+    if (num[i] == '+' || num[i] == '-') {
+      signPos = i;
+      break;
+    }
+  }
+
+  if (signPos == -1) {
+    // No explicit sign between real/imag → case: "3j"
+    realStr = num.left(jpos);
+    imagStr = "1";
+    return std::complex<double>(realStr.toDouble(), imagStr.toDouble());
+  }
+
+  // Split real and imaginary strings
+  realStr = num.left(signPos);
+  imagStr = num.mid(signPos, jpos - signPos); // like "+4" or "-4"
+
+  return std::complex<double>(realStr.toDouble(), imagStr.toDouble());
 }
 
 // This function creates a string for the transmission line length and
@@ -312,27 +344,27 @@ QString ConvertLengthFromM(QString units, double len) {
   return QString("");
 }
 
-void convert_MA_RI_to_dB(double* S_1, double* S_2, double* S_3, double* S_4,
+void convert_MA_RI_to_dB(double *S_1, double *S_2, double *S_3, double *S_4,
                          QString format) {
   double S_dB = *S_1, S_ang = *S_2;
   double S_re = *S_3, S_im = *S_4;
   if (format == "MA") {
-    S_dB  = 20 * log10(*S_1);
+    S_dB = 20 * log10(*S_1);
     S_ang = *S_2;
-    S_re  = *S_1 * std::cos(*S_2 * M_PI / 180);
-    S_im  = *S_1 * std::sin(*S_2 * M_PI / 180);
+    S_re = *S_1 * std::cos(*S_2 * M_PI / 180);
+    S_im = *S_1 * std::sin(*S_2 * M_PI / 180);
   } else {
     if (format == "RI") {
-      S_dB  = 20 * log10(sqrt((*S_1) * (*S_1) + (*S_2) * (*S_2)));
+      S_dB = 20 * log10(sqrt((*S_1) * (*S_1) + (*S_2) * (*S_2)));
       S_ang = atan2(*S_2, *S_1) * 180 / M_PI;
-      S_re  = *S_1;
-      S_im  = *S_2;
+      S_re = *S_1;
+      S_im = *S_2;
     } else {
       // DB format
-      double r     = std::pow(10, *S_1 / 20.0);
+      double r = std::pow(10, *S_1 / 20.0);
       double theta = *S_2 * M_PI / 180.0;
-      S_re         = r * std::cos(theta);
-      S_im         = r * std::sin(theta);
+      S_re = r * std::cos(theta);
+      S_im = r * std::sin(theta);
     }
   }
   *S_1 = S_dB;
@@ -358,7 +390,7 @@ double getFreqScale(QString frequency_unit) {
   return freq_scale;
 }
 
-int findClosestIndex(const QList<double>& list, double value) {
+int findClosestIndex(const QList<double> &list, double value) {
   return std::min_element(list.begin(), list.end(),
                           [value](double a, double b) {
                             return std::abs(a - value) < std::abs(b - value);
@@ -398,8 +430,8 @@ double getFreqFromText(QString freq) {
 
 // Find the closest x-axis value in a series given a x value (not necesarily in
 // the grid)
-QPointF findClosestPoint(const QList<double>& xValues,
-                         const QList<double>& yValues, double targetX) {
+QPointF findClosestPoint(const QList<double> &xValues,
+                         const QList<double> &yValues, double targetX) {
   if (xValues.isEmpty() || yValues.isEmpty() ||
       xValues.size() != yValues.size()) {
     return QPointF(); // Return invalid point if lists are empty or have
@@ -414,7 +446,7 @@ QPointF findClosestPoint(const QList<double>& xValues,
   for (int i = 0; i < xValues.size(); ++i) {
     double distance = qAbs(targetX - xValues[i]);
     if (distance < minDistance) {
-      minDistance  = distance;
+      minDistance = distance;
       closestPoint = QPointF(xValues[i], yValues[i]);
     }
   }

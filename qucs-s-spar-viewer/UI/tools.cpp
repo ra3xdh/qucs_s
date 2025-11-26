@@ -16,7 +16,6 @@
  */
 
 #include "qucs-s-spar-viewer.h"
-
 void Qucs_S_SPAR_Viewer::setToolsDock() {
   // Tools dock
   dockTools = new QDockWidget("Circuit Synthesis", this);
@@ -27,7 +26,8 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
 
   // Vertical layout for the container
   QVBoxLayout *layout = new QVBoxLayout(container);
-  layout->setContentsMargins(0, 0, 0, 0); // Optional: remove margins
+  layout->setContentsMargins(0, 0, 0,
+                             0); // Optional: remove margins
 
   // Tab widget
   toolsTabWidget = new QTabWidget();
@@ -52,9 +52,57 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   // Schematic widget
   SchematicWidget = new GraphWidget(this); // Schematic window
 
+  // Export option. Just a line at the bottom of the schematic
+  LabelExportSchematic = new QLabel("Export schematic");
+  QFont labelFont = LabelExportSchematic->font();
+  labelFont.setBold(true);
+  LabelExportSchematic->setFont(labelFont);
+
+  // Export formats
+  ComboExportSchematic = new QComboBox();
+  ComboExportSchematic->addItem("Qucs-S: Qucsator-RF");
+  ComboExportSchematic->addItem("Qucs-S: NGSpice");
+  ComboExportSchematic->addItem("Qucs-S: Xyce");
+
+  QLabel *exportArrowLabel = new QLabel("→");
+  exportArrowLabel->setStyleSheet(
+      "font: bold 18pt 'DejaVu Sans'; color: black;");
+
+  // Export method
+  ComboExportOutputMethod = new QComboBox();
+  ComboExportOutputMethod->addItem("Clipboard");
+  ComboExportOutputMethod->addItem("File");
+
+  ButtonExportSchematic = new QPushButton("Export");
+  ButtonExportSchematic->setStyleSheet("QPushButton { "
+                                       "background-color: rgb(254, 170, 0); "
+                                       "color: white; "
+                                       "border-radius: 6px; "
+                                       "padding: 4px 12px; "
+                                       "font-weight: bold; "
+                                       "} "
+                                       "QPushButton:hover { "
+                                       "background-color: rgb(255, 200, 30); "
+                                       "} "
+                                       "QPushButton:pressed { "
+                                       "background-color: rgb(230, 140, 0); "
+                                       "}");
+
+  // Layout container
+  QWidget *containerExport = new QWidget();
+  QHBoxLayout *layoutExport = new QHBoxLayout(containerExport);
+  layoutExport->addWidget(LabelExportSchematic);
+  layoutExport->addWidget(ComboExportSchematic);
+  layoutExport->addWidget(exportArrowLabel);
+  layoutExport->addWidget(ComboExportOutputMethod);
+  layoutExport->addWidget(ButtonExportSchematic);
+  layoutExport->setAlignment(Qt::AlignCenter);
+
   // Add widgets to layout
   layout->addWidget(toolsTabWidget);
   layout->addWidget(SchematicWidget); // This will appear *below* the tab widget
+  layout->addWidget(
+      containerExport); // This will appear *below* the schematic window
 
   // Set the layout container as the dock widget's content
   dockTools->setWidget(container);
@@ -74,6 +122,8 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
           SLOT(updateSimulation()));
   connect(SimulationSetupWidget, SIGNAL(updateSubstrate()), this,
           SLOT(updateSubstrate()));
+  connect(ButtonExportSchematic, SIGNAL(clicked(bool)), this,
+          SLOT(exportSchematic()));
 
   // Update simulation and schematic when the user clicks on another tab
   connect(toolsTabWidget, &QTabWidget::currentChanged, this,
@@ -81,7 +131,6 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   connect(dockTools, &QDockWidget::visibilityChanged, this,
           &Qucs_S_SPAR_Viewer::callTools);
 }
-
 void Qucs_S_SPAR_Viewer::updateSimulation() {
   QString netlist = Circuit.getSParameterNetlist();
   qDebug() << "Netlist";
@@ -91,9 +140,19 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
   double fstart = SimulationSetupWidget->getFstart();
   double fstop = SimulationSetupWidget->getFstop();
   int npoints = SimulationSetupWidget->getNpoints();
+
+  // Pass settings to the S-parameter engine
   SPAR_engine.setFrequencySweep(fstart, fstop, npoints);
   SPAR_engine.calculateSParameterSweep();
   QMap<QString, QList<double>> data = SPAR_engine.getData();
+
+  ///////////////////////////////////////////////////////////
+  // Update the data on the Schematic Object. This is needed
+  // to set the frequency sweep when exporting the schematic
+  QString fstart_text = SimulationSetupWidget->getFstart_as_Text();
+  QString fstop_text = SimulationSetupWidget->getFstop_as_Text();
+  Circuit.setFrequencySweep(fstart_text, fstop_text, npoints);
+  ///////////////////////////////////////////////////////////
 
   if (data.isEmpty()) {
     return;
@@ -103,6 +162,13 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
 
   // Update data
   datasets[dataset_name] = data;
+
+  // After simulation, once the data has been updated in the datasets structure,
+  // it is needed to refresh the list of available traces. This is needed
+  // because in the Power Combining synthesis there are topologies with
+  // different number of ports, if the "trace refresh" is not done at this
+  // point, all combiners would have only a S(3x3) available to select
+  updateTracesCombo();
 
   // Check if the dataset exists in the Combo, if not add it
   if (QCombobox_datasets->findText(dataset_name) == -1) {
@@ -181,7 +247,6 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
 
   updateSchematicContent();
 }
-
 void Qucs_S_SPAR_Viewer::updateSubstrate() {
 
   // Get the new substrate
@@ -204,7 +269,6 @@ void Qucs_S_SPAR_Viewer::updateSubstrate() {
   // Check the last circuit being synthesized and trigger synthesis
   // Trigger synthesis
 }
-
 void Qucs_S_SPAR_Viewer::updateSimulation(SchematicContent SI) {
   Circuit = SI;
   Tools_Datasets.append(SI.Name);
@@ -220,7 +284,6 @@ void Qucs_S_SPAR_Viewer::updateSimulation(SchematicContent SI) {
 
   updateSimulation();
 }
-
 void Qucs_S_SPAR_Viewer::updateSchematicContent() {
   SchematicWidget->clear(); // Remove the components in the scene
 
@@ -228,7 +291,6 @@ void Qucs_S_SPAR_Viewer::updateSchematicContent() {
     SchematicWidget->setSchematic(Circuit);
   }
 }
-
 // This function handles the event of selecting a new tab in the design tools.
 // First, it's needed to remove the traces from other designer tabs (otherwise,
 // it may clutter the display) Second, it calls callTools() function to trigger
@@ -249,7 +311,6 @@ void Qucs_S_SPAR_Viewer::onToolsTabChanged(int index) {
     callTools(true);
   }
 }
-
 // Removes the datasets generated by the tools and their traces
 void Qucs_S_SPAR_Viewer::cleanToolsDatasets(const QString &excludeDataset) {
   for (const QString &ID : qAsConst(Tools_Datasets)) {
@@ -261,5 +322,66 @@ void Qucs_S_SPAR_Viewer::cleanToolsDatasets(const QString &excludeDataset) {
     Tools_Datasets.clear();
   } else {
     Tools_Datasets = QStringList{excludeDataset};
+  }
+}
+// Manage the schematic exportExport schematic
+void Qucs_S_SPAR_Viewer::exportSchematic() {
+  int formatToExport = ComboExportSchematic->currentIndex();
+  QString schematicText; // Output netlist
+
+  switch (formatToExport) {
+  case 0: // Front-end: Qucs-S, Back-end: Qucsator-RF
+    schematicText =
+        Circuit.exportSchematic(QString("Qucs-S"), QString("Qucsator"));
+    break;
+  case 1: // Front-end: Qucs-S, Back-end: NGspice
+    schematicText =
+        Circuit.exportSchematic(QString("Qucs-S"), QString("NGspice"));
+    break;
+  case 2: // Front-end: Qucs-S, Back-end: Xyce
+    schematicText = Circuit.exportSchematic(QString("Qucs-S"), QString("Xyce"));
+    break;
+  }
+
+  // Was the processing ok?
+  if (schematicText == QString("-1")) {
+    // Unsupported components were found -> Abort export
+    return;
+  }
+
+  // Output method: File or clipboard
+  QString outputMethod = ComboExportOutputMethod->currentText();
+
+  if (outputMethod == "Clipboard") {
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->setText(schematicText);
+    QMessageBox::information(this, "Export success",
+                             "Schematic text copied to clipboard.");
+  } else if (outputMethod == "File") {
+    QString fileName = QFileDialog::getSaveFileName(this, "Export schematic",
+                                                    QDir::homePath() + "/" +
+                                                        Circuit.Type + ".sch",
+                                                    "Qucs-S schematic (*.sch)");
+
+    if (fileName.isEmpty())
+      return;
+
+    // Enforce .sch extension if user omits it
+    if (!fileName.endsWith(".sch", Qt::CaseInsensitive))
+      fileName += ".sch";
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+      QMessageBox::critical(this, "Export failed",
+                            "Unable to open file for writing:\n" + fileName);
+      return;
+    }
+
+    QTextStream out(&file);
+    out << schematicText;
+    file.close();
+
+    QMessageBox::information(this, "Export success",
+                             "Schematic successfully saved to:\n" + fileName);
   }
 }

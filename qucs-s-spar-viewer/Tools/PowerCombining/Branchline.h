@@ -22,7 +22,6 @@
 #include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
-#include <QPen>
 
 class Branchline : public Network {
 public:
@@ -35,10 +34,33 @@ private:
   struct PowerCombinerParams Specification;
   
   double lambda4, ZA, ZB;
-  
+
   void calculateParams();
+  void setComponentsLocation();
   void buildBranchline_IdealTL();
   void buildBranchline_Microstrip();
+
+  private:
+  // Private variables for components location
+  int x_spacing, y_spacing; // General components spacing
+
+  // Ports
+  QPoint Port_in;
+  QPoint Port_out1, Port_out2;
+
+  // Isolation resistor
+  QPoint Riso_pos;
+  QPoint GND_Riso;
+
+  // Transmission lines
+  QPoint TL1_pos;
+  QPoint TL2_pos;
+  QPoint TL3_pos;
+  QPoint TL4_pos;
+
+  // Nodes
+  QPoint N1_pos, N2_pos, N3_pos, N4_pos;
+
 };
 
 #endif // BRANCHLINE_H
