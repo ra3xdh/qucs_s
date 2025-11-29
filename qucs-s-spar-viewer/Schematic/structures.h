@@ -132,6 +132,7 @@ struct FilterSpecifications {
                // filters)
   SemiLumpedImplementation SemiLumpedISettings;
   double ImpedanceRatio;
+  std::vector<double> resonatorValues; // Direct-coupled filters only
 
   // Substrate Settings
   MS_Substrate MS_Subs;

@@ -49,6 +49,7 @@ QString ConvertLengthFromM(QString, double);
 void convert_MA_RI_to_dB(double* S_1, double* S_2, double* S_3, double* S_4,
                          QString format);
 double getFreqScale(QString frequency_unit);
+double getScaleFactor(QString scale);
 void getMinMaxValues(QString filename, QString tracename, qreal& minX,
                      qreal& maxX, qreal& minY, qreal& maxY);
 int findClosestIndex(const QList<double>& list, double value);

@@ -37,7 +37,6 @@ void DirectCoupledFilters::synthesize() {
 }
 
 void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
-  WireInfo WI;
   ComponentInfo Cseries, Lshunt, Ground, Cshunt;
   NodeInfo NI, NLeft, NRight, Ncenter;
 
@@ -51,8 +50,13 @@ void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
   double BW = Specification.bw;
   double Z0 = Specification.ZS;
 
+  // Resonator inductance
   for (int i = 0; i < N; i++) {
-    L[i] = 10e-9;
+    if (Specification.resonatorValues.size() == N) {
+      L[i] = Specification.resonatorValues[i];
+    } else {
+      L[i] = 10e-9; // Default fallback
+    }
   }
 
   double R1 = 1;
@@ -249,8 +253,13 @@ void DirectCoupledFilters::Synthesize_Inductive_Coupled_Series_Resonators() {
   double R1 = 1;
   double RN = Specification.ZL / Z0;
 
-  for (int i = 0; i < N + 2; i++) {
-    L[i] = 10e-9;
+  // Resonator inductance
+  for (int i = 0; i < N; i++) {
+    if (Specification.resonatorValues.size() == N) {
+      L[i] = Specification.resonatorValues[i];
+    } else {
+      L[i] = 10e-9; // Default fallback
+    }
   }
 
   double w0 = 1.0;

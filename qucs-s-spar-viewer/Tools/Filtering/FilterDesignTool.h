@@ -30,6 +30,7 @@
 #include <QWidget>
 
 #include "../../Schematic/Network.h"
+#include "../../Misc/general.h" // Get scale function
 
 #include "CanonicalFilter.h"
 #include "CapacitivelyCoupledShuntResonatorsFilter.h"
@@ -65,6 +66,7 @@ private slots:
   void ResposeComboChanged();
   void ImplementationComboChanged(int);
   void EllipticTypeChanged();
+  void openResonatorValuesDialog(); // Only for direct-coupled filters
 
 private:
   // ************************** FILTER DESIGN ***************************
@@ -101,6 +103,15 @@ private:
   struct FilterSpecifications Filter_SP;
   SchematicContent SchContent;
 
+  // Direct-coupled filters only. Adjust resonator elements
+  QPushButton* ResonatorValuesButton;
+  std::vector<double> resonatorValues;
+  std::vector<QString> resonatorScaleValues;
+  // Widgets for the resonator values
+  std::vector<QDoubleSpinBox *> ResonatorSpinboxes; // Value
+  std::vector<QComboBox*> ResonatorScaleComboboxes; // Scale
+  QComboBox *tunableComponentCombo; // Combo to choose which element of the resonator is tunable
+  QString tunableComponent_DC_Filters; // "Inductor" or "Capacitor"
   // Substrate
   MS_Substrate MS_Subs;
 
