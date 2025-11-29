@@ -2550,6 +2550,12 @@ std::pair<bool,Node*> Schematic::installWire(Wire* wire)
     assert(wire->Port1 == nullptr);
     assert(wire->Port2 == nullptr);
 
+    // Prevent crashes on zero-length wires
+    if (wire->P1() == wire->P2()) {
+        delete wire; // Prevent leak
+        return {false, nullptr};
+    }
+
     auto* port1 = provideNode(wire->P1());
     auto* port2 = provideNode(wire->P2());
 
