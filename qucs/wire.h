@@ -41,8 +41,8 @@ public:
 
   bool rotate() noexcept override;
 
-  bool mirrorX() noexcept override { std::swap(y1, y2); return y1 != y2; }
-  bool mirrorY() noexcept override { std::swap(x1, x2); return x1 != x2; }
+  bool mirrorX() noexcept override;
+  bool mirrorY() noexcept override;
 
   QRect boundingRect() const noexcept override;
 
@@ -62,6 +62,9 @@ public:
 
 private:
   void updateCenter() noexcept;
+  void updateP1() noexcept;
+  void updateP2() noexcept;
+  void updatePorts() noexcept;
 };
 
 #endif

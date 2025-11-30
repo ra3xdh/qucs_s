@@ -75,7 +75,8 @@ struct SchematicSelection {
       }
     }
     for (auto* pm : markers)      pm->moveCenter(dx, dy);
-    for (auto* pn : nodes)        pn->moveCenter(dx, dy);
+    // NOTE: nodes are synced through their owner (components/wires)
+    // for (auto* pn : nodes)        pn->moveCenter(dx, dy);
 
     // Move bounds
     bounds.moveCenter(QPoint(dx, dy));

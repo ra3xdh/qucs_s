@@ -56,7 +56,28 @@ bool Wire::rotate() noexcept
     label()->moveRootTo(r.x(), r.y());
   }
 
+  // update node positions
+  updatePorts();
+
   return true;
+}
+
+bool Wire::mirrorX() noexcept {
+  std::swap(y1, y2);
+
+  // update node positions
+  updatePorts();
+
+  return y1 != y2;
+}
+
+bool Wire::mirrorY() noexcept {
+  std::swap(x1, x2);
+
+  // update node positions
+  updatePorts();
+
+  return x1 != x2;
 }
 
 // Lie x/y on wire ? 5 is the precision the coordinates have to fit.
@@ -218,15 +239,22 @@ QRect Wire::boundingRect() const noexcept
 
 bool Wire::moveCenter(int dx, int dy) noexcept
 {
-  Element::moveCenter(dx, dy);
-  x1 += dx;
-  y1 += dy;
-  x2 += dx;
-  y2 += dy;
-  if (hasLabel()) label()->moveRoot(dx, dy);
-  return dx != 0 || dy != 0;
-}
+  bool moved = Element::moveCenter(dx, dy);
+  if (moved) {
+    x1 += dx;
+    y1 += dy;
+    x2 += dx;
+    y2 += dy;
+    // move label root
+    if(hasLabel()) {
+      label()->moveRoot(dx, dy);
+    }
 
+    // update node positions
+    updatePorts();
+  }
+  return moved;
+}
 
 bool Wire::setP1(const QPoint& new_p1)
 {
@@ -249,6 +277,7 @@ bool Wire::setP1(const QPoint& new_p1)
   y1 = new_p1.y();
 
   updateCenter();
+  updateP1();
 
   return true;
 }
@@ -275,6 +304,7 @@ bool Wire::setP2(const QPoint& new_p2)
   y2 = new_p2.y();
 
   updateCenter();
+  updateP2();
 
   return true;
 }
@@ -318,3 +348,21 @@ inline void Wire::updateCenter() noexcept {
   cy = std::midpoint(y1, y2);
 }
 
+// sets Port1 center to (x1, y1)
+void Wire::updateP1() noexcept {
+  if (Port1 != nullptr) {
+    Port1->moveCenterTo(x1, y1);
+  }
+}
+
+// sets Port2 center to (x2, y2)
+void Wire::updateP2() noexcept {
+  if (Port2 != nullptr) {
+    Port2->moveCenterTo(x2, y2);
+  }
+}
+
+void Wire::updatePorts() noexcept {
+  updateP1();
+  updateP2();
+}
