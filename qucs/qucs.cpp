@@ -2966,7 +2966,7 @@ void QucsApp::openFileFromProjectView(const QFileInfo &Info, const QString &note
    // Handle Qucs document types
   if (extName == "sch" || extName == "dpl" || extName == "vhdl" ||
       extName == "vhd" || extName == "v" || extName == "va" ||
-      extName == "m" || extName == "oct" || extName == "net") {
+      extName == "m" || extName == "oct" || extName == "net" || extName == "sym") {
 
     gotoPage(absolutePath);
     updateRecentFilesList(absolutePath);
