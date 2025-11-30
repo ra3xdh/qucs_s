@@ -134,15 +134,18 @@ void QucsApp::slotOnGrid(bool on)
 // Is called when the rotate toolbar button is pressed.
 void QucsApp::slotEditRotate(bool on)
 {
-  // If we're in paste mode, rotate moving elements instead of schematic elements
-  if (MouseMoveAction == &MouseActions::MMovePaste2) {
+  // If we're in paste mode or in move-mode, rotate moving elements instead of schematic elements
+  if (   MouseMoveAction == &MouseActions::MMovePaste2
+      || MouseMoveAction == &MouseActions::MMoveFree2) {
     editRotate->blockSignals(true);
     editRotate->setChecked(false);
     editRotate->blockSignals(false);
 
     Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
     if (Doc != nullptr) {
-      view->rotateMovingElements(Doc);
+      // enable painting in case we're in paste mode
+      bool doPaint = MouseMoveAction == &MouseActions::MMovePaste2;
+      view->rotateMovingElements(Doc, doPaint);
     }
     return;
   }
@@ -154,15 +157,18 @@ void QucsApp::slotEditRotate(bool on)
 // Is called when the mirror toolbar button is pressed.
 void QucsApp::slotEditMirrorX(bool on)
 {
-  // If we're in paste mode, mirror moving elements instead of schematic elements
-  if (MouseMoveAction == &MouseActions::MMovePaste2) {
+  // If we're in paste mode or move-mode, mirror moving elements instead of schematic elements
+  if (   MouseMoveAction == &MouseActions::MMovePaste2
+      || MouseMoveAction == &MouseActions::MMoveFree2) {
     editMirror->blockSignals(true);
     editMirror->setChecked(false);
     editMirror->blockSignals(false);
 
     Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
     if (Doc != nullptr) {
-      view->mirrorXMovingElements(Doc);
+      // enable painting in case we're in paste mode
+      bool doPaint = MouseMoveAction == &MouseActions::MMovePaste2;
+      view->mirrorXMovingElements(Doc, doPaint);
     }
     return;
   }
@@ -174,15 +180,18 @@ void QucsApp::slotEditMirrorX(bool on)
 // Is called when the mirror toolbar button is pressed.
 void QucsApp::slotEditMirrorY(bool on)
 {
-  // If we're in paste mode, mirror moving elements instead of schematic elements
-  if (MouseMoveAction == &MouseActions::MMovePaste2) {
+  // If we're in paste mode or move-mode, mirror moving elements instead of schematic elements
+  if (   MouseMoveAction == &MouseActions::MMovePaste2
+      || MouseMoveAction == &MouseActions::MMoveFree2) {
     editMirrorY->blockSignals(true);
     editMirrorY->setChecked(false);
     editMirrorY->blockSignals(false);
 
     Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
     if (Doc != nullptr) {
-      view->mirrorYMovingElements(Doc);
+      // enable painting in case we're in paste mode
+      bool doPaint = MouseMoveAction == &MouseActions::MMovePaste2;
+      view->mirrorYMovingElements(Doc, doPaint);
     }
     return;
   }
@@ -228,6 +237,50 @@ void QucsApp::slotEditDelete(bool on)
   else
     performToggleAction(on, editDelete, &Schematic::deleteElements,
           &MouseActions::MMoveDelete, &MouseActions::MPressDelete);
+}
+
+// ------------------------------------------------------------------------
+// Is called if "Strech (move w/wiring)"-Button is pressed.
+void QucsApp::slotEditStretch(bool on)
+{
+  Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
+  if (!on || Doc->currentSelection().isEmpty()) {
+    // if we were already on, or selection is empty
+    // cancel action and return to select mode
+    editStretch->blockSignals(true);
+    editStretch->setChecked(false);
+    editStretch->blockSignals(false);
+
+    activeAction = nullptr;
+
+    slotEscape();
+    return;
+  }
+
+  performToggleAction(on, editStretch, nullptr,
+    &MouseActions::MMoveMoving, nullptr);
+}
+
+// ------------------------------------------------------------------------
+// Is called if "Move (w/o wiring)"-Button is pressed.
+void QucsApp::slotEditMove(bool on)
+{
+  Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
+  if (!on || Doc->currentSelection().isEmpty()) {
+    // if we were already on, or selection is emtpy
+    // cancel action and return to select mode
+    editMove->blockSignals(true);
+    editMove->setChecked(false);
+    editMove->blockSignals(false);
+
+    activeAction = nullptr;
+
+    slotEscape();
+    return;
+  }
+
+  performToggleAction(on, editMove, nullptr,
+    &MouseActions::MMoveFree, nullptr);
 }
 
 // -----------------------------------------------------------------------

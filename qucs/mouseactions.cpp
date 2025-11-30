@@ -352,6 +352,41 @@ void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
     Doc->displayMutations();
 }
 
+// -----------------------------------------------------------
+// Moves components and disconnects all components not connected to selection.
+void MouseActions::MMoveFree(Schematic *Doc, QMouseEvent *Event)
+{
+    // Initialize selection
+    auto selection = Doc->currentSelection();
+
+    // Disconnect all elements _not_ part of the selection
+    // Keeps alls node labels (labels connected straight to the port)
+    Doc->decoupleElements(selection, /*keepNodeLabel=*/true);
+
+    // Ensure clean slate, selection is re-done to avoid potential stale nodes deleted
+    // during decoupling.
+    movingState = {
+        .selection = Doc->currentSelection()
+    };
+
+    setPainter(Doc);
+    // initialize total movement
+    MAx3 = 0;
+    MAy3 = 0;
+
+    updateMouseMove(Doc, Event, /*onGrid=*/true);
+
+    QucsMain->MouseMoveAction = &MouseActions::MMoveFree2;
+    QucsMain->MouseReleaseAction = &MouseActions::MReleaseMoveFree;
+}
+
+void MouseActions::MMoveFree2(Schematic *Doc, QMouseEvent *Event)
+{
+    setPainter(Doc);
+    QPoint delta = updateMouseMove(Doc, Event, /*onGrid=*/true);
+    movingState.selection.moveCenter(delta.x(), delta.y());
+}
+
 /**
  * @brief MouseActions::MMovePaste Moves components after paste from clipboard.
  * @param Doc
@@ -1407,14 +1442,49 @@ void MouseActions::MReleaseMoving(Schematic *Doc, QMouseEvent* event)
     Doc->viewport()->update();
     Doc->releaseKeyboard(); // allow keyboard inputs again
 
+    // Clear move action
     QucsMain->MouseMoveAction = nullptr;
-    QucsMain->MousePressAction = &MouseActions::MPressSelect;
-    QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
-    QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
+
     QucsMain->editRotate->setChecked(false);
     QucsMain->editRotate->blockSignals(false);
     QucsMain->insLabel->blockSignals(false);
     QucsMain->setMarker->blockSignals(false);
+
+    // if we used drag 'n' drop, we might already be in select mode
+    // -> Manually re-enter select mode
+    if (QucsMain->activeAction == QucsMain->select) {
+        QucsMain->MousePressAction = &MouseActions::MPressSelect;
+        QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
+        QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
+        return;
+    }
+    // If we're in keyboard based movement, go back to select mode by slotting
+    QucsMain->slotEscape();
+}
+// -----------------------------------------------------------
+// Is called after move-free (move with disconnection) operation
+void MouseActions::MReleaseMoveFree(Schematic *Doc, QMouseEvent *Event)
+{
+    // Right-click rotates selection
+    if (Event->button() == Qt::RightButton) {
+        rotateMovingElements(Doc);
+        return;
+    }
+
+    if (Doc->healAfterMousyMutation() || MAx3 != 0 || MAy3 != 0) {
+        Doc->setChanged(true, true);
+    }
+    Doc->viewport()->update();
+
+    // Reset everything and go back to select mode
+    QucsMain->MouseMoveAction = nullptr;
+    QucsMain->MousePressAction = nullptr;
+    QucsMain->MouseReleaseAction = nullptr;
+    QucsMain->MouseDoubleClickAction = nullptr;
+
+    // Go back to select mode
+    // NOTE: This turns off @activeAction
+    QucsMain->slotEscape();
 }
 
 // -----------------------------------------------------------
@@ -1897,7 +1967,7 @@ void MouseActions::MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, floa
 // **********                                                   **********
 // ***********************************************************************
 
-void MouseActions::mirrorXMovingElements(Schematic* Doc)
+void MouseActions::mirrorXMovingElements(Schematic* Doc, bool doPaint)
 {
     if (!movingState.selection.isValid()) {
         return;
@@ -1907,11 +1977,13 @@ void MouseActions::mirrorXMovingElements(Schematic* Doc)
     // Save transformation
     movingState.mirrorX = !movingState.mirrorX;
 
-    paintElementsScheme(Doc);
+    if (doPaint) {
+        paintElementsScheme(Doc);
+    }
     Doc->viewport()->update();
 }
 
-void MouseActions::mirrorYMovingElements(Schematic* Doc)
+void MouseActions::mirrorYMovingElements(Schematic* Doc, bool doPaint)
 {
     if (!movingState.selection.isValid()) {
         return;
@@ -1921,11 +1993,13 @@ void MouseActions::mirrorYMovingElements(Schematic* Doc)
     // Save transformation
     movingState.mirrorY = !movingState.mirrorY;
 
-    paintElementsScheme(Doc);
+    if (doPaint) {
+        paintElementsScheme(Doc);
+    }
     Doc->viewport()->update();
 }
 
-void MouseActions::rotateMovingElements(Schematic* Doc)
+void MouseActions::rotateMovingElements(Schematic* Doc, bool doPaint)
 {
     if (!movingState.selection.isValid()) {
         return;
@@ -1936,7 +2010,9 @@ void MouseActions::rotateMovingElements(Schematic* Doc)
     movingState.rotated++;
     movingState.rotated &= 3;
 
-    paintElementsScheme(Doc);
+    if (doPaint) {
+        paintElementsScheme(Doc);
+    }
     Doc->viewport()->update();
 }
 
