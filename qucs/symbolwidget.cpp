@@ -188,6 +188,7 @@ int SymbolWidget::createStandardSymbol(const QString& Lib_, const QString& Comp_
   Rects.clear();
   Ellipses.clear();
   Texts.clear();
+  PortNames.clear();
   LibraryPath = Lib_;
   ComponentName = Comp_;
 
@@ -459,6 +460,7 @@ int SymbolWidget::setSymbol( QString& SymbolString,
   Rects.clear();
   Ellipses.clear();
   Texts.clear();
+  PortNames.clear();
   LibraryPath = Lib_;
   ComponentName = Comp_;
   portsNumber = 0;
@@ -519,6 +521,7 @@ int SymbolWidget::loadSymFile(const QString &file)
   Rects.clear();
   Ellipses.clear();
   Texts.clear();
+  PortNames.clear();
   Warning.clear();
   portsNumber = 0;
   x1 = y1 = INT_MAX;
@@ -584,6 +587,10 @@ int SymbolWidget::analyseLine(const QString& Row)
   s = Row.section(' ',0,0);    // component type
   if(s == ".PortSym") {  // here: ports are open nodes
     if(!getCompLineIntegers(Row, &i1, &i2, &i3))  return -1;
+    QString portName = Row.section(' ', 5).trimmed();
+    if (!portName.isEmpty()) {
+        PortNames.insert(i3, portName);
+    }
     Arcs.append(new struct qucs::Arc(i1-4, i2-4, 8, 8, 0, 16*360,
                                QPen(Qt::red,1)));
     if (showPinNumbers) {
@@ -789,4 +796,8 @@ void SymbolWidget::setPaintText(const QString &txt)
   PaintText = txt;
   QFontMetrics  metrics(QucsSettings.font, 0); // use the the screen-compatible metric
   TextWidth = metrics.size(0,PaintText).width() + 4;    // get size of text
+}
+
+QString SymbolWidget::getPortName(int n) {
+    return PortNames.value(n, QString());
 }

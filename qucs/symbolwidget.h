@@ -25,6 +25,7 @@
 #include <QColor>
 #include <QString>
 #include <QList>
+#include <QMap>
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QMessageBox>
@@ -55,6 +56,7 @@ public:
   void disableShowPinNumbers() { showPinNumbers = false; }
   bool showPinNumbersEnabled() { return showPinNumbers; }
   int getPortsNumber() { return portsNumber; }
+  QString getPortName(int n);
   void setPaintText(const QString &txt);
   void setWarning(const QString &warn) { Warning = warn; }
   // component properties
@@ -89,6 +91,7 @@ private:
   QList<qucs::Rect *> Rects;
   QList<qucs::Ellips *> Ellipses;
   QList<Text *>  Texts;
+  QMap<int, QString> PortNames;
 };
 
 #endif // SYMBOLWIDGET_H

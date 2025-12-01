@@ -121,12 +121,12 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) :
   a_symbol->enableShowPinNumbers();
   a_symbol->setPaintText("");
 
-  a_tbwPinsTable->setColumnCount(2);
+  a_tbwPinsTable->setColumnCount(3);
   a_tbwPinsTable->setRowCount(100);
   QStringList lbl_cols;
-  lbl_cols<<"Subcircuit pin"<<"Symbol pin";
+  lbl_cols<<"Subcircuit pin"<<"Symbol pin"<<"Port name";
   a_tbwPinsTable->setHorizontalHeaderLabels(lbl_cols);
-  a_tbwPinsTable->setMinimumWidth(2.2*a_tbwPinsTable->columnWidth(0));
+  a_tbwPinsTable->setMinimumWidth(3.5*a_tbwPinsTable->columnWidth(0));
   a_tbwPinsTable->setMinimumHeight(5*a_tbwPinsTable->rowHeight(0));
   connect(a_tbwPinsTable,SIGNAL(cellDoubleClicked(int,int)),this,SLOT(slotTableCellDoubleClick()));
 
@@ -199,6 +199,13 @@ SpiceLibCompDialog::SpiceLibCompDialog(Component *pc, Schematic *sch) :
       QTableWidgetItem *itm = a_tbwPinsTable->item(i,1);
       if (itm != nullptr) {
         itm->setText(pins.at(i));
+        QString s = pins.at(i);
+        if (!s.isEmpty() && s != "NC") {
+            int pin_num = s.toInt();
+            QTableWidgetItem *itmName = new QTableWidgetItem(a_symbol->getPortName(pin_num));
+            itmName->setFlags(itmName->flags() & ~Qt::ItemIsEditable); // Make read-only
+            a_tbwPinsTable->setItem(i, 2, itmName);
+        }
       }
     }
   }
@@ -265,6 +272,9 @@ void SpiceLibCompDialog::slotFillPinsTable()
     a_tbwPinsTable->setItem(i,0,itm1);
     QTableWidgetItem *itm2 = new QTableWidgetItem("NC");
     a_tbwPinsTable->setItem(i,1,itm2);
+    QTableWidgetItem *itm3 = new QTableWidgetItem("");
+    itm3->setFlags(itm3->flags() & ~Qt::ItemIsEditable);
+    a_tbwPinsTable->setItem(i,2,itm3);
   }
 
   a_edtSPICE->clear();
@@ -412,6 +422,9 @@ void SpiceLibCompDialog::slotSetSymbol()
   for (int i = 0; i < a_tbwPinsTable->rowCount(); i++) {
     QTableWidgetItem *itm = new QTableWidgetItem("NC");
     a_tbwPinsTable->setItem(i,1,itm);
+    QTableWidgetItem *itmName = new QTableWidgetItem("");
+    itmName->setFlags(itmName->flags() & ~Qt::ItemIsEditable);
+    a_tbwPinsTable->setItem(i,2,itmName);
   }
   a_isChanged = true;
   a_btnApply->setEnabled(true);
@@ -421,7 +434,7 @@ void SpiceLibCompDialog::slotTableCellDoubleClick()
 {
   int r = a_tbwPinsTable->currentRow();
   int c = a_tbwPinsTable->currentColumn();
-  if (c == 0) return; // do not edit the first column
+  if (c != 1) return; // only edit the symbol pin column
 
   if (a_prev_col >= 0 && a_prev_row >= 0) { // remove combo box from previous cell
     QTableWidgetItem *itm = new QTableWidgetItem("NC");
@@ -446,7 +459,12 @@ void SpiceLibCompDialog::slotTableCellDoubleClick()
       }
     }
     if (!pinAssigned) {
-      cbxSelectPin->addItem(QString::number(i));
+      QString portName = a_symbol->getPortName(i);
+      if (!portName.isEmpty()) {
+        cbxSelectPin->addItem(QString("%1 (%2)").arg(i).arg(portName));
+      } else {
+        cbxSelectPin->addItem(QString::number(i));
+      }
     }
   }
   a_tbwPinsTable->item(r,c)->setText("");
@@ -460,12 +478,25 @@ void SpiceLibCompDialog::slotTableCellDoubleClick()
 void SpiceLibCompDialog::slotSelectPin()
 {
   QComboBox *cbxSelectPin = qobject_cast<QComboBox*>(sender());
-  QString pin = cbxSelectPin->currentText();
+  QString pinEntry = cbxSelectPin->currentText();
+  // pinEntry format is "Number (Name)" or just "Number" or "NC"
+  QString pin = pinEntry.section(' ', 0, 0); 
+  
   int r = a_tbwPinsTable->currentRow();
   int c = a_tbwPinsTable->currentColumn();
   QTableWidgetItem *itm = new QTableWidgetItem(pin);
   a_tbwPinsTable->removeCellWidget(r,c);
   a_tbwPinsTable->setItem(r,c,itm);
+
+  // Update Symbol port name column (index 2)
+  QString portName = "";
+  if (pin != "NC" && !pin.isEmpty()) {
+      int pinNum = pin.toInt();
+      portName = a_symbol->getPortName(pinNum);
+  }
+  QTableWidgetItem *itmName = new QTableWidgetItem(portName);
+  itmName->setFlags(itmName->flags() & ~Qt::ItemIsEditable);
+  a_tbwPinsTable->setItem(r, 2, itmName);
 
   a_prev_col = -1; // clear cell index with combo box
   a_prev_row = -1;
