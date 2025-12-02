@@ -148,6 +148,7 @@ SET(QUCS_SRCS
   settings.cpp
   imagewriter.cpp printerwriter.cpp projectView.cpp
   symbolwidget.cpp wire_planner.cpp
+  qucsshortcutmanager.cpp
 )
 
 SET(QUCS_HDRS
@@ -164,6 +165,7 @@ node.h
 octave_window.h
 qucs.h
 qucsdoc.h
+qucsshortcutmanager.h
 schematic.h
 settings.h
 syntax.h
