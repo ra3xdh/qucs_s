@@ -1167,3 +1167,365 @@ void QucsApp::slotToggleOctave(bool on)
   viewOctaveDock->blockSignals(false);
 }
 
+
+// ----------------------------------------------------------------------------
+// Define default shorcuts
+// ----------------------------------------------------------------------------
+void QucsApp::setDefaultShortcut() {
+    QucsShortcutManager &mgr = QucsShortcutManager::instance();
+
+           //
+           // FILE
+           //
+    mgr.registerCommand("File.New", "File", "New",
+        fileNew, QKeySequence::New);
+
+    mgr.registerCommand("File.NewTextDocument", "File", "New Text Document",
+        textNew, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_V));
+
+    mgr.registerCommand("File.Open", "File", "Open",
+        fileOpen, QKeySequence::Open);
+
+    mgr.registerCommand("File.Close", "File", "Close",
+        fileClose, QKeySequence(Qt::CTRL | Qt::Key_E));
+
+    mgr.registerCommand("File.CloseAll", "File", "Close all documents",
+        fileCloseAll, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_E));
+
+    mgr.registerCommand("File.CloseOthers", "File", "Close all documents but current",
+        fileCloseOthers, QKeySequence(Qt::ALT | Qt::Key_W));
+
+/* Actions not created yet - This will be done later
+    mgr.registerCommand("File.CloseLeft", "File", "Close all documents to the left",
+        fileCloseLeft, QKeySequence(Qt::ALT | Qt::SHIFT | Qt::Key_F1));
+
+    mgr.registerCommand("File.CloseRight", "File", "Close all documents to the right",
+        fileCloseRight, QKeySequence(Qt::ALT | Qt::SHIFT | Qt::Key_F2));*/
+
+    mgr.registerCommand("File.ClearRecent", "File", "Clear recent files",
+        fileClearRecent, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Delete));
+
+ /* Actions not created yet - This will be done later
+    mgr.registerCommand("File.FirstTab", "File", "Go to the first tab",
+        gotoFirstTab, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_PageUp));
+
+    mgr.registerCommand("File.PrevTab", "File", "Go to the previous tab",
+        gotoPrevTab, QKeySequence(Qt::CTRL | Qt::Key_PageUp));
+
+    mgr.registerCommand("File.NextTab", "File", "Go to the next tab",
+        gotoNextTab, QKeySequence(Qt::CTRL | Qt::Key_PageDown));
+
+    mgr.registerCommand("File.LastTab", "File", "Go to the last tab",
+        gotoLastTab, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_PageDown));*/
+
+    mgr.registerCommand("File.Save", "File", "Save",
+        fileSave, QKeySequence::Save);
+
+    mgr.registerCommand("File.SaveAll", "File", "Save All",
+        fileSaveAll, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_S));
+
+    mgr.registerCommand("File.SaveAs", "File", "Save as",
+        fileSaveAs, QKeySequence::SaveAs);
+
+    mgr.registerCommand("File.ExportImage", "File", "Export as image",
+        exportAsImage, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_I));
+
+    mgr.registerCommand("File.Print", "File", "Print",
+        filePrint, QKeySequence::Print);
+
+    mgr.registerCommand("File.PrintFit", "File", "Print Fit to Page",
+        filePrintFit, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_P));
+
+    mgr.registerCommand("File.Examples", "File", "Examples",
+        fileExamples, QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
+
+    mgr.registerCommand("File.DocumentSettings", "File", "Document Settings",
+        fileSettings, QKeySequence(Qt::CTRL | Qt::Key_Period));
+
+  /* Action not created yet - This will be done later
+    mgr.registerCommand("File.ShortcutManager", "File", "Shortcut Manager",
+        ShortcutManagerAction, QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_S));
+*/
+
+    mgr.registerCommand("File.EditSymbol", "File", "Edit Circuit Symbol",
+        symEdit, QKeySequence(Qt::Key_F9));
+
+    mgr.registerCommand("File.AppSettings", "File", "Application Settings",
+        applSettings, QKeySequence(Qt::CTRL | Qt::Key_Comma));
+
+    mgr.registerCommand("File.Refresh", "File", "Refresh Search Path",
+        refreshSchPath, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_R));
+
+    mgr.registerCommand("File.Exit", "File", "Exit",
+        fileQuit, QKeySequence::Quit);
+
+
+           //
+           // EDIT
+           //
+    mgr.registerCommand("Edit.Undo", "Edit", "Undo",
+        undo, QKeySequence::Undo);
+
+    mgr.registerCommand("Edit.Redo", "Edit", "Redo",
+        redo, QKeySequence::Redo);
+
+    mgr.registerCommand("Edit.Cut", "Edit", "Cut",
+        editCut, QKeySequence(Qt::CTRL | Qt::Key_X));
+
+    mgr.registerCommand("Edit.Copy", "Edit", "Copy",
+        editCopy, QKeySequence::Copy);
+
+    mgr.registerCommand("Edit.Paste", "Edit", "Paste",
+        editPaste, QKeySequence::Paste);
+
+#ifdef __APPLE__
+    mgr.registerCommand("Edit.Delete", "Edit", "Delete",
+        editDelete, QKeySequence(QKeySequence::Backspace, QKeySequence::Delete));
+#else
+    mgr.registerCommand("Edit.Delete", "Edit", "Delete",
+        editDelete, QKeySequence::Delete);
+#endif
+
+    mgr.registerCommand("Edit.Select", "Edit", "Select",
+        select, QKeySequence());
+
+    mgr.registerCommand("Edit.SelectAll", "Edit", "Select All",
+        selectAll, QKeySequence(Qt::CTRL | Qt::Key_A));
+
+    mgr.registerCommand("Edit.SelectMarkers", "Edit", "Select Markers",
+        selectMarker, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_M));
+
+    mgr.registerCommand("Edit.Find", "Edit", "Find",
+        editFind, QKeySequence::Find);
+
+    mgr.registerCommand("Edit.Replace", "Edit", "Replace",
+        changeProps, QKeySequence(Qt::Key_F7));
+
+    mgr.registerCommand("Edit.MoveStretch", "Edit", "Move and Stretch",
+        editStretch, QKeySequence(Qt::Key_M));
+
+    mgr.registerCommand("Edit.Move", "Edit", "Move",
+        editMove, QKeySequence(Qt::SHIFT | Qt::Key_M));
+
+    mgr.registerCommand("Edit.Rotate", "Edit", "Rotate",
+        editRotate, QKeySequence(Qt::CTRL | Qt::Key_R));
+
+    mgr.registerCommand("Edit.MirrorX", "Edit", "Mirror about X Axis",
+        editMirror, QKeySequence(Qt::CTRL | Qt::Key_J));
+
+    mgr.registerCommand("Edit.MirrorY", "Edit", "Mirror about Y Axis",
+        editMirrorY, QKeySequence(Qt::CTRL | Qt::Key_M));
+
+    mgr.registerCommand("Edit.Activate", "Edit", "Deactivate Activate",
+        editActivate, QKeySequence(Qt::CTRL | Qt::Key_D));
+
+    mgr.registerCommand("Edit.EnterSubcircuit", "Edit", "Go into Subcircuit",
+        intoH, QKeySequence(Qt::CTRL | Qt::Key_I));
+
+    mgr.registerCommand("Edit.PopOut", "Edit", "Pop out",
+        popH, QKeySequence(Qt::CTRL | Qt::Key_H));
+
+
+           //
+           // POSITIONING
+           //
+    mgr.registerCommand("Pos.MoveText", "Positioning", "Move Component Text",
+        moveText, QKeySequence(Qt::CTRL | Qt::Key_K));
+
+    mgr.registerCommand("Pos.Grid", "Positioning", "Set on Grid",
+        onGrid, QKeySequence(Qt::CTRL | Qt::Key_U));
+
+    mgr.registerCommand("Pos.CenterH", "Positioning", "Center horizontally",
+        centerHor, QKeySequence());
+
+    mgr.registerCommand("Pos.CenterV", "Positioning", "Center vertically",
+        centerVert, QKeySequence());
+
+    mgr.registerCommand("Pos.AlignTop", "Positioning", "Align top",
+        alignTop, QKeySequence(Qt::CTRL | Qt::Key_Up));
+
+    mgr.registerCommand("Pos.AlignBottom", "Positioning", "Align bottom",
+        alignBottom, QKeySequence(Qt::CTRL | Qt::Key_Down));
+
+    mgr.registerCommand("Pos.AlignLeft", "Positioning", "Align left",
+        alignLeft, QKeySequence(Qt::CTRL | Qt::Key_Left));
+
+    mgr.registerCommand("Pos.AlignRight", "Positioning", "Align right",
+        alignRight, QKeySequence(Qt::CTRL | Qt::Key_Right));
+
+    mgr.registerCommand("Pos.DistributeH", "Positioning", "Distribute horizontally",
+        distrHor, QKeySequence());
+
+    mgr.registerCommand("Pos.DistributeV", "Positioning", "Distribute vertically",
+        distrVert, QKeySequence());
+
+
+           //
+           // INSERT
+           //
+    mgr.registerCommand("Insert.Wire", "Insert", "Wire",
+        insWire, QKeySequence(Qt::CTRL | Qt::Key_W));
+
+    mgr.registerCommand("Insert.Label", "Insert", "Wire Label",
+        insLabel, QKeySequence(Qt::CTRL | Qt::Key_L));
+
+    mgr.registerCommand("Insert.Equation", "Insert", "Insert Equation",
+        insEquation, QKeySequence(Qt::CTRL | Qt::Key_Less));
+
+    mgr.registerCommand("Insert.Ground", "Insert", "Insert Ground",
+        insGround, QKeySequence(Qt::CTRL | Qt::Key_G));
+
+    mgr.registerCommand("Insert.Port", "Insert", "Insert Port",
+        insPort, QKeySequence(Qt::Key_P));
+
+    mgr.registerCommand("Insert.Marker", "Insert", "Set Marker on Graph",
+        setMarker, QKeySequence(Qt::CTRL | Qt::Key_B));
+
+    mgr.registerCommand("Insert.VHDL", "Insert", "VHDL entity",
+        insEntity, QKeySequence(Qt::CTRL | Qt::Key_Space));
+
+
+           //
+           // PROJECT
+           //
+    mgr.registerCommand("Project.New", "Project", "New Project",
+        projNew, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_N));
+
+    mgr.registerCommand("Project.Open", "Project", "Open Project",
+        projOpen, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_O));
+
+    mgr.registerCommand("Project.AddFiles", "Project", "Add Files to Project",
+        addToProj, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_A));
+
+    mgr.registerCommand("Project.Close", "Project", "Close Project",
+        projClose, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_W));
+
+    mgr.registerCommand("Project.Delete", "Project", "Delete Project",
+        projDel, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_D));
+
+    mgr.registerCommand("Project.CreateLib", "Project", "Create Library",
+        createLib, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_L));
+
+    mgr.registerCommand("Project.Converter", "Project", "Import Export Data",
+        callConverter, QKeySequence(Qt::CTRL | Qt::Key_8));
+
+    mgr.registerCommand("Project.ExportCSV", "Project", "Export to CSV",
+        graph2csv, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
+
+    mgr.registerCommand("Project.BuildVA", "Project", "Build Verilog-A module",
+        buildModule, QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_B));
+
+    mgr.registerCommand("Project.LoadVA", "Project", "Load Verilog-A module",
+        loadModule, QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_M));
+
+
+
+           //
+           // TOOLS
+           //
+    mgr.registerCommand("Tools.TextEditor", "Tools", "Text Editor",
+        callEditor, QKeySequence(Qt::CTRL | Qt::Key_1));
+
+    mgr.registerCommand("Tools.Filter", "Tools", "Filter synthesis",
+        callFilter, QKeySequence(Qt::CTRL | Qt::Key_2));
+
+    mgr.registerCommand("Tools.ActiveFilter", "Tools", "Active filter synthesis",
+        callActiveFilter, QKeySequence(Qt::CTRL | Qt::Key_3));
+
+    mgr.registerCommand("Tools.LineCalc", "Tools", "Line calculation",
+        callLine, QKeySequence(Qt::CTRL | Qt::Key_4));
+
+    mgr.registerCommand("Tools.Matching", "Tools", "Matching Circuit",
+        callMatch, QKeySequence(Qt::CTRL | Qt::Key_5));
+
+    mgr.registerCommand("Tools.Attenuator", "Tools", "Attenuator synthesis",
+        callAtt, QKeySequence(Qt::CTRL | Qt::Key_6));
+
+    mgr.registerCommand("Tools.PowerCombine", "Tools", "Power combining",
+        callPwrComb, QKeySequence(Qt::CTRL | Qt::Key_7));
+
+    mgr.registerCommand("Tools.DataConverter", "Tools", "Data files converter",
+        callConverter, QKeySequence(Qt::CTRL | Qt::Key_8));
+
+    mgr.registerCommand("Tools.RFLayout", "Tools", "RF Layout",
+        callRFLayout, QKeySequence(Qt::CTRL | Qt::Key_9));
+
+    mgr.registerCommand("Tools.SParam", "Tools", "S-par Viewer & Syntesis Tools",
+        callSPAR_Viewer, QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_1));
+
+    mgr.registerCommand("Tools.RXCalc", "Tools", "RXCalc",
+        callRxcalc, QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_2));
+
+
+
+           //
+           // SIMULATION
+           //
+    mgr.registerCommand("Sim.Simulate", "Simulation", "Simulate",
+        simulate, QKeySequence(Qt::Key_F2));
+
+    mgr.registerCommand("Sim.Tune", "Simulation", "Tune",
+        tune, QKeySequence(Qt::Key_F3));
+
+    mgr.registerCommand("Sim.ViewDisplay", "Simulation", "View Data Display Schematic",
+        dpl_sch, QKeySequence(Qt::Key_F4));
+
+    mgr.registerCommand("Sim.DCbias", "Simulation", "Calculate DC bias",
+        dcbias, QKeySequence(Qt::Key_F8));
+
+    mgr.registerCommand("Sim.Messages", "Simulation", "Show Last Messages",
+        showMsg, QKeySequence(Qt::Key_F5));
+
+    mgr.registerCommand("Sim.Netlist", "Simulation", "Show Last Netlist",
+        showNet, QKeySequence(Qt::Key_F6));
+
+    mgr.registerCommand("Sim.ResetLimits", "Simulation", "Reset Diagram Limits",
+        resetDiagramLimits, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_E));
+
+
+
+           //
+           // VIEW
+           //
+    mgr.registerCommand("View.All", "View", "View All",
+        magAll, QKeySequence(Qt::Key_0));
+
+    mgr.registerCommand("View.OneToOne", "View", "View 1:1",
+        magOne, QKeySequence(Qt::Key_1));
+
+    mgr.registerCommand("View.ZoomIn", "View", "Zoom in",
+        magPlus, QKeySequence::ZoomIn);
+
+    mgr.registerCommand("View.ZoomOut", "View", "Zoom out",
+        magMinus, QKeySequence::ZoomOut);
+
+    mgr.registerCommand("View.ZoomSelection", "View", "Zoom to selection",
+        magSel, QKeySequence(QString("Z")));
+
+    mgr.registerCommand("View.Grid", "View", "Show Grid",
+        showGrid, QKeySequence(Qt::ALT | Qt::Key_G));
+
+    mgr.registerCommand("View.Dock", "View", "Dock Window",
+        viewBrowseDock, QKeySequence());
+
+    mgr.registerCommand("View.Octave", "View", "Octave Window",
+        viewOctaveDock, QKeySequence());
+
+
+
+    //
+    // HELP
+    //
+    mgr.registerCommand("Help.Index", "Help", "Help Index",
+        helpIndex, QKeySequence(Qt::Key_F1));
+
+    mgr.registerCommand("Help.GettingStarted", "Help", "Getting Started",
+        helpGetStart, QKeySequence(Qt::SHIFT | Qt::Key_F1));
+
+    mgr.registerCommand("Help.AboutQucs", "Help", "About Qucs",
+        helpAboutApp, QKeySequence());
+
+    mgr.registerCommand("Help.AboutQt", "Help", "About Qt",
+        helpAboutQt, QKeySequence());
+
+}

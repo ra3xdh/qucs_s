@@ -24,6 +24,7 @@
 #include <QStack>
 #include <QFileSystemModel>
 #include <QSortFilterProxyModel>
+#include "qucsshortcutmanager.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -115,6 +116,9 @@ public:
   void (MouseActions::*MousePressAction) (Schematic*, QMouseEvent*, float, float);
   void (MouseActions::*MouseDoubleClickAction) (Schematic*, QMouseEvent*);
   void (MouseActions::*MouseReleaseAction) (Schematic*, QMouseEvent*);
+
+  // Shortcut manager
+  void setDefaultShortcut();
 
 protected:
   void closeEvent(QCloseEvent*);
