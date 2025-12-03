@@ -163,6 +163,10 @@ void QucsApp::initActions()
   fileSettings->setWhatsThis(tr("Settings\n\nSets properties of the file"));
   connect(fileSettings, SIGNAL(triggered()), SLOT(slotFileSettings()));
 
+  ShortcutManagerAction = new QAction("", this);
+  connect(ShortcutManagerAction, SIGNAL(triggered()), SLOT(slotShortcutDialog()));
+  this->addAction(ShortcutManagerAction);
+
   filePrint = new QAction(QIcon((":/bitmaps/svg/fileprint.svg")), tr("&Print..."), this);
   filePrint->setShortcut(QKeySequence::Print);
   filePrint->setStatusTip(tr("Prints the current document"));
@@ -1209,7 +1213,7 @@ void QucsApp::setDefaultShortcut() {
         fileClose, QKeySequence(Qt::CTRL | Qt::Key_E));
 
     mgr.registerCommand("File.CloseAll", "File", "Close all documents",
-        fileCloseAll, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_E));
+        fileCloseAll, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Q));
 
     mgr.registerCommand("File.CloseOthers", "File", "Close all documents but current",
         fileCloseOthers, QKeySequence(Qt::ALT | Qt::Key_W));
@@ -1260,10 +1264,8 @@ void QucsApp::setDefaultShortcut() {
     mgr.registerCommand("File.DocumentSettings", "File", "Document Settings",
         fileSettings, QKeySequence(Qt::CTRL | Qt::Key_Period));
 
-  /* Action not created yet - This will be done later
     mgr.registerCommand("File.ShortcutManager", "File", "Shortcut Manager",
         ShortcutManagerAction, QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_S));
-*/
 
     mgr.registerCommand("File.EditSymbol", "File", "Edit Circuit Symbol",
         symEdit, QKeySequence(Qt::Key_F9));
@@ -1423,9 +1425,6 @@ void QucsApp::setDefaultShortcut() {
 
     mgr.registerCommand("Project.CreateLib", "Project", "Create Library",
         createLib, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_L));
-
-    mgr.registerCommand("Project.Converter", "Project", "Import Export Data",
-        callConverter, QKeySequence(Qt::CTRL | Qt::Key_8));
 
     mgr.registerCommand("Project.ExportCSV", "Project", "Export to CSV",
         graph2csv, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));

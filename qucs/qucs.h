@@ -396,6 +396,7 @@ public:
   QAction *helpQucsIndex;
   QAction *simSettings;
   QAction *buildVAModule;
+  QAction *ShortcutManagerAction;
   
 public slots:
   void slotEditRotate(bool);  // rotate the selected items
