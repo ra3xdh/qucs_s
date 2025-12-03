@@ -130,6 +130,25 @@ void QucsApp::initActions()
 	        tr("Examples\n\nStart file chooser dialog and open one of example schematics"));
   connect(fileExamples, SIGNAL(triggered()), SLOT(slotFileExamples()));
 
+  ////////////////////////////////////////////////////////////////////////
+  // Navigate through tabs
+  TabFirstAction = new QAction("Go to the first tab", this);
+  connect(TabFirstAction, SIGNAL(triggered()), SLOT(slotFirstTab()));
+  this->addAction(TabFirstAction);
+
+  TabPreviousAction = new QAction("Go to the previous tab", this);
+  connect(TabPreviousAction, SIGNAL(triggered()), SLOT(slotPreviousTab()));
+  this->addAction(TabPreviousAction);
+
+  TabNextAction = new QAction("Go to the next tab", this);
+  connect(TabNextAction, SIGNAL(triggered()), SLOT(slotNextTab()));
+  this->addAction(TabNextAction);
+
+  TabLastAction = new QAction("Go to the last tab", this);
+  connect(TabLastAction, SIGNAL(triggered()), SLOT(slotLastTab()));
+  this->addAction(TabLastAction);
+  ////////////////////////////////////////////////////////////////////////
+
 
   symEdit = new QAction(tr("&Edit Circuit Symbol"), this);
   symEdit->setShortcut(Qt::Key_F9);
@@ -1195,28 +1214,27 @@ void QucsApp::setDefaultShortcut() {
     mgr.registerCommand("File.CloseOthers", "File", "Close all documents but current",
         fileCloseOthers, QKeySequence(Qt::ALT | Qt::Key_W));
 
-/* Actions not created yet - This will be done later
+
     mgr.registerCommand("File.CloseLeft", "File", "Close all documents to the left",
-        fileCloseLeft, QKeySequence(Qt::ALT | Qt::SHIFT | Qt::Key_F1));
+        fileCloseAllLeft, QKeySequence(Qt::ALT | Qt::SHIFT | Qt::Key_F1));
 
     mgr.registerCommand("File.CloseRight", "File", "Close all documents to the right",
-        fileCloseRight, QKeySequence(Qt::ALT | Qt::SHIFT | Qt::Key_F2));*/
+        fileCloseAllRight, QKeySequence(Qt::ALT | Qt::SHIFT | Qt::Key_F2));
 
     mgr.registerCommand("File.ClearRecent", "File", "Clear recent files",
         fileClearRecent, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Delete));
 
- /* Actions not created yet - This will be done later
     mgr.registerCommand("File.FirstTab", "File", "Go to the first tab",
-        gotoFirstTab, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_PageUp));
+        TabFirstAction, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_PageUp));
 
     mgr.registerCommand("File.PrevTab", "File", "Go to the previous tab",
-        gotoPrevTab, QKeySequence(Qt::CTRL | Qt::Key_PageUp));
+        TabPreviousAction, QKeySequence(Qt::CTRL | Qt::Key_PageUp));
 
     mgr.registerCommand("File.NextTab", "File", "Go to the next tab",
-        gotoNextTab, QKeySequence(Qt::CTRL | Qt::Key_PageDown));
+        TabNextAction, QKeySequence(Qt::CTRL | Qt::Key_PageDown));
 
     mgr.registerCommand("File.LastTab", "File", "Go to the last tab",
-        gotoLastTab, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_PageDown));*/
+        TabLastAction, QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_PageDown));
 
     mgr.registerCommand("File.Save", "File", "Save",
         fileSave, QKeySequence::Save);

@@ -215,6 +215,13 @@ private slots:
   void slotSearchLibComponent(const QString &);
   void slotSearchLibClear();
 
+  // Tab navigation
+  void slotFirstTab();
+  void slotNextTab();
+  void slotLastTab();
+  void slotPreviousTab();
+  void slotSwitchToTab(int index);
+
 signals:
   void signalKillEmAll();
 
@@ -241,6 +248,9 @@ public:
           *editCut, *editCopy, *magAll, *magSel, *magOne, *magMinus, *filePrintFit, *tune,
           *symEdit, *intoH, *popH, *simulate, *save_netlist, *dpl_sch, *undo, *redo, *dcbias,
           *saveCdlNetlist, *cdlSettings;
+
+  // Navigate tabs
+  QAction *TabFirstAction, *TabLastAction, *TabNextAction, *TabPreviousAction;
 
   QAction *exportAsImage;
 

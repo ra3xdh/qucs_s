@@ -1927,3 +1927,50 @@ void QucsApp::slotShortcutDialog() {
     QucsShortcutDialog *d = new QucsShortcutDialog(this);
     d->exec();
 }
+
+
+////////////////////////////////////////////////////////////////
+// Actions to navigate tabs
+// Go to the first tab (<- left)
+void QucsApp::slotFirstTab() {
+    int count = DocumentTab->count();
+    if(count > 0) {
+        DocumentTab->setCurrentIndex(0);
+    }
+}
+
+// Move to the next tab (to the right)
+void QucsApp::slotNextTab() {
+    int count = DocumentTab->count();
+    if(count <= 1) return;
+
+    int current = DocumentTab->currentIndex();
+    int next = (current + 1) % count;
+    DocumentTab->setCurrentIndex(next);
+}
+
+// Move to the previous tab (to the left)
+void QucsApp::slotPreviousTab() {
+    int count = DocumentTab->count();
+    if(count <= 1) return;
+
+    int current = DocumentTab->currentIndex();
+    int prev = (current - 1 + count) % count;
+    DocumentTab->setCurrentIndex(prev);
+}
+
+// Go to the last tab (-> right)
+void QucsApp::slotLastTab() {
+    int count = DocumentTab->count();
+    if(count > 0) {
+        DocumentTab->setCurrentIndex(count - 1);
+    }
+}
+
+void QucsApp::slotSwitchToTab(int index)
+{
+    if(index >= 0 && index < DocumentTab->count()) {
+        DocumentTab->setCurrentIndex(index);
+    }
+}
+////////////////////////////////////////////////////////////////
