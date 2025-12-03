@@ -159,6 +159,12 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
 
     t->addTab(appSettingsTab, tr("Settings"));
 
+    appSettingsGrid->addWidget(new QLabel(tr("Set custom shortcut:"), appSettingsTab), 9, 0);
+    ShortcutButton = new QPushButton(appSettingsTab);
+    connect(ShortcutButton, SIGNAL(clicked()),
+        parent, SLOT(slotShortcutDialog()));
+    appSettingsGrid->addWidget(ShortcutButton, 9, 1);
+
     // ...........................................................
     // The appearance settings tab
     QWidget *appAppearanceTab = new QWidget(t);
@@ -521,6 +527,8 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     editorEdit->setText(QucsSettings.Editor);
     checkWiring->setChecked(QucsSettings.NodeWiring);
     allowFlexibleWires->setChecked(_settings::Get().item<bool>("AllowFlexibleWires"));
+
+    ShortcutButton->setText("Custom Shortcut");
 
     for(int z=LanguageCombo->count()-1; z>=0; z--)
         if(LanguageCombo->itemText(z).section('(',1,1).remove(')') == QucsSettings.Language)

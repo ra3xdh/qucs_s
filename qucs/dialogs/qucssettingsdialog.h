@@ -20,6 +20,7 @@
 #define QUCSSETTINGSDIALOG_H
 
 #include "qucs.h"
+#include "qucsshortcutdialog.h"
 
 #include <QDialog>
 #include <QFont>
@@ -101,6 +102,7 @@ public:
                 *ColorReal, *ColorCharacter, *ColorDataType, *ColorAttribute,
                 *ColorDirective, *ColorTask;
     QPushButton *RemovePathButt;
+    QPushButton *ShortcutButton;
 
     QVBoxLayout *all;
     QIntValidator *val50;

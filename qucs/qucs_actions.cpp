@@ -1923,4 +1923,7 @@ void QucsApp::slotHelpAbout()
   ad->exec();
 }
 
-// vim:ts=8:sw=2:noet
+void QucsApp::slotShortcutDialog() {
+    QucsShortcutDialog *d = new QucsShortcutDialog(this);
+    d->exec();
+}

@@ -25,6 +25,7 @@
 #include <QFileSystemModel>
 #include <QSortFilterProxyModel>
 #include "qucsshortcutmanager.h"
+#include "qucsshortcutdialog.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -325,6 +326,7 @@ private slots:
   void slotToggleOctave(bool);
   void slotToggleDock(bool);
   void slotHelpAbout();     // shows an about dialog
+  void slotShortcutDialog();
 
 private:
   void initActions();    // initializes all QActions of the application
