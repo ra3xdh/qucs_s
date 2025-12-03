@@ -13,7 +13,6 @@ set(DIALOGS_HDRS
     digisettingsdialog.h
     exportdialog.h
     importdialog.h
-    keysequenceedit.h
     labeldialog.h
     librarydialog.h
     loaddialog.h
@@ -57,7 +56,6 @@ set(DIALOGS_SRCS
     tuner.cpp
     fillfromspicedialog.cpp
     qucsshortcutdialog.cpp
-    keysequenceedit.cpp
 )
 
 # Headers that need Qt MOC generation
@@ -84,7 +82,6 @@ set(DIALOGS_MOC_HDRS
     tuner.h
     fillfromspicedialog.h
     qucsshortcutdialog.h
-    keysequenceedit.h
 )
 
 # Qt Designer UI files

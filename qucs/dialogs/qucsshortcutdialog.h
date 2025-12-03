@@ -1,4 +1,5 @@
 /*
+ *  Copyright (C) 2014 Yoda Lee (YodaLee) <lc85301@gmail.com>
  *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -21,56 +22,57 @@
 #include "main.h"
 #include "qucs.h"
 #include "qucsshortcutmanager.h"
-#include "keysequenceedit.h"
 #include <QDialog>
 
 class QListWidget;
 class QTableWidget;
 class QLabel;
-class KeySequenceEdit;
 class QPushButton;
 class QLineEdit;
+class QKeyEvent;
 
 class QucsShortcutDialog : public QDialog {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  explicit QucsShortcutDialog(QucsApp *app, QWidget *parent = nullptr);
-  virtual ~QucsShortcutDialog();
+    explicit QucsShortcutDialog(QucsApp *app, QWidget *parent = nullptr);
+    virtual ~QucsShortcutDialog();
 
 private slots:
-  void slotChooseMenu();
-  void slotSetShortcut();
-  void slotRemoveShortcut();
-  void slotDefaultShortcut();
-  void slotResetAllShortcuts();
-  void slotOK();
-  void slotImport();
-  void slotExport();
-  void slotCheckKey();
-  void slotSetFocus();
-  void slotItemSelectionChanged();
-  void slotSearchShortcuts(const QString &text);
+    void slotChooseMenu();
+    void slotSetShortcut();
+    void slotRemoveShortcut();
+    void slotDefaultShortcut();
+    void slotResetAllShortcuts();
+    void slotOK();
+    void slotImport();
+    void slotExport();
+    void slotItemSelectionChanged();
+    void slotSearchShortcuts(const QString &text);
+    void slotCellDoubleClicked(int row, int column);
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 
 signals:
-  void signalValidKey();
+    void signalValidKey();
 
 private:
-  QucsApp *App;
-  QucsShortcutManager &m_manager;
+    QucsApp *App;
+    QucsShortcutManager &m_manager;
+    bool m_capturingKey;
 
-  void fillMenu();
-  void setShortcut(const QKeySequence &key);
-  void highlightConflicts();
-  void updateShortcutDisplay();
+    void fillMenu();
+    void setShortcut(const QKeySequence &key);
+    void highlightConflicts();
+    void updateShortcutDisplay();
 
-  // UI Components
-  QListWidget *menuList;
-  QTableWidget *actionList;
-  QLabel *messageLabel;
-  KeySequenceEdit *sequenceInput;
-  QLineEdit *searchBox;
-  QPushButton *setButton, *removeButton, *defaultButton, *resetAllButton,
-      *okButton, *importButton, *exportButton;
+           // UI Components
+    QListWidget *menuList;
+    QTableWidget *actionList;
+    QLabel *messageLabel;
+    QLineEdit *searchBox;
+    QPushButton *setButton, *removeButton, *defaultButton, *resetAllButton,
+        *okButton, *importButton, *exportButton;
 };
 
 #endif
