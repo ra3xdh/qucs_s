@@ -52,7 +52,7 @@ QucsShortcutDialog::QucsShortcutDialog(QucsApp *app, QWidget *parent)
   actionList->setColumnWidth(0, 300); // Action column
   actionList->setColumnWidth(1, 150); // Shortcut column
 
-  // NEW: Search box
+  // Search box
   searchBox = new QLineEdit();
   searchBox->setPlaceholderText(tr("Search shortcuts..."));
   connect(searchBox, SIGNAL(textChanged(QString)),
@@ -104,7 +104,7 @@ QucsShortcutDialog::QucsShortcutDialog(QucsApp *app, QWidget *parent)
   btnLayout->addWidget(setButton);
   btnLayout->addWidget(removeButton);
   btnLayout->addWidget(defaultButton);
-  btnLayout->addWidget(resetAllButton); // NEW
+  btnLayout->addWidget(resetAllButton);
 
   QVBoxLayout *textLayout = new QVBoxLayout();
   textLayout->addWidget(new QLabel(tr("New shortcut:")));
@@ -154,7 +154,7 @@ void QucsShortcutDialog::fillMenu() {
   // Sort alphabetically for better UX
   categories.sort();
 
-  for (const QString &category : categories) {
+  for (const QString &category : qAsConst(categories)) {
     QListWidgetItem *item = new QListWidgetItem(category);
     menuList->addItem(item);
   }
@@ -305,7 +305,7 @@ void QucsShortcutDialog::slotSetShortcut() {
   QList<ShortcutConflict> conflicts = m_manager.findConflicts(newKey);
   if (!conflicts.isEmpty()) {
     QString msg = tr("This shortcut is already used by:\n\n");
-    for (const auto &conflict : conflicts) {
+    for (const auto &conflict : qAsConst(conflicts)) {
       msg +=
           QString("  • %1: %2\n").arg(conflict.category, conflict.description);
     }
@@ -500,7 +500,7 @@ void QucsShortcutDialog::slotCheckKey() {
     messageLabel->setStyleSheet("QLabel { color: green; }");
   } else {
     QString msg = "⚠ Conflicts with:\n";
-    for (const auto &conflict : conflicts) {
+    for (const auto &conflict : qAsConst(conflicts)) {
       msg +=
           QString("  • %1: %2\n").arg(conflict.category, conflict.description);
     }
@@ -529,27 +529,113 @@ void QucsShortcutDialog::slotItemSelectionChanged() {
 }
 
 // ----------------------------------------------------------------------------
-// NEW: Search functionality
+// Search across ALL categories and switch to matching category
 // ----------------------------------------------------------------------------
 void QucsShortcutDialog::slotSearchShortcuts(const QString &text) {
-  if (text.isEmpty()) {
-    // Show all rows
-    for (int row = 0; row < actionList->rowCount(); ++row) {
-      actionList->setRowHidden(row, false);
+    if (text.isEmpty()) {
+        // Show all rows in current category
+        for (int row = 0; row < actionList->rowCount(); ++row) {
+            actionList->setRowHidden(row, false);
+        }
+        return;
     }
-    return;
-  }
 
-  // Filter rows based on search text
-  QString searchLower = text.toLower();
+    QString searchLower = text.toLower();
 
-  for (int row = 0; row < actionList->rowCount(); ++row) {
-    QString action = actionList->item(row, 0)->text().toLower();
-    QString shortcut = actionList->item(row, 1)->text().toLower();
+    // Search through ALL categories
+    QList<QString> allCategories = m_manager.allCategories();
 
-    bool matches =
-        action.contains(searchLower) || shortcut.contains(searchLower);
+    QString firstMatchCategory;
+    int firstMatchRow = -1;
+    bool foundInCurrentCategory = false;
 
-    actionList->setRowHidden(row, !matches);
-  }
+    // Get current category
+    QListWidgetItem *currentItem = menuList->currentItem();
+    QString currentCategory = currentItem ? currentItem->text() : "";
+
+    // First, check if there's a match in the current category
+    for (int row = 0; row < actionList->rowCount(); ++row) {
+        QString action = actionList->item(row, 0)->text().toLower();
+        QString shortcut = actionList->item(row, 1)->text().toLower();
+
+        bool matches = action.contains(searchLower) || shortcut.contains(searchLower);
+
+        if (matches) {
+            foundInCurrentCategory = true;
+            actionList->setRowHidden(row, false);
+        } else {
+            actionList->setRowHidden(row, true);
+        }
+    }
+
+    // If found in current category, we're done
+    if (foundInCurrentCategory) {
+        return;
+    }
+
+    // Otherwise, search all other categories
+    for (const QString &category : qAsConst(allCategories)) {
+        if (category == currentCategory) {
+            continue; // Already checked
+        }
+
+        QList<QucsCommand *> commands = m_manager.commandsInCategory(category);
+
+        for (int i = 0; i < commands.size(); ++i) {
+            QucsCommand *cmd = commands[i];
+            QString action = cmd->description().toLower();
+            QString shortcut = cmd->currentKeySequence().toString().toLower();
+
+            if (action.contains(searchLower) || shortcut.contains(searchLower)) {
+                // Found a match! Remember the first one
+                if (firstMatchCategory.isEmpty()) {
+                    firstMatchCategory = category;
+                    firstMatchRow = i;
+                }
+            }
+        }
+
+        // If we found a match, no need to search further
+        if (!firstMatchCategory.isEmpty()) {
+            break;
+        }
+    }
+
+    // If we found a match in another category, switch to it
+    if (!firstMatchCategory.isEmpty()) {
+        // Find the category in the list
+        for (int i = 0; i < menuList->count(); ++i) {
+            if (menuList->item(i)->text() == firstMatchCategory) {
+                // Block signals to avoid triggering slotChooseMenu
+                menuList->blockSignals(true);
+                menuList->setCurrentRow(i);
+                menuList->blockSignals(false);
+
+                // Manually refresh the action list
+                slotChooseMenu();
+
+                // Now filter the newly loaded category
+                for (int row = 0; row < actionList->rowCount(); ++row) {
+                    QString action = actionList->item(row, 0)->text().toLower();
+                    QString shortcut = actionList->item(row, 1)->text().toLower();
+
+                    bool matches = action.contains(searchLower) || shortcut.contains(searchLower);
+                    actionList->setRowHidden(row, !matches);
+                }
+
+                // Select the first matching row if possible
+                if (firstMatchRow >= 0 && firstMatchRow < actionList->rowCount()) {
+                    actionList->setCurrentCell(firstMatchRow, 0);
+                }
+
+                break;
+            }
+        }
+    } else {
+        // No matches found in any category
+        // Hide all rows and maybe show a message
+        for (int row = 0; row < actionList->rowCount(); ++row) {
+            actionList->setRowHidden(row, true);
+        }
+    }
 }

@@ -208,7 +208,7 @@ void QucsShortcutManager::removeShortcut(const QString &commandId)
 void QucsShortcutManager::resetToDefaults()
 {
     // O(n) where n is total commands
-    for (const auto &cmd : m_commands) {
+    for (const auto &cmd : qAsConst(m_commands)) {
         QKeySequence oldKey = cmd->currentKeySequence();
         cmd->resetToDefault();
         QKeySequence newKey = cmd->currentKeySequence();
@@ -224,7 +224,7 @@ void QucsShortcutManager::resetCategory(const QString &category)
 {
     QList<QucsCommand*> commands = commandsInCategory(category);
     
-    for (QucsCommand *cmd : commands) {
+    for (QucsCommand *cmd : qAsConst(commands)) {
         QKeySequence oldKey = cmd->currentKeySequence();
         cmd->resetToDefault();
         QKeySequence newKey = cmd->currentKeySequence();
@@ -247,7 +247,7 @@ QList<ShortcutConflict> QucsShortcutManager::findConflicts(const QKeySequence &k
     // O(k) where k is number of commands with this key (usually 0 or 1)
     QList<QString> commandIds = m_shortcutIndex.values(key);
     
-    for (const QString &id : commandIds) {
+    for (const QString &id : qAsConst(commandIds)) {
         if (QucsCommand *cmd = command(id)) {
             ShortcutConflict conflict;
             conflict.commandId = cmd->id();
@@ -271,7 +271,7 @@ bool QucsShortcutManager::hasConflict(const QKeySequence &key,
     // O(k) lookup
     QList<QString> commandIds = m_shortcutIndex.values(key);
     
-    for (const QString &id : commandIds) {
+    for (const QString &id : qAsConst(commandIds)) {
         if (id != excludeCommandId) {
             return true;
         }
