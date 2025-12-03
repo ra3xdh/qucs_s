@@ -5353,14 +5353,14 @@ Unknown component!
 %1
 
 Do you want to load schematic anyway?
-Unknown components will be replaced 
+Unknown components will be replaced
 by dummy subcircuit placeholders.</source>
         <translation>Ошибка форматирования:
 Неизвестный компонент!
 %1
 
 Всё равно загрузить схему?
-Неизвестные компоненты будут заменены на 
+Неизвестные компоненты будут заменены на
 заглушки-подсхемы.</translation>
     </message>
     <message>
@@ -10043,7 +10043,7 @@ Wrong &apos;component&apos; line format!</source>
     <message>
         <location line="+2"/>
         <source>dielectric constant of insulator</source>
-        <translation>диэлектрическая постоянная изолятора</translation>
+        <translation>относительная диэлектрическая проницаемость изолятора</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -10425,9 +10425,9 @@ Overwrite ?</source>
     </message>
     <message>
         <location line="+5"/>
-        <source>Unsupported format of graphics file. 
+        <source>Unsupported format of graphics file.
 Use PNG, JPEG or SVG graphics!</source>
-        <translation>Неподдерживаемый формат графического файла. 
+        <translation>Неподдерживаемый формат графического файла.
 Используйте форматы SVG, PNG или JPEG!</translation>
     </message>
     <message>
@@ -10846,9 +10846,9 @@ Wrong &apos;painting&apos; line format!</source>
     </message>
     <message>
         <location line="+1"/>
-        <source>Wrong document version 
+        <source>Wrong document version
 </source>
-        <translation>Неправильная версия документа 
+        <translation>Неправильная версия документа
 </translation>
     </message>
     <message>
@@ -12717,7 +12717,7 @@ Enables/disables the filter calculation console</source>
         <location line="+146"/>
         <location line="+23"/>
         <location line="+21"/>
-        <source>Unable to implement filter with such parameters and topology 
+        <source>Unable to implement filter with such parameters and topology
 Change parameters and/or topology and try again!</source>
         <translation>Невозможно рассчитать фильтр с такими характеристиками и схемотехникой.
 Измените исходные данные и повторите расчёт!</translation>
@@ -12824,13 +12824,13 @@ Change parameters and try again.</source>
     </message>
     <message>
         <location line="+70"/>
-        <source>Unable to use Cauer section for Chebyshev or Butterworth 
+        <source>Unable to use Cauer section for Chebyshev or Butterworth
 frequency response. Try to use another topology.</source>
         <translation>Невозможно использовать звено фильтра Кауэра для фильтра Баттерворта или Чебышева. Используйте другую схемотехнику фильтра.</translation>
     </message>
     <message>
         <location line="+23"/>
-        <source>Unable to use MFB filter for Cauer or Inverse Chebyshev 
+        <source>Unable to use MFB filter for Cauer or Inverse Chebyshev
 frequency response. Try to use another topology.</source>
         <translation>Невозможно использовать фильтр с многопетлевой обратной связью для фильтра Кауэра или инверсного фильтра Чебышева. Используйте другую схемотехнику фильтра.</translation>
     </message>
@@ -13852,10 +13852,10 @@ Use subcircuit to crete Verilog-A module!</source>
     </message>
     <message>
         <location line="+46"/>
-        <source>Cannot start text editor! 
+        <source>Cannot start text editor!
 
 %1</source>
-        <translation>Не удалось запустить текстовый редактор! 
+        <translation>Не удалось запустить текстовый редактор!
 
 %1</translation>
     </message>
@@ -13871,7 +13871,7 @@ Use subcircuit to crete Verilog-A module!</source>
     </message>
     <message>
         <location line="+135"/>
-        <source>Executable %1 not found! 
+        <source>Executable %1 not found!
 
 (%2)</source>
         <translation>Исполняемый файл %1 не найден!
@@ -13880,10 +13880,10 @@ Use subcircuit to crete Verilog-A module!</source>
     </message>
     <message>
         <location line="+12"/>
-        <source>Cannot start %1 program! 
+        <source>Cannot start %1 program!
 
 (%2)</source>
-        <translation>Не удаётся запустить программу %1! 
+        <translation>Не удаётся запустить программу %1!
 
 (%2)</translation>
     </message>
@@ -13909,9 +13909,9 @@ Use subcircuit to crete Verilog-A module!</source>
     </message>
     <message>
         <location line="+17"/>
-        <source>Cannot start Qucs-RFLayout: 
+        <source>Cannot start Qucs-RFLayout:
 %1</source>
-        <translation>Не удаётся запустить Qucs-RFLayout: 
+        <translation>Не удаётся запустить Qucs-RFLayout:
 %1</translation>
     </message>
     <message>
@@ -19668,9 +19668,9 @@ Inserts the skeleton of a Octave function</source>
     </message>
     <message>
         <location line="+3"/>
-        <source>Device type doesn&apos;t match the model type. 
+        <source>Device type doesn&apos;t match the model type.
 </source>
-        <translation>Тип устройства не соответствует типу модели. 
+        <translation>Тип устройства не соответствует типу модели.
 </translation>
     </message>
     <message>
