@@ -21,6 +21,9 @@ struct SchematicSelection {
   std::vector<WireLabel*> labels;
   std::vector<Marker*> markers;
   std::vector<Node*> nodes;
+  // isolatedNodes, i.e. not owned by component/wire
+  // NOTE: they are also in @nodes, so don't use this for counting etc.
+  std::vector<Node*> isoNodes;
 
   // Return whether the selection is empty
   bool isEmpty() const {
