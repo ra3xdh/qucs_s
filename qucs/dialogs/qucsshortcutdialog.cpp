@@ -16,8 +16,15 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/**
+ * @file qucsshortcutdialog.cpp
+ * @brief Implementation of the keyboard shortcut editor dialog
+ * @authors Yoda Lee (original author, 2015), Andrés Martínez Mera (porting and
+ * update, 2025)
+ * @date Nov'25
+ */
+
 #include "qucsshortcutdialog.h"
-#include "qucs.h"
 #include "qucsshortcutmanager.h"
 
 #include <QDebug>

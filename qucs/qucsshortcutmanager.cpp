@@ -15,6 +15,13 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/**
+ * @file qucsshortcutmanager.cpp
+ * @brief Implementation of keyboard shortcut management system
+ * @author Andrés Martínez Mera
+ * @date Nov'25
+ */
+
 #include "qucsshortcutmanager.h"
 #include <QDebug>
 #include <QFile>
