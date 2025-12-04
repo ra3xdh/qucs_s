@@ -17,6 +17,7 @@
 
 #include <algorithm>
 #include <QString>
+#include <unordered_set>
 
 #include "components/vafile.h"
 #include "components/verilogfile.h"
@@ -1193,6 +1194,8 @@ Schematic::Selection Schematic::currentSelection() const {
         else if (pn->isSelected)
         {
             selection.nodes.push_back(pn);
+            // also add to seperate isolated nodes container
+            selection.isoNodes.push_back(pn);
             totalBounds = std::optional<QRect>{pn->boundingRect()};
         }
 
@@ -1235,6 +1238,7 @@ Schematic::Selection Schematic::currentSelection() const {
 Schematic::Selection Schematic::elementsToSelection(const std::list<Element*> &elements) const
 {
         std::optional<QRect> totalBounds = std::nullopt;
+        std::unordered_set<Node*> ownedNodes;
         Selection selection;
 
         // A helper to simplify uniting bounding boxes.
@@ -1250,8 +1254,15 @@ Schematic::Selection Schematic::elementsToSelection(const std::list<Element*> &e
 
             if (auto* pc = dynamic_cast<Component*>(element)) {
                 addElement(pc, selection.components);
+                // add all port nodes to ownedNodes set
+                for (auto* port : pc->Ports) {
+                    ownedNodes.emplace(port->Connection);
+                }
             } else if (auto* pw = dynamic_cast<Wire*>(element)) {
                 addElement(pw, selection.wires);
+                // add ports/nodes to ownedNodes set
+                ownedNodes.emplace(pw->Port1);
+                ownedNodes.emplace(pw->Port2);
             } else if (auto* pn = dynamic_cast<Node*>(element)) {
                 addElement(pn, selection.nodes);
             } else if (auto* pl = dynamic_cast<WireLabel*>(element)) {
@@ -1267,6 +1278,14 @@ Schematic::Selection Schematic::elementsToSelection(const std::list<Element*> &e
 
         if(!totalBounds) {
             return {};
+        }
+
+        // nodes that are not owned by either a component or a wire
+        // gets added to a separate @isoNodes container
+        for (auto* pn : selection.nodes) {
+            if (!ownedNodes.contains(pn)) {
+                selection.isoNodes.push_back(pn);
+            }
         }
 
         selection.bounds = *totalBounds;

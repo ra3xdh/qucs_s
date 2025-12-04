@@ -21,6 +21,9 @@ struct SchematicSelection {
   std::vector<WireLabel*> labels;
   std::vector<Marker*> markers;
   std::vector<Node*> nodes;
+  // isolatedNodes, i.e. not owned by component/wire
+  // NOTE: they are also in @nodes, so don't use this for counting etc.
+  std::vector<Node*> isoNodes;
 
   // Return whether the selection is empty
   bool isEmpty() const {
@@ -76,7 +79,8 @@ struct SchematicSelection {
     }
     for (auto* pm : markers)      pm->moveCenter(dx, dy);
     // NOTE: nodes are synced through their owner (components/wires)
-    // for (auto* pn : nodes)        pn->moveCenter(dx, dy);
+    // Special case: if we have isolated nodes, we move those
+    for (auto* pn : isoNodes)     pn->moveCenter(dx, dy);
 
     // Move bounds
     bounds.moveCenter(QPoint(dx, dy));
