@@ -234,73 +234,6 @@ void QucsShortcutDialog::slotChooseMenu() {
   if (actionList->rowCount() > 0) {
     actionList->setCurrentCell(0, 0);
   }
-
-  // Highlight conflicts
-  highlightConflicts();
-}
-
-// ----------------------------------------------------------------------------
-// Highlight conflicting shortcuts visually
-// The user cannot enter a duplicated shortcut, but this was introduced on an
-// early stage and it's useful to find hardcoded shortcut conflicts
-// ----------------------------------------------------------------------------
-void QucsShortcutDialog::highlightConflicts() {
-  // First, reset all backgrounds
-  for (int row = 0; row < actionList->rowCount(); ++row) {
-    actionList->item(row, 1)->setBackground(Qt::white);
-    actionList->item(row, 1)->setToolTip("");
-  }
-
-  // Find all shortcuts in current view
-  QHash<QString, QList<int>> shortcutRows;
-
-  for (int row = 0; row < actionList->rowCount(); ++row) {
-    QString shortcut = actionList->item(row, 1)->text();
-    if (!shortcut.isEmpty()) {
-      shortcutRows[shortcut].append(row);
-    }
-  }
-
-  // Highlight duplicates within category
-  for (auto it = shortcutRows.begin(); it != shortcutRows.end(); ++it) {
-    if (it.value().size() > 1) {
-      for (int row : qAsConst(it.value())) {
-        actionList->item(row, 1)->setBackground(QColor(255, 200, 200));
-        actionList->item(row, 1)->setToolTip(
-            tr("⚠ Warning: This shortcut is assigned to multiple actions in "
-               "this category!"));
-      }
-    }
-  }
-
-  // Also check for conflicts with other categories
-  for (int row = 0; row < actionList->rowCount(); ++row) {
-    QString shortcutStr = actionList->item(row, 1)->text();
-    if (shortcutStr.isEmpty())
-      continue;
-
-    QKeySequence key(shortcutStr);
-    QString currentId = actionList->item(row, 0)->data(Qt::UserRole).toString();
-
-    QList<ShortcutConflict> conflicts = m_manager.findConflicts(key);
-
-    if (conflicts.size() > 1) {
-      // Build tooltip with all conflicts
-      QString tooltip = tr("⚠ This shortcut conflicts with:\n");
-      for (const auto &conflict : qAsConst(conflicts)) {
-        if (conflict.commandId != currentId) {
-          tooltip += QString("  • %1: %2\n")
-                         .arg(conflict.category, conflict.description);
-        }
-      }
-
-      QTableWidgetItem *item = actionList->item(row, 1);
-      if (item->background() != QColor(255, 200, 200)) {
-        item->setBackground(QColor(255, 230, 200));
-      }
-      item->setToolTip(tooltip);
-    }
-  }
 }
 
 // ----------------------------------------------------------------------------
@@ -322,8 +255,6 @@ void QucsShortcutDialog::slotRemoveShortcut() {
   actionList->item(row, 1)->setText("");
   messageLabel->setText(tr("✓ Shortcut removed"));
   messageLabel->setStyleSheet("QLabel { color: green; }");
-
-  highlightConflicts();
 }
 
 // ----------------------------------------------------------------------------
@@ -569,11 +500,10 @@ void QucsShortcutDialog::slotCellDoubleClicked(int row, int column) {
   m_capturingKey = true;
   actionList->setCurrentCell(row, column);
 
-  // Visual feedback
+  // Visual feedback - just change text, no background color
   QTableWidgetItem *item = actionList->item(row, column);
   QString originalText = item->text();
   item->setText(tr("⌨ Press key combination..."));
-  item->setBackground(QColor(255, 255, 200)); // Light yellow
 
   // Store original text temporarily
   item->setData(Qt::UserRole + 1, originalText);
@@ -609,7 +539,6 @@ void QucsShortcutDialog::keyPressEvent(QKeyEvent *event) {
     QTableWidgetItem *item = actionList->item(row, 1);
     QString originalText = item->data(Qt::UserRole + 1).toString();
     item->setText(originalText);
-    item->setBackground(Qt::white);
     m_capturingKey = false;
     messageLabel->setText(tr("❌ Cancelled"));
     messageLabel->setStyleSheet("QLabel { color: gray; }");
@@ -620,7 +549,7 @@ void QucsShortcutDialog::keyPressEvent(QKeyEvent *event) {
     return;
   }
 
-  // Ignore
+  // Ignore modifier-only keys
   if (key == Qt::Key_Control || key == Qt::Key_Shift || key == Qt::Key_Alt ||
       key == Qt::Key_Meta) {
     return;
@@ -647,7 +576,6 @@ void QucsShortcutDialog::keyPressEvent(QKeyEvent *event) {
     QTableWidgetItem *item = actionList->item(row, 1);
     QString originalText = item->data(Qt::UserRole + 1).toString();
     item->setText(originalText);
-    item->setBackground(Qt::white);
     m_capturingKey = false;
     messageLabel->setText(tr("❌ Invalid shortcut"));
     messageLabel->setStyleSheet("QLabel { color: red; }");
@@ -673,10 +601,9 @@ void QucsShortcutDialog::keyPressEvent(QKeyEvent *event) {
       QTableWidgetItem *item = actionList->item(row, 1);
       QString originalText = item->data(Qt::UserRole + 1).toString();
       item->setText(originalText);
-      item->setBackground(Qt::white);
       m_capturingKey = false;
       messageLabel->setText(tr("❌ Cancelled"));
-      messageLabel->setStyleSheet("QLabel { color: gray; }");
+      messageLabel->setStyleSheet("QLabel { color: red; }");
       return;
     }
   }
@@ -685,7 +612,6 @@ void QucsShortcutDialog::keyPressEvent(QKeyEvent *event) {
   if (m_manager.setShortcut(commandId, newKey)) {
     QTableWidgetItem *item = actionList->item(row, 1);
     item->setText(newKey.toString());
-    item->setBackground(Qt::white);
 
     // Mark as modified
     QucsCommand *cmd = m_manager.command(commandId);
@@ -700,13 +626,11 @@ void QucsShortcutDialog::keyPressEvent(QKeyEvent *event) {
     messageLabel->setText(tr("✓ Shortcut set to: %1").arg(newKey.toString()));
     messageLabel->setStyleSheet("QLabel { color: green; font-weight: bold; }");
 
-    highlightConflicts();
   } else {
     QMessageBox::warning(this, tr("Error"), tr("Failed to set shortcut!"));
     QTableWidgetItem *item = actionList->item(row, 1);
     QString originalText = item->data(Qt::UserRole + 1).toString();
     item->setText(originalText);
-    item->setBackground(Qt::white);
     messageLabel->setText(tr("❌ Failed to set shortcut"));
     messageLabel->setStyleSheet("QLabel { color: red; }");
   }

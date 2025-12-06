@@ -181,16 +181,6 @@ private:
   void fillMenu();
 
   /**
-   * @brief Highlights conflicting shortcuts in the table
-   *
-   * Scans the current category for duplicate shortcuts and marks them
-   * with an orange background. The user is not allowed to enter duplicate
-   * shortcuts, but this feature is used to detected duplicated hardcoded
-   * shortcuts in the development
-   */
-  void highlightConflicts();
-
-  /**
    * @brief Updates the shortcut display (currently unused)
    *
    * Placeholder for future functionality to refresh the table view.
