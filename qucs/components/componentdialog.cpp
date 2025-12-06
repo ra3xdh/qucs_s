@@ -436,7 +436,21 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
 
       // Setup the widgets as per the stored type.
       sweepParamWidget["Sim"]->setOptions(getSimulationList(false));
-      sweepParamWidget["Type"]->setOptions({"lin", "log", "list"});
+      if (QucsSettings.DefaultSimulator == spicecompat::simNgspice ||
+          QucsSettings.DefaultSimulator == spicecompat::simXyce) {
+        if (component->Model != ".SW" &&
+            component->getProperty("Type")->Value != "list") {
+          if (component->Model == ".TR") {
+            sweepParamWidget["Type"]->setOptions({"lin"});
+          } else {
+            sweepParamWidget["Type"]->setOptions({"lin", "log"});
+          }
+        } else {
+          sweepParamWidget["Type"]->setOptions({"lin", "log", "list"});
+        }
+      } else {
+        sweepParamWidget["Type"]->setOptions({"lin", "log", "list"});
+      }
       updateSweepProperty("All");
 
       // Create the properties page and add it to the tab widget.

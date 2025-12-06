@@ -66,9 +66,9 @@ iRect::iRect()
 		QObject::tr("duration of high pulses")));
   Props.append(new Property("TL", "1 ms", true,
 		QObject::tr("duration of low pulses")));
-  Props.append(new Property("Tr", "1 ns", false,
+  Props.append(new Property("Tr", "1 us", false,
 		QObject::tr("rise time of the leading edge")));
-  Props.append(new Property("Tf", "1 ns", false,
+  Props.append(new Property("Tf", "1 us", false,
 		QObject::tr("fall time of the trailing edge")));
   Props.append(new Property("Td", "0 ns", false,
 		QObject::tr("initial delay time")));
