@@ -55,7 +55,8 @@ QString BJT::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::S
     }
 
     QStringList spice_incompat,spice_tr;
-    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"Kb"<<"Ab"<<"Fb"<<"UseGlobTemp"; // spice-incompatible parameters
+    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"Kb"<<"Ab"<<"Fb"
+                   <<"UseGlobTemp"<<"LibName"<<"CompName"; // spice-incompatible parameters
     spice_tr.clear(); // parameters that need conversion of names
 
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
