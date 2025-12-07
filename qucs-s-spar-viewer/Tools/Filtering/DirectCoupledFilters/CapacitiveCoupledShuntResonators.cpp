@@ -44,7 +44,7 @@
 /// Coupling Structures", George L. Matthaei, L. Young, E. M. Jones, Artech
 /// House pg. 482
 
-void DirectCoupledFilters::Synthesize_Capacitative_Coupled_Shunt_Resonators() {
+void DirectCoupledFilters::Synthesize_Capacitive_Coupled_Shunt_Resonators() {
   ComponentInfo Cseries, Lshunt, Ground, Cshunt;
   NodeInfo NI, NLeft, NRight, Ncenter;
 

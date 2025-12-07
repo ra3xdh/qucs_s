@@ -40,12 +40,16 @@ void DirectCoupledFilters::synthesize() {
   gi = LP_coeffs.getCoefficients();
 
   switch (Specification.DC_Coupling) {
-  case CapacitativeCoupledShuntResonators:
-    Synthesize_Capacitative_Coupled_Shunt_Resonators();
+  case CapacitiveCoupledShuntResonators:
+    Synthesize_Capacitive_Coupled_Shunt_Resonators();
     break;
 
   case InductiveCoupledSeriesResonators:
     Synthesize_Inductive_Coupled_Series_Resonators();
+    break;
+
+  case CapacitiveCoupledSeriesResonators:
+    Synthesize_Capacitive_Coupled_Series_Resonators();
     break;
 
   case InductiveCoupledShuntResonators:

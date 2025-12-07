@@ -54,12 +54,17 @@ private:
   ///
   /// \brief Synthesis of capacitive-coupled shunt resonators filters
   ///
-  void Synthesize_Capacitative_Coupled_Shunt_Resonators();
+  void Synthesize_Capacitive_Coupled_Shunt_Resonators();
 
   ///
   /// \brief Synthesis of inductive-coupled shunt resonators filters
   ///
   void Synthesize_Inductive_Coupled_Shunt_Resonators();
+
+  ///
+  /// \brief Synthesis of capacitive-coupled series resonators filters
+  ///
+  void Synthesize_Capacitive_Coupled_Series_Resonators();
 
   ///
   /// \brief Synthesis of inductive-coupled series resonators filters

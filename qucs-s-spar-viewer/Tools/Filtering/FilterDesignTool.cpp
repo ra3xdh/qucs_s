@@ -73,6 +73,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent) : QWidget(parent) {
   DC_CouplingTypeCombo->addItem("C-coupled shunt resonators");
   DC_CouplingTypeCombo->addItem("L-coupled shunt resonators");
   DC_CouplingTypeCombo->addItem("L-coupled series resonators");
+  DC_CouplingTypeCombo->addItem("C-coupled series resonators");
   DC_CouplingLabel = new QLabel("Coupling");
   FilterDesignLayout->addWidget(DC_CouplingLabel, layout_row, 0);
   FilterDesignLayout->addWidget(DC_CouplingTypeCombo, layout_row, 1);
@@ -530,8 +531,9 @@ void FilterDesignTool::UpdateDesignParameters() {
   ////////////////////////////////////////////////////////////////////////////
   // Coupling
   static const QMap<QString, Coupling> couplingMap{
-      {"C-coupled shunt resonators", CapacitativeCoupledShuntResonators},
+      {"C-coupled shunt resonators", CapacitiveCoupledShuntResonators},
       {"L-coupled shunt resonators", InductiveCoupledShuntResonators},
+      {"C-coupled series resonators", CapacitiveCoupledSeriesResonators},
       {"L-coupled series resonators", InductiveCoupledSeriesResonators}};
 
   const QString Couplingkey = DC_CouplingTypeCombo->currentText();
@@ -563,7 +565,7 @@ void FilterDesignTool::UpdateDesignParameters() {
     // Determine if the adjustable elements are inductors or capacitors
     bool useInductors = true;
 
-    if (Filter_SP.DC_Coupling == CapacitativeCoupledShuntResonators) {
+    if (Filter_SP.DC_Coupling == CapacitiveCoupledShuntResonators) {
       useInductors = true;
     } else if (Filter_SP.DC_Coupling == InductiveCoupledSeriesResonators) {
       useInductors = true;
