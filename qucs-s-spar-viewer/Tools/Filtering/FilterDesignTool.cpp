@@ -70,8 +70,9 @@ FilterDesignTool::FilterDesignTool(QWidget *parent) : QWidget(parent) {
   //********** Direct coupled filters - Coupling type *****
   layout_row++;
   DC_CouplingTypeCombo = new QComboBox();
-  DC_CouplingTypeCombo->addItem("Capacitative coupled shunt resonators");
-  DC_CouplingTypeCombo->addItem("Inductive coupled series resonators");
+  DC_CouplingTypeCombo->addItem("C-coupled shunt resonators");
+  DC_CouplingTypeCombo->addItem("L-coupled shunt resonators");
+  DC_CouplingTypeCombo->addItem("L-coupled series resonators");
   DC_CouplingLabel = new QLabel("Coupling");
   FilterDesignLayout->addWidget(DC_CouplingLabel, layout_row, 0);
   FilterDesignLayout->addWidget(DC_CouplingTypeCombo, layout_row, 1);
@@ -529,10 +530,9 @@ void FilterDesignTool::UpdateDesignParameters() {
   ////////////////////////////////////////////////////////////////////////////
   // Coupling
   static const QMap<QString, Coupling> couplingMap{
-      {"Capacitative coupled shunt resonators",
-       CapacitativeCoupledShuntResonators},
-      {"Inductive coupled series resonators",
-       InductiveCoupledSeriesResonators}};
+      {"C-coupled shunt resonators", CapacitativeCoupledShuntResonators},
+      {"L-coupled shunt resonators", InductiveCoupledShuntResonators},
+      {"L-coupled series resonators", InductiveCoupledSeriesResonators}};
 
   const QString Couplingkey = DC_CouplingTypeCombo->currentText();
   if (couplingMap.contains(Couplingkey)) {

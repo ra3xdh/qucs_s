@@ -15,7 +15,7 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "FilterDesignTool.h"
+#include "../FilterDesignTool.h"
 
 ///////////////////////////////////////////////////////////////////
 // Direct-coupled filters: Tunable elements window

@@ -65,6 +65,7 @@ enum ResponseType {
 enum FilterClass { Lowpass, Highpass, Bandpass, Bandstop };
 enum Coupling {
   CapacitativeCoupledShuntResonators,
+  InductiveCoupledShuntResonators,
   InductiveCoupledSeriesResonators
 };
 enum SemiLumpedImplementation { ONLY_INDUCTORS, INDUCTORS_AND_SHUNT_CAPS };

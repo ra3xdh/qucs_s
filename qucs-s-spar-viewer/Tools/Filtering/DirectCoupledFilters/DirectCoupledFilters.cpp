@@ -23,15 +23,33 @@ DirectCoupledFilters::DirectCoupledFilters(FilterSpecifications FS) {
   Specification = FS;
 }
 
+///
+/// \brief Class destructor
+///
 DirectCoupledFilters::~DirectCoupledFilters() {}
 
+///
+/// \brief Handles the direct-coupled filter implementation
+///
+/// \internal 1) First of all, the lowpass prototype coefficients are obtained,
+/// depending on the desired response. 2) Then, depending on the topology
+/// specified, this function calls the appropiate synthesis function
+///
 void DirectCoupledFilters::synthesize() {
   LowpassPrototypeCoeffs LP_coeffs(Specification);
   gi = LP_coeffs.getCoefficients();
-  if (Specification.DC_Coupling == CapacitativeCoupledShuntResonators) {
+
+  switch (Specification.DC_Coupling) {
+  case CapacitativeCoupledShuntResonators:
     Synthesize_Capacitative_Coupled_Shunt_Resonators();
-  }
-  if (Specification.DC_Coupling == InductiveCoupledSeriesResonators) {
+    break;
+
+  case InductiveCoupledSeriesResonators:
     Synthesize_Inductive_Coupled_Series_Resonators();
+    break;
+
+  case InductiveCoupledShuntResonators:
+    Synthesize_Inductive_Coupled_Shunt_Resonators();
+    break;
   }
 }

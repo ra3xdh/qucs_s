@@ -57,9 +57,16 @@ private:
   void Synthesize_Capacitative_Coupled_Shunt_Resonators();
 
   ///
+  /// \brief Synthesis of inductive-coupled shunt resonators filters
+  ///
+  void Synthesize_Inductive_Coupled_Shunt_Resonators();
+
+  ///
   /// \brief Synthesis of inductive-coupled series resonators filters
   ///
   void Synthesize_Inductive_Coupled_Series_Resonators();
+
+
 };
 
 #endif // DIRECTCOUPLED_H
