@@ -478,7 +478,12 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       propertyTableLayout->addLayout(spiceButtonLayout);
       QPushButton* spiceButton = new QPushButton(tr("Populate parameters from SPICE file..."), this);
       connect(spiceButton, &QPushButton::released, this, &ComponentDialog::slotFillFromSpice);
+
+      QPushButton* selectModelButton = new QPushButton(tr("Select model from Library"), this);
+      connect(spiceButton, &QPushButton::released, this, &ComponentDialog::slotSelectModel);
+
       spiceButtonLayout->addWidget(spiceButton);
+      spiceButtonLayout->addWidget(selectModelButton);
       spiceButtonLayout->addStretch();
     }
 
@@ -1082,4 +1087,10 @@ void ComponentDialog::slotFillFromSpice()
     delete property; 
 
   delete dlg;
+}
+
+
+void ComponentDialog::slotSelectModel()
+{
+
 }
