@@ -15,14 +15,31 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/**
+ * @file DirectCoupledFilters.h
+ * @brief Synthesis of different types of Direct Coupled filters
+ * @author Andrés Martínez Mera
+ * @date 2025
+ */
+
 #ifndef DIRECTCOUPLEDFILTERS_H
 #define DIRECTCOUPLEDFILTERS_H
 
 
 #include "../../Schematic/Network.h"
 #include "../../Schematic/component.h"
-#include "LowpassPrototypeCoeffs.h"
+#include "../LowpassPrototypeCoeffs.h"
 
+/**
+ * @class DirectCoupledFilters
+ * @brief Synthesis of different topologies of Direct-Coupled filters
+ *
+ * This class implements the design equations for the design of the following Direct-Coupled circuit topologies:
+ * - Capacitatively-coupled shunt resonators
+ * - Inductively-coupled shunt resonators
+ *
+ * The resonators' values may be calculated by fixing the inductance or the capacitance
+ */
 class DirectCoupledFilters : public Network {
 public:
   DirectCoupledFilters();
@@ -31,11 +48,17 @@ public:
   void synthesize();
 
 private:
-  struct FilterSpecifications Specification;
+  struct FilterSpecifications Specification; /// Filter specifications (band, response type, ripple, etc.)
+  std::deque<double> gi; /// Lowpass prototype. Initialized when the synthesize function is called.
 
-  std::deque<double> gi; // Lowpass prototype
-
+  ///
+  /// \brief Synthesis of capacitive-coupled shunt resonators filters
+  ///
   void Synthesize_Capacitative_Coupled_Shunt_Resonators();
+
+  ///
+  /// \brief Synthesis of inductive-coupled series resonators filters
+  ///
   void Synthesize_Inductive_Coupled_Series_Resonators();
 };
 

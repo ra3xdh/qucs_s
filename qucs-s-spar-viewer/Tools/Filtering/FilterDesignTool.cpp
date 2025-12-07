@@ -82,6 +82,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent) : QWidget(parent) {
   ResonatorValuesButton = new QPushButton("Adjust Resonator");
   ResonatorValuesButton
       ->hide(); // Initially hidden. Direct coupled filters only
+  tunableComponent_DC_Filters = QString("Inductor");
   FilterDesignLayout->addWidget(ResonatorValuesButton, layout_row, 2);
   connect(ResonatorValuesButton, SIGNAL(clicked()), this,
           SLOT(openResonatorValuesDialog()));
@@ -645,6 +646,7 @@ void FilterDesignTool::UpdateDesignParameters() {
   Filter_SP.MS_Subs = MS_Subs;
   Filter_SP.resonatorValues =
       resonator_values_scaled; // Direct-coupled filters only
+  Filter_SP.tunableComponent_DC_Filters = tunableComponent_DC_Filters;
   ////////////////////////////////////////////////////////////////////////////
 
   synthesize();

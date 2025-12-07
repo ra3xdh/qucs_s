@@ -35,7 +35,7 @@
 #include "CanonicalFilter.h"
 #include "CapacitivelyCoupledShuntResonatorsFilter.h"
 #include "CoupledLineBandpassFilter.h"
-#include "DirectCoupledFilters.h"
+#include "./DirectCoupledFilters/DirectCoupledFilters.h"
 #include "EllipticFilter.h"
 #include "EndCoupled.h"
 #include "QuarterWaveFilters.h"
@@ -111,7 +111,7 @@ private:
   std::vector<QDoubleSpinBox *> ResonatorSpinboxes; // Value
   std::vector<QComboBox*> ResonatorScaleComboboxes; // Scale
   QComboBox *tunableComponentCombo; // Combo to choose which element of the resonator is tunable
-  QString tunableComponent_DC_Filters; // "Inductor" or "Capacitor"
+  QString tunableComponent_DC_Filters;
   // Substrate
   MS_Substrate MS_Subs;
 

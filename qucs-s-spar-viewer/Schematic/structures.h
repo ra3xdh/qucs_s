@@ -134,8 +134,9 @@ struct FilterSpecifications {
   double ImpedanceRatio;
   std::vector<double> resonatorValues; // Direct-coupled filters only
 
-  // Substrate Settings
-  MS_Substrate MS_Subs;
+  MS_Substrate MS_Subs; // Substrate Settings
+
+  QString tunableComponent_DC_Filters;
 };
 
 // Contains the information of the matching network topology

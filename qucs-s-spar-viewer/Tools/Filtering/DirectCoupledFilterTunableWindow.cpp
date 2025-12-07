@@ -23,8 +23,7 @@ void FilterDesignTool::openResonatorValuesDialog() {
   // Number of resonators
   unsigned int N = OrderSpinBox->value();
 
-  // Use the stored tunable component preference (independent of topology)
-  // If not set, default to "Inductor"
+  // Use the stored tunable component preference
   QString tunableComponent = tunableComponent_DC_Filters;
 
   // Ensure resonatorValues vector has correct size
@@ -128,6 +127,10 @@ void FilterDesignTool::openResonatorValuesDialog() {
       scaleCombo->blockSignals(true);
       scaleCombo->clear();
 
+      // Update spinbox and scale
+      QDoubleSpinBox *spinbox = ResonatorSpinboxes[i];
+      spinbox->blockSignals(true);
+
       if (isInductor) {
         scaleCombo->addItem("mH");      // [0]
         scaleCombo->addItem("µH");      // [1]
@@ -135,6 +138,10 @@ void FilterDesignTool::openResonatorValuesDialog() {
         scaleCombo->addItem("pH");      // [3]
         scaleCombo->setCurrentIndex(2); // Default to nH
         resonatorScaleValues[i] = "nH";
+
+        // Update default value
+        resonatorValues[i] = 10.0; // nH
+
       } else {
         scaleCombo->addItem("µF");      // [0]
         scaleCombo->addItem("nF");      // [1]
@@ -142,18 +149,18 @@ void FilterDesignTool::openResonatorValuesDialog() {
         scaleCombo->addItem("fF");      // [3]
         scaleCombo->setCurrentIndex(2); // Default to pF
         resonatorScaleValues[i] = "pF";
+
+        // Update default value
+        resonatorValues[i] = 10.0; // pF
       }
 
-      scaleCombo->blockSignals(false);
-
-      // Update default value
-      QDoubleSpinBox *spinbox = ResonatorSpinboxes[i];
-      spinbox->blockSignals(true);
-      resonatorValues[i] = 10.0;
-      spinbox->setValue(10.0);
+      spinbox->setValue(resonatorValues[i]);
       spinbox->blockSignals(false);
+
+      scaleCombo->blockSignals(false);
     }
 
+    tunableComponent_DC_Filters = tunableComponent;
     UpdateDesignParameters();
   };
 
