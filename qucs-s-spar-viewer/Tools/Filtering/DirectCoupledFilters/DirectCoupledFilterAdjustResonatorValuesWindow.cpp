@@ -15,23 +15,64 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/**
+ * @file DirectCoupledFilterAdjustResonatorValuesWindow.cpp
+ * @brief Window to define the values of the resonator components
+ * @author Andrés Martínez Mera
+ * @date 2025
+ */
+
 #include "../FilterDesignTool.h"
 
-///////////////////////////////////////////////////////////////////
-// Direct-coupled filters: Tunable elements window
+///
+/// \internal The resonators have two degrees of freedom: the value of the
+/// inductance and the value of the capacitance. This window allows the user to
+/// set a specific value to one of these variables.
+///
+/// Depending on the topology, the quantity set by the user will be modified by
+/// the design equations to absorb the negative inductance or capacitance of the
+/// inverters
+///
 void FilterDesignTool::openResonatorValuesDialog() {
-  // Number of resonators
-  unsigned int N = OrderSpinBox->value();
+  // The filter order widget may vary before the program reaches this point and
+  // the size of "resonatorValues" and "resonatorScaleValues" may not be updated
+  // at this point.
 
-  // Use the stored tunable component preference
-  QString tunableComponent = tunableComponent_DC_Filters;
+  // Thus, it is needed to ensure their size is correct.In case
+  // it isn't, it is needed to resize them.
+  unsigned int N = OrderSpinBox->value(); // Number of resonators.
+
+  // Identify the adjustable variable, depending on the direct-coupled
+  // topology
+  int index = DC_CouplingTypeCombo->currentIndex();
+  ComponentType ResonatorTunableComponent = ComponentType::Inductor;
+
+  switch (index) {
+  case 0: // C-coupled shunt resonators (Adjust L)
+    ResonatorTunableComponent = ComponentType::Inductor;
+    break;
+  case 1: // L-coupled shunt resonators (Adjust C)
+    ResonatorTunableComponent = ComponentType::Capacitor;
+    break;
+  case 2: // L-coupled series resonators (Adjust C)
+    ResonatorTunableComponent = ComponentType::Capacitor;
+    break;
+  case 3: // C-coupled series resonators (Adjust L)
+    ResonatorTunableComponent = ComponentType::Inductor;
+    break;
+  }
 
   // Ensure resonatorValues vector has correct size
+  // In case the order of the filter doesn't match the number of resonator,
+  // rebuilt the user interface
   if (resonatorValues.size() != N) {
     double res_val = 10;
     QString res_scale_val = QString("nH");
 
-    // Initialize resonator values
+    // Initialize resonator values. These variables (resonatorValues and
+    // resonatorScaleValues) are stored in the FilterDesignTool class. It's
+    // needed they to be there to launch DC-filter synthesis without the need to
+    // open this dialog
     resonatorValues.clear();
     resonatorScaleValues.clear();
 
@@ -39,27 +80,19 @@ void FilterDesignTool::openResonatorValuesDialog() {
     resonatorValues.resize(N);
     resonatorScaleValues.resize(N);
 
-    // Determine frequency
+    // Get the center frequency, directly from the widgets
     double freq =
         FCSpinbox->value() * getScale(FC_ScaleCombobox->currentText());
-    // Initialize resonator adjustable values
-    if (tunableComponent == "Inductor") {
-      // Adjustable element: Inductor
-      if (freq > 1e9) {
-        res_val = 1; // 1 nH
-      } else if ((freq > 7e8) && (freq < 1e9)) {
-        res_val = 5; // 5 nH
-      } else if ((freq > 4e8) && (freq < 7e9)) {
-        res_val = 10; // 10 nH
-      } else {
-        res_val = 50; // 50 nH
-      }
+
+    // Initialize resonator adjustable values. This depends on the frequency
+    res_val = getResonatorComponentValueHint(freq, ResonatorTunableComponent);
+
+    // Scale factor
+    if (ResonatorTunableComponent == ComponentType::Inductor) {
       // Scale factor
       res_scale_val = QString("nH");
     } else {
-      // Adjustable element: Capacitor
-      res_val = 10;                  // 10 pF
-      res_scale_val = QString("pF"); // Scale factor
+      res_scale_val = QString("pF");
     }
 
     // Set the resonator and the scale values for each resonator
@@ -72,11 +105,11 @@ void FilterDesignTool::openResonatorValuesDialog() {
   // Save original values in case user cancels
   std::vector<double> originalResonatorValues = resonatorValues;
   std::vector<QString> originalResonatorScaleValues = resonatorScaleValues;
-  QString originalTunableComponent = tunableComponent;
 
   // Create dialog
   QDialog *dialog = new QDialog(this);
   dialog->setWindowTitle("Adjust Resonator");
+  dialog->setFixedWidth(400); // Width enough to see the entire title
   QGridLayout *layout = new QGridLayout(dialog);
 
   // Add tunable component switch at the top
@@ -84,15 +117,17 @@ void FilterDesignTool::openResonatorValuesDialog() {
   QHBoxLayout *switchLayout = new QHBoxLayout(switchWidget);
   switchLayout->setContentsMargins(0, 0, 0, 0);
 
-  QLabel *switchLabel = new QLabel("Tunable Component:");
-  QComboBox *tunableSwitch = new QComboBox();
-  tunableSwitch->addItem("Inductor");
-  tunableSwitch->addItem("Capacitor");
-  tunableSwitch->setCurrentIndex(tunableComponent == "Inductor" ? 0 : 1);
-  tunableSwitch->setMinimumWidth(120);
+  QLabel *switchLabel = new QLabel();
+
+  if (ResonatorTunableComponent == ComponentType::Inductor) {
+    // Inductor
+    switchLabel->setText("Adjust resonators' inductance");
+  } else {
+    // Capacitor
+    switchLabel->setText("Adjust resonators' capacitance");
+  }
 
   switchLayout->addWidget(switchLabel);
-  switchLayout->addWidget(tunableSwitch);
   switchLayout->addStretch();
 
   layout->addWidget(switchWidget, 0, 0, 1, 3);
@@ -107,67 +142,16 @@ void FilterDesignTool::openResonatorValuesDialog() {
   ResonatorSpinboxes.clear();
   ResonatorScaleComboboxes.clear();
 
-  // Lambda to update all widgets based on tunable component selection
-  auto updateWidgets = [&]() {
-    tunableComponent = tunableSwitch->currentText();
-    bool isInductor = (tunableComponent == "Inductor");
-    QString label = isInductor ? "L" : "C";
-
-    // Update each resonator widget
-    for (unsigned int i = 0; i < N; i++) {
-      // Update label
-      QLabel *labelWidget =
-          qobject_cast<QLabel *>(layout->itemAtPosition(i + 2, 0)->widget());
-      if (labelWidget) {
-        labelWidget->setText(QString("%1%2").arg(label).arg(i + 1));
-      }
-
-      // Update scale combobox options
-      QComboBox *scaleCombo = ResonatorScaleComboboxes[i];
-      scaleCombo->blockSignals(true);
-      scaleCombo->clear();
-
-      // Update spinbox and scale
-      QDoubleSpinBox *spinbox = ResonatorSpinboxes[i];
-      spinbox->blockSignals(true);
-
-      if (isInductor) {
-        scaleCombo->addItem("mH");      // [0]
-        scaleCombo->addItem("µH");      // [1]
-        scaleCombo->addItem("nH");      // [2]
-        scaleCombo->addItem("pH");      // [3]
-        scaleCombo->setCurrentIndex(2); // Default to nH
-        resonatorScaleValues[i] = "nH";
-
-        // Update default value
-        resonatorValues[i] = 10.0; // nH
-
-      } else {
-        scaleCombo->addItem("µF");      // [0]
-        scaleCombo->addItem("nF");      // [1]
-        scaleCombo->addItem("pF");      // [2]
-        scaleCombo->addItem("fF");      // [3]
-        scaleCombo->setCurrentIndex(2); // Default to pF
-        resonatorScaleValues[i] = "pF";
-
-        // Update default value
-        resonatorValues[i] = 10.0; // pF
-      }
-
-      spinbox->setValue(resonatorValues[i]);
-      spinbox->blockSignals(false);
-
-      scaleCombo->blockSignals(false);
-    }
-
-    tunableComponent_DC_Filters = tunableComponent;
-    UpdateDesignParameters();
-  };
-
   // Create spinboxes for each resonator (starting at row 2)
+  QString label;
+  if (ResonatorTunableComponent == ComponentType::Inductor) {
+    // Inductor
+    label = QString("L");
+  } else {
+    // Capacitor
+    label = QString("C");
+  }
   for (unsigned int i = 0; i < N; i++) {
-    bool isInductor = (tunableComponent == "Inductor");
-    QString label = isInductor ? "L" : "C";
     layout->addWidget(new QLabel(QString("%1%2").arg(label).arg(i + 1)), i + 2,
                       0);
 
@@ -179,12 +163,13 @@ void FilterDesignTool::openResonatorValuesDialog() {
 
     // Create scale combobox
     QComboBox *scaleCombo = new QComboBox();
-    if (isInductor) {
+    if (ResonatorTunableComponent == ComponentType::Inductor) {
       scaleCombo->addItem("mH"); // [0]
       scaleCombo->addItem("µH"); // [1]
       scaleCombo->addItem("nH"); // [2]
       scaleCombo->addItem("pH"); // [3]
     } else {
+      // Capacitor
       scaleCombo->addItem("µF"); // [0]
       scaleCombo->addItem("nF"); // [1]
       scaleCombo->addItem("pF"); // [2]
@@ -204,12 +189,19 @@ void FilterDesignTool::openResonatorValuesDialog() {
     ResonatorSpinbox->setValue(resonatorValues[i]);
 
     // Connect value change to trigger design update
-    connect(ResonatorSpinbox, SIGNAL(valueChanged(double)), this,
-            SLOT(UpdateDesignParameters()));
+    connect(ResonatorSpinbox,
+            QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+            [this, i](double value) {
+              resonatorValues[i] = value;
+              UpdateDesignParameters();
+            });
 
     // Connect scale change to trigger design update
-    connect(scaleCombo, SIGNAL(currentIndexChanged(int)), this,
-            SLOT(UpdateDesignParameters()));
+    connect(scaleCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, [this, i, scaleCombo]() {
+              resonatorScaleValues[i] = scaleCombo->currentText();
+              UpdateDesignParameters();
+            });
 
     ResonatorSpinboxes.push_back(ResonatorSpinbox);
     ResonatorScaleComboboxes.push_back(scaleCombo);
@@ -217,10 +209,6 @@ void FilterDesignTool::openResonatorValuesDialog() {
     layout->addWidget(ResonatorSpinbox, i + 2, 1);
     layout->addWidget(scaleCombo, i + 2, 2);
   }
-
-  // Connect tunable component switch
-  connect(tunableSwitch, QOverload<int>::of(&QComboBox::currentIndexChanged),
-          updateWidgets);
 
   // Add OK and Cancel buttons
   QPushButton *okButton = new QPushButton("OK");
@@ -234,8 +222,12 @@ void FilterDesignTool::openResonatorValuesDialog() {
 
   // Show dialog and process result
   if (dialog->exec() == QDialog::Accepted) {
-    // Save the user's tunable component preference
-    tunableComponent_DC_Filters = tunableComponent;
+    // Iterate over the widgets and store their value in the private variable,
+    // so that value is now default
+    for (unsigned int i = 0; i < N; i++) {
+      resonatorValues[i] = ResonatorSpinboxes[i]->value();
+      resonatorScaleValues[i] = ResonatorScaleComboboxes[i]->currentText();
+    }
 
     // Values are already updated through UpdateDesignParameters
     // Just trigger final update to ensure everything is synchronized
@@ -244,9 +236,44 @@ void FilterDesignTool::openResonatorValuesDialog() {
     // Restore original values on cancel
     resonatorValues = originalResonatorValues;
     resonatorScaleValues = originalResonatorScaleValues;
-    tunableComponent_DC_Filters = originalTunableComponent;
     UpdateDesignParameters();
   }
 
   delete dialog;
+}
+
+double
+FilterDesignTool::getResonatorComponentValueHint(double freq,
+                                                 ComponentType component) {
+  double res_val;
+  if (component == ComponentType::Inductor) {
+    // Inductor
+    if (freq > 1.5e9) {
+      res_val = 1; // 1 nH
+    } else if (freq > 7e8) {
+      res_val = 10; // 5 nH
+    } else if (freq > 4e8) {
+      res_val = 20; // 10 nH
+    } else if (freq > 2e8) {
+      res_val = 50; // 50 nH
+    } else {
+      res_val = 100; // 100 nH
+    }
+    return res_val;
+
+  } else {
+    // Capacitor
+    if (freq > 1e9) {
+      res_val = 1; // 1 pF
+    } else if (freq > 7e8) {
+      res_val = 5; // 5 pF
+    } else if (freq > 4e8) {
+      res_val = 10; // 10 pF
+    } else if (freq > 2e8) {
+      res_val = 20; // 20 pF
+    } else {
+      res_val = 50; // 50 pF
+    }
+    return res_val;
+  }
 }

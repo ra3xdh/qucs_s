@@ -84,7 +84,6 @@ FilterDesignTool::FilterDesignTool(QWidget *parent) : QWidget(parent) {
   ResonatorValuesButton = new QPushButton("Adjust Resonator");
   ResonatorValuesButton
       ->hide(); // Initially hidden. Direct coupled filters only
-  tunableComponent_DC_Filters = QString("Inductor");
   FilterDesignLayout->addWidget(ResonatorValuesButton, layout_row, 2);
   connect(ResonatorValuesButton, SIGNAL(clicked()), this,
           SLOT(openResonatorValuesDialog()));
@@ -298,7 +297,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent) : QWidget(parent) {
   connect(EllipticType, SIGNAL(currentIndexChanged(int)), this,
           SLOT(UpdateDesignParameters()));
   connect(DC_CouplingTypeCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
+          SLOT(setAdjustableResonatorVariables()));
   connect(MinimumZ_Spinbox, SIGNAL(valueChanged(double)), this,
           SLOT(UpdateDesignParameters()));
   connect(MaximumZ_Spinbox, SIGNAL(valueChanged(double)), this,
@@ -543,46 +542,22 @@ void FilterDesignTool::UpdateDesignParameters() {
   ////////////////////////////////////////////////////////////////////////////
   // Direct-coupled filter resonator values
   // Get the values of the adjustable elements of the resonators
-  std::vector<double> resonator_values_scaled;
-  if (!ResonatorSpinboxes.empty() &&
-      ResonatorSpinboxes.size() == Filter_SP.order &&
-      ResonatorScaleComboboxes.size() == Filter_SP.order) {
 
-    // Adjust the size of the variable it'll be passed to the designer
-    resonator_values_scaled.resize(Filter_SP.order);
-
-    // Update resonator values with proper scaling
-    for (unsigned int i = 0; i < Filter_SP.order; i++) {
-      double scaleFactor =
-          getScaleFactor(ResonatorScaleComboboxes[i]->currentText());
-      double res_val = ResonatorSpinboxes[i]->value();
-      resonator_values_scaled[i] = res_val * scaleFactor;
-    }
-  } else {
-    // Assign default values if spinboxes don't exist or size mismatch
-    resonator_values_scaled.resize(Filter_SP.order);
-
-    // Determine if the adjustable elements are inductors or capacitors
-    bool useInductors = true;
-
-    if (Filter_SP.DC_Coupling == CapacitiveCoupledShuntResonators) {
-      useInductors = true;
-    } else if (Filter_SP.DC_Coupling == InductiveCoupledSeriesResonators) {
-      useInductors = true;
-    }
-
-    double default_value = 10e-9;
-    if (useInductors) {
-      // Inductors
-      default_value = 10e-9;
-    } else {
-      // Capacitors
-      default_value = 10e-12;
-    }
-
-    for (unsigned int i = 0; i < Filter_SP.order; i++) {
-      resonator_values_scaled[i] = default_value;
-    }
+  // It is possible that control reaches this point without having proper
+  // initialization of the
+  // "resonatorValues" and "resonatorScaleValues" vectors. In that case, it is
+  // needed to call "setAdjustableResonatorVariables"
+  if (resonatorValues.size() != Filter_SP.order) {
+    setAdjustableResonatorVariables(); // This function is called whenever the
+                                       // DC topology combo is modified, but not
+                                       // at first.
+  }
+  std::vector<double> resonator_values_scaled(Filter_SP.order);
+  // Update resonator values with proper scaling
+  for (unsigned int i = 0; i < Filter_SP.order; i++) {
+    double scaleFactor = getScaleFactor(resonatorScaleValues[i]);
+    double res_val = resonatorValues[i];
+    resonator_values_scaled[i] = res_val * scaleFactor;
   }
   ////////////////////////////////////////////////////////////////////////////
 
@@ -648,7 +623,6 @@ void FilterDesignTool::UpdateDesignParameters() {
   Filter_SP.MS_Subs = MS_Subs;
   Filter_SP.resonatorValues =
       resonator_values_scaled; // Direct-coupled filters only
-  Filter_SP.tunableComponent_DC_Filters = tunableComponent_DC_Filters;
   ////////////////////////////////////////////////////////////////////////////
 
   synthesize();
@@ -784,6 +758,36 @@ void FilterDesignTool::setSettings_LC_Direct_Coupled() {
   const double max_rel_bw =
       0.1; // Threshold for maximum relative bandwidth (10%)
   adjustRelativeBW(max_rel_bw);
+
+  // Select the capacitive coupled shunt resonators topology
+  // According to the Matthaei synthesis equations, the tunable component in the
+  // resonators is the inductance.
+  DC_CouplingTypeCombo->setCurrentIndex(0);
+
+  // Set default values for the resonators
+  // "resonatorValues" and "resonatorScaleValues" are private variables. They
+  // store the value of the adjustable component of the resonator. These
+  // variables need to be stored this way so that the user dialog that allows to
+  // adjust its value can read them and modify them. These variables are read
+  // when the "UpdateDesignParameters" function is called
+  double freq = FCSpinbox->value() * getScale(FC_ScaleCombobox->currentText());
+  double res_val =
+      getResonatorComponentValueHint(freq, ComponentType::Inductor);
+  unsigned int N = OrderSpinBox->value(); // Order of the filter
+
+  // Initialize resonator values:
+  // 1) Resize according to the filter's order
+  // 2) Use the value obtained as a hint
+  resonatorValues.clear();
+  resonatorScaleValues.clear();
+
+  resonatorValues.resize(N);
+  resonatorScaleValues.resize(N);
+
+  for (unsigned int i = 0; i < N; i++) {
+    resonatorValues[i] = res_val;
+    resonatorScaleValues[i] = QString("nH");
+  }
 
   // Unblock signals
   FilterClassCombo->blockSignals(false);
@@ -1308,4 +1312,51 @@ void FilterDesignTool::adjustRelativeBW(double max_rel_bw) {
     double new_BW = BW / getScale(BW_ScaleCombobox->currentText());
     BWSpinbox->setValue(new_BW);
   }
+}
+
+void FilterDesignTool::setAdjustableResonatorVariables() {
+  int index = DC_CouplingTypeCombo->currentIndex();
+
+  // Get the center frequency, directly from the widgets
+  double freq = FCSpinbox->value() * getScale(FC_ScaleCombobox->currentText());
+
+  double res_val = 10;
+  QString scale;
+  switch (index) {
+  case 0: // C-coupled shunt resonators (Adjust L)
+    res_val = getResonatorComponentValueHint(freq, ComponentType::Inductor);
+    scale = QString("nH");
+    break;
+  case 1: // L-coupled shunt resonators (Adjust C)
+    res_val = getResonatorComponentValueHint(freq, ComponentType::Capacitor);
+    scale = QString("pF");
+    break;
+  case 2: // L-coupled series resonators (Adjust C)
+    res_val = getResonatorComponentValueHint(freq, ComponentType::Capacitor);
+    scale = QString("pF");
+    break;
+  case 3: // C-coupled series resonators (Adjust L)
+    res_val = getResonatorComponentValueHint(freq, ComponentType::Inductor);
+    scale = QString("nH");
+    break;
+  }
+
+  unsigned int N = OrderSpinBox->value(); // Order of the filter
+
+  // Initialize resonator values:
+  // 1) Resize according to the filter's order
+  // 2) Use the value obtained as a hint
+  resonatorValues.clear();
+  resonatorScaleValues.clear();
+
+  resonatorValues.resize(N);
+  resonatorScaleValues.resize(N);
+
+  for (unsigned int i = 0; i < N; i++) {
+    resonatorValues[i] = res_val;
+    resonatorScaleValues[i] = scale;
+  }
+
+  // Call synthesis function
+  UpdateDesignParameters();
 }

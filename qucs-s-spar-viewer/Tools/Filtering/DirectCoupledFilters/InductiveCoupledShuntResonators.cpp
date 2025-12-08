@@ -58,36 +58,17 @@ void DirectCoupledFilters::Synthesize_Inductive_Coupled_Shunt_Resonators() {
   double BW = Specification.bw;
   double Z0 = Specification.ZS;
 
-  // Determine if we're using fixed capacitors or inductors
-  bool useFixedCapacitors =
-      (Specification.tunableComponent_DC_Filters == "Capacitor");
-
   std::deque<double> Lr(N); // Physical resonator inductance values
 
-  if (useFixedCapacitors) {
-    // Fixed capacitors: Get C values from resonatorValues
-    for (int i = 0; i < N; i++) {
-      if (Specification.resonatorValues.size() ==
-          static_cast<unsigned int>(N)) {
-        C[i] = Specification.resonatorValues[i];
-      } else {
-        C[i] = 10e-12; // Default fallback
-      }
-      // Calculate resonator inductance - equation [1] Fig. 8.11-1 (1)
-      Lr[i] = 1.0 / (C[i] * w0 * w0);
+  // Fixed capacitors (design parameter)
+  for (int i = 0; i < N; i++) {
+    if (Specification.resonatorValues.size() == static_cast<unsigned int>(N)) {
+      C[i] = Specification.resonatorValues[i];
+    } else {
+      C[i] = 1e-12; // Default fallback
     }
-  } else {
-    // Fixed inductors: Get L values from resonatorValues
-    for (int i = 0; i < N; i++) {
-      if (Specification.resonatorValues.size() ==
-          static_cast<unsigned int>(N)) {
-        Lr[i] = Specification.resonatorValues[i];
-      } else {
-        Lr[i] = 10e-9; // Default fallback
-      }
-      // Calculate resonator capacitance - equation [1] Fig. 8.11-1 (1)
-      C[i] = 1.0 / (Lr[i] * w0 * w0);
-    }
+    // Calculate resonator inductance
+    Lr[i] = 1.0 / (C[i] * w0 * w0);
   }
 
   // Source and load impedances

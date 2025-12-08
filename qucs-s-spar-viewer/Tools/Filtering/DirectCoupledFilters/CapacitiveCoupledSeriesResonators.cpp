@@ -62,35 +62,15 @@ void DirectCoupledFilters::Synthesize_Capacitive_Coupled_Series_Resonators() {
   double w0 = wc;
   double BW = Specification.bw;
 
-  // Determine if we're using fixed inductors or capacitors
-  bool useFixedInductors =
-      (Specification.tunableComponent_DC_Filters == "Inductor");
-
-  // Get resonator values and calculate complementary component
-  if (useFixedInductors) {
-    // Fixed inductors: Get L values from resonatorValues
-    for (int i = 0; i < N; i++) {
-      if (Specification.resonatorValues.size() ==
-          static_cast<unsigned int>(N)) {
-        Lres[i] = Specification.resonatorValues[i];
-      } else {
-        Lres[i] = 10e-9; // Default fallback
-      }
-      // Calculate resonator capacitance - equation [1] Fig. 8.11-1 (1)
-      Cres[i] = 1.0 / (Lres[i] * w0 * w0);
+  // Fixed inductors (design parameter)
+  for (int i = 0; i < N; i++) {
+    if (Specification.resonatorValues.size() == static_cast<unsigned int>(N)) {
+      Lres[i] = Specification.resonatorValues[i];
+    } else {
+      Lres[i] = 10e-9; // Default fallback
     }
-  } else {
-    // Fixed capacitors: Get C values from resonatorValues
-    for (int i = 0; i < N; i++) {
-      if (Specification.resonatorValues.size() ==
-          static_cast<unsigned int>(N)) {
-        Cres[i] = Specification.resonatorValues[i];
-      } else {
-        Cres[i] = 10e-12; // Default fallback
-      }
-      // Calculate resonator inductance - equation [1] Fig. 8.11-1 (1)
-      Lres[i] = 1.0 / (Cres[i] * w0 * w0);
-    }
+    // Calculate resonator capacitance - equation [1] Fig. 8.11-1 (1)
+    Cres[i] = 1.0 / (Lres[i] * w0 * w0);
   }
 
   // Source and load impedances
@@ -132,8 +112,8 @@ void DirectCoupledFilters::Synthesize_Capacitive_Coupled_Series_Resonators() {
   }
 
   // Port matching components
-  double Cmatch_source = 0.0, Lmatch_source = 0.0;
-  double Cmatch_load = 0.0, Lmatch_load = 0.0;
+  double Cmatch_source = 0.0;
+  double Cmatch_load = 0.0;
 
   // Get port matching types (default to capacitor if not specified)
   std::string sourceMatchType = "C"; // Default
@@ -149,11 +129,7 @@ void DirectCoupledFilters::Synthesize_Capacitive_Coupled_Series_Resonators() {
   Cinv[0] += C0;                      // Absorb into first shunt capacitor
 
   // Compensate impedance difference with reactive element
-  if (sourceMatchType == "C") {
-    Cmatch_source = 1.0 / (w0 * (Rp_source - RS));
-  } else {
-    Lmatch_source = (Rp_source - RS) / w0;
-  }
+  Cmatch_source = 1.0 / (w0 * (Rp_source - RS));
 
   // 2. Load port - series to parallel conversion
   double Xseries_load = -1.0 / (w0 * Cinv[N]); // Negative reactance
@@ -164,11 +140,7 @@ void DirectCoupledFilters::Synthesize_Capacitive_Coupled_Series_Resonators() {
   Cinv[N] += Clast;                    // Absorb into last shunt capacitor
 
   // Compensate impedance difference with reactive element
-  if (loadMatchType == "C") {
-    Cmatch_load = 1.0 / (w0 * (Rp_load - RL));
-  } else {
-    Lmatch_load = (Rp_load - RL) / w0;
-  }
+  Cmatch_load = 1.0 / (w0 * (Rp_load - RL));
 
   // Build schematic
   int posx = 0;
@@ -179,27 +151,19 @@ void DirectCoupledFilters::Synthesize_Capacitive_Coupled_Series_Resonators() {
   TermSpar1.val["Z"] = num2str(RS, Resistance);
   Schematic.appendComponent(TermSpar1);
 
-  posx += 50;
+  posx += 40;
 
   // Source matching component
-  if (sourceMatchType == "C") {
-    MatchComponent.setParams(
-        QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
-        -90, posx, 0);
-    MatchComponent.val["C"] = num2str(Cmatch_source, Capacitance);
-    Schematic.appendComponent(MatchComponent);
-  } else {
-    MatchComponent.setParams(
-        QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor,
-        -90, posx, 0);
-    MatchComponent.val["L"] = num2str(Lmatch_source, Inductance);
-    Schematic.appendComponent(MatchComponent);
-  }
+  MatchComponent.setParams(
+      QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
+      90, posx, 0);
+  MatchComponent.val["C"] = num2str(Cmatch_source, Capacitance);
+  Schematic.appendComponent(MatchComponent);
 
   // Wire from port to matching component
-  Schematic.appendWire(TermSpar1.ID, 0, MatchComponent.ID, 1);
+  Schematic.appendWire(TermSpar1.ID, 0, MatchComponent.ID, 0);
 
-  posx += 50;
+  posx += 25;
 
   // Main filter loop
   for (int k = 0; k < N; k++) {
@@ -215,9 +179,9 @@ void DirectCoupledFilters::Synthesize_Capacitive_Coupled_Series_Resonators() {
 
     // Connect to previous component
     if (k == 0) {
-      Schematic.appendWire(MatchComponent.ID, 0, NI.ID, 0);
+      Schematic.appendWire(MatchComponent.ID, 1, NI.ID, 0);
     } else {
-      Schematic.appendWire(Cseries.ID, 0, NI.ID, 0);
+      Schematic.appendWire(Cseries.ID, 1, NI.ID, 0);
     }
 
     // Shunt coupling capacitor
@@ -236,7 +200,7 @@ void DirectCoupledFilters::Synthesize_Capacitive_Coupled_Series_Resonators() {
     Schematic.appendWire(NI.ID, 0, Cshunt.ID, 1);
     Schematic.appendWire(Cshunt.ID, 0, Ground.ID, 0);
 
-    posx += 50;
+    posx += 25;
 
     // Series resonator inductor
     Lseries.setParams(
@@ -248,19 +212,19 @@ void DirectCoupledFilters::Synthesize_Capacitive_Coupled_Series_Resonators() {
     // Connect to node
     Schematic.appendWire(NI.ID, 0, Lseries.ID, 1);
 
-    posx += 50;
+    posx += 40;
 
     // Series resonator capacitor
     Cseries.setParams(
         QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
-        -90, posx, 0);
+        90, posx, 0);
     Cseries.val["C"] = num2str(Cres[k], Capacitance);
     Schematic.appendComponent(Cseries);
 
     // Connect to inductor
-    Schematic.appendWire(Lseries.ID, 0, Cseries.ID, 1);
+    Schematic.appendWire(Lseries.ID, 0, Cseries.ID, 0);
 
-    posx += 50;
+    posx += 25;
   }
 
   // Last shunt coupling capacitor
@@ -273,7 +237,7 @@ void DirectCoupledFilters::Synthesize_Capacitive_Coupled_Series_Resonators() {
   Schematic.appendNode(NI);
 
   // Connect to last series capacitor
-  Schematic.appendWire(Cseries.ID, 0, NI.ID, 0);
+  Schematic.appendWire(Cseries.ID, 1, NI.ID, 0);
 
   // Last shunt capacitor
   Cshunt.setParams(QString("C%1").arg(++Schematic.NumberComponents[Capacitor]),
@@ -290,25 +254,17 @@ void DirectCoupledFilters::Synthesize_Capacitive_Coupled_Series_Resonators() {
   Schematic.appendWire(NI.ID, 0, Cshunt.ID, 1);
   Schematic.appendWire(Cshunt.ID, 0, Ground.ID, 0);
 
-  posx += 50;
+  posx += 25;
 
   // Load matching component
-  if (loadMatchType == "C") {
-    MatchComponent.setParams(
-        QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
-        -90, posx, 0);
-    MatchComponent.val["C"] = num2str(Cmatch_load, Capacitance);
-    Schematic.appendComponent(MatchComponent);
-  } else {
-    MatchComponent.setParams(
-        QString("L%1").arg(++Schematic.NumberComponents[Inductor]), Inductor,
-        -90, posx, 0);
-    MatchComponent.val["L"] = num2str(Lmatch_load, Inductance);
-    Schematic.appendComponent(MatchComponent);
-  }
+  MatchComponent.setParams(
+      QString("C%1").arg(++Schematic.NumberComponents[Capacitor]), Capacitor,
+      90, posx, 0);
+  MatchComponent.val["C"] = num2str(Cmatch_load, Capacitance);
+  Schematic.appendComponent(MatchComponent);
 
   // Connect to last node
-  Schematic.appendWire(NI.ID, 0, MatchComponent.ID, 1);
+  Schematic.appendWire(NI.ID, 0, MatchComponent.ID, 0);
 
   posx += 50;
 
@@ -320,5 +276,5 @@ void DirectCoupledFilters::Synthesize_Capacitive_Coupled_Series_Resonators() {
   Schematic.appendComponent(TermSpar2);
 
   // Connect to load
-  Schematic.appendWire(MatchComponent.ID, 0, TermSpar2.ID, 0);
+  Schematic.appendWire(MatchComponent.ID, 1, TermSpar2.ID, 0);
 }

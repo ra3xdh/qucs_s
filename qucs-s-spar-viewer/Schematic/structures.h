@@ -134,11 +134,11 @@ struct FilterSpecifications {
                // filters)
   SemiLumpedImplementation SemiLumpedISettings;
   double ImpedanceRatio;
-  std::vector<double> resonatorValues; // Direct-coupled filters only
 
   MS_Substrate MS_Subs; // Substrate Settings
 
-  QString tunableComponent_DC_Filters;
+  ComponentType tunableComponent_DC_Filters; /// Direct-Coupled filters only. It indicates which component in the resonator can be adjusted by the user
+  std::vector<double> resonatorValues; /// Direct-coupled filters only. The vector size must match the order of the filter. Each position indicates the value of the adjustable component in the resonator
 };
 
 // Contains the information of the matching network topology

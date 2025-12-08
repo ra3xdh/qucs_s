@@ -56,32 +56,15 @@ void DirectCoupledFilters::Synthesize_Inductive_Coupled_Series_Resonators() {
   double BW = Specification.bw;
   double Z0 = Specification.ZS;
 
-  // Determine if we're using fixed inductors or capacitors
-  bool useFixedInductors =
-      (Specification.tunableComponent_DC_Filters == "Inductor");
-
-  if (useFixedInductors) {
-    // Fixed inductors: Get L values from resonatorValues
-    for (unsigned int i = 0; i < N; i++) {
-      if (Specification.resonatorValues.size() == N) {
-        Lr[i] = Specification.resonatorValues[i];
-      } else {
-        Lr[i] = 10e-9; // Default fallback
-      }
-      // Calculate resonator capacitance
-      C[i] = 1.0 / (Lr[i] * w0 * w0);
+  // Fixed capacitors (design parameter)
+  for (int i = 0; i < N; i++) {
+    if (Specification.resonatorValues.size() == static_cast<unsigned int>(N)) {
+      C[i] = Specification.resonatorValues[i];
+    } else {
+      C[i] = 1e-12; // Default fallback
     }
-  } else {
-    // Fixed capacitors: Get C values from resonatorValues
-    for (int i = 0; i < N; i++) {
-      if (Specification.resonatorValues.size() == N) {
-        C[i] = Specification.resonatorValues[i];
-      } else {
-        C[i] = 1e-12; // Default fallback
-      }
-      // Calculate resonator inductance
-      Lr[i] = 1.0 / (C[i] * w0 * w0);
-    }
+    // Calculate resonator inductance
+    Lr[i] = 1.0 / (C[i] * w0 * w0);
   }
 
   // Normalized impedances
