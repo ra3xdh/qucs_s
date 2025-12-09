@@ -71,6 +71,11 @@ private:
   ///
   void Synthesize_Inductive_Coupled_Series_Resonators();
 
+  ///
+  /// \brief Synthesis of (quarter-wavelength transmission line)-coupled shunt resonators filters
+  ///
+  void Synthesize_QuarterWave_Coupled_Shunt_Resonators();
+
 
 };
 

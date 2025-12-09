@@ -67,7 +67,8 @@ enum Coupling {
   CapacitiveCoupledShuntResonators,
   InductiveCoupledShuntResonators,
   CapacitiveCoupledSeriesResonators,
-  InductiveCoupledSeriesResonators
+  InductiveCoupledSeriesResonators,
+  QWCoupledShuntResonators
 };
 enum SemiLumpedImplementation { ONLY_INDUCTORS, INDUCTORS_AND_SHUNT_CAPS };
 

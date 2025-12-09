@@ -55,5 +55,9 @@ void DirectCoupledFilters::synthesize() {
   case InductiveCoupledShuntResonators:
     Synthesize_Inductive_Coupled_Shunt_Resonators();
     break;
+
+  case QWCoupledShuntResonators:
+    Synthesize_QuarterWave_Coupled_Shunt_Resonators();
+    break;
   }
 }

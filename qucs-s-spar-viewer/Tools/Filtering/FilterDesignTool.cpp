@@ -74,6 +74,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent) : QWidget(parent) {
   DC_CouplingTypeCombo->addItem("L-coupled shunt resonators");
   DC_CouplingTypeCombo->addItem("L-coupled series resonators");
   DC_CouplingTypeCombo->addItem("C-coupled series resonators");
+  DC_CouplingTypeCombo->addItem("QW-coupled series resonators");
   DC_CouplingLabel = new QLabel("Coupling");
   FilterDesignLayout->addWidget(DC_CouplingLabel, layout_row, 0);
   FilterDesignLayout->addWidget(DC_CouplingTypeCombo, layout_row, 1);
@@ -81,11 +82,11 @@ FilterDesignTool::FilterDesignTool(QWidget *parent) : QWidget(parent) {
   DC_CouplingLabel->hide();
 
   // Add resonator values button
-  ResonatorValuesButton = new QPushButton("Adjust Resonator");
-  ResonatorValuesButton
+  ResonatorValuesButton_DC = new QPushButton("Adjust Resonator");
+  ResonatorValuesButton_DC
       ->hide(); // Initially hidden. Direct coupled filters only
-  FilterDesignLayout->addWidget(ResonatorValuesButton, layout_row, 2);
-  connect(ResonatorValuesButton, SIGNAL(clicked()), this,
+  FilterDesignLayout->addWidget(ResonatorValuesButton_DC, layout_row, 2);
+  connect(ResonatorValuesButton_DC, SIGNAL(clicked()), this,
           SLOT(openResonatorValuesDialog()));
 
   //************ Filter class ****************
@@ -297,7 +298,7 @@ FilterDesignTool::FilterDesignTool(QWidget *parent) : QWidget(parent) {
   connect(EllipticType, SIGNAL(currentIndexChanged(int)), this,
           SLOT(UpdateDesignParameters()));
   connect(DC_CouplingTypeCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(setAdjustableResonatorVariables()));
+          SLOT(setAdjustableResonatorVariables_DirectCoupled()));
   connect(MinimumZ_Spinbox, SIGNAL(valueChanged(double)), this,
           SLOT(UpdateDesignParameters()));
   connect(MaximumZ_Spinbox, SIGNAL(valueChanged(double)), this,
@@ -529,35 +530,44 @@ void FilterDesignTool::UpdateDesignParameters() {
 
   ////////////////////////////////////////////////////////////////////////////
   // Coupling
-  static const QMap<QString, Coupling> couplingMap{
-      {"C-coupled shunt resonators", CapacitiveCoupledShuntResonators},
-      {"L-coupled shunt resonators", InductiveCoupledShuntResonators},
-      {"C-coupled series resonators", CapacitiveCoupledSeriesResonators},
-      {"L-coupled series resonators", InductiveCoupledSeriesResonators}};
+  std::vector<double> resonator_values_scaled(
+      Filter_SP.order); // This variable contains the values of the adjustable
+                        // parameters in the resonator. This is read later
+                        // regarless of the topology (to keep things simple)
+  if (Filter_SP.Implementation == QString("LC Direct Coupled")) {
+    // Skip this if Direct-Coupled topology is not selected.
+    static const QMap<QString, Coupling> couplingMap{
+        {"C-coupled shunt resonators", CapacitiveCoupledShuntResonators},
+        {"L-coupled shunt resonators", InductiveCoupledShuntResonators},
+        {"C-coupled series resonators", CapacitiveCoupledSeriesResonators},
+        {"L-coupled series resonators", InductiveCoupledSeriesResonators},
+        {"QW-coupled series resonators", QWCoupledShuntResonators}};
 
-  const QString Couplingkey = DC_CouplingTypeCombo->currentText();
-  if (couplingMap.contains(Couplingkey)) {
-    Filter_SP.DC_Coupling = couplingMap.value(Couplingkey);
-  }
-  ////////////////////////////////////////////////////////////////////////////
-  // Direct-coupled filter resonator values
-  // Get the values of the adjustable elements of the resonators
+    const QString Couplingkey = DC_CouplingTypeCombo->currentText();
+    if (couplingMap.contains(Couplingkey)) {
+      Filter_SP.DC_Coupling = couplingMap.value(Couplingkey);
+    }
+    ////////////////////////////////////////////////////////////////////////////
+    // Direct-coupled filter resonator values
+    // Get the values of the adjustable elements of the resonators
 
-  // It is possible that control reaches this point without having proper
-  // initialization of the
-  // "resonatorValues" and "resonatorScaleValues" vectors. In that case, it is
-  // needed to call "setAdjustableResonatorVariables"
-  if (resonatorValues.size() != Filter_SP.order) {
-    setAdjustableResonatorVariables(); // This function is called whenever the
-                                       // DC topology combo is modified, but not
-                                       // at first.
-  }
-  std::vector<double> resonator_values_scaled(Filter_SP.order);
-  // Update resonator values with proper scaling
-  for (unsigned int i = 0; i < Filter_SP.order; i++) {
-    double scaleFactor = getScaleFactor(resonatorScaleValues[i]);
-    double res_val = resonatorValues[i];
-    resonator_values_scaled[i] = res_val * scaleFactor;
+    // It is possible that control reaches this point without having proper
+    // initialization of the
+    // "resonatorValues" and "resonatorScaleValues" vectors. In that case, it is
+    // needed to call "setAdjustableResonatorVariables_DirectCoupled"
+    if (resonatorValues.size() != Filter_SP.order) {
+      setAdjustableResonatorVariables_DirectCoupled(); // This function is
+                                                       // called whenever the DC
+                                                       // topology combo is
+                                                       // modified, but not at
+                                                       // first.
+    }
+    // Update resonator values with proper scaling
+    for (unsigned int i = 0; i < Filter_SP.order; i++) {
+      double scaleFactor = getScaleFactor(resonatorScaleValues[i]);
+      double res_val = resonatorValues[i];
+      resonator_values_scaled[i] = res_val * scaleFactor;
+    }
   }
   ////////////////////////////////////////////////////////////////////////////
 
@@ -646,7 +656,7 @@ void FilterDesignTool::setSettings_LC_Ladder() {
   TL_Implementation_Combo->hide();
 
   // Hide resonator values button (Direct-coupled filters only)
-  ResonatorValuesButton->hide();
+  ResonatorValuesButton_DC->hide();
 
   // Hide impedance ratio
   ImpedanceRatio_Label->hide();
@@ -714,7 +724,7 @@ void FilterDesignTool::setSettings_LC_Direct_Coupled() {
   DC_CouplingLabel->show();
 
   // Show resonator values button
-  ResonatorValuesButton->show();
+  ResonatorValuesButton_DC->show();
 
   // Hide TLIN implementation
   TL_Implementation_Label->hide();
@@ -810,7 +820,7 @@ void FilterDesignTool::setSettings_Stepped_Z_LPF() {
   DC_CouplingLabel->hide();
 
   // Hide resonator values button (Direct-coupled filters only)
-  ResonatorValuesButton->hide();
+  ResonatorValuesButton_DC->hide();
 
   // Show CLC/LCL box
   TopologyCombo->show();
@@ -868,7 +878,7 @@ void FilterDesignTool::setSettings_Quarterwavelength_BPF_BSF() {
   DC_CouplingLabel->hide();
 
   // Hide resonator values button (Direct-coupled filters only)
-  ResonatorValuesButton->hide();
+  ResonatorValuesButton_DC->hide();
 
   // Hide CLC box
   TopologyCombo->hide();
@@ -931,7 +941,7 @@ void FilterDesignTool::setSettings_EndCoupled_BPF() {
   DC_CouplingLabel->hide();
 
   // Hide resonator values button (Direct-coupled filters only)
-  ResonatorValuesButton->hide();
+  ResonatorValuesButton_DC->hide();
 
   // Show CLC/LCL box
   TopologyCombo->hide();
@@ -993,7 +1003,7 @@ void FilterDesignTool::setSettings_CCoupledShuntResonators_BPF() {
   DC_CouplingLabel->hide();
 
   // Hide resonator values button (Direct-coupled filters only)
-  ResonatorValuesButton->hide();
+  ResonatorValuesButton_DC->hide();
 
   // Show CLC/LCL box
   TopologyCombo->hide();
@@ -1056,7 +1066,7 @@ void FilterDesignTool::setSettings_Semilumped() {
   MinimumZ_Unit_Label->show();
 
   // Hide resonator values button (Direct-coupled filters only)
-  ResonatorValuesButton->hide();
+  ResonatorValuesButton_DC->hide();
 
   // Show maximum impedance
   MaximumZLabel->show();
@@ -1142,7 +1152,7 @@ void FilterDesignTool::setSettings_SideCoupled_BPF() {
   TL_Implementation_Combo->show();
 
   // Hide resonator values button (Direct-coupled filters only)
-  ResonatorValuesButton->hide();
+  ResonatorValuesButton_DC->hide();
 
   // Show CLC/LCL box
   TopologyCombo->hide();
@@ -1314,7 +1324,7 @@ void FilterDesignTool::adjustRelativeBW(double max_rel_bw) {
   }
 }
 
-void FilterDesignTool::setAdjustableResonatorVariables() {
+void FilterDesignTool::setAdjustableResonatorVariables_DirectCoupled() {
   int index = DC_CouplingTypeCombo->currentIndex();
 
   // Get the center frequency, directly from the widgets
@@ -1339,6 +1349,16 @@ void FilterDesignTool::setAdjustableResonatorVariables() {
     res_val = getResonatorComponentValueHint(freq, ComponentType::Inductor);
     scale = QString("nH");
     break;
+  }
+
+  // Button for adjusting the visibility of the resonator component window
+  if (index != 4) {
+    ResonatorValuesButton_DC->show();
+  } else {
+    // Index  == 4: QW-coupled shunt resonators
+    // No degrees of freedom for the resonator variables
+    // Hide the button for opening the window to adjust resonators' values
+    ResonatorValuesButton_DC->hide();
   }
 
   unsigned int N = OrderSpinBox->value(); // Order of the filter

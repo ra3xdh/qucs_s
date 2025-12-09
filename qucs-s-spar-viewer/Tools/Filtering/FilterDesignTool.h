@@ -87,7 +87,7 @@ private slots:
   /// Magnetic-coupled               |      None
   /// Quarter-wave line coupled      |      Nobe
   ///
-  void setAdjustableResonatorVariables();
+  void setAdjustableResonatorVariables_DirectCoupled();
 
 private:
   // ************************** FILTER DESIGN ***************************
@@ -126,7 +126,7 @@ private:
   SchematicContent SchContent;
 
   // Direct-coupled filters only. Adjust resonator elements
-  QPushButton* ResonatorValuesButton;
+  QPushButton* ResonatorValuesButton_DC;
   std::vector<double> resonatorValues;
   std::vector<QString> resonatorScaleValues;
 
