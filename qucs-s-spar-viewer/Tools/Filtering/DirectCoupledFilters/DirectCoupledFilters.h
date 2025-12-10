@@ -26,9 +26,9 @@
 #define DIRECTCOUPLEDFILTERS_H
 
 
-#include "../../Schematic/Network.h"
-#include "../../Schematic/component.h"
-#include "../LowpassPrototypeCoeffs.h"
+#include "./../../../Schematic/Network.h"
+#include "./../../../Schematic/component.h"
+#include "./../LowpassPrototypeCoeffs.h"
 
 /**
  * @class DirectCoupledFilters
