@@ -37,6 +37,8 @@
 #include <QPen>
 #include <QPair>
 
+#include <optional>
+
 class Schematic;
 
 class Component : public Element {
@@ -143,6 +145,8 @@ protected:
 
   virtual void drawSymbol(QPainter* p);
   QString getSpiceSubstrateLine(); // get SPICE params for microstrips
+
+  std::optional<QString> a_deviceName;
 };
 
 

@@ -68,6 +68,7 @@ XmlComponent::XmlComponent(
     Model = defaultModel;
     SpiceModel = spiceModel;
     Name = schematicId;
+    a_deviceName = name;
 
     removeMultipleSpaces(a_ngspiceNetList);
     removeMultipleSpaces(a_cdlNetList);
