@@ -14,7 +14,7 @@ env:
   EXECUTABLE_NAME: "qucs-s"
   PUBLISHER_NAME: "The Qucs-S Team"
   BUILD_TYPE: Release
-  QT_VERSION: 6.9.2
+  QT_VERSION: 6.10.1
   QUCS_MACOS_BIN: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/bin
   QUCS_MACOS_RESOURCES: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s
   NGSPICE_URL: https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/45.2/ngspice-45.2_64.7z
@@ -147,19 +147,21 @@ jobs:
             os: macos-15-intel
             cmake_arch: x86_64
             dmg_suffix: macOSX-x86_64
-            deployment_target: 12.0
+            deployment_target: 10.14
             qt_version: 6.2.4
+            xcode-ver: '16.2'
           - arch: universal
             os: macos-15
             cmake_arch: arm64;x86_64
             dmg_suffix: macOS
-            deployment_target: 12.0
+            deployment_target: 13.0
             qt_version: ""
+            xcode-ver: latest-stable
 
     steps:
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: latest-stable
+          xcode-version: ${{ matrix.xcode-ver }}
 
       - name: Set version environment variable
         run: |
@@ -364,7 +366,7 @@ jobs:
   build-windows:
     runs-on: ${{ matrix.config.os }}
     continue-on-error: true
-    needs: setup # Bu 'setup' işinin var olduğunu ve 'version' ile 'short_hash' çıktılarını sağladığını varsayıyoruz.
+    needs: setup
     strategy:
       fail-fast: false
       matrix:
