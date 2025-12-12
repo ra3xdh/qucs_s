@@ -63,12 +63,12 @@ QString RS_FlipFlop::vhdlCode(int NumPorts)
   s += ";\n";
 
   s = "  " +
-    Ports.at(2)->Connection->Name + " <= " +
-    Ports.at(0)->Connection->Name + " nor " +
-    Ports.at(3)->Connection->Name + s + "  " +
-    Ports.at(3)->Connection->Name + " <= " +
-    Ports.at(1)->Connection->Name + " nor " +
-    Ports.at(2)->Connection->Name + s + '\n';
+    Ports.at(2)->Connection->getName() + " <= " +
+    Ports.at(0)->Connection->getName() + " nor " +
+    Ports.at(3)->Connection->getName() + s + "  " +
+    Ports.at(3)->Connection->getName() + " <= " +
+    Ports.at(1)->Connection->getName() + " nor " +
+    Ports.at(2)->Connection->getName() + s + '\n';
   return s;
 }
 
@@ -85,10 +85,10 @@ QString RS_FlipFlop::verilogCode(int NumPorts)
   
   QString l = "";
 
-  QString s = Ports.at(1)->Connection->Name;
-  QString r = Ports.at(0)->Connection->Name;
-  QString q = Ports.at(2)->Connection->Name;
-  QString b = Ports.at(3)->Connection->Name;
+  QString s = Ports.at(1)->Connection->getName();
+  QString r = Ports.at(0)->Connection->getName();
+  QString q = Ports.at(2)->Connection->getName();
+  QString b = Ports.at(3)->Connection->getName();
   
   l = "\n  // " + Name + " RS-flipflop\n" +
     "  assign" + t + q + " = ~(" + r + " | " + b + ");\n" +

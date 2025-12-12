@@ -29,8 +29,8 @@
 #include "node.h"
 #include "misc.h"
 
-#include <QPen>
-#include <QString>
+#include <muParser.h>
+
 #include <QMessageBox>
 #include <QPainter>
 #include <QDebug>
@@ -45,6 +45,31 @@
  * \class Component
  * \brief The Component class implements a generic analog component
  */
+
+QMap<QChar, double> Component::s_numericScaleFactors
+{
+    {' ', 1},
+    {'Y', 1e24},
+    {'Z', 1e21},
+    {'E', 1e18},
+    {'P', 1e15},
+    {'T', 1e12},
+    {'G', 1e9},
+    {'M', 1e6},
+    {'k', 1e3},
+    {'K', 1e3},
+    {'%', 1e-2},
+    {'c', 1e-2},
+    {'m', 1e-3},
+    {'u', 1e-6},
+    {'n', 1e-9},
+    {'p', 1e-12},
+    {'f', 1e-15},
+    {'a', 1e-18},
+    {'z', 1e-21},
+    {'y', 1e-24}
+};
+
 Component::Component() {
     Type = isAnalogComponent;
 
@@ -88,12 +113,22 @@ int Component::textSize(int &textPropertyMaxWidth, int &totalTextPropertiesHeigh
         textPropertiesCount++;
     }
 
+    if (a_deviceName.has_value())
+    {
+        int width = metrics.boundingRect(a_deviceName.value()).width();
+        textPropertyMaxWidth = width > textPropertyMaxWidth ? width : textPropertyMaxWidth;
+        totalTextPropertiesHeight += metrics.height();
+        textPropertiesCount++;
+    }
+
     constexpr int flags = 0b00000000;
     for (Property* p : Props) {
         if (!(p->display)) continue;
 
         // Update overall width if text of the current property is wider
-        auto w = metrics.size(flags, p->Name + "=" + p->Value).width();
+        const QString propertyValue(getValue(*p));
+
+        auto w = metrics.size(flags, p->Name + "=" + propertyValue).width();
         if (w > textPropertyMaxWidth) {
             textPropertyMaxWidth = w;
         }
@@ -185,6 +220,18 @@ int Component::getTextSelected(int point_x, int point_y) {
 
         bounding_rect_top = text_br.bottom();
     }
+
+    if (a_deviceName.has_value())
+    {
+        QRect text_br{{tx, bounding_rect_top}, font_metrics.size(flags, a_deviceName.value())};
+        if (text_br.contains(click))
+        {
+            return -1;
+        }
+
+        bounding_rect_top = text_br.bottom();
+    }
+
     text_index += 1;
 
     for (auto* prop : Props) {
@@ -193,7 +240,10 @@ int Component::getTextSelected(int point_x, int point_y) {
             continue;
         }
 
-        QRect text_br{{tx, bounding_rect_top}, font_metrics.size(flags, prop->Name + "=" + prop->Value)};
+        // The value of the parameter may be an expression. In that case, it must be parsed before displaying
+        const QString propertyValue(getValue(*prop));
+
+        QRect text_br{{tx, bounding_rect_top}, font_metrics.size(flags, prop->Name + "=" + propertyValue)};
         if (text_br.contains(click)) {
             return text_index;
         }
@@ -218,10 +268,32 @@ void Component::paint(QPainter *p) {
         p->drawText(tx, ty, 1, 1, Qt::TextDontClip, Name, &text_br);
     }
 
+    if (a_deviceName.has_value())
+    {
+        p->drawText(text_br.left(), text_br.bottom(), 1, 1, Qt::TextDontClip, a_deviceName.value(), &text_br);
+    }
+
     for (auto *prop : Props) {
         if (!prop->display) continue;
         if ((prop->simulators & QucsSettings.DefaultSimulator) != QucsSettings.DefaultSimulator) continue;
-        prop->paint(text_br.left(), text_br.bottom(), p);
+
+        QString propertyValue = prop->Value;
+        if (prop->type == Property::Type::Equation)
+        {
+            // Evaluate the expression
+            double result = evaluateExpression(prop->Value);
+            // Display only two decimals. If the value is lower than 0.1, use scientific notation
+            if (std::abs(result) < 0.1 && result != 0)
+            {
+                propertyValue = QString::number(result, 'e', 4);
+            }
+            else
+            {
+                propertyValue = QString::number(result, 'f', 4);
+            }
+        }
+
+        prop->paint(text_br.left(), text_br.bottom(), p, propertyValue);
         text_br = prop->boundingRect();
     }
 
@@ -498,7 +570,8 @@ bool Component::rotate() noexcept {
     for (Property *pp : Props)
         if (pp->display) {
             // get width of text
-            tmp = metrics.boundingRect(pp->Name + "=" + pp->Value).width();
+            const QString propertyValue(getValue(*pp));
+            tmp = metrics.boundingRect(pp->Name + "=" + propertyValue).width();
             if (tmp > dx) dx = tmp;
             dy += metrics.lineSpacing();
         }
@@ -652,7 +725,8 @@ bool Component::mirrorY() noexcept {
     for (Property *pp : Props)
         if (pp->display) {
             // get width of text
-            tmp = metrics.boundingRect(pp->Name + "=" + pp->Value).width();
+            const QString propertyValue(getValue(*pp));
+            tmp = metrics.boundingRect(pp->Name + "=" + propertyValue).width();
             if (tmp > dx) dx = tmp;
         }
     if ((ty > y1) && (ty < y2)) tx = -tx - dx;     // mirror text position
@@ -692,14 +766,15 @@ QString Component::netlist() {
 
     // output all node names
     for (Port *p1: Ports)
-        s += " " + p1->Connection->Name;   // node names
+        s += " " + p1->Connection->getName();   // node names
 
     // output all properties
     QStringList no_sim_props;
     no_sim_props<<"Symbol"<<"UseGlobTemp";
     for (const auto &p2 : Props) {
       if (!no_sim_props.contains(p2->Name)) {
-        s += " " + p2->Name + "=\"" + p2->Value + "\"";
+        const QString propertyValue(getValue(*p2));
+        s += " " + p2->Name + "=\"" + propertyValue + "\"";
       }
     }
 
@@ -722,7 +797,8 @@ QString Component::form_spice_param_list(QStringList &ignore_list, QStringList &
             } else {
                 nam = Props.at(i)->Name;
             }
-            QString val = spicecompat::normalize_value(Props.at(i)->Value);
+            const QString propertyValue(getValue(*Props.at(i)));
+            QString val = spicecompat::normalize_value(propertyValue);
             par_str += QStringLiteral("%1=%2 ").arg(nam).arg(val);
         }
 
@@ -756,11 +832,11 @@ QString Component::getNetlist() {
     int z = 0;
     QListIterator<Port *> iport(Ports);
     Port *pp = iport.next();
-    QString Node1 = pp->Connection->Name;
+    QString Node1 = pp->Connection->getName();
     QString s = "";
     while (iport.hasNext())
         s += "R:" + Name + "." + QString::number(z++) + " " +
-             Node1 + " " + iport.next()->Connection->Name + " R=\"0\"\n";
+             Node1 + " " + iport.next()->Connection->getName() + " R=\"0\"\n";
     return s;
 }
 
@@ -779,11 +855,11 @@ QString Component::getSpiceNetlist(spicecompat::SpiceDialect dialect /* = SPICED
     int z = 0;
     QListIterator<Port *> iport(Ports);
     Port *pp = iport.next();
-    QString Node1 = pp->Connection->Name;
+    QString Node1 = pp->Connection->getName();
     s = "";
     while (iport.hasNext()) // Add minR resistors
         s += "R" + Name + QString::number(z++) + " " +
-             Node1 + " " + iport.next()->Connection->Name + " 1e-12\n";
+             Node1 + " " + iport.next()->Connection->getName() + " 1e-12\n";
 
     s.replace(" gnd ", " 0 ");
     return s;
@@ -850,10 +926,10 @@ QString Component::get_Verilog_Code(int NumPorts) {
     // Component is shortened.
     QListIterator<Port *> iport(Ports);
     Port *pp = iport.next();
-    QString Node1 = pp->Connection->Name;
+    QString Node1 = pp->Connection->getName();
     QString s = "";
     while (iport.hasNext())
-        s += "  assign " + iport.next()->Connection->Name + " = " + Node1 + ";\n";
+        s += "  assign " + iport.next()->Connection->getName() + " = " + Node1 + ";\n";
     return s;
 }
 
@@ -876,8 +952,8 @@ QString Component::get_VHDL_Code(int NumPorts) {
     // This is logically correct for the inverter only, but makes
     // some sense for the gates (OR, AND etc.).
     // Has anyone a better idea?
-    QString Node1 = Ports.at(0)->Connection->Name;
-    return "  " + Node1 + " <= " + Ports.at(1)->Connection->Name + ";\n";
+    QString Node1 = Ports.at(0)->Connection->getName();
+    return "  " + Node1 + " <= " + Ports.at(1)->Connection->getName() + ";\n";
 }
 
 // -------------------------------------------------------
@@ -922,7 +998,7 @@ QString Component::save() {
 
     // write all properties
     for (Property *p1 : Props) {
-        QString val = p1->Value; // enable newline in properties
+        QString val = p1->type == Property::Type::Equation ? p1->Value : getValue(*p1); // enable newline in properties
         val.replace("\n", "\\n");
         val.replace("\"", "''");
         if (p1->Description.isEmpty() || (p1->Description == "Expression"))
@@ -1435,6 +1511,78 @@ void Component::copyComponent(Component *pc) {
     Texts = pc->Texts;
 }
 
+double Component::evaluateExpression(const QString& expression) const
+{
+    mu::Parser parser;
+    QMap<QString, double> variables;
+
+    // Populate variables from Props
+    for (const Property* prop : Props)
+    {
+        if (prop->type == Property::Type::Value)
+        {
+            bool ok;
+            QChar unit(prop->unit.isEmpty() ? ' ' : prop->unit[0]);
+            double value = prop->Value.toDouble(&ok) * s_numericScaleFactors[unit];
+            if (ok)
+            {
+                variables[prop->Name] = value;
+                parser.DefineVar(prop->Name.toStdString(), &variables[prop->Name]);
+            }
+        }
+    }
+
+    // Evaluate expressions in Props and add them to variables
+    bool changed;
+    do
+    {
+        changed = false;
+        for (const Property* prop : Props)
+        {
+            if (prop->type == Property::Type::Equation && !variables.contains(prop->Name))
+            {
+                try
+                {
+                    parser.SetExpr(prop->Value.toStdString());
+                    double result = parser.Eval();
+                    variables[prop->Name] = result;
+                    parser.DefineVar(prop->Name.toStdString(), &variables[prop->Name]);
+                    changed = true;
+                }
+                catch (mu::Parser::exception_type &e)
+                {
+                    // Skip this expression if it can't be evaluated yet
+                }
+            }
+        }
+    } while (changed);
+
+    // Set the final expression to evaluate
+    parser.SetExpr(expression.toStdString());
+
+    try
+    {
+        return parser.Eval();
+    }
+    catch (mu::Parser::exception_type &e)
+    {
+        qDebug() << "Error evaluating expression:" << e.GetMsg().c_str();
+        return 0.0;
+    }
+}
+
+QString Component::getValue(const Property& property) const
+{
+    if (property.type == Property::Type::Equation)
+    {
+        // The value is an expression. It must be evaluated by muparser
+        return QString::number(evaluateExpression(property.Value));
+    }
+    else
+    {
+        return property.Value;
+    }
+}
 
 QString Component::getSpiceSubstrateLine()
 {
@@ -1524,7 +1672,7 @@ QString GateComponent::netlist() {
 
     // output all node names
     for (Port *pp: Ports)
-        s += " " + pp->Connection->Name;   // node names
+        s += " " + pp->Connection->getName();   // node names
 
     // output all properties
     s += " " + Props.at(1)->Name + "=\"" + Props.at(1)->Value + "\"";
@@ -1546,9 +1694,9 @@ QString GateComponent::spice_netlist(spicecompat::SpiceDialect dialect) {
     QString td = spicecompat::normalize_value(getProperty("t")->Value);
     s += " [";
     for (int i = Ports.count(); i >= 2; i--) {
-        s += " " + Ports.at(i - 1)->Connection->Name;
+        s += " " + Ports.at(i - 1)->Connection->getName();
     }
-    s += "] " + Ports.at(0)->Connection->Name;
+    s += "] " + Ports.at(0)->Connection->getName();
     s += " " + tmp_model + "\n";
     s += QStringLiteral(".model %1 %2(rise_delay=%3 fall_delay=%3 input_load=5e-13)\n")
             .arg(tmp_model).arg(type).arg(td);
@@ -1559,7 +1707,7 @@ QString GateComponent::spice_netlist(spicecompat::SpiceDialect dialect) {
 QString GateComponent::vhdlCode(int NumPorts) {
     QListIterator<Port *> iport(Ports);
     Port *pp = iport.next();
-    QString s = "  " + pp->Connection->Name + " <= ";  // output port
+    QString s = "  " + pp->Connection->getName() + " <= ";  // output port
 
     // xnor NOT defined for std_logic, so here use not and xor
     if (Model == "XNOR") {
@@ -1567,12 +1715,12 @@ QString GateComponent::vhdlCode(int NumPorts) {
 
         // first input port
         pp = iport.next();
-        QString rhs = pp->Connection->Name;
+        QString rhs = pp->Connection->getName();
 
         // output all input ports with node names
         while (iport.hasNext()) {
             pp = iport.next();
-            rhs = "not ((" + rhs + ")" + Op + pp->Connection->Name + ")";
+            rhs = "not ((" + rhs + ")" + Op + pp->Connection->getName() + ")";
         }
         s += rhs;
     } else {
@@ -1583,12 +1731,12 @@ QString GateComponent::vhdlCode(int NumPorts) {
         }
 
         pp = iport.next();
-        s += pp->Connection->Name;   // first input port
+        s += pp->Connection->getName();   // first input port
 
         // output all input ports with node names
         while (iport.hasNext()) {
             pp = iport.next();
-            s += Op + pp->Connection->Name;
+            s += Op + pp->Connection->getName();
         }
         if (Model.at(0) == 'N')
             s += ')';
@@ -1629,16 +1777,16 @@ QString GateComponent::verilogCode(int NumPorts) {
             if (!misc::Verilog_Delay(td, Name)) return td;
             s += td;
         }
-        s += " " + pp->Connection->Name + " = ";  // output port
+        s += " " + pp->Connection->getName() + " = ";  // output port
         if (Model.at(0) == 'N') s += "~(";
 
         pp = iport.next();
-        s += pp->Connection->Name;   // first input port
+        s += pp->Connection->getName();   // first input port
 
         // output all input ports with node names
         while (iport.hasNext()) {
             pp = iport.next();
-            s += " " + op + " " + pp->Connection->Name;
+            s += " " + op + " " + pp->Connection->getName();
         }
 
         if (Model.at(0) == 'N') s += ")";
@@ -1651,15 +1799,15 @@ QString GateComponent::verilogCode(int NumPorts) {
             if (!misc::Verilog_Delay(td, Name)) return td;
             s += td;
         }
-        s += " " + Name + " (" + pp->Connection->Name;  // output port
+        s += " " + Name + " (" + pp->Connection->getName();  // output port
 
         pp = iport.next();
-        s += ", " + pp->Connection->Name;   // first input port
+        s += ", " + pp->Connection->getName();   // first input port
 
         // output all input ports with node names
         while (iport.hasNext()) {
             pp = iport.next();
-            s += ", " + pp->Connection->Name;
+            s += ", " + pp->Connection->getName();
         }
 
         s += ");\n";

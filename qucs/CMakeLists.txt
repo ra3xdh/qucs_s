@@ -69,6 +69,32 @@ include_directories(
       ${Qt6PrintSupport_INCLUDE_DIRS}
       )
 
+find_library(XERCES-C_LIB NAMES xerces-c-3.3 xerces-c-3.2 xerces-c-3.1 xerces-c PATHS c:/xsd/lib)
+if(NOT XERCES-C_LIB)
+    message(SEND_ERROR "xerces-c lib not found: ${XERCES-C_LIB}")
+else()
+    message(STATUS "xerces-c lib found at: ${XERCES-C_LIB}")
+endif()
+
+find_program(XSD_PROG NAMES xsdcxx xsd xsd.exe PATHS C:/xsd)
+if (NOT XSD_PROG)
+    message(SEND_ERROR "xsd prog not found: ${XSD_PROG}")
+else()
+    message(STATUS "xsd prog found at: ${XSD_PROG}")
+    cmake_path(GET XSD_PROG PARENT_PATH XSD_PROG_PATH)
+    INCLUDE_DIRECTORIES(${XSD_PROG_PATH}/../include)
+endif()
+
+find_library(MUPARSER_LIB NAMES muparser-2.3 muparser)
+if(NOT MUPARSER_LIB)
+    message(SEND_ERROR "muparser lib not found: ${MUPARSER_LIB}")
+else()
+    message(STATUS "muparser lib found at: ${MUPARSER_LIB}")
+endif()
+
+if(DEFINED CMAKE_MUPARSER_INCLUDES)
+    INCLUDE_DIRECTORIES(${CMAKE_MUPARSER_INCLUDES})
+endif()
 
 #MESSAGE("QT_INCLUDES=[${QT_INCLUDES}]")
 #MESSAGE("QT_LIBRARIES=[${QT_LIBRARIES}]")
@@ -79,6 +105,7 @@ CONFIGURE_FILE (
 )
 
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR}/components)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -92,7 +119,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
+        add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS LIBXERCES_C_SHARED)
         add_compile_options(/permissive- /Zc:__cplusplus /Zc:preprocessor /MP /Od /vmg)
         add_compile_options(/wd4244 /wd4267 /wd4312)
     else()
@@ -103,7 +130,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     endif()
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
+        add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS LIBXERCES_C_SHARED)
         string(REGEX REPLACE "/W1" "/w" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
         add_compile_options(/permissive- /Zc:__cplusplus /Zc:preprocessor /MP /vmg)
         add_link_options(/OPT:REF /OPT:ICF)
@@ -138,40 +165,72 @@ ADD_SUBDIRECTORY( extsimkernels )
 ADD_SUBDIRECTORY( spicecomponents )
 
 SET(QUCS_SRCS
-  element.cpp	octave_window.cpp	qucsdoc.cpp
-  textdoc.cpp  main.cpp	schematic.cpp
-  mnemo.cpp	qucs.cpp healer.cpp
-  module.cpp	schematic_element.cpp	wire.cpp schematic_render.cpp
-  mouseactions.cpp qucs_actions.cpp	schematic_file.cpp
-  wirelabel.cpp node.cpp qucs_init.cpp
-  syntax.cpp misc.cpp messagedock.cpp
-  settings.cpp
-  imagewriter.cpp printerwriter.cpp projectView.cpp
-  symbolwidget.cpp wire_planner.cpp
+    element.cpp
+    octave_window.cpp
+    qucsdoc.cpp
+    textdoc.cpp
+    main.cpp
+    schematic.cpp
+    mnemo.cpp
+    qucs.cpp
+    healer.cpp
+    module.cpp
+    module_xml.cpp
+    schematic_element.cpp
+    wire.cpp
+    schematic_render.cpp
+    mouseactions.cpp
+    qucs_actions.cpp
+    schematic_file.cpp
+    wirelabel.cpp
+    node.cpp
+    qucs_init.cpp
+    syntax.cpp
+    misc.cpp
+    messagedock.cpp
+    settings.cpp
+    imagewriter.cpp
+    printerwriter.cpp
+    projectView.cpp
+    symbolwidget.cpp
+    wire_planner.cpp
 )
 
 SET(QUCS_HDRS
-element.h
-conductor.h
-healer.h
-main.h
-messagedock.h
-misc.h
-mnemo.h
-module.h
-mouseactions.h
-node.h
-octave_window.h
-qucs.h
-qucsdoc.h
-schematic.h
-settings.h
-syntax.h
-symbolwidget.h
-textdoc.h
-wire.h
-wirelabel.h
-wire_planner.h
+    element.h
+    conductor.h
+    healer.h
+    main.h
+    messagedock.h
+    misc.h
+    mnemo.h
+    module.h
+    mouseactions.h
+    node.h
+    octave_window.h
+    qucs.h
+    qucsdoc.h
+    schematic.h
+    settings.h
+    syntax.h
+    symbolwidget.h
+    textdoc.h
+    wire.h
+    wirelabel.h
+    wire_planner.h
+)
+
+# prevent specific warning from xsd-generated code
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set(SUPPRESS_DEPRECATED_DECLARATION "/wd4996")
+else()
+    set(SUPPRESS_DEPRECATED_DECLARATION "-Wno-deprecated-declarations")
+endif()
+
+SET_SOURCE_FILES_PROPERTIES(
+    module_xml.cpp
+    PROPERTIES
+    COMPILE_FLAGS ${SUPPRESS_DEPRECATED_DECLARATION}
 )
 
 #
@@ -264,7 +323,9 @@ ADD_EXECUTABLE( ${QUCS_NAME} MACOSX_BUNDLE WIN32
 #
 TARGET_LINK_LIBRARIES( ${QUCS_NAME}
     components diagrams dialogs geometry paintings extsimkernels spicecomponents magnetics qt3_compat
-    Qt6::Core  Qt6::Gui  Qt6::Widgets Qt6::Svg  Qt6::SvgWidgets Qt6::Xml  Qt6::PrintSupport )
+    Qt6::Core  Qt6::Gui  Qt6::Widgets Qt6::Svg  Qt6::SvgWidgets Qt6::Xml  Qt6::PrintSupport
+    ${XERCES-C_LIB} ${MUPARSER_LIB}
+)
 SET_TARGET_PROPERTIES(${QUCS_NAME} PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 #
 # Prepare the installation

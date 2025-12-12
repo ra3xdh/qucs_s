@@ -18,22 +18,28 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
+#include "extsimkernels/spicecompat.h"
+#include "element.h"
+#include "property.h"
+
 // QObject is needed here to be transitively included
 // from component implementations. Some how non-Linux
 // builds fail without explicit QObject inclusion
 #include <QObject>
-#include "extsimkernels/spicecompat.h"
-
 #include <QList>
+#include <QMap>
+#include <QChar>
 
 #include "element.h"
 #include "property.h"
 
+#include <QString>
+#include <QPen>
+#include <QPair>
+
+#include <optional>
 
 class Schematic;
-class QString;
-class QPen;
-
 
 class Component : public Element {
 public:
@@ -88,6 +94,9 @@ public:
   virtual void setSchematic (Schematic* p) { containingSchematic = p; }
   virtual Schematic* getSchematic () {return containingSchematic; }
 
+  virtual void setNetNameMapping(QList<QPair<QString, QString>>& pinInfo) { Q_UNUSED(pinInfo) }
+  virtual void resetNetNameMapping() {}
+
   QList<qucs::Line *>     Lines;
   QList<qucs::Polyline *> Polylines;
   QList<struct qucs::Arc *>      Arcs;
@@ -132,10 +141,16 @@ protected:
   bool getBrush(const QString&, QBrush&, int);
 
   void copyComponent(Component*);
+  double evaluateExpression(const QString& expression) const;
+  QString getValue(const Property& property) const;
+
   Schematic* containingSchematic;
+  static QMap<QChar, double> s_numericScaleFactors;
 
   virtual void drawSymbol(QPainter* p);
   QString getSpiceSubstrateLine(); // get SPICE params for microstrips
+
+  std::optional<QString> a_deviceName;
 };
 
 

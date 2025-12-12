@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<Component
+    xsi:noNamespaceSchemaLocation="Component.xsd"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    library="XML-based components" names="AC Power Source" schematic_id = "Pac">
+    <Description>
+        AC Power Source
+    </Description>
+    <Models>
+        <DefaultModel value="Pac">
+        </DefaultModel>
+        <SpiceModel value="VP">
+        </SpiceModel>
+    </Models>
+    <Netlists>
+            <QucsatorNetlist value = 'Pac:P{PartCounter} {nets} Num="{PartCounter}" Z="{Z}" P="{P}" f="{f}" Temp="{Temp}"'>
+            </QucsatorNetlist>
+            <NgspiceNetlist value = 'VP{PartCounter} {nets} dc 0 ac {P} SIN(0 {P} {f}) portnum {NumPorts} z0 {Z}'>
+            </NgspiceNetlist>
+    </Netlists>
+    <Symbols>
+        <Symbol id="Standard">
+            <PortSym x="0" y="30" type="1" angle="270" />
+            <Line x1="11" y1="-22" x2="11" y2="22" color="#35322F" width="0" style="1" /> <!-- Outer box -->
+            <Line x1="-11" y1="-22" x2="-11" y2="22" color="#35322F" width="0" style="1" />
+            <Line x1="11" y1="-22" x2="-11" y2="-22" color="#35322F" width="0" style="1" />
+            <Line x1="11" y1="22" x2="-11" y2="22" color="#35322F" width="0" style="1" />
+            <Line x1="0" y1="30" x2="0" y2="19" color="#000080" width="2" style="1" />
+            <Line x1="0" y1="-30" x2="0" y2="-19" color="#000080" width="2" style="1" />
+            <Line x1="0" y1="1" x2="0" y2="-3" color="#000080" width="2" style="1" />
+            <Line x1="5" y1="-3" x2="5" y2="-19" color="#000080" width="2" style="1" />
+            <Line x1="-5" y1="-3" x2="-5" y2="-19" color="#000080" width="2" style="1" />
+            <Line x1="5" y1="-3" x2="-5" y2="-3" color="#000080" width="2" style="1" />
+            <Line x1="5" y1="-19" x2="-5" y2="-19" color="#000080" width="2" style="1" />
+            <Arc x="-9" y="1" arcWidth="18" height="18" angle="0" len="5760" color="#000080" width="2" /> <!-- Circle -->
+            <Arc x="-6" y="6" arcWidth="6" height="6" angle="0" len="2880" color="#000080" width="2" /> <!-- Half sine -->
+            <Arc x="0" y="6" arcWidth="6" height="6" angle="2880" len="2880" color="#000080" width="2" /> <!-- The other half of the sine -->
+            <Line x1="-5" y1="-25" x2="-11" y2="-25" color="#FF0000" width="1" style="1" /> <!-- Plus sign -->
+            <Line x1="-8" y1="-28" x2="-8" y2="-22" color="#FF0000" width="1" style="1" />
+            <Line x1="-5" y1="25" x2="-11" y2="25" color="#000000" width="1" style="1" /> <!-- Minus sign -->
+            <PortSym x="0" y="-30" type="2" angle="90"/>
+        </Symbol>
+    </Symbols>
+    <Parameters>
+        <Parameter name="NumPorts" unit="" default_value="1" show="true">
+            <Description>Number of the port</Description>
+        </Parameter>
+        <Parameter name="Z" unit="Ohm" default_value="50" show="true">
+            <Description>Port impedance</Description>
+        </Parameter>
+        <Parameter name="P" unit="dBm" default_value="0" show="true">
+            <Description>(Available) AC power (dBm)</Description>
+        </Parameter>
+        <Parameter name="Vrms" unit="V" equation="sqrt(Z/1000.0)*10^(P/20)" show="true">
+            <Description>RMS Voltage</Description>
+        </Parameter>
+        <Parameter name="Vpp" unit="V" equation="2.0*Vrms*sqrt(2.0)" show="false">
+            <Description>Peak-to-Peak Voltage</Description>
+        </Parameter>
+        <Parameter name="f" unit="GHz" default_value="1" show="true">
+            <Description>Frequency</Description>
+        </Parameter>
+        <Parameter name="Temp" unit="" default_value="26.85" show="false">
+            <Description>Simulation temperature (C)</Description>
+        </Parameter>
+    </Parameters>
+</Component>

@@ -20,6 +20,7 @@
 
 #include <QString>
 #include <QDateTime>
+#include <QMargins>
 
 class QucsApp;
 class QPrinter;
@@ -33,7 +34,7 @@ public:
   virtual void  setName(const QString&) {};
   virtual bool  load() { return true; };
   virtual int   save() { return 0; };
-  virtual void  print(QPrinter*, QPainter*, bool, bool) {};
+  virtual void  print(QPrinter*, QPainter*, bool, bool, QMargins = {}) {};
   virtual void  becomeCurrent(bool) {};
   virtual double zoomBy(double) { return 1.0; };
   virtual void  showAll() {};

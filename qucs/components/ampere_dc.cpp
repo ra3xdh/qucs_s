@@ -62,9 +62,9 @@ QString Ampere_dc::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecom
 
     QString s = spicecompat::check_refdes(Name,SpiceModel);
 
-    QString plus = Ports.at(1)->Connection->Name;
+    QString plus = Ports.at(1)->Connection->getName();
     if (plus=="gnd") plus = "0";
-    QString minus = Ports.at(0)->Connection->Name;
+    QString minus = Ports.at(0)->Connection->getName();
     if (minus=="gnd") minus = "0";
     s += QStringLiteral(" %1 %2 DC %3\n").arg(plus).arg(minus)
             .arg(spicecompat::normalize_value(Props.at(0)->Value));

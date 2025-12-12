@@ -81,8 +81,8 @@ QString Switch::netlist()
   QString s = Model+":"+Name;
 
   // output all node names
-  s += " "+Ports.at(0)->Connection->Name;
-  s += " "+Ports.at(1)->Connection->Name;
+  s += " "+Ports.at(0)->Connection->getName();
+  s += " "+Ports.at(1)->Connection->getName();
 
   // output all properties
   s += " "+Props.at(0)->Name+"=\""+Props.at(0)->Value+"\"";
@@ -98,8 +98,8 @@ QString Switch::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
   Q_UNUSED(dialect);
 
   QString s = spicecompat::check_refdes(Name,SpiceModel);
-  QString port1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
-  QString port2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
+  QString port1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->getName());
+  QString port2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->getName());
 
   s += QStringLiteral(" %1 %2 control_net%3 0 switch_model%3\n").arg(port1).arg(port2).arg(Name);
 

@@ -128,16 +128,16 @@ QString Mutual2::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompa
     QString ind2 = spicecompat::normalize_value(getProperty("L2")->Value);
     QString ind3 = spicecompat::normalize_value(getProperty("L3")->Value);
     QString s = QStringLiteral("%1 %2 %3 %4\n").arg(l1)
-            .arg(spicecompat::normalize_node_name(Ports.at(0)->Connection->Name))
-            .arg(spicecompat::normalize_node_name(Ports.at(5)->Connection->Name))
+            .arg(spicecompat::normalize_node_name(Ports.at(0)->Connection->getName()))
+            .arg(spicecompat::normalize_node_name(Ports.at(5)->Connection->getName()))
             .arg(ind1);
     s += QStringLiteral("%1 %2 %3 %4\n").arg(l2)
-            .arg(spicecompat::normalize_node_name(Ports.at(4)->Connection->Name))
-            .arg(spicecompat::normalize_node_name(Ports.at(3)->Connection->Name))
+            .arg(spicecompat::normalize_node_name(Ports.at(4)->Connection->getName()))
+            .arg(spicecompat::normalize_node_name(Ports.at(3)->Connection->getName()))
             .arg(ind2);
     s += QStringLiteral("%1 %2 %3 %4\n").arg(l3)
-            .arg(spicecompat::normalize_node_name(Ports.at(1)->Connection->Name))
-            .arg(spicecompat::normalize_node_name(Ports.at(2)->Connection->Name))
+            .arg(spicecompat::normalize_node_name(Ports.at(1)->Connection->getName()))
+            .arg(spicecompat::normalize_node_name(Ports.at(2)->Connection->getName()))
             .arg(ind3);
     s += QStringLiteral("%1 %2 %3 %4\n").arg(k12).arg(l1).arg(l2)
             .arg(spicecompat::normalize_value(getProperty("k12")->Value));

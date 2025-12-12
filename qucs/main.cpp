@@ -70,7 +70,8 @@ tQucsSettings QucsSettings;
 
 QucsApp *QucsMain = nullptr;  // the Qucs application itself
 QString lastDir;    // to remember last directory for several dialogs
-QStringList qucsPathList;
+QStringList qucsSubcktPathList;
+QStringList qucsXmlCompPathList;
 VersionTriplet QucsVersion; // Qucs version string
 
 // #########################################################################
@@ -155,15 +156,22 @@ bool loadSettings()
     QucsSettings.spiceExtensions << "*.sp" << "*.cir" << "*.spc" << "*.spi";
 
     // If present read in the list of directory paths in which Qucs should
-    // search for subcircuit schematics
-    int npaths = settings.beginReadArray("Paths");
-    for (int i = 0; i < npaths; ++i)
+    // search for subcircuit schematics/XML components
+    QStringList pathNames = {"Paths", "XmlCompPaths"};
+    QList<QStringList*> refList = {&qucsSubcktPathList, &qucsXmlCompPathList};
+    Q_ASSERT(pathNames.size() == refList.size());
+
+    for (int idx = 0; idx < pathNames.size(); ++idx)
     {
-        settings.setArrayIndex(i);
-        QString apath = settings.value("path").toString();
-        qucsPathList.append(apath);
+        int npaths = settings.beginReadArray(pathNames[idx]);
+        for (int i = 0; i < npaths; ++i)
+        {
+            settings.setArrayIndex(i);
+            QString apath = settings.value("path").toString();
+            refList[idx]->append(apath);
+        }
+        settings.endArray();
     }
-    settings.endArray();
 
     QucsSettings.numRecentDocs = 0;
 
@@ -226,16 +234,24 @@ bool saveApplSettings()
     qs.setItem<bool>("alwaysPrefixDataset",QucsSettings.alwaysPrefixDataset);
 
     // Copy the list of directory paths in which Qucs should
-    // search for subcircuit schematics from qucsPathList
-    settings.remove("Paths");
-    settings.beginWriteArray("Paths");
-    int i = 0;
-    for (QString& path: qucsPathList) {
-         settings.setArrayIndex(i);
-         settings.setValue("path", path);
-         i++;
-     }
-     settings.endArray();
+    // search for subcircuit schematics/XML components from qucsSubcktPathList/qucsXmlCompPathList
+    QStringList pathNames = {"Paths", "XmlCompPaths"};
+    QList<QStringList*> refList = {&qucsSubcktPathList, &qucsXmlCompPathList};
+    Q_ASSERT(pathNames.size() == refList.size());
+
+    for (int idx = 0; idx < pathNames.size(); ++idx)
+    {
+        settings.remove(pathNames[idx]);
+        settings.beginWriteArray(pathNames[idx]);
+        int i = 0;
+        for (QString& path: *(refList[idx]))
+        {
+            settings.setArrayIndex(i);
+            settings.setValue("path", path);
+            i++;
+        }
+        settings.endArray();
+    }
 
   return true;
 }
@@ -479,13 +495,22 @@ int doCdlNetlist(
     QScopedPointer<QString> netlistString;
     QScopedPointer<QFile> cdlFile;
 
+    QString subCircuitName;
+
     if (netlist2Console)
     {
+        subCircuitName = "console";
+
         netlistString.reset(new QString());
         netlistStream.reset(new QTextStream(netlistString.get()));
     }
     else
     {
+        // The main-netlist wrapping subcircuit gets the name from the netlist storage
+        // file name excluding the potential file suffix
+        subCircuitName = netlistFileName.split(QDir::separator()).last();
+        subCircuitName = subCircuitName.left(subCircuitName.lastIndexOf("."));
+
         cdlFile.reset(new QFile(netlistFileName));
 
         if (cdlFile->open(QFile::WriteOnly))
@@ -508,7 +533,7 @@ int doCdlNetlist(
         }
     }
 
-    CdlNetlistWriter cdlWriter(*netlistStream, schematic.get(), resolveSpicePrefix);
+    CdlNetlistWriter cdlWriter(*netlistStream, schematic.get(), resolveSpicePrefix, subCircuitName);
     if (!cdlWriter.write())
     {
         QMessageBox::critical(
@@ -617,9 +642,9 @@ void createIcons() {
     QString Name;
 
     for (Module *Mod: Comps) {
-      if (Mod->info) {
+      if (Mod->hasInfo()) {
 
-        Element *e = (Mod->info) (Name, File, true);
+        Element *e = Mod->getInfo(Name, File, true);
 
         Component *c = (Component* ) e;
 
@@ -764,7 +789,7 @@ void createDocData() {
 
         nComps += 1;
 
-        Element *e = (Mod->info) (Name, File, true);
+        Element *e = Mod->getInfo(Name, File, true);
         Component *c = (Component* ) e;
 
         // object info
@@ -842,7 +867,7 @@ void createListComponentEntry(){
     QString Name;
 
     for (Module *Mod: Comps) {
-      Element *e = (Mod->info) (Name, File, true);
+      Element *e = Mod->getInfo(Name, File, true);
       Component *c = (Component* ) e;
 
       QString qucsEntry = c->save();
@@ -852,7 +877,7 @@ void createListComponentEntry(){
       int port = 0;
       for (Port *p: c->Ports) {
         Node *n = new Node(0,0);
-        n->Name="_net"+QString::number(port);
+        n->setName("_net"+QString::number(port));
         p->Connection = n;
         port +=1;
       }
@@ -934,6 +959,7 @@ int main(int argc, char *argv[])
     QucsSettings.OctaveDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/octave/";
     QucsSettings.ExamplesDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/examples/";
     QucsSettings.DocDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/docs/";
+    QucsSettings.ComponentDir = QucsDir.canonicalPath() + "/share/" QUCS_NAME "/components";
     QucsSettings.Editor = "qucs";
 
     /// \todo Make the setting up of all executables below more consistent

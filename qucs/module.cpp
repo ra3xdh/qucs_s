@@ -19,9 +19,11 @@
 #include <QStringList>
 #include <QList>
 #include <QDebug>
+#include <QMutableListIterator>
 
 #include "element.h"
 #include "components/component.h"
+#include "components/xml/XmlComponent.h"
 #include "components/components.h"
 #include "spicecomponents/spicecomponents.h"
 #include "paintings/paintings.h"
@@ -31,29 +33,49 @@
 #include "extsimkernels/spicecompat.h"
 
 // Global category and component lists.
-QHash<QString, Module *> Module::Modules;
+QHash<QString, Module *> Module::s_modules;
 QList<Category *> Category::Categories;
 
-QMap<QString, QString> Module::vaComponents;
+QMap<QString, QString> Module::s_vaComponents;
 
 // Constructor creates instance of module object.
-Module::Module () {
-  info = 0;
-  category = "#special";
-  icon = nullptr;
+Module::Module() :
+    a_infoVA(nullptr),
+    a_category("#special"),
+    a_icon(nullptr),
+    a_info(nullptr),
+    a_xmlComp()
+{
 }
 
 // Destructor removes instance of module object from memory.
-Module::~Module () {
-    if (icon != nullptr) delete icon;
+Module::~Module()
+{
+    if (a_icon != nullptr) delete a_icon;
+}
+
+Element* Module::getInfo(QString& name, char* &bitmapFile, bool getNewOne)
+{
+    if (a_info != nullptr)
+    {
+        return a_info(name, bitmapFile, getNewOne);
+    }
+    else if (a_xmlComp)
+    {
+        return a_xmlComp->getInfo(name, bitmapFile, getNewOne);
+    }
+
+    Q_ASSERT(false);
+
+    return nullptr;
 }
 
 // Module registration using a category name and the appropriate
 // function returning a modules instance object.
 void Module::registerModule (QString category, pInfoFunc info) {
   Module * m = new Module ();
-  m->info = info;
-  m->category = category;
+  m->a_info = info;
+  m->a_category = category;
   intoCategory (m);
 }
 
@@ -71,35 +93,46 @@ void Module::registerComponent(QString category, pInfoFunc info) {
   if ((c->Simulator & QucsSettings.DefaultSimulator) ==
       QucsSettings.DefaultSimulator) {
     Module* m     = new Module();
-    m->info       = info;
-    m->category   = category;
+    m->a_info       = info;
+    m->a_category   = category;
 
-    m->icon = new QPixmap(128, 128);
-    c->paintIcon(m->icon);
+    m->a_icon = new QPixmap(128, 128);
+    c->paintIcon(m->a_icon);
 
     intoCategory(m);
-    if (!Modules.contains(c->Model)) {
-      Modules.insert(c->Model, m);
+    if (!s_modules.contains(c->Model)) {
+      s_modules.insert(c->Model, m);
     }
   }
   delete c;
 }
 
-// Returns instantiated component based on the given "Model" name.  If
+// Returns instantiated component based on the given "model" name.  If
 // there is no such component registers the function returns NULL.
-Component * Module::getComponent (QString Model) {
-  if ( Modules.contains(Model)) {
-    Module *m = Modules.find(Model).value();
-    QString Name;
-    char * File;
-    QString vaBitmap;
-    if (vaComponents.contains(Model))
-      return (Component *)
-              vacomponent::info (Name, vaBitmap, true, vaComponents[Model]);
-    else
-      return (Component *) m->info (Name, File, true);
-  }
-  return 0;
+Component* Module::getComponent(const QString& model)
+{
+    if (s_modules.contains(model))
+    {
+        Module* m = s_modules.find(model).value();
+        QString Name;
+        char* File;
+        QString vaBitmap;
+
+        if (s_vaComponents.contains(model))
+        {
+            return static_cast<Component*>(vacomponent::info(Name, vaBitmap, true, s_vaComponents[model]));
+        }
+        else if (m->a_info != nullptr)
+        {
+            return static_cast<Component*>(m->a_info(Name, File, true));
+        }
+        else if (m->a_xmlComp)
+        {
+            return static_cast<Component*>(m->a_xmlComp->getInfo(Name, File, true));
+        }
+    }
+
+    return nullptr;
 }
 
 void Module::registerDynamicComponents()
@@ -107,10 +140,10 @@ void Module::registerDynamicComponents()
     qDebug() << "Module::registerDynamicComponents()";
 
 
-  // vaComponents is populated in QucsApp::slotLoadModule
+  // s_vaComponents is populated in QucsApp::slotLoadModule
 
-  // register modules symbol and properties out of in vaComponents
-  QMapIterator<QString, QString> i(vaComponents);
+  // register modules symbol and properties out of in s_vaComponents
+  QMapIterator<QString, QString> i(s_vaComponents);
    while (i.hasNext()) {
      i.next();
 
@@ -122,10 +155,10 @@ void Module::registerDynamicComponents()
 
      // the typedef needs to be different
      //passes the pointer, but it has no idea how to call the JSON
-     m->infoVA = &vacomponent::info;
+     m->a_infoVA = &vacomponent::info;
 
      // TODO maybe allow user load into custom category?
-     m->category = QObject::tr("verilog-a user devices");
+     m->a_category = QObject::tr("verilog-a user devices");
 
      // instantiation of the component once in order
      // to obtain "Model" property of the component
@@ -134,15 +167,15 @@ void Module::registerDynamicComponents()
      QString Name, Model, vaBitmap;
 //     char * File;
      Component * c = (Component *)
-             vacomponent::info (Name, vaBitmap, true, vaComponents[i.key()]);
+             vacomponent::info (Name, vaBitmap, true, s_vaComponents[i.key()]);
      Model = c->Model;
      delete c;
 
      // put into category and the component hash
      intoCategory (m);
 
-     if (!Modules.contains (Model))
-         Modules.insert (Model, m);
+     if (!s_modules.contains (Model))
+         s_modules.insert (Model, m);
 
    } // while
 }
@@ -155,7 +188,7 @@ void Module::intoCategory (Module * m) {
   QList<Category *>::const_iterator it;
   for (it = Category::Categories.constBegin();
        it != Category::Categories.constEnd(); it++) {
-    if ((*it)->Name == m->category) {
+    if ((*it)->Name == m->a_category) {
       (*it)->Content.append (m);
       break;
     }
@@ -163,7 +196,7 @@ void Module::intoCategory (Module * m) {
 
   // if there is no such category, then create it
   if (it == Category::Categories.constEnd()) {
-    Category *cat = new Category (m->category);
+    Category *cat = new Category (m->a_category);
     Category::Categories.append (cat);
     cat->Content.append (m);
   }
@@ -623,6 +656,7 @@ void Module::registerModules (void) {
   REGISTER_PAINT_1 (EllipseArc);
   REGISTER_PAINT_1 (ImagePainting);
 
+  registerXmlComponents();
 }
 
 // This function has to be called once at application end.  It removes
@@ -632,16 +666,16 @@ void Module::unregisterModules(void) {
     delete Category::Categories.takeFirst();
   }
 
-  QHash<QString, Module*>::iterator i = Modules.begin();
-  while (i != Modules.end()) {
+  QHash<QString, Module*>::iterator i = s_modules.begin();
+  while (i != s_modules.end()) {
     if (i.value() == 0) { // test here
       delete i.value();
-      i = Modules.erase(i);
+      i = s_modules.erase(i);
     } else {
       ++i;
     }
   }
-  Modules.clear();
+  s_modules.clear();
 }
 
 // Constructor creates instance of module object.
@@ -703,3 +737,19 @@ int Category::getModulesNr (QString category) {
   }
   return -1;
 }
+
+void Category::unregisterXmlModules()
+{
+    foreach (Category* category, Categories)
+    {
+        QMutableListIterator<Module*> it(category->Content);
+        while (it.hasNext())
+        {
+            if (it.next()->isXmlModule())
+            {
+                it.remove();
+            }
+        }
+    }
+}
+

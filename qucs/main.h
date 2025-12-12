@@ -62,6 +62,7 @@ struct tQucsSettings {
   QString OctaveDir;  // m-files location
   QString ExamplesDir;
   QString DocDir;
+  QString ComponentDir;
 
   unsigned int NodeWiring;
   QDir QucsWorkDir;
@@ -115,7 +116,8 @@ struct tQucsSettings {
 extern tQucsSettings QucsSettings;  // extern because nearly everywhere used
 extern QucsApp *QucsMain;  // the Qucs application itself
 extern QString lastDir;    // to remember last directory for several dialogs
-extern QStringList qucsPathList;
+extern QStringList qucsSubcktPathList;
+extern QStringList qucsXmlCompPathList;
 extern VersionTriplet QucsVersion;
 
 bool loadSettings();

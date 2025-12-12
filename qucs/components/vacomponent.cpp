@@ -302,7 +302,7 @@ QString vacomponent::spice_netlist(spicecompat::SpiceDialect dialect /* = spicec
 
     QString s = SpiceModel + Name + " ";
     for(const auto pp: Ports) {
-        s += pp->Connection->Name + " ";
+        s += pp->Connection->getName() + " ";
     }
     QString tmp_model = QStringLiteral("mod_%1_%2").arg(Model).arg(Name);
     s += tmp_model + "\n";

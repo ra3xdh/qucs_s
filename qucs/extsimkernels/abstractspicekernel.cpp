@@ -286,7 +286,7 @@ void AbstractSpiceKernel::createSubNetlist(QTextStream &stream, bool lib)
     for(Component *pc : a_schematic->a_DocComps) {
         if (pc->Model=="Port") {
             ports.append(qMakePair(pc->Props.first()->Value.toInt(),
-                                   pc->Ports.first()->Connection->Name));
+                                   pc->Ports.first()->Connection->getName()));
         }
     }
     std::sort(ports.begin(), ports.end());

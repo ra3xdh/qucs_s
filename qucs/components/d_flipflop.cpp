@@ -66,14 +66,14 @@ QString D_FlipFlop::vhdlCode(int NumPorts)
   s += ";\n";
 
   s = "  " + Name + " : process (" +
-      Ports.at(0)->Connection->Name + ", " +
-      Ports.at(1)->Connection->Name + ")\n  begin\n    if (" +
-      Ports.at(3)->Connection->Name + "='1') then  " +
-      Ports.at(2)->Connection->Name + " <= '0'" + s +"    elsif (" +
-      Ports.at(1)->Connection->Name + "='1' and " +
-      Ports.at(1)->Connection->Name + "'event) then\n      " +
-      Ports.at(2)->Connection->Name + " <= " +
-      Ports.at(0)->Connection->Name + s + "    end if;\n  end process;\n\n";
+      Ports.at(0)->Connection->getName() + ", " +
+      Ports.at(1)->Connection->getName() + ")\n  begin\n    if (" +
+      Ports.at(3)->Connection->getName() + "='1') then  " +
+      Ports.at(2)->Connection->getName() + " <= '0'" + s +"    elsif (" +
+      Ports.at(1)->Connection->getName() + "='1' and " +
+      Ports.at(1)->Connection->getName() + "'event) then\n      " +
+      Ports.at(2)->Connection->getName() + " <= " +
+      Ports.at(0)->Connection->getName() + s + "    end if;\n  end process;\n\n";
   return s;
 }
 
@@ -88,10 +88,10 @@ QString D_FlipFlop::verilogCode(int NumPorts)
   }
   
   QString s = "";
-  QString q = Ports.at(2)->Connection->Name;
-  QString d = Ports.at(0)->Connection->Name;
-  QString r = Ports.at(3)->Connection->Name;
-  QString c = Ports.at(1)->Connection->Name;
+  QString q = Ports.at(2)->Connection->getName();
+  QString d = Ports.at(0)->Connection->getName();
+  QString r = Ports.at(3)->Connection->getName();
+  QString c = Ports.at(1)->Connection->getName();
   QString v = "net_reg" + Name + q;
   
   s = "\n  // " + Name + " D-flipflop\n" +
@@ -130,10 +130,10 @@ QString D_FlipFlop::spice_netlist(spicecompat::SpiceDialect dialect /* = spiceco
 
     QString SET   = "0";
     QString QB    = "QB_" + Name;
-    QString D     = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
-    QString CLK   = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
-    QString Q     = spicecompat::normalize_node_name(Ports.at(2)->Connection->Name);
-    QString RESET = spicecompat::normalize_node_name(Ports.at(3)->Connection->Name);
+    QString D     = spicecompat::normalize_node_name(Ports.at(0)->Connection->getName());
+    QString CLK   = spicecompat::normalize_node_name(Ports.at(1)->Connection->getName());
+    QString Q     = spicecompat::normalize_node_name(Ports.at(2)->Connection->getName());
+    QString RESET = spicecompat::normalize_node_name(Ports.at(3)->Connection->getName());
 
     s += " " + D + " " + CLK + " " + SET + " " + RESET + " " + Q + " " + QB;
 

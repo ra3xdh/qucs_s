@@ -83,8 +83,8 @@ QString iProbe::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
 {
     Q_UNUSED(dialect);
 
-    QString s = QStringLiteral("V%1 %2 %3 DC 0\n").arg(Name).arg(Ports.at(0)->Connection->Name)
-            .arg(Ports.at(1)->Connection->Name);
+    QString s = QStringLiteral("V%1 %2 %3 DC 0\n").arg(Name).arg(Ports.at(0)->Connection->getName())
+            .arg(Ports.at(1)->Connection->getName());
     return s;
 }
 

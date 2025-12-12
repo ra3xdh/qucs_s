@@ -489,10 +489,10 @@ void Schematic::drawDcBiasPoints(QPainter* painter) {
     const int yOffset = 10;
 
     for (auto* pn : *a_Nodes) {
-        if (pn->Name.isEmpty())
+        if (pn->getName().isEmpty())
             continue;
 
-        QString value = misc::formatValue(pn->Name, 4);
+        QString value = misc::formatValue(pn->getName(), 4);
 
         x = pn->cx;
         y = pn->cy + 4;

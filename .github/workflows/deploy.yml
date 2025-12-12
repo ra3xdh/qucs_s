@@ -8,7 +8,7 @@ on:
   pull_request:
     branches: [ "master", "current", "release/*" ]
   workflow_dispatch:
-  
+
 env:
   APP_NAME: "Qucs-S"
   EXECUTABLE_NAME: "qucs-s"
@@ -18,6 +18,9 @@ env:
   QUCS_MACOS_BIN: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/bin
   QUCS_MACOS_RESOURCES: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s
   NGSPICE_URL: https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/45.2/ngspice-45.2_64.7z
+  XSD_URL: https://www.codesynthesis.com/download/xsd/4.2/windows/windows10/x86_64/xsd-4.2.0-x86_64-windows10.zip
+  LIB-XSD_URL: https://www.codesynthesis.com/download/xsd/4.2/windows/windows10/x86_64/libxsd-4.2.0-windows.zip
+  XERCES-C_URL: https://www.codesynthesis.com/download/xsd/4.2/windows/windows10/x86_64/libxerces-c-3.2.4+2-x86_64-windows10-msvc17.6.zip
 
 jobs:
   setup:
@@ -35,25 +38,25 @@ jobs:
         if [ "${{ github.ref_type }}" == "tag" ]; then
           VERSION=${{ github.ref_name }}
           SHORT_HASH=""
-        else 
+        else
           MAJOR_MINOR=$(cut -d. -f1-2 VERSION)
           VERSION="${MAJOR_MINOR}.99"
           # Get the short hash of the current commit
           COMMIT_HASH=$(echo ${{ github.sha }} | cut -c1-7)
           SHORT_HASH="-$COMMIT_HASH"
         fi
-        
+
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "version=$VERSION" >> $GITHUB_OUTPUT
-        
+
         echo "SHORT_HASH=$SHORT_HASH" >> $GITHUB_ENV
         echo "short_hash=$SHORT_HASH" >> $GITHUB_OUTPUT
-        
+
     - name: Print version and hash
       run: |
         echo "Qucs-S version is ${{ env.VERSION }}"
         echo "Qucs-S short hash is ${{ env.SHORT_HASH }}"
-      
+
   build-linux-appimage-qt6:
     runs-on: ubuntu-22.04
     needs: setup
@@ -75,7 +78,8 @@ jobs:
     - name: Install Dependencies
       run: |
           sudo apt-get update
-          sudo apt-get install -y libglx-dev libgl1-mesa-dev flex bison gperf dos2unix flex bison gperf dos2unix cups libcups2-dev
+          sudo apt-get install -y libglx-dev libgl1-mesa-dev flex bison gperf dos2unix cups libcups2-dev xsdcxx libxerces-c-dev \
+            libmuparser-dev
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12
 
     - name: 'Install Qt6'
@@ -106,7 +110,7 @@ jobs:
           cmake --build ${{github.workspace}}/build -j`nproc` --config ${{env.BUILD_TYPE}}
           cmake --build ${{github.workspace}}/build --target install
 
-      
+
     - name: 'Install linuxdeploy'
       run: |
           wget -q --tries=3 --wait=5 \
@@ -116,7 +120,7 @@ jobs:
           sudo apt-get install fuse libfuse2
           chmod +x linuxdeploy-x86_64.AppImage
           chmod +x linuxdeploy-plugin-qt-x86_64.AppImage
-    
+
     - name: 'Create AppImage'
       run: |
           ./linuxdeploy-x86_64.AppImage --appdir ${{github.workspace}}/AppDir \
@@ -132,7 +136,7 @@ jobs:
       with:
           name: ${{ env.APP_NAME }}-${{env.VERSION}}${{env.SHORT_HASH}}-linux-x86_64
           path: ${{ env.APP_NAME }}-${{env.VERSION}}${{env.SHORT_HASH}}-linux-x86_64.AppImage
-                 
+
   build-mac:
     needs: setup
     runs-on: ${{ matrix.os }}
@@ -174,7 +178,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-          
+
       - name: Set QT_VERSION if not defined in matrix
         run: echo "QT_VERSION=${{ matrix.qt_version != '' && matrix.qt_version || env.QT_VERSION }}" >> $GITHUB_ENV
 
@@ -192,7 +196,48 @@ jobs:
       - name: 'Install Dependencies'
         shell: bash
         run: |
-          brew install gperf dos2unix bison flex graphicsmagick imagemagick
+          if [ "${{ matrix.cmake_arch }}" == "x86_64" ]
+          then
+            rm '/usr/local/share/man/man1/xsd.1'
+          fi
+          brew install gperf dos2unix bison flex graphicsmagick imagemagick xsd muparser
+
+          if [ "${{ matrix.cmake_arch }}" == "arm64;x86_64" ]
+          then
+            arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            /usr/local/bin/brew install xsd
+
+            arch -arm64 brew install xerces-c
+            cd $(brew --prefix xerces-c)/lib
+            XERCES_C_MULTI_ARCH_LIB_NAME=libxerces-c.arm64_x86_64.dylib
+            lipo \
+              libxerces-c.dylib \
+              $(/usr/local/bin/brew --prefix xerces-c)/lib/libxerces-c.dylib \
+              -output ${XERCES_C_MULTI_ARCH_LIB_NAME} \
+              -create
+            XERCES_C_LIB_NAME=$(find . -type f -name libxerces-c-3.*.dylib)
+            rm ${XERCES_C_LIB_NAME}
+            mv ${XERCES_C_MULTI_ARCH_LIB_NAME} ${XERCES_C_LIB_NAME}
+
+            /usr/local/bin/brew install muparser
+            arch -arm64 brew install muparser
+            cd $(brew --prefix muparser)/lib
+            MUPARSER_MULTI_ARCH_LIB_NAME=libmuparser.arm64_x86_64.dylib
+            lipo \
+              libmuparser.dylib \
+              $(/usr/local/bin/brew --prefix muparser)/lib/libmuparser.dylib \
+              -output ${MUPARSER_MULTI_ARCH_LIB_NAME} \
+              -create
+            rm libmuparser.dylib
+            ln -s ${MUPARSER_MULTI_ARCH_LIB_NAME} libmuparser.dylib
+
+            cd ${{github.workspace}}
+            echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
+            export LDFLAGS="-L$(brew --prefix bison)/lib"
+            source ~/.bashrc
+            brew link bison --force
+          fi
+
           echo 'export PATH="$(brew --prefix bison)/bin:$PATH"' >> /Users/runner/.bashrc
           export LDFLAGS="-L$(brew --prefix bison)/lib"
           source ~/.bashrc
@@ -258,7 +303,7 @@ jobs:
     defaults:
       run:
         shell: pwsh
-    steps:  
+    steps:
     - name: Disable autocrlf in Git
       run: |
         git config --global core.autocrlf false
@@ -274,9 +319,20 @@ jobs:
         echo "Qucs-S version is ${{ env.VERSION }}"
         echo "Qucs-S short hash is ${{ env.SHORT_HASH }}"
 
+    - name: Install vcpkg
+      run: |
+        mkdir c:\vcpkg -ErrorAction SilentlyContinue
+        git clone https://github.com/microsoft/vcpkg.git c:\vcpkg
+        c:\vcpkg\bootstrap-vcpkg.bat
+        c:\vcpkg\vcpkg integrate install
+
+    - name: Install muparser via vcpkg
+      run: |
+        c:\vcpkg\vcpkg.exe install muparser:x64-windows
+
     - name: Checkout repository
       uses: actions/checkout@v4
-    
+
     - name: 'Install Qt6'
       uses: jurplel/install-qt-action@v4
       with:
@@ -295,23 +351,36 @@ jobs:
       uses: TheMrMilchmann/setup-msvc-dev@v3
       with:
         arch: x64
-      
+
+    - name: 'Install xsd'
+      run: |
+        mkdir c:\xsd
+        curl -sL --retry 3 --retry-delay 5 -o xsd.zip ${{env.XSD_URL}}
+        tar -xf xsd.zip -C c:\xsd --strip-components=1
+        curl -sL --retry 3 --retry-delay 5 -o libxsd.zip ${{env.LIB-XSD_URL}}
+        tar -xf libxsd.zip -C c:\xsd --strip-components=1
+        curl -sL --retry 3 --retry-delay 5 -o libxerces-c.zip ${{env.XERCES-C_URL}}
+        tar -xf libxerces-c.zip -C c:\xsd --strip-components=1
+
     - name: 'Configure CMake'
       run: |
+        $env:Path = 'C:\xsd\bin;' + $env:Path
         cmake -B ${{github.workspace}}\build -G 'Ninja'  `
               -DCMAKE_INSTALL_PREFIX=${{github.workspace}}\build\qucs-suite  `
               -DCMAKE_CXX_COMPILER=cl -DCMAKE_C_COMPILER=cl  `
               -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}   `
-              -DCI_VERSION="${{env.VERSION}}"
+              -DCI_VERSION="${{env.VERSION}}" `
+              -DCMAKE_TOOLCHAIN_FILE=c:\vcpkg\scripts\buildsystems\vcpkg.cmake `
+              -DCMAKE_MUPARSER_INCLUDES=c:\vcpkg\packages\muparser_x64-windows\include
 
     - name: 'Build Qucs-s'
       run: |
         cmake --build ${{github.workspace}}\build --parallel --config=${{env.BUILD_TYPE}}
-          
+
     - name: 'Cmake install'
       run: |
         cmake --build ${{github.workspace}}\build --target install
-    
+
     - name: 'Deploy Qt6 dependencies'
       run: |
         $qucs_bin_dir = "${{github.workspace}}\build\qucs-suite\bin"
@@ -332,7 +401,7 @@ jobs:
         Copy-Item -Recurse -Force ngspice\Spice64\bin\ $qucs_dir
         Copy-Item -Recurse -Force ngspice\Spice64\lib\ $qucs_dir
         Copy-Item -Recurse -Force ngspice\Spice64\share\ $qucs_dir
-            
+
     - name: 'Create zip archive for release'
       run: |
         $qucs_dir = "${{github.workspace}}\build\qucs-suite"
@@ -343,7 +412,6 @@ jobs:
         Compress-Archive -Path ./bin, ./share, ./lib, ./misc -DestinationPath "${{github.workspace}}\$zipName"
         cd ${{github.workspace}}
 
-    
     - name: Compile .ISS to .EXE Installer
       shell: pwsh
       run: |
@@ -354,13 +422,13 @@ jobs:
       with:
         name: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC-x64
         path: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC-x64.zip
-    
+
     - name: Upload exe artifacts
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC-setup
         path: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC-setup.exe
-      
+
   build-windows:
     runs-on: ${{ matrix.config.os }}
     continue-on-error: true
@@ -371,14 +439,16 @@ jobs:
         config:
           - os: windows-2022
             msystem: ucrt64
-            platform_tag: win64                 
+            platform_tag: win64
+            packet_tag: ucrt-x86_64
           - os: windows-11-arm
             msystem: clangarm64
             platform_tag: win-arm64
+            packet_tag: clang-aarch64
     defaults:
       run:
         shell: msys2 {0}
-    steps:  
+    steps:
     - name: Disable autocrlf in Git
       shell: pwsh
       run: |
@@ -409,11 +479,28 @@ jobs:
         cache: true
         update: true
         install: bison flex dos2unix curl zip p7zip
+                 mingw-w64-${{ matrix.config.packet_tag }}-xerces-c mingw-w64-${{ matrix.config.packet_tag }}-muparser
         pacboy: cmake:p gcc:p qt6-base:p qt6-tools:p qt6-svg:p qt6-multimedia:p make:p ninja:p python:p gperf:p github-cli:p
 
+    - name: Install xsd
+      run: |
+        curl -sL --retry 3 --retry-delay 5 -o xsd.zip ${{env.XSD_URL}}
+        mkdir xsd
+        7z x -oxsd xsd.zip
+        curl -sL --retry 3 --retry-delay 5 -o libxsd.zip ${{env.LIB-XSD_URL}}
+        mkdir libxsd
+        7z x -olibxsd libxsd.zip
+        CWD=$(pwd)
+        cd $(dirname $(find ./xsd/ -name xsd*.exe -type f))/..
+        mkdir /usr/local/xsd
+        mv bin /usr/local/xsd
+        cd $CWD
+        cd $(find ./libxsd/ -name include -type d)/..
+        mv include /usr/local/xsd
 
     - name: Build project with CMake
       run: |
+        export PATH=$PATH:/usr/local/xsd/bin
         cmake.exe -B build/ -G 'Ninja' \
                   -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
                   -DCMAKE_INSTALL_PREFIX=build/qucs-suite  \
@@ -423,14 +510,14 @@ jobs:
     - name: Make install
       run: |
         cmake --build build/ --target install
-        strip build/qucs-suite/bin/*.exe 
+        strip build/qucs-suite/bin/*.exe
 
     - name: Deploy Qt6 dependencies
       run: |
         deploy_tool="windeployqt-qt6.exe"
         bin_dir="build/qucs-suite/bin"
         options="--svg --no-translations --no-system-d3d-compiler --no-network"
-        
+
         executables=(
           "qucs-s.exe" "qucs-sactivefilter.exe" "qucs-sattenuator.exe"
           "qucs-sfilter.exe" "qucs-spowercombining.exe" "qucs-strans.exe"
@@ -440,7 +527,7 @@ jobs:
         for exe in "${executables[@]}"; do
           $deploy_tool "$bin_dir/$exe" $options
         done
-          
+
     - name: Copy non-Qt DLLs to bin directory
       run: |
         shopt -s extglob
@@ -450,7 +537,7 @@ jobs:
             cp -r "$file" build/qucs-suite/bin
           fi
         done
-        
+
     - name: Add ngspice to release
       run: |
         curl -sL --retry 3 --retry-delay 5 -o ngspice.7z ${{ env.NGSPICE_URL }}
@@ -459,7 +546,7 @@ jobs:
         cp -rf ngspice/Spice64/bin/ build/qucs-suite
         cp -rf ngspice/Spice64/lib/ build/qucs-suite
         cp -rf ngspice/Spice64/share/ build/qucs-suite
-            
+
     - name: Create zip archive for release
       run: |
         mkdir -p build/qucs-suite/misc
@@ -533,7 +620,7 @@ jobs:
           echo "TAG_NAME=continuous_build" >> $GITHUB_ENV
           echo "RELEASE_NOTES=--notes \"Automated release for commit ${{ github.sha }}\"" >> $GITHUB_ENV
         fi
-          
+
     - name: Create GitHub Release
       continue-on-error: false
       run: |
@@ -554,7 +641,7 @@ jobs:
           fi
           echo "${{ env.TAG_NAME }} deleted!"
         fi
-        
+
         if [ -n "$exe_files" ] && [ -n "$zip_files" ] && [ -n "$dmg_files" ] && [ -n "$appimage_files" ]; then
           gh release create ${{ env.TAG_NAME }} \
                             $exe_files \
@@ -572,6 +659,6 @@ jobs:
           echo "No artifacts to upload."
           exit 1
         fi
-        
+
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

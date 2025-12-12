@@ -100,6 +100,7 @@ public:
   QucsDoc* findDoc (QString, int * Pos = 0);
   QString fileType (const QString&);
   static bool isTextDocument(QWidget *);
+  void refreshCurrentComponentList();
 
   QString ProjName;   // name of the project, that is open
   //QHash<QString,QString> schNameHash; // QHash for the schematic files lookup
@@ -298,8 +299,8 @@ private:
 public:
 
   void readProjects();
-  void updatePathList(void); // update the list of paths, pruning non-existing paths
-  void updatePathList(QStringList);
+  void updatePathList(QStringList& refPathList); // update the list of paths, pruning non-existing paths
+  void updatePathList(const QStringList& newPathList, QStringList& refPathList);
   //void updateSchNameHash(void); // maps all schematic files in the path list
   //void updateSpiceNameHash(void); // maps all spice files in the path list
 

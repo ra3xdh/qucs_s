@@ -343,6 +343,32 @@ void Wire::connectPort2(Node* n)
   setP2(Port2->center());
 }
 
+void Wire::setNetNameMapping(const QString& netName) const
+{
+    if (Port1 != nullptr)
+    {
+        Port1->setNetNameMapping(netName);
+    }
+
+    if (Port2 != nullptr)
+    {
+        Port2->setNetNameMapping(netName);
+    }
+}
+
+void Wire::resetNetNameMapping() const
+{
+    if (Port1 != nullptr)
+    {
+        Port1->resetNetNameMapping();
+    }
+
+    if (Port2 != nullptr)
+    {
+        Port2->resetNetNameMapping();
+    }
+}
+
 inline void Wire::updateCenter() noexcept {
   cx = std::midpoint(x1, x2);
   cy = std::midpoint(y1, y2);

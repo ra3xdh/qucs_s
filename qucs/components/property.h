@@ -19,20 +19,39 @@ struct Property {
            spicecompat::Simulator supportedSims = spicecompat::Simulator::simAll)
       : Name(propertyName)
       , Value(propertyValue)
+      , unit()
       , display(isVisibleByDefault)
       , Description(description)
       , type(propertyType)
       , simulators(supportedSims)
       {};
 
+  Property(const QString& propertyName,
+           const QString& propertyValue,
+           const QString& propertyUnit,
+           bool isVisibleByDefault = false,
+           const QString& description = "",
+           Type propertyType = Type::Value,
+           spicecompat::Simulator supportedSims = spicecompat::Simulator::simAll)
+      : Name(propertyName)
+      , Value(propertyValue)
+      , unit(propertyUnit)
+      , display(isVisibleByDefault)
+      , Description(description)
+      , type(propertyType)
+      , simulators(supportedSims)
+      {};
+
+
   QString Name;
   QString Value;
+  QString unit;
   bool    display;   // show on schematic or not ?
   QString Description;
   Type type;
   spicecompat::Simulator simulators;
   QRect boundingRect() const { return br; };
-  void paint(int x, int y, QPainter* p);
+  void paint(int x, int y, QPainter* p, const QString& displayValue = QString());
 
   class Builder {
     QString m_name;

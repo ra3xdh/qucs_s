@@ -96,10 +96,10 @@ QString vcresistor::netlist()
 {
   QString s;
   QString EDD_Name = "EDD" + Name;
-  QString in1 = Ports.at(0)->Connection->Name;
-  QString in2 = Ports.at(1)->Connection->Name;
-  QString out1 = Ports.at(2)->Connection->Name;
-  QString out2 = Ports.at(3)->Connection->Name;
+  QString in1 = Ports.at(0)->Connection->getName();
+  QString in2 = Ports.at(1)->Connection->getName();
+  QString out1 = Ports.at(2)->Connection->getName();
+  QString out2 = Ports.at(3)->Connection->getName();
   QString gain = getProperty("gain")->Value;
   s = QStringLiteral("EDD:%1 %2 %3 %4 %5 I1=\"%1.I1\" Q1=\"%1.Q1\" I2=\"%1.I2\" Q2=\"%1.Q2\"\n").arg(EDD_Name,in1,in2,out1,out2);
   s += QStringLiteral("Eqn:Eqn%1I1 %1.I1=\"0\" Export=\"no\"\n").arg(EDD_Name);
@@ -115,10 +115,10 @@ QString vcresistor::spice_netlist(spicecompat::SpiceDialect dialect /* = spiceco
 
   QString s;
   QString gain = spicecompat::normalize_value(getProperty("gain")->Value);
-  QString in1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
-  QString in2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
-  QString out1 = spicecompat::normalize_node_name(Ports.at(2)->Connection->Name);
-  QString out2 = spicecompat::normalize_node_name(Ports.at(3)->Connection->Name);
+  QString in1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->getName());
+  QString in2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->getName());
+  QString out1 = spicecompat::normalize_node_name(Ports.at(2)->Connection->getName());
+  QString out2 = spicecompat::normalize_node_name(Ports.at(3)->Connection->getName());
   s = QStringLiteral("R%1 %2 %3 R='1e-15+abs(V(%4,%5)*(%6))'\n").arg(Name, out1, out2, in1, in2, gain);
   return s;
 }

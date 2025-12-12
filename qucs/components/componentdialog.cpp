@@ -37,7 +37,7 @@
 
 #include <cmath>
 
-#define L(TEXT) QStringLiteral(TEXT) 
+#define L(TEXT) QStringLiteral(TEXT)
 
 // -------------------------------------------------------------------------
 // Helper to extract option strings between [] from within a description
@@ -89,7 +89,7 @@ public:
     setLayout(layout);
 
     if (func)
-      connect(mButton, &QPushButton::released, [=]() { if (dialog) (dialog->*func)(mEdit); });    
+      connect(mButton, &QPushButton::released, [=, this]() { if (dialog) (dialog->*func)(mEdit); });
   }
   ~CompoundWidget()
   {
@@ -122,7 +122,7 @@ class ParamWidget
       layout->addWidget(mLabel, row, 0);
 
       mCheckBox = new QCheckBox("display in schematic");
-      layout->addWidget(mCheckBox, row, 2);  
+      layout->addWidget(mCheckBox, row, 2);
     }
 
     virtual ~ParamWidget() {}
@@ -178,15 +178,15 @@ class ParamWidget
 class ParamLineEdit : public QLineEdit, public ParamWidget
 {
   public:
-    ParamLineEdit(const QString& param, const QString& label, QValidator* validator, bool displayCheck, QGridLayout* layout, ComponentDialog* dialog, 
+    ParamLineEdit(const QString& param, const QString& label, QValidator* validator, bool displayCheck, QGridLayout* layout, ComponentDialog* dialog,
                   void (ComponentDialog::* func)(const QString&) = nullptr)
     : ParamWidget(param, label, displayCheck, layout)
     {
       layout->addWidget(this, layout->rowCount() - 1, 1);
       setValidator(validator);
-      
+
       if (func)
-        connect(this, &QLineEdit::textEdited, [=]() { if (dialog) (dialog->*func)(mParam); });
+        connect(this, &QLineEdit::textEdited, [=, this]() { if (dialog) (dialog->*func)(mParam); });
     }
 
     void setEnabled(bool enabled) override
@@ -219,14 +219,14 @@ class ParamLineEdit : public QLineEdit, public ParamWidget
 class ParamCombo : public QComboBox, public ParamWidget
 {
   public:
-    ParamCombo(const QString& param, const QString& label, bool displayCheck, QGridLayout* layout, ComponentDialog* dialog, 
+    ParamCombo(const QString& param, const QString& label, bool displayCheck, QGridLayout* layout, ComponentDialog* dialog,
                 void (ComponentDialog::* func)(const QString&) = nullptr)
     : ParamWidget(param, label, displayCheck, layout)
     {
       layout->addWidget(this, layout->rowCount() - 1, 1);
-      
+
       if (func)
-        connect(this, &QComboBox::currentTextChanged, [=]() { if (dialog) (dialog->*func)(mParam); });
+        connect(this, &QComboBox::currentTextChanged, [=, this]() { if (dialog) (dialog->*func)(mParam); });
     }
 
     void setEnabled(bool enabled) override
@@ -241,12 +241,12 @@ class ParamCombo : public QComboBox, public ParamWidget
       QComboBox::setVisible(!hidden);
     }
 
-    void setValue(const QString& value) 
+    void setValue(const QString& value)
     {
       setCurrentIndex(findText(value));
     }
 
-    void setOptions(const QStringList& options) 
+    void setOptions(const QStringList& options)
     {
       clear();
       addItems(options);
@@ -267,7 +267,7 @@ EqnHighlighter::EqnHighlighter(const QString& keywordSet, QTextDocument* parent)
 
   keywordFormat.setForeground(Qt::darkBlue);
   keywordFormat.setFontWeight(QFont::Bold);
-  if (keywordSet == "ngspice") 
+  if (keywordSet == "ngspice")
   {
     // Table from page 367 of the ngspice manual.
     const QString keywordPatterns[] {
@@ -307,7 +307,7 @@ void EqnHighlighter::highlightBlock(const QString& text)
   for (const HighlightingRule &rule : std::as_const(highlightingRules))
   {
     QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text);
-    
+
     while (matchIterator.hasNext())
     {
         QRegularExpressionMatch match = matchIterator.next();
@@ -336,7 +336,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   // Setup dialog layout.
   QVBoxLayout* mainLayout = new QVBoxLayout(this);
   QGridLayout* propertiesPageLayout;
-  
+
   // Setup validators.
   // TODO: These don't look right and don't seem to restrict the edit boxes in the way they should?
   intVal = new QIntValidator(1, 1000000, this);
@@ -358,7 +358,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   hasFile = component->Props.count() > 0 && component->Props.at(0)->Name == "File";
 
   sweepProperties = QStringList({"Sim", "Type", "Param", "Start", "Stop", "Points"});
-  
+
   // TODO: Consider creating a sweepParams hash which contains the valid sweep parameters
   // for a given simulation type. Then only create the valid widgets fo
   // sweepParams[".AC"] = QStringList({"Type", "Start", "Stop", "Points"});
@@ -384,8 +384,8 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       eqnSimCombo->addItems(getSimulationList(true));
       editorLayout->addWidget(eqnSimCombo, 2);
     }
-    
-    QFont font("Courier", 10);   
+
+    QFont font("Courier", 10);
     eqnEditor = new QTextEdit();
     eqnEditor->setFont(font);
     new EqnHighlighter("ngspice", eqnEditor->document());
@@ -404,7 +404,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
     updateEqnEditor();
   }
 
-  else 
+  else
   {
     if (hasSweep)
     {
@@ -428,8 +428,8 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       sweepParamWidget["Step"] = new ParamLineEdit("Step", tr("Step"), paramVal, false, sweepPageLayout, this, func);
       sweepParamWidget["Points"] = new ParamLineEdit("Points", tr("Number"), intVal, true, sweepPageLayout, this, func);
 
-      // Setup the widget specialisations for each simulation type.    
-      sweepTypeEnabledParams["lin"] = QStringList{"Sim", "Type", "Param", "Start", "Stop", "Step", "Points"};    
+      // Setup the widget specialisations for each simulation type.
+      sweepTypeEnabledParams["lin"] = QStringList{"Sim", "Type", "Param", "Start", "Stop", "Step", "Points"};
       sweepTypeEnabledParams["log"] = QStringList{"Sim", "Type", "Param", "Start", "Stop", "Step", "Points"};
       sweepTypeEnabledParams["list"] = QStringList{"Sim", "Type", "Param", "Values"};
       sweepTypeSpecialLabels[qMakePair(QString("log"),QString("Step"))] = {"Points per decade"};
@@ -458,10 +458,10 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       pageTabs->addTab(propertiesPage, tr("Properties"));
       propertiesPageLayout = new QGridLayout(propertiesPage);
     }
-    
+
     // This component does not have sweep settings, so add properties directly to the dialog itself.
-    else 
-    { 
+    else
+    {
       propertiesPageLayout = new QGridLayout;
       static_cast<QVBoxLayout*>(layout())->addLayout(propertiesPageLayout);
     }
@@ -498,12 +498,12 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
     updatePropertyTable(component);
 
     // Try to move the cursor to the editable cell if any cell is clicked.
-    connect(propertyTable, &QTableWidget::cellClicked, 
-                [=](int row, int column) { (void)column; propertyTable->setCurrentCell(row, 1); } );
+    connect(propertyTable, &QTableWidget::cellClicked,
+                [=, this](int row, int column) { (void)column; propertyTable->setCurrentCell(row, 1); } );
   }
 
   // Add the dialog button widgets.
-  QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | 
+  QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok |
                                       QDialogButtonBox::Apply | QDialogButtonBox::Cancel);
 
   connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
@@ -526,7 +526,7 @@ ComponentDialog::~ComponentDialog()
 
   // Clean up the sweep parameter multi-widget containers. The widgets are deleted by
   // the system because they are reparented to the dialog or the dialog's subwidgets.
-  for (auto it = sweepParamWidget.keyValueBegin(); it != sweepParamWidget.keyValueEnd(); ++it) 
+  for (auto it = sweepParamWidget.keyValueBegin(); it != sweepParamWidget.keyValueEnd(); ++it)
   {
     if (it->second)
       delete it->second;
@@ -549,13 +549,13 @@ void ComponentDialog::keyPressEvent(QKeyEvent* e)
 // Updates all the widgets on the sweep page according to the sweep type.
 void ComponentDialog::updateSweepWidgets(const QString& type)
 {
-  for (auto it = sweepParamWidget.keyValueBegin(); it != sweepParamWidget.keyValueEnd(); ++it) 
+  for (auto it = sweepParamWidget.keyValueBegin(); it != sweepParamWidget.keyValueEnd(); ++it)
   {
-    it->second->setLabel(sweepTypeSpecialLabels.contains(qMakePair(type,it->first)) ? 
+    it->second->setLabel(sweepTypeSpecialLabels.contains(qMakePair(type,it->first)) ?
                           sweepTypeSpecialLabels[qMakePair(type,it->first)] : it->second->defaultLabel());
     it->second->setHidden(paramsHiddenBySim.contains(it->first) &&
                             paramsHiddenBySim[it->first].contains(component->Model));
-    it->second->setEnabled(sweepTypeEnabledParams.contains(type) && 
+    it->second->setEnabled(sweepTypeEnabledParams.contains(type) &&
                             sweepTypeEnabledParams[type].contains(it->first));
   }
 }
@@ -605,7 +605,7 @@ void ComponentDialog::updateSweepProperty(const QString& property)
   }
 
   // Specialisations for updating start, stop, step, and points values.
-  else 
+  else
   {
     double start = str2num(startEdit->value());
     double stop = str2num(stopEdit->value());
@@ -623,7 +623,7 @@ void ComponentDialog::updateSweepProperty(const QString& property)
         double step = str2num(sweepParamWidget["Step"]->value());
         double points = log10(fabs((stop) / (start))) * step + 1.0;
         pointsEdit->setValue(QString::number(round(points), 'g', 16));
-      }     
+      }
     }
     else
     {
@@ -707,7 +707,7 @@ void ComponentDialog::updatePropertyTable(const Component* updateComponent)
         propertyTable->setItem(row, 1, new QTableWidgetItem("", TextEditCell));
         propertyTable->openPersistentEditor(propertyTable->item(row, 1));
         propertyTable->item(row, 1)->setText(property->Value);
-      }    
+      }
 
       // Set check box and description.
       propertyTable->setItem(row, 2, new QTableWidgetItem(CheckBoxCell));
@@ -737,7 +737,7 @@ void ComponentDialog::updateEqnEditor()
     else
       eqnList.append(property->Name + " = " + property->Value + "\n");
   }
-  
+
   eqnEditor->setPlainText(eqnList);
 }
 
@@ -748,14 +748,14 @@ void ComponentDialog::writeEquation()
   // Clear all old properties and free their memory.
   qDeleteAll(component->Props.begin(), component->Props.end());
   component->Props.clear();
-  
+
   // Note: the description needs to be written as "Simulation name" because this is used when saving the file.
   if (eqnSimCombo)
     component->Props.append(new Property("Simulation", eqnSimCombo->currentText(), true, "Simulation name"));
 
   QString text = eqnEditor->document()->toPlainText();
   QStringList lines = text.split('\n', Qt::SkipEmptyParts);
-  
+
   for (const QString& line : lines)
   {
     QStringList parts = line.split('=');
@@ -801,10 +801,10 @@ void ComponentDialog::slotApplyButton()
     // Update the components sweep properties if it has them.
     if (hasSweep)
     {
-      // Note: Order is very important here. The component expects parameters in a 
+      // Note: Order is very important here. The component expects parameters in a
       // specific order depending on which sweep parameters are valid for the component
       // type.
-      for (auto param : sweepProperties) 
+      for (auto param : sweepProperties)
       {
         /* TODO: ***HACK*** to be fixed */
         QString temp = param;
@@ -836,7 +836,7 @@ void ComponentDialog::slotApplyButton()
           !excludeList.contains(component->Model))
         continue;
 
-      else 
+      else
       {
         QTableWidgetItem* item = propertyTable->item(row, 1);
         // TODO: If the number of items has changed because of an earlier edit, then
@@ -872,16 +872,16 @@ void ComponentDialog::slotApplyButton()
   // TODO: Why is the text being repositioned?
   // If this is needed, make it a function because something similar is called elsewhere.
   /*
-  if (changed) 
+  if (changed)
   {
     int dx, dy;
     component->textSize(dx, dy);
-    if(tx_Dist != 0) 
+    if(tx_Dist != 0)
     {
       component->tx += tx_Dist-dx;
       tx_Dist = dx;
     }
-    if(ty_Dist != 0) 
+    if(ty_Dist != 0)
     {
       component->ty += ty_Dist-dy;
       ty_Dist = dy;
@@ -976,25 +976,25 @@ SimpleEqnDialog::SimpleEqnDialog(QString& string, QWidget* parent)
 : QDialog(parent), mText(string)
 {
   setMinimumSize(300, 300);
-  
+
   // Setup dialog layout.
   QVBoxLayout* layout = new QVBoxLayout(this);
 
   // Add the equation text editor.
-  QFont font("Courier", 10);   
+  QFont font("Courier", 10);
   mEditor = new QTextEdit(mText, this);
   mEditor->setFont(font);
   new EqnHighlighter("ngspice", mEditor->document());
   layout->addWidget(mEditor, 2);
 
   // Add the dialog button widgets.
-  QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | 
+  QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok |
                                                       QDialogButtonBox::Cancel);
 
   connect(buttonBox, &QDialogButtonBox::accepted, this, &SimpleEqnDialog::slotOkButton);
   connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-  layout->addWidget(buttonBox);  
+  layout->addWidget(buttonBox);
 }
 
 // -------------------------------------------------------------------------
@@ -1002,12 +1002,12 @@ SimpleEqnDialog::SimpleEqnDialog(QString& string, QWidget* parent)
 void SimpleEqnDialog::slotOkButton()
 {
   mText = mEditor->toPlainText();
-  
+
   done(QDialog::Accepted);
 }
 
 /* Removed as it doesn't make much sense to change the currently edited file
-   whilst the properties dialog is open. There is already a UI to edit a 
+   whilst the properties dialog is open. There is already a UI to edit a
    subcircuit file from the schematic view.
 // -------------------------------------------------------------------------
 void ComponentDialog::slotEditFile()
@@ -1026,7 +1026,7 @@ QStringList ComponentDialog::getSimulationList(bool includeGeneric)
     if (sch == nullptr) {
         return sim_lst;
     }
-    
+
     for (Component* c : sch->a_DocComps) {
         if (!c->isSimulation) continue;
         if (c->Model == ".FOUR") continue;
@@ -1039,11 +1039,11 @@ QStringList ComponentDialog::getSimulationList(bool includeGeneric)
 
     if (includeGeneric) {
       QStringList sim_wo_numbers = sim_lst;
-      
+
       for(auto &s: sim_wo_numbers) {
           s.remove(QRegularExpression("[0-9]+$"));
       }
-      
+
       for(const auto &s: sim_wo_numbers) {
           int cnt = sim_wo_numbers.count(s);
           if (cnt > 1 && ! sim_lst.contains(s)) {
@@ -1058,7 +1058,7 @@ QStringList ComponentDialog::getSimulationList(bool includeGeneric)
 }
 
 // -------------------------------------------------------------------------
-// Fill the parameters of certain components (diode, BJT, JFET, MOSFET) 
+// Fill the parameters of certain components (diode, BJT, JFET, MOSFET)
 // from a SPICE file (see #795)
 void ComponentDialog::slotFillFromSpice()
 {
@@ -1079,7 +1079,7 @@ void ComponentDialog::slotFillFromSpice()
 
   // Cleanup.
   for (auto property : tempComponent.Props)
-    delete property; 
+    delete property;
 
   delete dlg;
 }

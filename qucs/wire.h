@@ -59,6 +59,8 @@ public:
 
   void connectPort1(Node* n);
   void connectPort2(Node* n);
+  void setNetNameMapping(const QString& netName) const;
+  void resetNetNameMapping() const;
 
 private:
   void updateCenter() noexcept;

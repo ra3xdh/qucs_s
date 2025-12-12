@@ -2415,7 +2415,6 @@ int Schematic::placeNodeLabel(WireLabel *pl)
 // labeled element.
 Element* Schematic::getWireLabel(Node *pn_)
 {
-    Wire *pw;
     Node *pNode;
     std::list<Node*> Cons;
 

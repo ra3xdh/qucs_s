@@ -80,23 +80,23 @@ QString JK_FlipFlop::vhdlCode(int NumPorts)
   s += ";\n";
 
   s = "  " + Name + " : process (" +
-      Ports.at(5)->Connection->Name + ", " +
-      Ports.at(6)->Connection->Name + ", " +
-      Ports.at(4)->Connection->Name + ")\n  begin\n    if (" +
-      Ports.at(6)->Connection->Name + "='1') then  " +
-      Ports.at(2)->Connection->Name + " <= '0'" + s +"    elsif (" +
-      Ports.at(5)->Connection->Name + "='1') then  " +
-      Ports.at(2)->Connection->Name + " <= '1'" + s +"    elsif (" +
-      Ports.at(4)->Connection->Name + "='1' and " +
-      Ports.at(4)->Connection->Name + "'event) then\n      " +
-      Ports.at(2)->Connection->Name + " <= (" +
-      Ports.at(0)->Connection->Name + " and not " +
-      Ports.at(2)->Connection->Name + ") or (not " +
-      Ports.at(1)->Connection->Name + " and " +
-      Ports.at(2)->Connection->Name + ")" + s +
+      Ports.at(5)->Connection->getName() + ", " +
+      Ports.at(6)->Connection->getName() + ", " +
+      Ports.at(4)->Connection->getName() + ")\n  begin\n    if (" +
+      Ports.at(6)->Connection->getName() + "='1') then  " +
+      Ports.at(2)->Connection->getName() + " <= '0'" + s +"    elsif (" +
+      Ports.at(5)->Connection->getName() + "='1') then  " +
+      Ports.at(2)->Connection->getName() + " <= '1'" + s +"    elsif (" +
+      Ports.at(4)->Connection->getName() + "='1' and " +
+      Ports.at(4)->Connection->getName() + "'event) then\n      " +
+      Ports.at(2)->Connection->getName() + " <= (" +
+      Ports.at(0)->Connection->getName() + " and not " +
+      Ports.at(2)->Connection->getName() + ") or (not " +
+      Ports.at(1)->Connection->getName() + " and " +
+      Ports.at(2)->Connection->getName() + ")" + s +
       "    end if;\n  end process;\n  " +
-      Ports.at(3)->Connection->Name + " <= not " +
-      Ports.at(2)->Connection->Name + ";\n\n";
+      Ports.at(3)->Connection->getName() + " <= not " +
+      Ports.at(2)->Connection->getName() + ";\n\n";
   return s;
 }
 
@@ -112,13 +112,13 @@ QString JK_FlipFlop::verilogCode(int NumPorts)
 
   QString l = "";
 
-  QString s = Ports.at(5)->Connection->Name;
-  QString r = Ports.at(6)->Connection->Name;
-  QString j = Ports.at(0)->Connection->Name;
-  QString k = Ports.at(1)->Connection->Name;
-  QString q = Ports.at(2)->Connection->Name;
-  QString b = Ports.at(3)->Connection->Name;
-  QString c = Ports.at(4)->Connection->Name;
+  QString s = Ports.at(5)->Connection->getName();
+  QString r = Ports.at(6)->Connection->getName();
+  QString j = Ports.at(0)->Connection->getName();
+  QString k = Ports.at(1)->Connection->getName();
+  QString q = Ports.at(2)->Connection->getName();
+  QString b = Ports.at(3)->Connection->getName();
+  QString c = Ports.at(4)->Connection->getName();
   QString v = "net_reg" + Name + q;
   
   l = "\n  // " + Name + " JK-flipflop\n" +
