@@ -141,6 +141,7 @@ QucsApp::QucsApp(bool netlist2Console) :
   slotUpdateRecentFiles();
   slotUpdateRecentProjects();
   initCursorMenu();
+  setDefaultShortcut();
   //Module::registerModules ();
 
   // instance of small text search dialog

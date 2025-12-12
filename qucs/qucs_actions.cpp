@@ -24,45 +24,45 @@
 #include <QtCore>
 #include <stdlib.h>
 
+#include <QAction>
+#include <QComboBox>
+#include <QDesktopServices>
+#include <QDockWidget>
+#include <QFileDialog>
+#include <QLineEdit>
+#include <QListWidget>
+#include <QMenu>
+#include <QMessageBox>
+#include <QMutableHashIterator>
 #include <QProcess>
 #include <QRegularExpressionValidator>
-#include <QLineEdit>
-#include <QAction>
 #include <QStatusBar>
-#include <QMessageBox>
-#include <QFileDialog>
-#include <QMenu>
-#include <QComboBox>
-#include <QDockWidget>
 #include <QTreeWidgetItem>
-#include <QMutableHashIterator>
-#include <QListWidget>
-#include <QDesktopServices>
 
-#include "portsymbol.h"
-#include "projectView.h"
-#include "main.h"
-#include "qucs.h"
-#include "schematic.h"
-#include "textdoc.h"
-#include "mouseactions.h"
-#include "messagedock.h"
+#include "components/equation.h"
 #include "components/ground.h"
 #include "components/subcirport.h"
-#include "components/equation.h"
-#include "spicecomponents/sp_nutmeg.h"
-#include "dialogs/matchdialog.h"
+#include "diagram.h"
+#include "dialogs/aboutdialog.h"
 #include "dialogs/changedialog.h"
-#include "dialogs/searchdialog.h"
+#include "dialogs/importdialog.h"
 #include "dialogs/librarydialog.h"
 #include "dialogs/loaddialog.h"
-#include "dialogs/importdialog.h"
-#include "dialogs/aboutdialog.h"
+#include "dialogs/matchdialog.h"
+#include "dialogs/searchdialog.h"
+#include "main.h"
+#include "messagedock.h"
 #include "module.h"
-#include "diagram.h"
+#include "mouseactions.h"
 #include "node.h"
-#include "wirelabel.h"
+#include "portsymbol.h"
+#include "projectView.h"
+#include "qucs.h"
+#include "schematic.h"
+#include "spicecomponents/sp_nutmeg.h"
+#include "textdoc.h"
 #include "wire.h"
+#include "wirelabel.h"
 
 #include "extsimkernels/xyce.h"
 
@@ -71,24 +71,24 @@
 #endif
 
 // for editing component name on schematic
-QRegularExpression  Expr_CompProp;
+QRegularExpression Expr_CompProp;
 QRegularExpressionValidator Val_CompProp(Expr_CompProp, 0);
 
 // -----------------------------------------------------------------------
 // This function is called from all toggle actions.
 bool QucsApp::performToggleAction(bool on, QAction *Action,
-      pToggleFunc Function, pMouseFunc MouseMove, pMouseFunc2 MousePress)
-{
+                                  pToggleFunc Function, pMouseFunc MouseMove,
+                                  pMouseFunc2 MousePress) {
   slotHideEdit(); // disable text edit of component property
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
 
   // Perform toggle release clean up.
-  if(!on) {
+  if (!on) {
     MouseMoveAction = nullptr;
     MousePressAction = nullptr;
     MouseReleaseAction = nullptr;
     MouseDoubleClickAction = nullptr;
-    activeAction = nullptr;   // no action active
+    activeAction = nullptr; // no action active
 
     // Return to select mode.
     slotEscape();
@@ -96,17 +96,18 @@ bool QucsApp::performToggleAction(bool on, QAction *Action,
   }
 
   do {
-    if(Function) if((Doc->*Function)()) {
-      Action->blockSignals(true);
-      Action->setChecked(false);  // release toolbar button
-      Action->blockSignals(false);
-      Doc->viewport()->update();
-      break;
-    }
+    if (Function)
+      if ((Doc->*Function)()) {
+        Action->blockSignals(true);
+        Action->setChecked(false); // release toolbar button
+        Action->blockSignals(false);
+        Doc->viewport()->update();
+        break;
+      }
 
-    if(activeAction) {
+    if (activeAction) {
       activeAction->blockSignals(true); // do not call toggle slot
-      activeAction->setChecked(false);       // set last toolbar button off
+      activeAction->setChecked(false);  // set last toolbar button off
       activeAction->blockSignals(false);
     }
     activeAction = Action;
@@ -116,7 +117,7 @@ bool QucsApp::performToggleAction(bool on, QAction *Action,
     MouseReleaseAction = nullptr;
     MouseDoubleClickAction = nullptr;
 
-  } while(false);   // to perform "break"
+  } while (false); // to perform "break"
 
   Doc->viewport()->update();
   return true;
@@ -124,24 +125,23 @@ bool QucsApp::performToggleAction(bool on, QAction *Action,
 
 // -----------------------------------------------------------------------
 // Is called, when "set on grid" action is triggered.
-void QucsApp::slotOnGrid(bool on)
-{
+void QucsApp::slotOnGrid(bool on) {
   performToggleAction(on, onGrid, &Schematic::elementsOnGrid,
-    &MouseActions::MMoveOnGrid, &MouseActions::MPressOnGrid);
+                      &MouseActions::MMoveOnGrid, &MouseActions::MPressOnGrid);
 }
 
 // -----------------------------------------------------------------------
 // Is called when the rotate toolbar button is pressed.
-void QucsApp::slotEditRotate(bool on)
-{
-  // If we're in paste mode or in move-mode, rotate moving elements instead of schematic elements
-  if (   MouseMoveAction == &MouseActions::MMovePaste2
-      || MouseMoveAction == &MouseActions::MMoveFree2) {
+void QucsApp::slotEditRotate(bool on) {
+  // If we're in paste mode or in move-mode, rotate moving elements instead of
+  // schematic elements
+  if (MouseMoveAction == &MouseActions::MMovePaste2 ||
+      MouseMoveAction == &MouseActions::MMoveFree2) {
     editRotate->blockSignals(true);
     editRotate->setChecked(false);
     editRotate->blockSignals(false);
 
-    Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
+    Schematic *Doc = dynamic_cast<Schematic *>(DocumentTab->currentWidget());
     if (Doc != nullptr) {
       // enable painting in case we're in paste mode
       bool doPaint = MouseMoveAction == &MouseActions::MMovePaste2;
@@ -150,21 +150,21 @@ void QucsApp::slotEditRotate(bool on)
     return;
   }
   performToggleAction(on, editRotate, &Schematic::rotateElements,
-    &MouseActions::MMoveRotate, &MouseActions::MPressRotate);
+                      &MouseActions::MMoveRotate, &MouseActions::MPressRotate);
 }
 
 // -----------------------------------------------------------------------
 // Is called when the mirror toolbar button is pressed.
-void QucsApp::slotEditMirrorX(bool on)
-{
-  // If we're in paste mode or move-mode, mirror moving elements instead of schematic elements
-  if (   MouseMoveAction == &MouseActions::MMovePaste2
-      || MouseMoveAction == &MouseActions::MMoveFree2) {
+void QucsApp::slotEditMirrorX(bool on) {
+  // If we're in paste mode or move-mode, mirror moving elements instead of
+  // schematic elements
+  if (MouseMoveAction == &MouseActions::MMovePaste2 ||
+      MouseMoveAction == &MouseActions::MMoveFree2) {
     editMirror->blockSignals(true);
     editMirror->setChecked(false);
     editMirror->blockSignals(false);
 
-    Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
+    Schematic *Doc = dynamic_cast<Schematic *>(DocumentTab->currentWidget());
     if (Doc != nullptr) {
       // enable painting in case we're in paste mode
       bool doPaint = MouseMoveAction == &MouseActions::MMovePaste2;
@@ -173,21 +173,22 @@ void QucsApp::slotEditMirrorX(bool on)
     return;
   }
   performToggleAction(on, editMirror, &Schematic::mirrorXComponents,
-    &MouseActions::MMoveMirrorX, &MouseActions::MPressMirrorX);
+                      &MouseActions::MMoveMirrorX,
+                      &MouseActions::MPressMirrorX);
 }
 
 // -----------------------------------------------------------------------
 // Is called when the mirror toolbar button is pressed.
-void QucsApp::slotEditMirrorY(bool on)
-{
-  // If we're in paste mode or move-mode, mirror moving elements instead of schematic elements
-  if (   MouseMoveAction == &MouseActions::MMovePaste2
-      || MouseMoveAction == &MouseActions::MMoveFree2) {
+void QucsApp::slotEditMirrorY(bool on) {
+  // If we're in paste mode or move-mode, mirror moving elements instead of
+  // schematic elements
+  if (MouseMoveAction == &MouseActions::MMovePaste2 ||
+      MouseMoveAction == &MouseActions::MMoveFree2) {
     editMirrorY->blockSignals(true);
     editMirrorY->setChecked(false);
     editMirrorY->blockSignals(false);
 
-    Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
+    Schematic *Doc = dynamic_cast<Schematic *>(DocumentTab->currentWidget());
     if (Doc != nullptr) {
       // enable painting in case we're in paste mode
       bool doPaint = MouseMoveAction == &MouseActions::MMovePaste2;
@@ -196,54 +197,51 @@ void QucsApp::slotEditMirrorY(bool on)
     return;
   }
   performToggleAction(on, editMirrorY, &Schematic::mirrorYComponents,
-    &MouseActions::MMoveMirrorY, &MouseActions::MPressMirrorY);
+                      &MouseActions::MMoveMirrorY,
+                      &MouseActions::MPressMirrorY);
 }
 
 // -----------------------------------------------------------------------
 // Is called when the activate/deactivate toolbar button is pressed.
 // It also comments out the selected text on a text document
 // \todo update the status or tooltip message
-void QucsApp::slotEditActivate (bool on)
-{
-  TextDoc * Doc = (TextDoc *) DocumentTab->currentWidget();
-  if (isTextDocument (Doc)) {
-    //TODO Doc->clearParagraphBackground (Doc->tmpPosX);
-    Doc->commentSelected ();
+void QucsApp::slotEditActivate(bool on) {
+  TextDoc *Doc = (TextDoc *)DocumentTab->currentWidget();
+  if (isTextDocument(Doc)) {
+    // TODO Doc->clearParagraphBackground (Doc->tmpPosX);
+    Doc->commentSelected();
 
-    editActivate->blockSignals (true);
-    editActivate->setChecked(false);  // release toolbar button
-    editActivate->blockSignals (false);
-  }
-  else
-    performToggleAction (on, editActivate,
-        &Schematic::activateSelectedComponents,
+    editActivate->blockSignals(true);
+    editActivate->setChecked(false); // release toolbar button
+    editActivate->blockSignals(false);
+  } else
+    performToggleAction(
+        on, editActivate, &Schematic::activateSelectedComponents,
         &MouseActions::MMoveActivate, &MouseActions::MPressActivate);
 }
 
 // ------------------------------------------------------------------------
 // Is called if "Delete"-Button is pressed.
-void QucsApp::slotEditDelete(bool on)
-{
-  TextDoc *Doc = (TextDoc*)DocumentTab->currentWidget();
-  if(isTextDocument(Doc)) {
+void QucsApp::slotEditDelete(bool on) {
+  TextDoc *Doc = (TextDoc *)DocumentTab->currentWidget();
+  if (isTextDocument(Doc)) {
     Doc->viewport()->setFocus();
-    //Doc->del();
+    // Doc->del();
     Doc->textCursor().deleteChar();
 
     editDelete->blockSignals(true);
-    editDelete->setChecked(false);  // release toolbar button
+    editDelete->setChecked(false); // release toolbar button
     editDelete->blockSignals(false);
-  }
-  else
+  } else
     performToggleAction(on, editDelete, &Schematic::deleteElements,
-          &MouseActions::MMoveDelete, &MouseActions::MPressDelete);
+                        &MouseActions::MMoveDelete,
+                        &MouseActions::MPressDelete);
 }
 
 // ------------------------------------------------------------------------
 // Is called if "Strech (move w/wiring)"-Button is pressed.
-void QucsApp::slotEditStretch(bool on)
-{
-  Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
+void QucsApp::slotEditStretch(bool on) {
+  Schematic *Doc = dynamic_cast<Schematic *>(DocumentTab->currentWidget());
   if (!on || Doc->currentSelection().isEmpty()) {
     // if we were already on, or selection is empty
     // cancel action and return to select mode
@@ -257,15 +255,14 @@ void QucsApp::slotEditStretch(bool on)
     return;
   }
 
-  performToggleAction(on, editStretch, nullptr,
-    &MouseActions::MMoveMoving, nullptr);
+  performToggleAction(on, editStretch, nullptr, &MouseActions::MMoveMoving,
+                      nullptr);
 }
 
 // ------------------------------------------------------------------------
 // Is called if "Move (w/o wiring)"-Button is pressed.
-void QucsApp::slotEditMove(bool on)
-{
-  Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
+void QucsApp::slotEditMove(bool on) {
+  Schematic *Doc = dynamic_cast<Schematic *>(DocumentTab->currentWidget());
   if (!on || Doc->currentSelection().isEmpty()) {
     // if we were already on, or selection is emtpy
     // cancel action and return to select mode
@@ -279,48 +276,41 @@ void QucsApp::slotEditMove(bool on)
     return;
   }
 
-  performToggleAction(on, editMove, nullptr,
-    &MouseActions::MMoveFree, nullptr);
+  performToggleAction(on, editMove, nullptr, &MouseActions::MMoveFree, nullptr);
 }
 
 // -----------------------------------------------------------------------
 // Is called if "Wire"-Button is pressed.
-void QucsApp::slotSetWire(bool on)
-{
-  performToggleAction(on, insWire, 0,
-    &MouseActions::MMoveWire1, &MouseActions::MPressWire1);
+void QucsApp::slotSetWire(bool on) {
+  performToggleAction(on, insWire, 0, &MouseActions::MMoveWire1,
+                      &MouseActions::MPressWire1);
 }
 
 // -----------------------------------------------------------------------
-void QucsApp::slotInsertLabel(bool on)
-{
-  performToggleAction(on, insLabel, 0,
-    &MouseActions::MMoveLabel, &MouseActions::MPressLabel);
+void QucsApp::slotInsertLabel(bool on) {
+  performToggleAction(on, insLabel, 0, &MouseActions::MMoveLabel,
+                      &MouseActions::MPressLabel);
 }
 
 // -----------------------------------------------------------------------
-void QucsApp::slotSetMarker(bool on)
-{
-  performToggleAction(on, setMarker, 0,
-    &MouseActions::MMoveMarker, &MouseActions::MPressMarker);
+void QucsApp::slotSetMarker(bool on) {
+  performToggleAction(on, setMarker, 0, &MouseActions::MMoveMarker,
+                      &MouseActions::MPressMarker);
 }
 
 // -----------------------------------------------------------------------
 // Toolbar button to update the diagram limits using the mouse - aka zooming.
-void QucsApp::slotSetDiagramLimits(bool on)
-{
-  performToggleAction(on, setDiagramLimits, 0,
-                    &MouseActions::MMoveSetLimits, &MouseActions::MPressSetLimits);
+void QucsApp::slotSetDiagramLimits(bool on) {
+  performToggleAction(on, setDiagramLimits, 0, &MouseActions::MMoveSetLimits,
+                      &MouseActions::MPressSetLimits);
 }
 
 // -----------------------------------------------------------------------
 // Context menu option to reset the diagram limits to defaults.
-void QucsApp::slotResetDiagramLimits()
-{
-  if (view->focusElement && view->focusElement->Type == isDiagram)
-  {
-    Diagram* diagram = dynamic_cast<Diagram*>(view->focusElement);
-    Schematic* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
+void QucsApp::slotResetDiagramLimits() {
+  if (view->focusElement && view->focusElement->Type == isDiagram) {
+    Diagram *diagram = dynamic_cast<Diagram *>(view->focusElement);
+    Schematic *Doc = dynamic_cast<Schematic *>(DocumentTab->currentWidget());
 
     diagram->xAxis.autoScale = true;
     diagram->yAxis.autoScale = true;
@@ -338,11 +328,10 @@ void QucsApp::slotResetDiagramLimits()
 
 // -----------------------------------------------------------------------
 // Is called, when "show grid" action is triggered.
-void QucsApp::slotShowGrid()
-{
+void QucsApp::slotShowGrid() {
   qDebug() << "slotShowGrid";
-  Schematic* schematic = static_cast<Schematic*>(DocumentTab->currentWidget());
-  if(!isTextDocument(schematic)) {
+  Schematic *schematic = static_cast<Schematic *>(DocumentTab->currentWidget());
+  if (!isTextDocument(schematic)) {
     schematic->setGridOn(!schematic->getGridOn());
     schematic->setChanged(true);
     schematic->viewport()->repaint();
@@ -351,51 +340,45 @@ void QucsApp::slotShowGrid()
 
 // -----------------------------------------------------------------------
 // Is called, when "move component text" action is triggered.
-void QucsApp::slotMoveText(bool on)
-{
-  performToggleAction(on, moveText, 0,
-    &MouseActions::MMoveMoveTextB, &MouseActions::MPressMoveText);
+void QucsApp::slotMoveText(bool on) {
+  performToggleAction(on, moveText, 0, &MouseActions::MMoveMoveTextB,
+                      &MouseActions::MPressMoveText);
 }
 
 // -----------------------------------------------------------------------
 // Is called, when "Zoom in" action is triggered.
-void QucsApp::slotZoomIn(bool on)
-{
-  auto *Doc = (TextDoc*)DocumentTab->currentWidget();
-  if(isTextDocument(Doc)) {
+void QucsApp::slotZoomIn(bool on) {
+  auto *Doc = (TextDoc *)DocumentTab->currentWidget();
+  if (isTextDocument(Doc)) {
     Doc->zoomBy(1.5f);
     magPlus->blockSignals(true);
     magPlus->setChecked(false);
     magPlus->blockSignals(false);
-  }
-  else
-    performToggleAction(on, magPlus, 0,
-      &MouseActions::MMoveZoomIn, &MouseActions::MPressZoomIn);
+  } else
+    performToggleAction(on, magPlus, 0, &MouseActions::MMoveZoomIn,
+                        &MouseActions::MPressZoomIn);
 }
 
-
-void QucsApp::slotEscape()
-{
-    select->setChecked(true);
-    slotSearchClear();
+void QucsApp::slotEscape() {
+  select->setChecked(true);
+  slotSearchClear();
 }
 
 // -----------------------------------------------------------------------
 // Is called when the select toolbar button is pressed.
-void QucsApp::slotSelect(bool on)
-{
+void QucsApp::slotSelect(bool on) {
   QWidget *w = DocumentTab->currentWidget();
-  if(isTextDocument(w)) {
-    ((TextDoc*)w)->viewport()->setFocus();
-      select->blockSignals(true);
-      select->setChecked(true);
-      select->blockSignals(false);
+  if (isTextDocument(w)) {
+    ((TextDoc *)w)->viewport()->setFocus();
+    select->blockSignals(true);
+    select->setChecked(true);
+    select->blockSignals(false);
     return;
   }
 
   // goto to insertWire mode if ESC pressed during wiring
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  if(MouseMoveAction == &MouseActions::MMoveWire2) {
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
+  if (MouseMoveAction == &MouseActions::MMoveWire2) {
     MouseMoveAction = &MouseActions::MMoveWire1;
     MousePressAction = &MouseActions::MPressWire1;
     Doc->viewport()->update();
@@ -409,20 +392,19 @@ void QucsApp::slotSelect(bool on)
     return;
   }
 
-  if(performToggleAction(on, select, 0, 0, &MouseActions::MPressSelect)) {
+  if (performToggleAction(on, select, 0, 0, &MouseActions::MPressSelect)) {
     MouseReleaseAction = &MouseActions::MReleaseSelect;
     MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
   }
 }
 
 // --------------------------------------------------------------------
-void QucsApp::slotEditCut()
-{
+void QucsApp::slotEditCut() {
   statusBar()->showMessage(tr("Cutting selection..."));
   slotHideEdit(); // disable text edit of component property
 
   QWidget *Doc = DocumentTab->currentWidget();
-  if(isTextDocument (Doc)) {
+  if (isTextDocument(Doc)) {
     ((TextDoc *)Doc)->cut();
   } else {
     ((Schematic *)Doc)->cut();
@@ -432,12 +414,11 @@ void QucsApp::slotEditCut()
 }
 
 // --------------------------------------------------------------------
-void QucsApp::slotEditCopy()
-{
+void QucsApp::slotEditCopy() {
   statusBar()->showMessage(tr("Copying selection to clipboard..."));
 
   QWidget *Doc = DocumentTab->currentWidget();
-  if(isTextDocument (Doc)) {
+  if (isTextDocument(Doc)) {
     ((TextDoc *)Doc)->copy();
   } else {
     ((Schematic *)Doc)->copy();
@@ -447,49 +428,43 @@ void QucsApp::slotEditCopy()
 }
 
 // -----------------------------------------------------------------------
-void QucsApp::slotEditPaste(bool on)
-{
+void QucsApp::slotEditPaste(bool on) {
   // get the current document
   QWidget *Doc = DocumentTab->currentWidget();
 
   // if the current document is a text document paste in
   // the contents of the clipboard as text
-  if(isTextDocument (Doc))
-  {
-    ((TextDoc*)Doc)->paste();
+  if (isTextDocument(Doc)) {
+    ((TextDoc *)Doc)->paste();
 
     editPaste->blockSignals(true);
-    editPaste->setChecked(false);  // release toolbar button
+    editPaste->setChecked(false); // release toolbar button
     editPaste->blockSignals(false);
     return;
-  }
-  else {
+  } else {
     // if it's not a text doc, prevent the user from editing
     // while we perform the paste operation
     slotHideEdit();
 
-    if(!on)
-    {
+    if (!on) {
       MouseMoveAction = nullptr;
       MousePressAction = nullptr;
       MouseReleaseAction = nullptr;
       MouseDoubleClickAction = nullptr;
-      activeAction = nullptr;   // no action active
+      activeAction = nullptr; // no action active
       return;
     }
 
-    if(!view->pasteElements((Schematic *)Doc))
-    {
+    if (!view->pasteElements((Schematic *)Doc)) {
       editPaste->blockSignals(true); // do not call toggle slot
-      editPaste->setChecked(false);       // set toolbar button off
+      editPaste->setChecked(false);  // set toolbar button off
       editPaste->blockSignals(false);
-      return;   // if clipboard empty
+      return; // if clipboard empty
     }
 
-    if(activeAction)
-    {
+    if (activeAction) {
       activeAction->blockSignals(true); // do not call toggle slot
-      activeAction->setChecked(false);       // set last toolbar button off
+      activeAction->setChecked(false);  // set last toolbar button off
       activeAction->blockSignals(false);
     }
     activeAction = editPaste;
@@ -503,48 +478,46 @@ void QucsApp::slotEditPaste(bool on)
 }
 
 // -----------------------------------------------------------------------
-void QucsApp::slotInsertEntity ()
-{
-  TextDoc * Doc = (TextDoc *) DocumentTab->currentWidget ();
-  Doc->viewport()->setFocus ();
-  //TODO Doc->clearParagraphBackground (Doc->tmpPosX);
-  Doc->insertSkeleton ();
+void QucsApp::slotInsertEntity() {
+  TextDoc *Doc = (TextDoc *)DocumentTab->currentWidget();
+  Doc->viewport()->setFocus();
+  // TODO Doc->clearParagraphBackground (Doc->tmpPosX);
+  Doc->insertSkeleton();
 
-  //int x, y;
-  //Doc->getCursorPosition (&x, &y);
-  //x = Doc->textCursor().blockNumber();
-  //y = Doc->textCursor().columnNumber();
+  // int x, y;
+  // Doc->getCursorPosition (&x, &y);
+  // x = Doc->textCursor().blockNumber();
+  // y = Doc->textCursor().columnNumber();
   Doc->slotCursorPosChanged();
 }
 
 // -----------------------------------------------------------------------
 // Is called when the mouse is clicked upon the equation toolbar button.
-void QucsApp::slotInsertEquation(bool on)
-{
+void QucsApp::slotInsertEquation(bool on) {
   slotHideEdit(); // disable text edit of component property
   MouseReleaseAction = nullptr;
   MouseDoubleClickAction = nullptr;
 
-  if(!on) {
+  if (!on) {
     MouseMoveAction = nullptr;
     MousePressAction = nullptr;
-    activeAction = nullptr;   // no action active
+    activeAction = nullptr; // no action active
     return;
   }
-  if(activeAction) {
+  if (activeAction) {
     activeAction->blockSignals(true); // do not call toggle slot
-    activeAction->setChecked(false);       // set last toolbar button off
+    activeAction->setChecked(false);  // set last toolbar button off
     activeAction->blockSignals(false);
   }
   activeAction = insEquation;
 
-  if(view->selElem)
-    delete view->selElem;  // delete previously selected component
+  if (view->selElem)
+    delete view->selElem; // delete previously selected component
 
   if (QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
-      view->selElem = new NutmegEquation();
+    view->selElem = new NutmegEquation();
   } else {
-      view->selElem = new Equation();
+    view->selElem = new Equation();
   }
 
   MouseMoveAction = &MouseActions::MMoveElement;
@@ -553,27 +526,26 @@ void QucsApp::slotInsertEquation(bool on)
 
 // -----------------------------------------------------------------------
 // Is called when the mouse is clicked upon the ground toolbar button.
-void QucsApp::slotInsertGround(bool on)
-{
+void QucsApp::slotInsertGround(bool on) {
   slotHideEdit(); // disable text edit of component property
   MouseReleaseAction = nullptr;
   MouseDoubleClickAction = nullptr;
 
-  if(!on) {
+  if (!on) {
     MouseMoveAction = nullptr;
     MousePressAction = nullptr;
-    activeAction = nullptr;   // no action active
+    activeAction = nullptr; // no action active
     return;
   }
-  if(activeAction) {
+  if (activeAction) {
     activeAction->blockSignals(true); // do not call toggle slot
-    activeAction->setChecked(false);       // set last toolbar button off
+    activeAction->setChecked(false);  // set last toolbar button off
     activeAction->blockSignals(false);
   }
   activeAction = insGround;
 
-  if(view->selElem)
-    delete view->selElem;  // delete previously selected component
+  if (view->selElem)
+    delete view->selElem; // delete previously selected component
 
   view->selElem = new Ground();
 
@@ -583,33 +555,32 @@ void QucsApp::slotInsertGround(bool on)
 
 // -----------------------------------------------------------------------
 // Is called when the mouse is clicked upon the port toolbar button.
-void QucsApp::slotInsertPort(bool on)
-{
+void QucsApp::slotInsertPort(bool on) {
   slotHideEdit(); // disable text edit of component property
   MouseReleaseAction = nullptr;
   MouseDoubleClickAction = nullptr;
 
-  if(!on) {
+  if (!on) {
     MouseMoveAction = nullptr;
     MousePressAction = nullptr;
-    activeAction = nullptr;   // no action active
+    activeAction = nullptr; // no action active
     return;
   }
-  if(activeAction) {
+  if (activeAction) {
     activeAction->blockSignals(true); // do not call toggle slot
-    activeAction->setChecked(false);       // set last toolbar button off
+    activeAction->setChecked(false);  // set last toolbar button off
     activeAction->blockSignals(false);
   }
   activeAction = insPort;
 
-  if(view->selElem)
-    delete view->selElem;  // delete previously selected component
+  if (view->selElem)
+    delete view->selElem; // delete previously selected component
 
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
   if (Doc->getSymbolMode()) {
     view->selElem = new PortSymbol();
   } else {
-     view->selElem = new SubCirPort();
+    view->selElem = new SubCirPort();
   }
 
   MouseMoveAction = &MouseActions::MMoveElement;
@@ -618,12 +589,11 @@ void QucsApp::slotInsertPort(bool on)
 
 // --------------------------------------------------------------
 // Is called, when "Undo"-Button is pressed.
-void QucsApp::slotEditUndo()
-{
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  if(isTextDocument(Doc)) {
-    ((TextDoc*)Doc)->viewport()->setFocus();
-    ((TextDoc*)Doc)->undo();
+void QucsApp::slotEditUndo() {
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
+  if (isTextDocument(Doc)) {
+    ((TextDoc *)Doc)->viewport()->setFocus();
+    ((TextDoc *)Doc)->undo();
     return;
   }
 
@@ -635,12 +605,11 @@ void QucsApp::slotEditUndo()
 
 // --------------------------------------------------------------
 // Is called, when "Undo"-Button is pressed.
-void QucsApp::slotEditRedo()
-{
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  if(isTextDocument(Doc)) {
-    ((TextDoc*)Doc)->viewport()->setFocus();
-    ((TextDoc*)Doc)->redo();
+void QucsApp::slotEditRedo() {
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
+  if (isTextDocument(Doc)) {
+    ((TextDoc *)Doc)->viewport()->setFocus();
+    ((TextDoc *)Doc)->redo();
     return;
   }
 
@@ -652,332 +621,311 @@ void QucsApp::slotEditRedo()
 
 // --------------------------------------------------------------
 // Is called, when "Align top" action is triggered.
-void QucsApp::slotAlignTop()
-{
+void QucsApp::slotAlignTop() {
   slotHideEdit(); // disable text edit of component property
 
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  if(!Doc->aligning(0))
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
+  if (!Doc->aligning(0))
     QMessageBox::information(this, tr("Info"),
-          tr("At least two elements must be selected !"));
+                             tr("At least two elements must be selected !"));
   Doc->viewport()->update();
 }
 
 // --------------------------------------------------------------
 // Is called, when "Align bottom" action is triggered.
-void QucsApp::slotAlignBottom()
-{
+void QucsApp::slotAlignBottom() {
   slotHideEdit(); // disable text edit of component property
 
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  if(!Doc->aligning(1))
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
+  if (!Doc->aligning(1))
     QMessageBox::information(this, tr("Info"),
-          tr("At least two elements must be selected !"));
+                             tr("At least two elements must be selected !"));
   Doc->viewport()->update();
 }
 
 // --------------------------------------------------------------
 // Is called, when "Align left" action is triggered.
-void QucsApp::slotAlignLeft()
-{
+void QucsApp::slotAlignLeft() {
   slotHideEdit(); // disable text edit of component property
 
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  if(!Doc->aligning(2))
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
+  if (!Doc->aligning(2))
     QMessageBox::information(this, tr("Info"),
-          tr("At least two elements must be selected !"));
+                             tr("At least two elements must be selected !"));
   Doc->viewport()->update();
 }
 
 // --------------------------------------------------------------
 // Is called, when "Align right" action is triggered.
-void QucsApp::slotAlignRight()
-{
+void QucsApp::slotAlignRight() {
   slotHideEdit(); // disable text edit of component property
 
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  if(!Doc->aligning(3))
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
+  if (!Doc->aligning(3))
     QMessageBox::information(this, tr("Info"),
-          tr("At least two elements must be selected !"));
+                             tr("At least two elements must be selected !"));
   Doc->viewport()->update();
 }
 
 // --------------------------------------------------------------
 // Is called, when "Distribute horizontally" action is triggered.
-void QucsApp::slotDistribHoriz()
-{
+void QucsApp::slotDistribHoriz() {
   slotHideEdit(); // disable text edit of component property
 
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
   Doc->distributeHorizontal();
   Doc->viewport()->update();
 }
 
 // --------------------------------------------------------------
 // Is called, when "Distribute vertically" action is triggered.
-void QucsApp::slotDistribVert()
-{
+void QucsApp::slotDistribVert() {
   slotHideEdit(); // disable text edit of component property
 
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
   Doc->distributeVertical();
   Doc->viewport()->update();
 }
 
 // --------------------------------------------------------------
 // Is called, when "Center horizontally" action is triggered.
-void QucsApp::slotCenterHorizontal()
-{
+void QucsApp::slotCenterHorizontal() {
   slotHideEdit(); // disable text edit of component property
 
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  if(!Doc->aligning(4))
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
+  if (!Doc->aligning(4))
     QMessageBox::information(this, tr("Info"),
-          tr("At least two elements must be selected !"));
+                             tr("At least two elements must be selected !"));
   Doc->viewport()->update();
 }
 
 // --------------------------------------------------------------
 // Is called, when "Center vertically" action is triggered.
-void QucsApp::slotCenterVertical()
-{
+void QucsApp::slotCenterVertical() {
   slotHideEdit(); // disable text edit of component property
 
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  if(!Doc->aligning(5))
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
+  if (!Doc->aligning(5))
     QMessageBox::information(this, tr("Info"),
-          tr("At least two elements must be selected !"));
+                             tr("At least two elements must be selected !"));
   Doc->viewport()->update();
 }
 
 // ---------------------------------------------------------------------
 // Is called when the "select all" action is triggered.
-void QucsApp::slotSelectAll()
-{
+void QucsApp::slotSelectAll() {
   slotHideEdit(); // disable text edit of component property
 
   QWidget *Doc = DocumentTab->currentWidget();
-  if(isTextDocument(Doc)) {
-    ((TextDoc*)Doc)->viewport()->setFocus();
+  if (isTextDocument(Doc)) {
+    ((TextDoc *)Doc)->viewport()->setFocus();
     //((TextDoc*)Doc)->selectAll(true);
-    ((TextDoc*)Doc)->selectAll();
-  }
-  else {
-    auto selectionRect = ((Schematic*)Doc)->allBoundingRect().marginsAdded(QMargins{1, 1, 1, 1});
-    ((Schematic*)Doc)->selectElements(selectionRect, true, false);
-    ((Schematic*)Doc)->viewport()->update();
+    ((TextDoc *)Doc)->selectAll();
+  } else {
+    auto selectionRect = ((Schematic *)Doc)
+                             ->allBoundingRect()
+                             .marginsAdded(QMargins{1, 1, 1, 1});
+    ((Schematic *)Doc)->selectElements(selectionRect, true, false);
+    ((Schematic *)Doc)->viewport()->update();
   }
 }
 
 // ---------------------------------------------------------------------
 // Is called when the "select markers" action is triggered.
-void QucsApp::slotSelectMarker()
-{
+void QucsApp::slotSelectMarker() {
   slotHideEdit(); // disable text edit of component property
 
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
   Doc->selectMarkers();
   Doc->viewport()->update();
 }
-
 
 extern QString lastDirOpenSave; // to remember last directory and file
 
 // ------------------------------------------------------------------------
 // Is called by slotShowLastMsg(), by slotShowLastNetlist() and from the
 // component edit dialog.
-void QucsApp::editFile(const QString& File, bool reloadFile)
-{
-    if ((QucsSettings.Editor.toLower() == "qucs") || QucsSettings.Editor.isEmpty())
-    {
-        // The Editor is 'qucs' or empty, open a net document tab
-        if (File.isEmpty()) {
-            QucsApp::slotTextNew();
-        }
-        else
-        {
-            slotHideEdit(); // disable text edit of component property
+void QucsApp::editFile(const QString &File, bool reloadFile) {
+  if ((QucsSettings.Editor.toLower() == "qucs") ||
+      QucsSettings.Editor.isEmpty()) {
+    // The Editor is 'qucs' or empty, open a net document tab
+    if (File.isEmpty()) {
+      QucsApp::slotTextNew();
+    } else {
+      slotHideEdit(); // disable text edit of component property
 
-            statusBar()->showMessage(tr("Opening file..."));
+      statusBar()->showMessage(tr("Opening file..."));
 
-            QFileInfo finfo(File);
+      QFileInfo finfo(File);
 
-            if(!finfo.exists())
-                statusBar()->showMessage(tr("Opening aborted, file not found."), 2000);
-            else {
-                gotoPage(File, reloadFile);
-                lastDirOpenSave = File;   // remember last directory and file
-                statusBar()->showMessage(tr("Ready."));
-            }
-        }
+      if (!finfo.exists())
+        statusBar()->showMessage(tr("Opening aborted, file not found."), 2000);
+      else {
+        gotoPage(File, reloadFile);
+        lastDirOpenSave = File; // remember last directory and file
+        statusBar()->showMessage(tr("Ready."));
+      }
     }
-    else
-    {
-      // use an external editor
-      QString prog;
-      QStringList args;
+  } else {
+    // use an external editor
+    QString prog;
+    QStringList args;
 
-      if (QucsSettings.Editor.toLower().contains("qucsedit")) {
+    if (QucsSettings.Editor.toLower().contains("qucsedit")) {
 
 #if defined(_WIN32) || defined(__MINGW32__)
-  prog = QUCS_NAME"edit.exe";
+      prog = QUCS_NAME "edit.exe";
 #elif __APPLE__
-  prog = "qucsedit.app/Contents/MacOS/qucsedit";
+      prog = "qucsedit.app/Contents/MacOS/qucsedit";
 #else
-  prog = "qucsedit";
+      prog = "qucsedit";
 #endif
 
-        QFileInfo editor(QucsSettings.QucsatorDir + prog);
-        prog = QDir::toNativeSeparators(editor.canonicalFilePath());
-      }
-      else { // user defined editor
-          QFileInfo editor(QucsSettings.Editor);
-          prog = QDir::toNativeSeparators(editor.canonicalFilePath());
-      }
-
-      if (!File.isEmpty()) {
-          args << File;
-      }
-
-      QProcess *QucsEditor = new QProcess();
-      QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-      env.insert("PATH", env.value("PATH") );
-      QucsEditor->setProcessEnvironment(env);
-
-      qDebug() << "Command: " << prog << args.join(" ");
-
-      QucsEditor->start(prog, args);
-
-      if( !QucsEditor->waitForStarted(1000) ) {
-        QMessageBox::critical(this, tr("Error"), tr("Cannot start text editor! \n\n%1").arg(prog));
-        delete QucsEditor;
-        return;
-      }
-      qDebug() << QucsEditor->readAllStandardError();
-
-      // to kill it before qucs ends
-      connect(this, SIGNAL(signalKillEmAll()), QucsEditor, SLOT(kill()));
+      QFileInfo editor(QucsSettings.QucsatorDir + prog);
+      prog = QDir::toNativeSeparators(editor.canonicalFilePath());
+    } else { // user defined editor
+      QFileInfo editor(QucsSettings.Editor);
+      prog = QDir::toNativeSeparators(editor.canonicalFilePath());
     }
+
+    if (!File.isEmpty()) {
+      args << File;
+    }
+
+    QProcess *QucsEditor = new QProcess();
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    env.insert("PATH", env.value("PATH"));
+    QucsEditor->setProcessEnvironment(env);
+
+    qDebug() << "Command: " << prog << args.join(" ");
+
+    QucsEditor->start(prog, args);
+
+    if (!QucsEditor->waitForStarted(1000)) {
+      QMessageBox::critical(this, tr("Error"),
+                            tr("Cannot start text editor! \n\n%1").arg(prog));
+      delete QucsEditor;
+      return;
+    }
+    qDebug() << QucsEditor->readAllStandardError();
+
+    // to kill it before qucs ends
+    connect(this, SIGNAL(signalKillEmAll()), QucsEditor, SLOT(kill()));
+  }
 }
 
 // ------------------------------------------------------------------------
 // Is called to show the output messages of the last simulation.
-void QucsApp::slotShowLastMsg()
-{
+void QucsApp::slotShowLastMsg() {
   editFile(QucsSettings.tempFilesDir.filePath("log.txt"), /*reloadFile=*/true);
 }
 
 // ------------------------------------------------------------------------
 // Is called to show the netlist of the last simulation.
-void QucsApp::slotShowLastNetlist()
-{
-    QStringList netlists;
-    QStringList sim_lst;
+void QucsApp::slotShowLastNetlist() {
+  QStringList netlists;
+  QStringList sim_lst;
 
-    QWidget *w = DocumentTab->currentWidget();
+  QWidget *w = DocumentTab->currentWidget();
 
-    if (QucsSettings.DefaultSimulator == spicecompat::simXyce) {
-        if (isTextDocument(w)) {
-            QMessageBox::information(this, tr("Show netlist"),
-                                     tr("Not a schematic tab!"));
-            return;
-        } else {
-            Schematic *sch = (Schematic *) w;
-            Xyce *xyce = new Xyce(sch,this);
-            xyce->determineUsedSimulations(&sim_lst);
-            delete xyce;
-        }
+  if (QucsSettings.DefaultSimulator == spicecompat::simXyce) {
+    if (isTextDocument(w)) {
+      QMessageBox::information(this, tr("Show netlist"),
+                               tr("Not a schematic tab!"));
+      return;
+    } else {
+      Schematic *sch = (Schematic *)w;
+      Xyce *xyce = new Xyce(sch, this);
+      xyce->determineUsedSimulations(&sim_lst);
+      delete xyce;
     }
+  }
 
-    switch (QucsSettings.DefaultSimulator) {
-    case spicecompat::simQucsator :
-        netlists.append(QucsSettings.tempFilesDir.filePath("netlist.txt"));
-        break;
-    case spicecompat::simNgspice :
-    case spicecompat::simSpiceOpus :
-        netlists.append(QDir::toNativeSeparators(QucsSettings.S4Qworkdir
-                                                 + "/spice4qucs.cir"));
-        break;
-    case spicecompat::simXyce: // Xyce generates one netlist for every simulation
-        for(const auto &sim : sim_lst) {
-            netlists.append(QDir::toNativeSeparators(QucsSettings.S4Qworkdir
-                                                     + "/spice4qucs."
-                                                     + sim + ".cir"));
-        }
-        break;
-    default: break;
+  switch (QucsSettings.DefaultSimulator) {
+  case spicecompat::simQucsator:
+    netlists.append(QucsSettings.tempFilesDir.filePath("netlist.txt"));
+    break;
+  case spicecompat::simNgspice:
+  case spicecompat::simSpiceOpus:
+    netlists.append(
+        QDir::toNativeSeparators(QucsSettings.S4Qworkdir + "/spice4qucs.cir"));
+    break;
+  case spicecompat::simXyce: // Xyce generates one netlist for every simulation
+    for (const auto &sim : sim_lst) {
+      netlists.append(QDir::toNativeSeparators(QucsSettings.S4Qworkdir +
+                                               "/spice4qucs." + sim + ".cir"));
     }
+    break;
+  default:
+    break;
+  }
 
-    if (!isTextDocument(w)) {
-        Schematic *sch = (Schematic *) w;
-        if (sch->isDigitalCircuit()) {
-            netlists.clear();
-            netlists.append(QucsSettings.tempFilesDir.filePath("netlist.txt"));
-        }
+  if (!isTextDocument(w)) {
+    Schematic *sch = (Schematic *)w;
+    if (sch->isDigitalCircuit()) {
+      netlists.clear();
+      netlists.append(QucsSettings.tempFilesDir.filePath("netlist.txt"));
     }
+  }
 
-    for(const auto &netlist: netlists) {
-        editFile(netlist, /*reloadFile=*/true);
-    }
+  for (const auto &netlist : netlists) {
+    editFile(netlist, /*reloadFile=*/true);
+  }
 }
 
 // ------------------------------------------------------------------------
 // Is called to start the text editor.
-void QucsApp::slotCallEditor()
-{
-  editFile(QString());
-}
+void QucsApp::slotCallEditor() { editFile(QString()); }
 
 // ------------------------------------------------------------------------
 // Is called to start the filter synthesis program.
-void QucsApp::slotCallFilter()
-{
+void QucsApp::slotCallFilter() {
   auto currentStyle = QApplication::style()->objectName();
-  launchTool(QUCS_NAME "filter", "filter synthesis",(QStringList() << "-style" << currentStyle));
+  launchTool(QUCS_NAME "filter", "filter synthesis",
+             (QStringList() << "-style" << currentStyle));
 }
 
-void QucsApp::slotCallActiveFilter()
-{
+void QucsApp::slotCallActiveFilter() {
   auto currentStyle = QApplication::style()->objectName();
-  launchTool(QUCS_NAME "activefilter", "active filter synthesis",(QStringList() << "-style" << currentStyle));
+  launchTool(QUCS_NAME "activefilter", "active filter synthesis",
+             (QStringList() << "-style" << currentStyle));
 }
 
 // ------------------------------------------------------------------------
 // Is called to start the transmission line calculation program.
-void QucsApp::slotCallLine()
-{
+void QucsApp::slotCallLine() {
   auto currentStyle = QApplication::style()->objectName();
-  launchTool(QUCS_NAME "trans", "line calculation",(QStringList() << "-style" << currentStyle));
+  launchTool(QUCS_NAME "trans", "line calculation",
+             (QStringList() << "-style" << currentStyle));
 }
 
 // --------------------------------------------------------------
 // Is called to show a dialog for creating matching circuits.
-void QucsApp::slotCallMatch()
-{
+void QucsApp::slotCallMatch() {
   MatchDialog *d = new MatchDialog(this);
   d->exec();
 }
 
 // ------------------------------------------------------------------------
 // Is called to start the attenuator calculation program.
-void QucsApp::slotCallAtt()
-{
+void QucsApp::slotCallAtt() {
   auto currentStyle = QApplication::style()->objectName();
-  launchTool(QUCS_NAME "attenuator", "attenuator calculation",(QStringList() << "-style" << currentStyle));
+  launchTool(QUCS_NAME "attenuator", "attenuator calculation",
+             (QStringList() << "-style" << currentStyle));
 }
 
-void QucsApp::slotCallPwrComb()
-{
+void QucsApp::slotCallPwrComb() {
   auto currentStyle = QApplication::style()->objectName();
-  launchTool(QUCS_NAME "powercombining", "power combining calculation",(QStringList() << "-style" << currentStyle));
+  launchTool(QUCS_NAME "powercombining", "power combining calculation",
+             (QStringList() << "-style" << currentStyle));
 }
 
-void QucsApp::slotCallSPAR_Viewer()
-{
+void QucsApp::slotCallSPAR_Viewer() {
 
   QString project_name = this->ProjName;
   QString project_path;
-  QStringList args; // Arguments to pass to the tool, i.e. the project folder to monitor files
+  QStringList args; // Arguments to pass to the tool, i.e. the project folder to
+                    // monitor files
 
   if (!project_name.isEmpty()) {
     project_path = QucsSettings.projsDir.filePath(this->ProjName);
@@ -988,11 +936,9 @@ void QucsApp::slotCallSPAR_Viewer()
   launchTool(QUCS_NAME "spar-viewer", "s-parameter viewer", args);
 }
 
-void QucsApp::slotCallRxCalc()
-{
+void QucsApp::slotCallRxCalc() {
   launchTool("rxcalc", "multistage receiver calculation", QStringList());
 }
-
 
 /*!
  * \brief launch an external application passing arguments
@@ -1001,203 +947,201 @@ void QucsApp::slotCallRxCalc()
  * \param progDesc  program description string (used for error messages)
  * \param args  arguments to pass to the executable
  */
-void QucsApp::launchTool(const QString& prog, const QString& progDesc, const QStringList &args,
-                         bool qucs_tool)
-{
-    QString tooldir = qucs_tool ? QucsSettings.QucsatorDir : QucsSettings.BinDir;
+void QucsApp::launchTool(const QString &prog, const QString &progDesc,
+                         const QStringList &args, bool qucs_tool) {
+  QString tooldir = qucs_tool ? QucsSettings.QucsatorDir : QucsSettings.BinDir;
 
-    // Create command path based on the platform
-    QString cmd;
+  // Create command path based on the platform
+  QString cmd;
 #if defined(_WIN32) || defined(__MINGW32__)
-    cmd = QDir(tooldir).absoluteFilePath(prog + ".exe");
+  cmd = QDir(tooldir).absoluteFilePath(prog + ".exe");
 #elif __APPLE__
-    cmd = QDir(tooldir).absoluteFilePath(prog + ".app/Contents/MacOS/" + prog);
+  cmd = QDir(tooldir).absoluteFilePath(prog + ".app/Contents/MacOS/" + prog);
 #else
-    cmd = QDir(tooldir).absoluteFilePath(prog);
+  cmd = QDir(tooldir).absoluteFilePath(prog);
 #endif
 
-    // Validate if the file exists before attempting to execute
-    if (!QFileInfo(cmd).exists()) {
-        QMessageBox::critical(this, tr("Error"),
-                            tr("Executable %1 not found! \n\n(%2)").arg(progDesc, cmd));
-        return;
-    }
+  // Validate if the file exists before attempting to execute
+  if (!QFileInfo(cmd).exists()) {
+    QMessageBox::critical(
+        this, tr("Error"),
+        tr("Executable %1 not found! \n\n(%2)").arg(progDesc, cmd));
+    return;
+  }
 
-    QProcess *tool = new QProcess();
+  QProcess *tool = new QProcess();
 
-    qDebug() << "Command :" << cmd;
-    tool->setWorkingDirectory(tooldir);
-    tool->start(cmd,args);
+  qDebug() << "Command :" << cmd;
+  tool->setWorkingDirectory(tooldir);
+  tool->start(cmd, args);
 
-    if(!tool->waitForStarted(1000) ) {
-        QMessageBox::critical(this, tr("Error"),
-                            tr("Cannot start %1 program! \n\n(%2)").arg(progDesc, cmd));
-        delete tool;
-        return;
-    }
+  if (!tool->waitForStarted(1000)) {
+    QMessageBox::critical(
+        this, tr("Error"),
+        tr("Cannot start %1 program! \n\n(%2)").arg(progDesc, cmd));
+    delete tool;
+    return;
+  }
 
-    // to kill the application first before qucs finishes exiting
-    connect(this, SIGNAL(signalKillEmAll()), tool, SLOT(kill()));
+  // to kill the application first before qucs finishes exiting
+  connect(this, SIGNAL(signalKillEmAll()), tool, SLOT(kill()));
 }
 
-
-void QucsApp::slotCallRFLayout()
-{
-    QString input_file, netlist_file, odir;
-    if (!isTextDocument(DocumentTab->currentWidget())) {
-        Schematic *sch = (Schematic*)DocumentTab->currentWidget();
-        if(sch->fileSuffix() == "dpl") {
-            QMessageBox::critical(this,tr("Error"),
-                                  tr("Layouting of display pages is not supported!"));
-            return;
-        }
-        input_file = sch->getDocName();
-        QFileInfo inf(sch->getDocName());
-        odir = inf.absolutePath();
-        netlist_file = inf.absolutePath() + QDir::separator()
-                + inf.baseName() + ".net";
-        QFile f(netlist_file);
-        if (!f.open(QIODevice::WriteOnly)) {
-            QMessageBox::critical(this, tr("Error"), tr("Cannot write netlist!"));
-            return;
-        }
-        QTextStream stream(&f);
-        QStringList Collect;
-        QPlainTextEdit *ErrText = new QPlainTextEdit();  //dummy
-        int pNum = sch->prepareNetlist(stream, Collect, ErrText);
-        if (!sch->getIsAnalog()) {
-            QMessageBox::critical(this, tr("Error"), tr("Digital schematic not supported!"));
-            return;
-        }
-        stream << '\n';
-        sch->createNetlist(stream, pNum);
-        f.close();
-    } else {
-        QMessageBox::critical(this,tr("Error"),
-                              tr("Layouting of text documents is not supported!"));
-        return;
-    }
-
-    QProcess *tool = new QProcess();
-    QStringList args;
-    args.append("-G");
-    args.append("-i");
-    args.append(input_file);
-    args.append("-n");
-    args.append(netlist_file);
-    args.append("-o");
-    args.append(odir);
-    tool->start(QucsSettings.RFLayoutExecutable,args);
-
-    if(!tool->waitForStarted(1000) ) {
+void QucsApp::slotCallRFLayout() {
+  QString input_file, netlist_file, odir;
+  if (!isTextDocument(DocumentTab->currentWidget())) {
+    Schematic *sch = (Schematic *)DocumentTab->currentWidget();
+    if (sch->fileSuffix() == "dpl") {
       QMessageBox::critical(this, tr("Error"),
-                            tr("Cannot start Qucs-RFLayout: \n%1")
-                            .arg(QucsSettings.RFLayoutExecutable));
-      delete tool;
+                            tr("Layouting of display pages is not supported!"));
       return;
     }
-    connect(this, SIGNAL(signalKillEmAll()), tool, SLOT(kill()));
+    input_file = sch->getDocName();
+    QFileInfo inf(sch->getDocName());
+    odir = inf.absolutePath();
+    netlist_file =
+        inf.absolutePath() + QDir::separator() + inf.baseName() + ".net";
+    QFile f(netlist_file);
+    if (!f.open(QIODevice::WriteOnly)) {
+      QMessageBox::critical(this, tr("Error"), tr("Cannot write netlist!"));
+      return;
+    }
+    QTextStream stream(&f);
+    QStringList Collect;
+    QPlainTextEdit *ErrText = new QPlainTextEdit(); // dummy
+    int pNum = sch->prepareNetlist(stream, Collect, ErrText);
+    if (!sch->getIsAnalog()) {
+      QMessageBox::critical(this, tr("Error"),
+                            tr("Digital schematic not supported!"));
+      return;
+    }
+    stream << '\n';
+    sch->createNetlist(stream, pNum);
+    f.close();
+  } else {
+    QMessageBox::critical(this, tr("Error"),
+                          tr("Layouting of text documents is not supported!"));
+    return;
+  }
+
+  QProcess *tool = new QProcess();
+  QStringList args;
+  args.append("-G");
+  args.append("-i");
+  args.append(input_file);
+  args.append("-n");
+  args.append(netlist_file);
+  args.append("-o");
+  args.append(odir);
+  tool->start(QucsSettings.RFLayoutExecutable, args);
+
+  if (!tool->waitForStarted(1000)) {
+    QMessageBox::critical(this, tr("Error"),
+                          tr("Cannot start Qucs-RFLayout: \n%1")
+                              .arg(QucsSettings.RFLayoutExecutable));
+    delete tool;
+    return;
+  }
+  connect(this, SIGNAL(signalKillEmAll()), tool, SLOT(kill()));
 }
 
 // --------------------------------------------------------------
-void QucsApp::slotHelpIndex()
-{
+void QucsApp::slotHelpIndex() {
   QDesktopServices::openUrl(QUrl("https://qucs-s-help.readthedocs.io/"));
 }
 
-void QucsApp::slotHelpQucsIndex()
-{
-    QDesktopServices::openUrl(QUrl("https://qucs-help.readthedocs.io/"));
+void QucsApp::slotHelpQucsIndex() {
+  QDesktopServices::openUrl(QUrl("https://qucs-help.readthedocs.io/"));
 }
 
 // --------------------------------------------------------------
-void QucsApp::slotGettingStarted()
-{
-  QDesktopServices::openUrl(QUrl("https://ra3xdh.github.io/pdf/qucs_s_tutorial.pdf"));
+void QucsApp::slotGettingStarted() {
+  QDesktopServices::openUrl(
+      QUrl("https://ra3xdh.github.io/pdf/qucs_s_tutorial.pdf"));
 }
 
 // ---------------------------------------------------------------------
 // Is called when the find action is triggered.
-void QucsApp::slotEditFind()
-{
-  SearchDia->initSearch(DocumentTab->currentWidget(),
-      ((TextDoc *)DocumentTab->currentWidget())->textCursor().selectedText(), false);
+void QucsApp::slotEditFind() {
+  SearchDia->initSearch(
+      DocumentTab->currentWidget(),
+      ((TextDoc *)DocumentTab->currentWidget())->textCursor().selectedText(),
+      false);
 }
 
 // --------------------------------------------------------------
-void QucsApp::slotChangeProps()
-{
+void QucsApp::slotChangeProps() {
   QWidget *Doc = DocumentTab->currentWidget();
-  if(isTextDocument(Doc)) {
-    ((TextDoc*)Doc)->viewport()->setFocus();
+  if (isTextDocument(Doc)) {
+    ((TextDoc *)Doc)->viewport()->setFocus();
 
-    SearchDia->initSearch(Doc,
-        ((TextDoc *)Doc)->textCursor().selectedText(), true);
-  }
-  else {
-    ChangeDialog *d = new ChangeDialog((Schematic*)Doc);
-    if(d->exec() == QDialog::Accepted) {
-      ((Schematic*)Doc)->setChanged(true, true);
-      ((Schematic*)Doc)->viewport()->update();
+    SearchDia->initSearch(Doc, ((TextDoc *)Doc)->textCursor().selectedText(),
+                          true);
+  } else {
+    ChangeDialog *d = new ChangeDialog((Schematic *)Doc);
+    if (d->exec() == QDialog::Accepted) {
+      ((Schematic *)Doc)->setChanged(true, true);
+      ((Schematic *)Doc)->viewport()->update();
     }
   }
 }
 
 // --------------------------------------------------------------
-void QucsApp::slotAddToProject()
-{
+void QucsApp::slotAddToProject() {
   slotHideEdit(); // disable text edit of component property
 
-  if(ProjName.isEmpty()) {
+  if (ProjName.isEmpty()) {
     QMessageBox::critical(this, tr("Error"), tr("No project open!"));
     return;
   }
 
+  QStringList List = QFileDialog::getOpenFileNames(
+      this, tr("Select files to copy"),
+      lastDir.isEmpty() ? QStringLiteral(".") : lastDir, QucsFileFilter);
 
-  QStringList List = QFileDialog::getOpenFileNames(this, tr("Select files to copy"),
-    lastDir.isEmpty() ? QStringLiteral(".") : lastDir, QucsFileFilter);
-
-  if(List.isEmpty()) {
+  if (List.isEmpty()) {
     statusBar()->showMessage(tr("No files copied."), 2000);
     return;
   }
 
+  char *Buffer = (char *)malloc(0x10000);
+  if (!Buffer)
+    return; // should never happen
 
-  char *Buffer = (char*)malloc(0x10000);
-  if(!Buffer) return;  // should never happen
-
-  QStringList FileList = List;  // make a copy as recommended by Qt
+  QStringList FileList = List; // make a copy as recommended by Qt
   QStringList::Iterator it = FileList.begin();
   QFileInfo Info(*it);
-  lastDir = Info.absolutePath();  // remember last directory
+  lastDir = Info.absolutePath(); // remember last directory
 
   // copy all files to project directory
   int Num;
   QFile origFile, destFile;
-  while(it != FileList.end()) {
+  while (it != FileList.end()) {
     Info.setFile(*it);
     origFile.setFileName(*it);
     destFile.setFileName(QucsSettings.QucsWorkDir.absolutePath() +
-                     QDir::separator() + Info.fileName());
+                         QDir::separator() + Info.fileName());
 
-    if(!origFile.open(QIODevice::ReadOnly)) {
-      QMessageBox::critical(this, tr("Error"), tr("Cannot open \"%1\" !").arg(*it));
+    if (!origFile.open(QIODevice::ReadOnly)) {
+      QMessageBox::critical(this, tr("Error"),
+                            tr("Cannot open \"%1\" !").arg(*it));
       it++;
       continue;
     }
 
-    if(destFile.exists())
-      if(QMessageBox::information(this, tr("Overwrite"),
-           tr("File \"%1\" already exists.\nOverwrite ?").arg(*it),
-           QMessageBox::Yes|QMessageBox::No)
-         != QMessageBox::Yes) {
+    if (destFile.exists())
+      if (QMessageBox::information(
+              this, tr("Overwrite"),
+              tr("File \"%1\" already exists.\nOverwrite ?").arg(*it),
+              QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes) {
         origFile.close();
         it++;
         continue;
       }
 
-    if(!destFile.open(QIODevice::WriteOnly)) {
-      QMessageBox::critical(this, tr("Error"), tr("Cannot create \"%1\" !").arg(*it));
+    if (!destFile.open(QIODevice::WriteOnly)) {
+      QMessageBox::critical(this, tr("Error"),
+                            tr("Cannot create \"%1\" !").arg(*it));
       origFile.close();
       it++;
       continue;
@@ -1206,16 +1150,18 @@ void QucsApp::slotAddToProject()
     // copy data
     do {
       Num = origFile.read(Buffer, 0x10000);
-      if(Num < 0) {
-        QMessageBox::critical(this, tr("Error"), tr("Cannot read \"%1\" !").arg(*it));
+      if (Num < 0) {
+        QMessageBox::critical(this, tr("Error"),
+                              tr("Cannot read \"%1\" !").arg(*it));
         break;
       }
       Num = destFile.write(Buffer, Num);
-      if(Num < 0) {
-        QMessageBox::critical(this, tr("Error"), tr("Cannot write \"%1\" !").arg(*it));
+      if (Num < 0) {
+        QMessageBox::critical(this, tr("Error"),
+                              tr("Cannot write \"%1\" !").arg(*it));
         break;
       }
-    } while(Num == 0x10000);
+    } while (Num == 0x10000);
 
     origFile.close();
     destFile.close();
@@ -1228,35 +1174,32 @@ void QucsApp::slotAddToProject()
 }
 
 // -----------------------------------------------------------
-void QucsApp::slotCursorLeft(bool left)
-{
-  if(!editText->isHidden()) return;  // for edit of component property ?
+void QucsApp::slotCursorLeft(bool left) {
+  if (!editText->isHidden())
+    return; // for edit of component property ?
 
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
   const auto selection = Doc->currentSelection();
 
-  const auto totalCount = selection.components.size()
-       + selection.wires.size()
-       + selection.paintings.size()
-       + selection.diagrams.size()
-       + selection.labels.size()
-       + selection.markers.size();
+  const auto totalCount = selection.components.size() + selection.wires.size() +
+                          selection.paintings.size() +
+                          selection.diagrams.size() + selection.labels.size() +
+                          selection.markers.size();
 
   if (totalCount == selection.markers.size()) {
-      Doc->markerLeftRight(left, selection.markers);
+    Doc->markerLeftRight(left, selection.markers);
   }
 
   else if (totalCount == 0) {
-    left
-      ? Doc->scrollLeft(Doc->horizontalScrollBar()->singleStep())
-      : Doc->scrollRight(Doc->horizontalScrollBar()->singleStep());
+    left ? Doc->scrollLeft(Doc->horizontalScrollBar()->singleStep())
+         : Doc->scrollRight(Doc->horizontalScrollBar()->singleStep());
     Doc->viewport()->update();
     return;
   }
 
   // random selection. move all of them
   const auto dx = left ? -Doc->getGridX() : Doc->getGridX();
-  const auto mover = [dx](Element* e) { e->moveCenter(dx, 0); };
+  const auto mover = [dx](Element *e) { e->moveCenter(dx, 0); };
   std::ranges::for_each(selection.paintings, mover);
   std::ranges::for_each(selection.diagrams, mover);
   std::ranges::for_each(selection.labels, mover);
@@ -1268,74 +1211,82 @@ void QucsApp::slotCursorLeft(bool left)
 }
 
 // -----------------------------------------------------------
-void QucsApp::slotCursorUp(bool up)
-{
-  if(editText->isHidden()) {  // for edit of component property ?
-  }else if(up){
-    if(view->MAx3 == 0) return;  // edit component namen ?
-    Component *pc = (Component*)view->focusElement;
-    Property *pp = pc->Props.at(view->MAx3-1);  // current property
+void QucsApp::slotCursorUp(bool up) {
+  if (editText->isHidden()) { // for edit of component property ?
+  } else if (up) {
+    if (view->MAx3 == 0)
+      return; // edit component namen ?
+    Component *pc = (Component *)view->focusElement;
+    Property *pp = pc->Props.at(view->MAx3 - 1); // current property
     int Begin = pp->Description.indexOf('[');
-    if(Begin < 0) return;  // no selection list ?
+    if (Begin < 0)
+      return; // no selection list ?
     int End = pp->Description.indexOf(editText->text(), Begin); // current
-    if(End < 0) return;  // should never happen
+    if (End < 0)
+      return; // should never happen
     End = pp->Description.lastIndexOf(',', End);
-    if(End < Begin) return;  // was first item ?
+    if (End < Begin)
+      return; // was first item ?
     End--;
     int Pos = pp->Description.lastIndexOf(',', End);
-    if(Pos < Begin) Pos = Begin;   // is first item ?
+    if (Pos < Begin)
+      Pos = Begin; // is first item ?
     Pos++;
-    if(pp->Description.at(Pos) == ' ') Pos++; // remove leading space
-    editText->setText(pp->Description.mid(Pos, End-Pos+1));
+    if (pp->Description.at(Pos) == ' ')
+      Pos++; // remove leading space
+    editText->setText(pp->Description.mid(Pos, End - Pos + 1));
     editText->selectAll();
     return;
-  }else{ // down
-    if(view->MAx3 == 0) return;  // edit component namen ?
-    Component *pc = (Component*)view->focusElement;
-    Property *pp = pc->Props.at(view->MAx3-1);  // current property
+  } else { // down
+    if (view->MAx3 == 0)
+      return; // edit component namen ?
+    Component *pc = (Component *)view->focusElement;
+    Property *pp = pc->Props.at(view->MAx3 - 1); // current property
     int Pos = pp->Description.indexOf('[');
-    if(Pos < 0) return;  // no selection list ?
+    if (Pos < 0)
+      return;                                             // no selection list ?
     Pos = pp->Description.indexOf(editText->text(), Pos); // current list item
-    if(Pos < 0) return;  // should never happen
+    if (Pos < 0)
+      return; // should never happen
     Pos = pp->Description.indexOf(',', Pos);
-    if(Pos < 0) return;  // was last item ?
+    if (Pos < 0)
+      return; // was last item ?
     Pos++;
-    if(pp->Description.at(Pos) == ' ') Pos++; // remove leading space
+    if (pp->Description.at(Pos) == ' ')
+      Pos++; // remove leading space
     int End = pp->Description.indexOf(',', Pos);
-    if(End < 0) {  // is last item ?
+    if (End < 0) { // is last item ?
       End = pp->Description.indexOf(']', Pos);
-      if(End < 0) return;  // should never happen
+      if (End < 0)
+        return; // should never happen
     }
-    editText->setText(pp->Description.mid(Pos, End-Pos));
+    editText->setText(pp->Description.mid(Pos, End - Pos));
     editText->selectAll();
     return;
   }
 
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
   const auto selection = Doc->currentSelection();
 
-  const auto totalCount = selection.components.size()
-       + selection.wires.size()
-       + selection.paintings.size()
-       + selection.diagrams.size()
-       + selection.labels.size()
-       + selection.markers.size();
+  const auto totalCount = selection.components.size() + selection.wires.size() +
+                          selection.paintings.size() +
+                          selection.diagrams.size() + selection.labels.size() +
+                          selection.markers.size();
 
   if (totalCount == selection.markers.size()) {
-      Doc->markerUpDown(up, selection.markers);
+    Doc->markerUpDown(up, selection.markers);
   }
 
   else if (totalCount == 0) {
-    up
-      ? Doc->scrollUp(Doc->verticalScrollBar()->singleStep())
-      : Doc->scrollDown(Doc->verticalScrollBar()->singleStep());
+    up ? Doc->scrollUp(Doc->verticalScrollBar()->singleStep())
+       : Doc->scrollDown(Doc->verticalScrollBar()->singleStep());
     Doc->viewport()->update();
     return;
   }
 
   // random selection. move all of them
   const auto dy = up ? -Doc->getGridY() : Doc->getGridY();
-  const auto mover = [dy](Element* e) { e->moveCenter(0, dy); };
+  const auto mover = [dy](Element *e) { e->moveCenter(0, dy); };
   std::ranges::for_each(selection.paintings, mover);
   std::ranges::for_each(selection.diagrams, mover);
   std::ranges::for_each(selection.labels, mover);
@@ -1350,15 +1301,15 @@ void QucsApp::slotCursorUp(bool up)
 // Is called if user clicked on component text of if return is
 // pressed in the component text QLineEdit.
 // In "view->MAx3" is the number of the current property.
-void QucsApp::slotApplyCompText()
-{
+void QucsApp::slotApplyCompText() {
   QFont f = QucsSettings.font;
-  Schematic *Doc = (Schematic*)DocumentTab->currentWidget();
-  f.setPointSizeF( Doc->getScale() * float(f.pointSize()) );
+  Schematic *Doc = (Schematic *)DocumentTab->currentWidget();
+  f.setPointSizeF(Doc->getScale() * float(f.pointSize()));
   editText->setFont(f);
 
-  Component *const component = dynamic_cast<Component*>(view->focusElement);
-  if(!component) return;  // should never happen
+  Component *const component = dynamic_cast<Component *>(view->focusElement);
+  if (!component)
+    return; // should never happen
   view->MAx1 = component->cx + component->tx;
   view->MAy1 = component->cy + component->ty;
 
@@ -1368,59 +1319,62 @@ void QucsApp::slotApplyCompText()
   const int component_text_index = view->MAx3;
   const bool is_name = component_text_index == 0;
 
-  Property *const component_property = !is_name
-                                     ? component->Props.at(component_text_index - 1)
-                                     : nullptr;
+  Property *const component_property =
+      !is_name ? component->Props.at(component_text_index - 1) : nullptr;
 
-  if (editText->isVisible()) {   // is called the first time ?
+  if (editText->isVisible()) { // is called the first time ?
     if (is_name) {
       const auto new_name{editText->text()};
 
       if (!new_name.isEmpty() && component->Name != new_name) {
 
-        bool is_unique = std::none_of(
-          Doc->a_Components->begin(),
-          Doc->a_Components->end(),
-          [&new_name](const Component* other) { return other->Name == new_name; }
-        );
+        bool is_unique =
+            std::none_of(Doc->a_Components->begin(), Doc->a_Components->end(),
+                         [&new_name](const Component *other) {
+                           return other->Name == new_name;
+                         });
 
         if (is_unique) {
           component->Name = new_name;
-          Doc->setChanged(true, true);  // only one undo state
+          Doc->setChanged(true, true); // only one undo state
         }
       }
 
-    }
-    else if (component_property) {  // property was applied
+    } else if (component_property) { // property was applied
       if (component_property->Value != editText->text()) {
         component_property->Value = editText->text();
-        Doc->recreateComponent(component);  // because of "Num" and schematic symbol
+        Doc->recreateComponent(
+            component);              // because of "Num" and schematic symbol
         Doc->setChanged(true, true); // only one undo state
       }
     }
   }
 
-  const QString s = is_name
-                ? component->Name
-                : component_property->Value;
+  const QString s = is_name ? component->Name : component_property->Value;
 
   editText->setReadOnly(false);
   QPoint editTextTopLeft;
-  if (component_property) {  // is it a property ?
-    editTextTopLeft = Doc->modelToViewport(QPoint{component->cx, component->cy} + component_property->boundingRect().topLeft());
-    editTextTopLeft.rx() += editText->fontMetrics().boundingRect(component_property->Name + "=" + '\u0020').width();
+  if (component_property) { // is it a property ?
+    editTextTopLeft =
+        Doc->modelToViewport(QPoint{component->cx, component->cy} +
+                             component_property->boundingRect().topLeft());
+    editTextTopLeft.rx() +=
+        editText->fontMetrics()
+            .boundingRect(component_property->Name + "=" + '\u0020')
+            .width();
 
-    if(component_property->Description.indexOf('[') >= 0)  // is selection list ?
+    if (component_property->Description.indexOf('[') >=
+        0) // is selection list ?
       editText->setReadOnly(true);
     Expr_CompProp.setPattern("[^\"]*");
-  }
-  else { // it is the component name
+  } else { // it is the component name
     Expr_CompProp.setPattern("[\\w_]+");
-    editTextTopLeft = Doc->modelToViewport(QPoint{component->cx + component->tx, component->cy + component->ty});
+    editTextTopLeft = Doc->modelToViewport(
+        QPoint{component->cx + component->tx, component->cy + component->ty});
   }
 
   {
-    auto size = editText->fontMetrics().boundingRect(s ).size();
+    auto size = editText->fontMetrics().boundingRect(s).size();
     size.rwidth() += editText->fontMetrics().averageCharWidth();
     editText->setFixedSize(size);
   }
@@ -1432,31 +1386,32 @@ void QucsApp::slotApplyCompText()
   editText->setValidator(&Val_CompProp);
 
   editText->setText(s);
-  editText->setStyleSheet("color: black; background-color: " + QucsSettings.BGColor.name());
+  editText->setStyleSheet("color: black; background-color: " +
+                          QucsSettings.BGColor.name());
   editText->setFocus();
   editText->selectAll();
   editText->setParent(Doc->viewport());
   editText->move(view->MAx2, view->MAy2);
   editText->show();
-  //editText->reparent(Doc->viewport(), 0, QPoint(view->MAx2, view->MAy2), true);
+  // editText->reparent(Doc->viewport(), 0, QPoint(view->MAx2, view->MAy2),
+  // true);
 }
 
 // -----------------------------------------------------------
 // Is called if the text of the property edit changed, to match
 // the width of the edit field.
-void QucsApp::slotResizePropEdit(const QString& t)
-{
-  editText->resize(editText->fontMetrics().boundingRect(t).width()+4,
+void QucsApp::slotResizePropEdit(const QString &t) {
+  editText->resize(editText->fontMetrics().boundingRect(t).width() + 4,
                    editText->fontMetrics().lineSpacing());
 }
 
 // -----------------------------------------------------------
-void QucsApp::slotCreateLib()
-{
+void QucsApp::slotCreateLib() {
   slotHideEdit(); // disable text edit of component property
 
-  if(ProjName.isEmpty()) {
-    QMessageBox::critical(this, tr("Error"), tr("Please open project with subcircuits!"));
+  if (ProjName.isEmpty()) {
+    QMessageBox::critical(this, tr("Error"),
+                          tr("Please open project with subcircuits!"));
     return;
   }
 
@@ -1469,45 +1424,44 @@ void QucsApp::slotCreateLib()
 }
 
 // -----------------------------------------------------------
-void QucsApp::slotImportData()
-{
+void QucsApp::slotImportData() {
   slotHideEdit(); // disable text edit of component property
 
   QString import_dir = ".";
   if (!ProjName.isEmpty()) {
-      import_dir = QucsSettings.QucsWorkDir.absolutePath();
+    import_dir = QucsSettings.QucsWorkDir.absolutePath();
   } else {
-      QString dname;
-      if (isTextDocument(DocumentTab->currentWidget())) {
-          TextDoc *doc = (TextDoc *)DocumentTab->currentWidget();
-          dname = doc->getDocName();
-      } else {
-          Schematic *doc = (Schematic *)DocumentTab->currentWidget();
-          dname = doc->getDocName();
-      }
-      QFileInfo inf(dname);
-      if (inf.exists()) {
-          import_dir = inf.absolutePath();
-      }
+    QString dname;
+    if (isTextDocument(DocumentTab->currentWidget())) {
+      TextDoc *doc = (TextDoc *)DocumentTab->currentWidget();
+      dname = doc->getDocName();
+    } else {
+      Schematic *doc = (Schematic *)DocumentTab->currentWidget();
+      dname = doc->getDocName();
+    }
+    QFileInfo inf(dname);
+    if (inf.exists()) {
+      import_dir = inf.absolutePath();
+    }
   }
 
   ImportDialog *d = new ImportDialog(this);
   d->setImportDir(import_dir);
-  if(d->exec() == QDialog::Accepted)
+  if (d->exec() == QDialog::Accepted)
     slotUpdateTreeview();
 }
 
 // -----------------------------------------------------------
-void QucsApp::slotExportGraphAsCsv()
-{
+void QucsApp::slotExportGraphAsCsv() {
   slotHideEdit(); // disable text edit of component property
 
-  for(;;) {
-    if(view->focusElement)
-      if(view->focusElement->Type == isGraph)
+  for (;;) {
+    if (view->focusElement)
+      if (view->focusElement->Type == isGraph)
         break;
 
-    QMessageBox::critical(this, tr("Error"), tr("Please select a diagram graph!"));
+    QMessageBox::critical(this, tr("Error"),
+                          tr("Please select a diagram graph!"));
     return;
   }
 
@@ -1516,25 +1470,28 @@ void QucsApp::slotExportGraphAsCsv()
      tr("CSV file")+" (*.csv);;" + tr("Any File")+" (*)",
      this, 0, tr("Enter an Output File Name"));
      */
-  QString s = QFileDialog::getSaveFileName(this, tr("Enter an Output File Name"),
-    lastDir.isEmpty() ? QStringLiteral(".") : lastDir, tr("CSV file")+" (*.csv);;" + tr("Any File")+" (*)");
+  QString s = QFileDialog::getSaveFileName(
+      this, tr("Enter an Output File Name"),
+      lastDir.isEmpty() ? QStringLiteral(".") : lastDir,
+      tr("CSV file") + " (*.csv);;" + tr("Any File") + " (*)");
 
-  if(s.isEmpty())
+  if (s.isEmpty())
     return;
 
   QFileInfo Info(s);
-  lastDir = Info.absolutePath();  // remember last directory
-  if(Info.suffix().isEmpty())
+  lastDir = Info.absolutePath(); // remember last directory
+  if (Info.suffix().isEmpty())
     s += ".csv";
 
   QFile File(s);
-  if(File.exists())
-    if(QMessageBox::information(this, tr("Info"),
-          tr("Output file already exists!")+"\n"+tr("Overwrite it?"),
-          QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
+  if (File.exists())
+    if (QMessageBox::information(
+            this, tr("Info"),
+            tr("Output file already exists!") + "\n" + tr("Overwrite it?"),
+            QMessageBox::Yes | QMessageBox::No) == QMessageBox::No)
       return;
 
-  if(!File.open(QIODevice::WriteOnly)) {
+  if (!File.open(QIODevice::WriteOnly)) {
     QMessageBox::critical(this, QObject::tr("Error"),
                           QObject::tr("Cannot create output file!"));
     return;
@@ -1542,35 +1499,31 @@ void QucsApp::slotExportGraphAsCsv()
 
   QTextStream Stream(&File);
 
-
   DataX const *pD;
-  Graph *g = (Graph*)view->focusElement;
+  Graph *g = (Graph *)view->focusElement;
   // First output the names of independent and dependent variables.
-  for(unsigned ii=0; (pD=g->axis(ii)); ++ii)
+  for (unsigned ii = 0; (pD = g->axis(ii)); ++ii)
     Stream << '\"' << pD->Var << "\";";
   Stream << "\"r " << g->Var << "\";\"i " << g->Var << "\"\n";
-
 
   int n, m;
   double *py = g->cPointsY;
   int Count = g->countY * g->axis(0)->count;
-  for(n = 0; n < Count; n++) {
+  for (n = 0; n < Count; n++) {
     m = n;
-    for(unsigned ii=0; (pD=g->axis(ii)); ++ii) {
-      Stream << *(pD->Points + m%pD->count) << ';';
+    for (unsigned ii = 0; (pD = g->axis(ii)); ++ii) {
+      Stream << *(pD->Points + m % pD->count) << ';';
       m /= pD->count;
     }
 
-    Stream << *(py) << ';' << *(py+1) << '\n';
+    Stream << *(py) << ';' << *(py + 1) << '\n';
     py += 2;
   }
 
   File.close();
 }
 
-
-void QucsApp::slotOpenRecentFile()
-{
+void QucsApp::slotOpenRecentFile() {
   QAction *action = qobject_cast<QAction *>(sender());
   if (action) {
     gotoPage(action->data().toString());
@@ -1578,12 +1531,11 @@ void QucsApp::slotOpenRecentFile()
   }
 }
 
-void QucsApp::slotUpdateRecentFiles()
-{
+void QucsApp::slotUpdateRecentFiles() {
   QMutableStringListIterator it(QucsSettings.RecentDocs);
-  while(it.hasNext()) {
+  while (it.hasNext()) {
     if (!QFile::exists(it.next())) {
-        it.remove();
+      it.remove();
     }
   }
 
@@ -1598,28 +1550,25 @@ void QucsApp::slotUpdateRecentFiles()
   }
 }
 
-void QucsApp::slotClearRecentFiles()
-{
+void QucsApp::slotClearRecentFiles() {
   QucsSettings.RecentDocs.clear();
   slotUpdateRecentFiles();
 }
 
-void QucsApp::slotOpenRecentProject()
-{
+void QucsApp::slotOpenRecentProject() {
   QAction *recentProjAction = qobject_cast<QAction *>(sender());
   if (recentProjAction) {
     openProject(recentProjAction->data().toString());
   }
 }
 
-void QucsApp::slotUpdateRecentProjects()
-{
+void QucsApp::slotUpdateRecentProjects() {
   QMutableStringListIterator it(QucsSettings.RecentProjects);
   QDir projDir;
-  while(it.hasNext()) {
+  while (it.hasNext()) {
     // QDir::cd returns false if directory doesn't exist.
     if (!projDir.cd(it.next())) {
-        it.remove();
+      it.remove();
     }
   }
 
@@ -1634,8 +1583,7 @@ void QucsApp::slotUpdateRecentProjects()
   }
 }
 
-void QucsApp::slotClearRecentProjects()
-{
+void QucsApp::slotClearRecentProjects() {
   QucsSettings.RecentProjects.clear();
   updateRecentProjectsList();
 }
@@ -1643,94 +1591,92 @@ void QucsApp::slotClearRecentProjects()
 /*!
  * \brief QucsApp::slotLoadModule launches the dialog to select dynamic modueles
  */
-void QucsApp::slotLoadModule()
-{
-    qDebug() << "slotLoadModule";
+void QucsApp::slotLoadModule() {
+  qDebug() << "slotLoadModule";
 
-    LoadDialog *ld = new LoadDialog(this);
-    ld->setApp(this);
+  LoadDialog *ld = new LoadDialog(this);
+  ld->setApp(this);
 
-    // fech list of _symbol.json
-    // \todo fetch timestamp of VA, JSON, if VA newer, need to reload.
+  // fech list of _symbol.json
+  // \todo fetch timestamp of VA, JSON, if VA newer, need to reload.
 
-    QDir projDir = QucsSettings.QucsWorkDir.absolutePath();
+  QDir projDir = QucsSettings.QucsWorkDir.absolutePath();
 
-    QStringList files;
-    QString fileSuffix = "*_symbol.json";
+  QStringList files;
+  QString fileSuffix = "*_symbol.json";
 
-    files = projDir.entryList(QStringList(fileSuffix),
-                                 QDir::Files | QDir::NoSymLinks);
+  files = projDir.entryList(QStringList(fileSuffix),
+                            QDir::Files | QDir::NoSymLinks);
 
-    // no JSON files or no a project?
-    if (!files.size()){
-        QMessageBox::critical(this, tr("Error"),
-                     tr("Symbol files not found in: %1\n\n"
-                        "Is the project open?\n"
-                        "Have you saved the Verilog-A symbols?")
-                       .arg(QString(projDir.absolutePath())));
-        return;
-    }
+  // no JSON files or no a project?
+  if (!files.size()) {
+    QMessageBox::critical(this, tr("Error"),
+                          tr("Symbol files not found in: %1\n\n"
+                             "Is the project open?\n"
+                             "Have you saved the Verilog-A symbols?")
+                              .arg(QString(projDir.absolutePath())));
+    return;
+  }
 
-    // initialize dialog
+  // initialize dialog
 
-    // pass list of potential symbol files
-    ld->symbolFiles << files;
-    ld->projDir = projDir;
-    ld->initDialog();
+  // pass list of potential symbol files
+  ld->symbolFiles << files;
+  ld->projDir = projDir;
+  ld->initDialog();
 
-    // \todo check what is already loaded, offer skip, reload
+  // \todo check what is already loaded, offer skip, reload
 
-    //pass stuff to ld dialog
-    // run, let user do the selections
+  // pass stuff to ld dialog
+  //  run, let user do the selections
 
-    if (ld->exec() == QDialog::Accepted) {
+  if (ld->exec() == QDialog::Accepted) {
 
-      Module::vaComponents = ld->selectedComponents;
+    Module::vaComponents = ld->selectedComponents;
 
-      // dialog write new bitmap into JSON
-      // load, unload, reload
-      // inform if symbol changed
-      // populate Module::vaComponents
-      // vaComponents are selected with the dialog
-      // dialog should populate according to checkboxes
-      // build vaComponents QMap
+    // dialog write new bitmap into JSON
+    // load, unload, reload
+    // inform if symbol changed
+    // populate Module::vaComponents
+    // vaComponents are selected with the dialog
+    // dialog should populate according to checkboxes
+    // build vaComponents QMap
 
-      // remove all previously registered modules
-      QMutableHashIterator<QString, Module *> it( Module::Modules );
-      while(it.hasNext()) {
-        it.next();
-        if (it.value()->category == QObject::tr("verilog-a user devices")) {
-          it.remove();
-        }
-      }
-
-      if (! Module::vaComponents.isEmpty()) {
-        // Register whatever is in Module::vaComponents
-        //Module::registerDynamicComponents();
-
-        // update the combobox, set new category in view
-        // pick up new category 'verilog-a user components' from `Module::category`
-        //set new category into view
-        QucsApp::fillComboBox(true);
-        CompChoose->setCurrentIndex(CompChoose->count()-1);
-        slotSetCompView(CompChoose->count()-1);
-
-        // icons of dynamically registered components ready to be dragged
-      }
-      else {
-        // remove any previously registered icons from the listview
-        int foundCat = CompChoose->findText(QObject::tr("verilog-a user devices"));
-        if (foundCat != -1) {
-          CompChoose->setCurrentIndex(foundCat);
-          CompComps->clear();
-        }
+    // remove all previously registered modules
+    QMutableHashIterator<QString, Module *> it(Module::Modules);
+    while (it.hasNext()) {
+      it.next();
+      if (it.value()->category == QObject::tr("verilog-a user devices")) {
+        it.remove();
       }
     }
 
-    delete ld;
+    if (!Module::vaComponents.isEmpty()) {
+      // Register whatever is in Module::vaComponents
+      // Module::registerDynamicComponents();
 
+      // update the combobox, set new category in view
+      // pick up new category 'verilog-a user components' from
+      // `Module::category`
+      // set new category into view
+      QucsApp::fillComboBox(true);
+      CompChoose->setCurrentIndex(CompChoose->count() - 1);
+      slotSetCompView(CompChoose->count() - 1);
+
+      // icons of dynamically registered components ready to be dragged
+    } else {
+      // remove any previously registered icons from the listview
+      int foundCat =
+          CompChoose->findText(QObject::tr("verilog-a user devices"));
+      if (foundCat != -1) {
+        CompChoose->setCurrentIndex(foundCat);
+        CompComps->clear();
+      }
+    }
+  }
+
+  delete ld;
 }
-
 
 /*!
  * \brief QucsApp::slotBuildModule runs admsXml, C++ compiler to build library
@@ -1743,184 +1689,234 @@ void QucsApp::slotLoadModule()
  * - collect, parse and display output of make
  *
  */
-void QucsApp::slotBuildModule()
-{
-    qDebug() << "slotBuildModule";
+void QucsApp::slotBuildModule() {
+  qDebug() << "slotBuildModule";
 
-    // reset message dock on entry
-    messageDock->reset();
+  // reset message dock on entry
+  messageDock->reset();
 
-    if (QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
-        buildWithOpenVAF();
-        return;
-    }
+  if (QucsSettings.DefaultSimulator == spicecompat::simNgspice) {
+    buildWithOpenVAF();
+    return;
+  }
 
-    messageDock->builderTabs->setTabIcon(0,QPixmap());
-    messageDock->builderTabs->setTabText(0,tr("admsXml"));
-    messageDock->builderTabs->setTabIcon(1,QPixmap());
-    messageDock->builderTabs->setTabText(1,tr("Compiler"));
-    messageDock->msgDock->setWindowTitle(tr("admsXml Dock"));
+  messageDock->builderTabs->setTabIcon(0, QPixmap());
+  messageDock->builderTabs->setTabText(0, tr("admsXml"));
+  messageDock->builderTabs->setTabIcon(1, QPixmap());
+  messageDock->builderTabs->setTabText(1, tr("Compiler"));
+  messageDock->msgDock->setWindowTitle(tr("admsXml Dock"));
 
-
-    QString make;
+  QString make;
 
 #if defined(_WIN32) || defined(__MINGW32__)
-    make = "mingw32-make.exe";    // must be on the path!
+  make = "mingw32-make.exe"; // must be on the path!
 #else
-    make = "make";                // must be on the path!
+  make = "make"; // must be on the path!
 #endif
-    QFileInfo inf(QucsSettings.Qucsator);
-    QString QucsatorPath = inf.path()+QDir::separator();
+  QFileInfo inf(QucsSettings.Qucsator);
+  QString QucsatorPath = inf.path() + QDir::separator();
 
-    QDir prefix = QDir(QucsatorPath+"../");
+  QDir prefix = QDir(QucsatorPath + "../");
 
-    QDir include = QDir(QucsatorPath+"../include/qucs-core");
+  QDir include = QDir(QucsatorPath + "../include/qucs-core");
 
-    QString workDir = QucsSettings.QucsWorkDir.absolutePath();
+  QString workDir = QucsSettings.QucsWorkDir.absolutePath();
 
-    // need to cd into project to make sure output is dropped there?
-    // need to cd - into previous location?
-    QDir::setCurrent(workDir);
+  // need to cd into project to make sure output is dropped there?
+  // need to cd - into previous location?
+  QDir::setCurrent(workDir);
 
-    QProcess *builder = new QProcess();
-    builder->setProcessChannelMode(QProcess::MergedChannels);
-    // get current va document
-    QucsDoc *Doc = getDoc();
-    QString vaModule = Doc->fileBase(Doc->getDocName());
+  QProcess *builder = new QProcess();
+  builder->setProcessChannelMode(QProcess::MergedChannels);
+  // get current va document
+  QucsDoc *Doc = getDoc();
+  QString vaModule = Doc->fileBase(Doc->getDocName());
 
-    QString admsXml = QucsSettings.AdmsXmlBinDir.canonicalPath();
+  QString admsXml = QucsSettings.AdmsXmlBinDir.canonicalPath();
 
 #if defined(_WIN32) || defined(__MINGW32__)
-    admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml.exe");
+  admsXml = QDir::toNativeSeparators(admsXml + "/" + "admsXml.exe");
 #else
-    admsXml = QDir::toNativeSeparators(admsXml+"/"+"admsXml");
+  admsXml = QDir::toNativeSeparators(admsXml + "/" + "admsXml");
 #endif
 
-    // admsXml emits C++
-    QStringList Arguments;
-    Arguments << "-f" <<  QDir::toNativeSeparators(include.absoluteFilePath("va2cpp.makefile"))
-              << QStringLiteral("ADMSXML=%1").arg(admsXml)
-              << QStringLiteral("PREFIX=%1").arg(QDir::toNativeSeparators(prefix.absolutePath()))
-              << QStringLiteral("MODEL=%1").arg(vaModule);
+  // admsXml emits C++
+  QStringList Arguments;
+  Arguments << "-f"
+            << QDir::toNativeSeparators(
+                   include.absoluteFilePath("va2cpp.makefile"))
+            << QStringLiteral("ADMSXML=%1").arg(admsXml)
+            << QStringLiteral("PREFIX=%1")
+                   .arg(QDir::toNativeSeparators(prefix.absolutePath()))
+            << QStringLiteral("MODEL=%1").arg(vaModule);
 
-    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    env.insert("PATH", env.value("PATH") );
-    builder->setProcessEnvironment(env);
+  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+  env.insert("PATH", env.value("PATH"));
+  builder->setProcessEnvironment(env);
 
-    // prepend command to log
-    QString cmdString = QStringLiteral("%1 %2\n").arg(make, Arguments.join(" "));
-    messageDock->admsOutput->appendPlainText(cmdString);
+  // prepend command to log
+  QString cmdString = QStringLiteral("%1 %2\n").arg(make, Arguments.join(" "));
+  messageDock->admsOutput->appendPlainText(cmdString);
 
-    qDebug() << "Command :" << make << Arguments.join(" ");
-    builder->start(make, Arguments);
+  qDebug() << "Command :" << make << Arguments.join(" ");
+  builder->start(make, Arguments);
 
-    // admsXml seems to communicate all via stdout, or is it because of make?
-    QString vaStatus;
-    if (!builder->waitForFinished()) {
-        vaStatus = builder->errorString();
-        qDebug() << "Make failed:" << vaStatus;
-    }
-    else {
-        vaStatus = builder->readAll();
-        qDebug() << "Make stdout"  << vaStatus;
-    }
+  // admsXml seems to communicate all via stdout, or is it because of make?
+  QString vaStatus;
+  if (!builder->waitForFinished()) {
+    vaStatus = builder->errorString();
+    qDebug() << "Make failed:" << vaStatus;
+  } else {
+    vaStatus = builder->readAll();
+    qDebug() << "Make stdout" << vaStatus;
+  }
 
-    //build libs
-    qDebug() << "\nbuild libs\n";
+  // build libs
+  qDebug() << "\nbuild libs\n";
 
-    Arguments.clear();
+  Arguments.clear();
 
-    Arguments << "-f" <<  QDir::toNativeSeparators(include.absoluteFilePath("cpp2lib.makefile"))
-              << QStringLiteral("PREFIX=\"%1\"").arg(QDir::toNativeSeparators(prefix.absolutePath()))
-              << QStringLiteral("PROJDIR=\"%1\"").arg(QDir::toNativeSeparators(workDir))
-              << QStringLiteral("MODEL=%1").arg(vaModule);
+  Arguments
+      << "-f"
+      << QDir::toNativeSeparators(include.absoluteFilePath("cpp2lib.makefile"))
+      << QStringLiteral("PREFIX=\"%1\"")
+             .arg(QDir::toNativeSeparators(prefix.absolutePath()))
+      << QStringLiteral("PROJDIR=\"%1\"").arg(QDir::toNativeSeparators(workDir))
+      << QStringLiteral("MODEL=%1").arg(vaModule);
 
-    // prepend command to log
-    cmdString = QStringLiteral("%1 %2\n").arg(make, Arguments.join(" "));
-    messageDock->cppOutput->appendPlainText(cmdString);
+  // prepend command to log
+  cmdString = QStringLiteral("%1 %2\n").arg(make, Arguments.join(" "));
+  messageDock->cppOutput->appendPlainText(cmdString);
 
-    builder->start(make, Arguments);
+  builder->start(make, Arguments);
 
-    QString cppStatus;
+  QString cppStatus;
 
-    if (!builder->waitForFinished()) {
-        cppStatus = builder->errorString();
-        qDebug() << "Make failed:" << cppStatus;
-    }
-    else {
-        cppStatus = builder->readAll();
-        qDebug() << "Make output:" << cppStatus;
-    }
-    delete builder;
+  if (!builder->waitForFinished()) {
+    cppStatus = builder->errorString();
+    qDebug() << "Make failed:" << cppStatus;
+  } else {
+    cppStatus = builder->readAll();
+    qDebug() << "Make output:" << cppStatus;
+  }
+  delete builder;
 
-    // push make output to message dock
-    messageDock->admsOutput->appendPlainText(vaStatus);
-    messageDock->cppOutput->appendPlainText(cppStatus);
+  // push make output to message dock
+  messageDock->admsOutput->appendPlainText(vaStatus);
+  messageDock->cppOutput->appendPlainText(cppStatus);
 
-    // shot the message docks
-    messageDock->msgDock->show();
-
+  // shot the message docks
+  messageDock->msgDock->show();
 }
 
+void QucsApp::buildWithOpenVAF() {
+  messageDock->builderTabs->setTabIcon(0, QPixmap());
+  messageDock->builderTabs->setTabText(0, tr("OpenVAF"));
+  messageDock->msgDock->setWindowTitle(tr("OpenVAF Dock"));
 
-void QucsApp::buildWithOpenVAF()
-{
-    messageDock->builderTabs->setTabIcon(0,QPixmap());
-    messageDock->builderTabs->setTabText(0,tr("OpenVAF"));
-    messageDock->msgDock->setWindowTitle(tr("OpenVAF Dock"));
+  QString workDir = QucsSettings.QucsWorkDir.absolutePath();
+  QDir::setCurrent(workDir);
 
+  QProcess *builder = new QProcess();
+  builder->setProcessChannelMode(QProcess::MergedChannels);
+  // get current va document
+  QucsDoc *Doc = getDoc();
+  QString vaModule = Doc->getDocName();
 
-    QString workDir = QucsSettings.QucsWorkDir.absolutePath();
-    QDir::setCurrent(workDir);
+  QString openVAF = QucsSettings.OpenVAFExecutable;
 
-    QProcess *builder = new QProcess();
-    builder->setProcessChannelMode(QProcess::MergedChannels);
-    // get current va document
-    QucsDoc *Doc = getDoc();
-    QString vaModule = Doc->getDocName();
+  // admsXml emits C++
+  QStringList Arguments;
+  Arguments << vaModule;
 
-    QString openVAF = QucsSettings.OpenVAFExecutable;
+  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+  env.insert("PATH", env.value("PATH"));
+  builder->setProcessEnvironment(env);
 
-    // admsXml emits C++
-    QStringList Arguments;
-    Arguments<<vaModule;
+  // prepend command to log
+  QString cmdString =
+      QStringLiteral("%1 %2\n").arg(openVAF, Arguments.join(" "));
+  messageDock->admsOutput->appendPlainText(cmdString);
 
-    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    env.insert("PATH", env.value("PATH") );
-    builder->setProcessEnvironment(env);
+  qDebug() << "Command :" << openVAF << Arguments.join(" ");
+  builder->start(openVAF, Arguments);
 
-    // prepend command to log
-    QString cmdString = QStringLiteral("%1 %2\n").arg(openVAF, Arguments.join(" "));
-    messageDock->admsOutput->appendPlainText(cmdString);
+  // admsXml seems to communicate all via stdout, or is it because of make?
+  QString vaStatus;
+  if (!builder->waitForFinished()) {
+    vaStatus = builder->errorString();
+    qDebug() << "OpenVAF failed:" << vaStatus;
+  } else {
+    vaStatus = builder->readAll();
+    qDebug() << "OpenVAF stdout" << vaStatus;
+  }
 
-    qDebug() << "Command :" << openVAF << Arguments.join(" ");
-    builder->start(openVAF, Arguments);
+  delete builder;
 
-    // admsXml seems to communicate all via stdout, or is it because of make?
-    QString vaStatus;
-    if (!builder->waitForFinished()) {
-        vaStatus = builder->errorString();
-        qDebug() << "OpenVAF failed:" << vaStatus;
-    }
-    else {
-        vaStatus = builder->readAll();
-        qDebug() << "OpenVAF stdout"  << vaStatus;
-    }
+  // push make output to message dock
+  messageDock->admsOutput->appendPlainText(vaStatus);
 
-    delete builder;
-
-    // push make output to message dock
-    messageDock->admsOutput->appendPlainText(vaStatus);
-
-    // shot the message docks
-    messageDock->msgDock->show();
+  // shot the message docks
+  messageDock->msgDock->show();
 }
 
 // ----------------------------------------------------------
-void QucsApp::slotHelpAbout()
-{
+void QucsApp::slotHelpAbout() {
   AboutDialog *ad = new AboutDialog(this);
   ad->exec();
 }
 
-// vim:ts=8:sw=2:noet
+/**
+ * @internal Displays the shortcut editor
+ */
+void QucsApp::slotShortcutDialog() {
+  QucsShortcutDialog *d = new QucsShortcutDialog(this);
+  d->exec();
+}
+
+////////////////////////////////////////////////////////////////
+// Actions to navigate tabs
+// Go to the first tab (<- left)
+void QucsApp::slotFirstTab() {
+  int count = DocumentTab->count();
+  if (count > 0) {
+    DocumentTab->setCurrentIndex(0);
+  }
+}
+
+// Move to the next tab (to the right)
+void QucsApp::slotNextTab() {
+  int count = DocumentTab->count();
+  if (count <= 1)
+    return;
+
+  int current = DocumentTab->currentIndex();
+  int next = (current + 1) % count;
+  DocumentTab->setCurrentIndex(next);
+}
+
+// Move to the previous tab (to the left)
+void QucsApp::slotPreviousTab() {
+  int count = DocumentTab->count();
+  if (count <= 1)
+    return;
+
+  int current = DocumentTab->currentIndex();
+  int prev = (current - 1 + count) % count;
+  DocumentTab->setCurrentIndex(prev);
+}
+
+// Go to the last tab (-> right)
+void QucsApp::slotLastTab() {
+  int count = DocumentTab->count();
+  if (count > 0) {
+    DocumentTab->setCurrentIndex(count - 1);
+  }
+}
+
+void QucsApp::slotSwitchToTab(int index) {
+  if (index >= 0 && index < DocumentTab->count()) {
+    DocumentTab->setCurrentIndex(index);
+  }
+}
+////////////////////////////////////////////////////////////////
