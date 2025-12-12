@@ -113,6 +113,14 @@ int Component::textSize(int &textPropertyMaxWidth, int &totalTextPropertiesHeigh
         textPropertiesCount++;
     }
 
+    if (a_deviceName.has_value())
+    {
+        int width = metrics.boundingRect(a_deviceName.value()).width();
+        textPropertyMaxWidth = width > textPropertyMaxWidth ? width : textPropertyMaxWidth;
+        totalTextPropertiesHeight += metrics.height();
+        textPropertiesCount++;
+    }
+
     constexpr int flags = 0b00000000;
     for (Property* p : Props) {
         if (!(p->display)) continue;
@@ -212,6 +220,18 @@ int Component::getTextSelected(int point_x, int point_y) {
 
         bounding_rect_top = text_br.bottom();
     }
+
+    if (a_deviceName.has_value())
+    {
+        QRect text_br{{tx, bounding_rect_top}, font_metrics.size(flags, a_deviceName.value())};
+        if (text_br.contains(click))
+        {
+            return -1;
+        }
+
+        bounding_rect_top = text_br.bottom();
+    }
+
     text_index += 1;
 
     for (auto* prop : Props) {
@@ -246,6 +266,11 @@ void Component::paint(QPainter *p) {
 
     if (showName) {
         p->drawText(tx, ty, 1, 1, Qt::TextDontClip, Name, &text_br);
+    }
+
+    if (a_deviceName.has_value())
+    {
+        p->drawText(text_br.left(), text_br.bottom(), 1, 1, Qt::TextDontClip, a_deviceName.value(), &text_br);
     }
 
     for (auto *prop : Props) {
