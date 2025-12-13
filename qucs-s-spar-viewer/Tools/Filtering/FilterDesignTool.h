@@ -30,11 +30,12 @@
 #include <QWidget>
 
 #include "../../Schematic/Network.h"
+#include "../../Misc/general.h" // Get scale function
 
 #include "CanonicalFilter.h"
 #include "CapacitivelyCoupledShuntResonatorsFilter.h"
 #include "CoupledLineBandpassFilter.h"
-#include "DirectCoupledFilters.h"
+#include "./DirectCoupledFilters/DirectCoupledFilters.h"
 #include "EllipticFilter.h"
 #include "EndCoupled.h"
 #include "QuarterWaveFilters.h"
@@ -66,13 +67,36 @@ private slots:
   void ImplementationComboChanged(int);
   void EllipticTypeChanged();
 
+  ///
+  /// \brief Opens a dialog to adjust the resonator's variables in direct-coupled filters
+  ///
+  void openResonatorValuesDialog();
+
+  ///
+  /// \brief Adjusts the tunable variables in the resonators (Direct-Coupled filters only)
+  /// This function is called when the type of Direct-Coupled filter is changed.
+  /// The synthesis procedure of Direct-Coupled filters (see Matthaei's book) allows de user
+  /// to specify custom values for the inductance/capacitance of the resonators. This depends
+  /// on the topology
+  ///
+  /// Topology                       |  Tunable element
+  /// C-coupled shunt resonators     |       L
+  /// L-coupled shunt resonators     |       C
+  /// C-coupled series resonators    |       L
+  /// L-coupled series resonators    |       C
+  /// Magnetic-coupled               |      None
+  /// Quarter-wave line coupled      |      Nobe
+  ///
+  void setAdjustableResonatorVariables_DirectCoupled();
+
 private:
   // ************************** FILTER DESIGN ***************************
   QWidget* SetupFilterDesignGUI();
   QComboBox *FilterResponseTypeCombo,
       *FilterImplementationCombo, *FC_ScaleCombobox, *BW_ScaleCombobox,
       *SemiLumpedImplementationCombo;
-  QComboBox *EllipticType, *DC_CouplingTypeCombo;
+  QComboBox *EllipticType;
+  QComboBox  *DC_CouplingTypeCombo;
   QDoubleSpinBox *FCSpinbox, *BWSpinbox, *RippleSpinbox, *StopbandAttSpinbox,
       *MinimumZ_Spinbox, *MaximumZ_Spinbox, *ImpedanceRatio_Spinbox;
   QSpinBox* OrderSpinBox;
@@ -101,6 +125,16 @@ private:
   struct FilterSpecifications Filter_SP;
   SchematicContent SchContent;
 
+  // Direct-coupled filters only. Adjust resonator elements
+  QPushButton* ResonatorValuesButton_DC;
+  std::vector<double> resonatorValues;
+  std::vector<QString> resonatorScaleValues;
+
+  // Widgets for the resonator values in Direct-Coupled filters
+  std::vector<QDoubleSpinBox *> ResonatorSpinboxes; // Value
+  std::vector<QComboBox*> ResonatorScaleComboboxes; // Scale
+
+
   // Substrate
   MS_Substrate MS_Subs;
 
@@ -121,7 +155,19 @@ private:
   void setSettings_Semilumped();
   void setSettings_SideCoupled_BPF();
 
+  ///
+  /// \brief Checks the center frequency and the bandwidth selected by the user.
+  /// If the relativa BW exceeds the limit (fixed by certain filter topology), the BW is adjuster
+  /// \param max_rel_bw: Maximum admisible relative bandwidth
+  ///
   void adjustRelativeBW(double max_rel_bw);
+
+  ///
+  /// \brief Direct-coupled filters only. Get a hint of a resonators' component value depending on the frequency
+  /// \param freq: Frequency in Hz
+  /// \param Component: "Inductor" or "Capacitor"
+  /// \returns Hint of the component value to have a suitable resonator for a given frequency
+  double getResonatorComponentValueHint(double freq, ComponentType component);
 
 public:
   void synthesize();

@@ -64,8 +64,11 @@ enum ResponseType {
 };
 enum FilterClass { Lowpass, Highpass, Bandpass, Bandstop };
 enum Coupling {
-  CapacitativeCoupledShuntResonators,
-  InductiveCoupledSeriesResonators
+  CapacitiveCoupledShuntResonators,
+  InductiveCoupledShuntResonators,
+  CapacitiveCoupledSeriesResonators,
+  InductiveCoupledSeriesResonators,
+  QWCoupledShuntResonators
 };
 enum SemiLumpedImplementation { ONLY_INDUCTORS, INDUCTORS_AND_SHUNT_CAPS };
 
@@ -133,8 +136,10 @@ struct FilterSpecifications {
   SemiLumpedImplementation SemiLumpedISettings;
   double ImpedanceRatio;
 
-  // Substrate Settings
-  MS_Substrate MS_Subs;
+  MS_Substrate MS_Subs; // Substrate Settings
+
+  ComponentType tunableComponent_DC_Filters; /// Direct-Coupled filters only. It indicates which component in the resonator can be adjusted by the user
+  std::vector<double> resonatorValues; /// Direct-coupled filters only. The vector size must match the order of the filter. Each position indicates the value of the adjustable component in the resonator
 };
 
 // Contains the information of the matching network topology

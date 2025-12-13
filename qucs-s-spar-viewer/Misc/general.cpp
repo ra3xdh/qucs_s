@@ -453,3 +453,49 @@ QPointF findClosestPoint(const QList<double> &xValues,
 
   return closestPoint;
 }
+
+// Gets the scale factor from a string like nF, nH, mm, etc.
+double getScaleFactor(QString scale) {
+  if (scale.isEmpty())
+    return 1.0;
+
+  QChar prefix = scale.at(0);
+
+  switch (prefix.unicode()) {
+  case 'Y':
+    return 1e24; // Yotta
+  case 'Z':
+    return 1e21; // Zetta
+  case 'E':
+    return 1e18; // Exa
+  case 'P':
+    return 1e15; // Peta
+  case 'T':
+    return 1e12; // Tera
+  case 'G':
+    return 1e9; // Giga
+  case 'M':
+    return 1e6; // Mega
+  case 'k':
+    return 1e3; // Kilo
+  case 'm':
+    return 1e-3; // Milli
+  case 0x00B5:   // µ (micro sign)
+  case 'u':
+    return 1e-6; // Micro
+  case 'n':
+    return 1e-9; // Nano
+  case 'p':
+    return 1e-12; // Pico
+  case 'f':
+    return 1e-15; // Femto
+  case 'a':
+    return 1e-18; // Atto
+  case 'z':
+    return 1e-21; // Zepto
+  case 'y':
+    return 1e-24; // Yocto
+  default:
+    return 1.0; // No prefix
+  }
+}

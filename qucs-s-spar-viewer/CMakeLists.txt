@@ -158,6 +158,7 @@ file(GLOB UI_HEADERS
 ## TOOLS
 file(GLOB TOOLS_SOURCES
      Tools/Filtering/*.cpp
+     Tools/Filtering/DirectCoupledFilters/*.cpp
      Tools/PowerCombining/*.cpp
      Tools/AttenuatorDesign/*.cpp
      Tools/NetlistScratchPad/*.cpp
@@ -168,6 +169,7 @@ file(GLOB TOOLS_SOURCES
 
 file(GLOB TOOLS_HEADERS
      Tools/Filtering/*.h
+     Tools/Filtering/DirectCoupledFilters/*.h
      Tools/PowerCombining/*.h
      Tools/AttenuatorDesign/*.h
      Tools/NetlistScratchPad/*.h
