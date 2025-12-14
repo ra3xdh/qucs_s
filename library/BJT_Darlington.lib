@@ -1,0 +1,236 @@
+<Qucs Library 25.2.0 "BJT_Darlington">
+
+<Component TIP140>
+  <Description>
+TIP140 60V NPN Darlington
+  </Description>
+  <Model>
+.Def:BJT_Darlington_TIP140 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="/home/vvk/QucsWorkspace/BJT_Darlington_prj/DarlingtonTIP14X.cir" Device="TIP140" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT BJT_Darlington_TIP140  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 TIP140 
+.ENDS
+  </Spice>
+<SpiceAttach "DarlingtonTIP14X.cir">
+  <Symbol>
+    <.ID 30 -6 X>
+    <.PortSym 20 -30 1 0 P1>
+    <.PortSym -30 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+    <Line -10 -15 0 30 #000080 3 1>
+    <Line -30 0 20 0 #000080 2 1>
+    <Line -10 -5 10 -10 #000080 2 1>
+    <Line -10 5 10 10 #000080 2 1>
+    <Line -6 15 6 0 #000080 2 1>
+    <Line 0 15 0 -6 #000080 2 1>
+    <Line 10 5 0 30 #000080 3 1>
+    <Line 10 15 10 -10 #000080 2 1>
+    <Line 20 -30 0 35 #000080 2 1>
+    <Line 20 35 0 15 #000080 2 1>
+    <Line 10 25 10 10 #000080 2 1>
+    <Line 14 35 6 0 #000080 2 1>
+    <Line 20 35 0 -6 #000080 2 1>
+    <Line 20 -15 -20 0 #000080 2 1>
+    <Line 5 20 5 0 #000080 2 1>
+    <Line 0 15 5 5 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component TIP141>
+  <Description>
+TIP141 80V NPN Darlington
+  </Description>
+  <Model>
+.Def:BJT_Darlington_TIP141 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="DarlingtonTIP14X.cir" Device="TIP141" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT BJT_Darlington_TIP141  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 TIP141 
+.ENDS
+  </Spice>
+<SpiceAttach "DarlingtonTIP14X.cir">
+  <Symbol>
+    <.ID 30 -6 X>
+    <.PortSym 20 -30 1 0 P1>
+    <.PortSym -30 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+    <Line -10 -15 0 30 #000080 3 1>
+    <Line -30 0 20 0 #000080 2 1>
+    <Line -10 -5 10 -10 #000080 2 1>
+    <Line -10 5 10 10 #000080 2 1>
+    <Line -6 15 6 0 #000080 2 1>
+    <Line 0 15 0 -6 #000080 2 1>
+    <Line 10 5 0 30 #000080 3 1>
+    <Line 10 15 10 -10 #000080 2 1>
+    <Line 20 -30 0 35 #000080 2 1>
+    <Line 20 35 0 15 #000080 2 1>
+    <Line 10 25 10 10 #000080 2 1>
+    <Line 14 35 6 0 #000080 2 1>
+    <Line 20 35 0 -6 #000080 2 1>
+    <Line 20 -15 -20 0 #000080 2 1>
+    <Line 5 20 5 0 #000080 2 1>
+    <Line 0 15 5 5 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component TIP142>
+  <Description>
+TIP142 100V NPN Darlington
+  </Description>
+  <Model>
+.Def:BJT_Darlington_TIP142 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="DarlingtonTIP14X.cir" Device="TIP142" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT BJT_Darlington_TIP142  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 TIP142 
+.ENDS
+  </Spice>
+<SpiceAttach "DarlingtonTIP14X.cir">
+  <Symbol>
+    <.ID 30 -6 X>
+    <.PortSym 20 -30 1 0 P1>
+    <.PortSym -30 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+    <Line -10 -15 0 30 #000080 3 1>
+    <Line -30 0 20 0 #000080 2 1>
+    <Line -10 -5 10 -10 #000080 2 1>
+    <Line -10 5 10 10 #000080 2 1>
+    <Line -6 15 6 0 #000080 2 1>
+    <Line 0 15 0 -6 #000080 2 1>
+    <Line 10 5 0 30 #000080 3 1>
+    <Line 10 15 10 -10 #000080 2 1>
+    <Line 20 -30 0 35 #000080 2 1>
+    <Line 20 35 0 15 #000080 2 1>
+    <Line 10 25 10 10 #000080 2 1>
+    <Line 14 35 6 0 #000080 2 1>
+    <Line 20 35 0 -6 #000080 2 1>
+    <Line 20 -15 -20 0 #000080 2 1>
+    <Line 5 20 5 0 #000080 2 1>
+    <Line 0 15 5 5 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component TIP145>
+  <Description>
+TIP145 60V PNP Darlington
+  </Description>
+  <Model>
+.Def:BJT_Darlington_TIP145 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="DarlingtonTIP14X.cir" Device="TIP145" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT BJT_Darlington_TIP145  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 TIP145 
+.ENDS
+  </Spice>
+<SpiceAttach "DarlingtonTIP14X.cir">
+  <Symbol>
+    <.ID 30 -6 X>
+    <.PortSym 20 -30 1 0 P1>
+    <.PortSym -30 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+    <Line -10 -15 0 30 #000080 3 1>
+    <Line -30 0 20 0 #000080 2 1>
+    <Line -10 -5 10 -10 #000080 2 1>
+    <Line 20 -15 -20 0 #000080 2 1>
+    <Line -10 5 10 10 #000080 2 1>
+    <Line -5 16 0 -6 #000080 2 1>
+    <Line -5 10 6 0 #000080 2 1>
+    <Line 10 5 0 30 #000080 3 1>
+    <Line 10 15 10 -10 #000080 2 1>
+    <Line 20 35 0 15 #000080 2 1>
+    <Line 10 25 10 10 #000080 2 1>
+    <Line 15 36 0 -6 #000080 2 1>
+    <Line 15 30 6 0 #000080 2 1>
+    <Line 20 -30 0 35 #000080 2 1>
+    <Line 0 15 5 5 #000080 2 1>
+    <Line 5 20 5 0 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component TIP146>
+  <Description>
+TIP145 80V PNP Darlington
+  </Description>
+  <Model>
+.Def:BJT_Darlington_TIP146 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="DarlingtonTIP14X.cir" Device="TIP146" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT BJT_Darlington_TIP146  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 TIP146 
+.ENDS
+  </Spice>
+<SpiceAttach "DarlingtonTIP14X.cir">
+  <Symbol>
+    <.ID 30 -6 X>
+    <.PortSym 20 -30 1 0 P1>
+    <.PortSym -30 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+    <Line -10 -15 0 30 #000080 3 1>
+    <Line -30 0 20 0 #000080 2 1>
+    <Line -10 -5 10 -10 #000080 2 1>
+    <Line 20 -15 -20 0 #000080 2 1>
+    <Line -10 5 10 10 #000080 2 1>
+    <Line -5 16 0 -6 #000080 2 1>
+    <Line -5 10 6 0 #000080 2 1>
+    <Line 10 5 0 30 #000080 3 1>
+    <Line 10 15 10 -10 #000080 2 1>
+    <Line 20 35 0 15 #000080 2 1>
+    <Line 10 25 10 10 #000080 2 1>
+    <Line 15 36 0 -6 #000080 2 1>
+    <Line 15 30 6 0 #000080 2 1>
+    <Line 20 -30 0 35 #000080 2 1>
+    <Line 0 15 5 5 #000080 2 1>
+    <Line 5 20 5 0 #000080 2 1>
+  </Symbol>
+</Component>
+
+<Component TIP147>
+  <Description>
+TIP145 100V PNP Darlington
+  </Description>
+  <Model>
+.Def:BJT_Darlington_TIP147 _net0 _net1 _net2
+SpLib:X1 _net0 _net1 _net2 File="DarlingtonTIP14X.cir" Device="TIP147" SymPattern="auto" Params="" PinAssign=""
+.Def:End
+  </Model>
+  <Spice>
+.SUBCKT BJT_Darlington_TIP147  gnd _net0 _net1 _net2 
+XX1  _net0 _net1 _net2 TIP147 
+.ENDS
+  </Spice>
+<SpiceAttach "DarlingtonTIP14X.cir">
+  <Symbol>
+    <.ID 30 -6 X>
+    <.PortSym 20 -30 1 0 P1>
+    <.PortSym -30 0 2 0 P2>
+    <.PortSym 20 50 3 0 P3>
+    <Line -10 -15 0 30 #000080 3 1>
+    <Line -30 0 20 0 #000080 2 1>
+    <Line -10 -5 10 -10 #000080 2 1>
+    <Line 20 -15 -20 0 #000080 2 1>
+    <Line -10 5 10 10 #000080 2 1>
+    <Line -5 16 0 -6 #000080 2 1>
+    <Line -5 10 6 0 #000080 2 1>
+    <Line 10 5 0 30 #000080 3 1>
+    <Line 10 15 10 -10 #000080 2 1>
+    <Line 20 35 0 15 #000080 2 1>
+    <Line 10 25 10 10 #000080 2 1>
+    <Line 15 36 0 -6 #000080 2 1>
+    <Line 15 30 6 0 #000080 2 1>
+    <Line 20 -30 0 35 #000080 2 1>
+    <Line 0 15 5 5 #000080 2 1>
+    <Line 5 20 5 0 #000080 2 1>
+  </Symbol>
+</Component>
+

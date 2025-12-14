@@ -1,0 +1,271 @@
+
+
+
+
+
+
+
+*** From file TIP140.LIB
+.SUBCKT tip140 1 2 3
+* Model generated on Feb  8, 2004
+* Model format: PSpice
+* Darlington macro model
+* External node designations
+* Node 1 -> Collect
+* Node 2 -> Base
+* Node 3 -> Emitter
+Q1 1 2 4 qmodel
+Q2 1 4 3 q1model 19.6725
+D1 3 1 dmodel
+R1 2 4 8000
+R2 4 3 40
+* Default values used in dmodel
+*   EG=1.11 TT=0 BV=infinite
+.MODEL dmodel d
++IS=1e-12 RS=10 N=1 XTI=3
++CJO=0 VJ=0.75 M=0.33 FC=0.5
+.MODEL qmodel npn
++IS=2.92836e-16 BF=233.76 NF=1.2 VAF=1000
++IKF=0.222129 ISE=4.61322e-11 NE=2.48158 BR=1.89854
++NR=0.75 VAR=168.458 IKR=0.108495 ISC=9.99999e-14
++NC=2.00001 RB=7.90758 IRB=0.2 RBM=7.90758
++RE=0.275456 RC=1.42279 XTB=0.232595 XTI=3.02293 EG=1.206
++CJE=1e-11 VJE=0.75 MJE=0.33 TF=1e-09
++XTF=1 VTF=10 ITF=0.01 CJC=1.67157e-09
++VJC=0.95 MJC=0.23 XCJC=0.9 FC=0.5
++TR=1e-07 PTF=0 KF=0 AF=1
+.MODEL q1model npn
++IS=2.92836e-16 BF=233.76 NF=1.2 VAF=1000
++IKF=0.222129 ISE=4.61322e-11 NE=2.48158 BR=1.89854
++NR=0.75 VAR=168.458 IKR=0.108495 ISC=9.99999e-14
++NC=2.00001 RB=7.90758 IRB=0.2 RBM=7.90758
++RE=0.275456 RC=1.42279 XTB=0.232595 XTI=3.02293 EG=1.206
++CJE=1e-11 VJE=0.75 MJE=0.33 TF=1e-09
++XTF=1 VTF=10 ITF=0.01 CJC=0
++VJC=0.95 MJC=0.23 XCJC=0.9 FC=0.5
++TR=1e-07 PTF=0 KF=0 AF=1
+.ENDS
+
+
+
+*** From file TIP140_141_142.lib
+* TIP142 NPN EPITAXIAL SILICON TRANSISTOR ELECTRICAL PARAMETER
+* Power Darlington Transistor
+* =======================================================================
+* Complement to TIP145 / TIP146 / TIP147  Respectively
+* =======================================================================
+* Vcbo & Vceo: TIP140 60V / TIP141 80V / TIP142 100V
+* Ic(DC) 10A / Ic(Pulse) 15A / Ib 0.5A
+* =======================================================================
+* Connections:    Collector 1   Base 2  Emitter 3
+* =======================================================================
+.SUBCKT TIP142     1  2  3
+*
+Q1 1 2 4 Q1model
+Q2 1 4 3 Q2model 5.888
+D1 3 1 Dmodel
+R1 2 4 8.000E3
+R2 4 3 120
+.MODEL Dmodel D
++  IS=4.721E-12         RS=1.083E-6         N=1.068
++  CJO=4.822E-10        VJ=.5               M=.34
++  FC=.5
+.MODEL Q1model NPN
++  IS=8.075E-14         BF=7.827E3          NF=1
++  VAF=100              IKF=1.094           ISE=4.463E-13
++  NE=1.337             BR=0.1001           NR=1
++  VAR=100              IKR=0.4891          ISC=2.302E-13
++  NC=3.197             RB=2.222            RE=0.001
++  RC=0.990             EG=1.110            CJE=4.389E-10
++  VJE=0.77             MJE=0.3101          CJC=4.852E-10
++  VJC=0.4855           MJC=0.3379          XCJC=0.469
++  FC=.5
+.MODEL Q2model NPN
++  IS=8.075E-14         BF=7.827E3          NF=1
++  VAF=100              IKF=1.094           ISE=4.463E-13
++  NE=1.297             BR=0.1001           NR=1
++  VAR=100              IKR=0.4891          ISC=2.302E-13
++  NC=3.197             RB=2.222            RE=0.001
++  RC=0.990             EG=1.110            CJE=4.389E-10
++  VJE=0.77             MJE=0.3101          CJC=0
++  VJC=0.4855           MJC=0.3379          XCJC=0.469
++  FC=0.5
+.ENDS
+* ======================================================================
+* FAIRCHILD      CASE: TO-3P      PID: TIP142
+* FEB-28-2001 CREATION
+
+
+*** From file TIP141.LIB
+.SUBCKT tip141 1 2 3
+* Model generated on Feb  8, 2004
+* Model format: PSpice
+* Darlington macro model
+* External node designations
+* Node 1 -> Collect
+* Node 2 -> Base
+* Node 3 -> Emitter
+Q1 1 2 4 qmodel
+Q2 1 4 3 q1model 19.6725
+D1 3 1 dmodel
+R1 2 4 8000
+R2 4 3 40
+* Default values used in dmodel
+*   EG=1.11 TT=0 BV=infinite
+.MODEL dmodel d
++IS=1e-12 RS=10 N=1 XTI=3
++CJO=0 VJ=0.75 M=0.33 FC=0.5
+.MODEL qmodel npn
++IS=2.92836e-16 BF=233.76 NF=1.2 VAF=1000
++IKF=0.222129 ISE=4.61322e-11 NE=2.48158 BR=1.89854
++NR=0.75 VAR=168.458 IKR=0.108495 ISC=9.99999e-14
++NC=2.00001 RB=7.90758 IRB=0.2 RBM=7.90758
++RE=0.275456 RC=1.42279 XTB=0.232595 XTI=3.02293 EG=1.206
++CJE=1e-11 VJE=0.75 MJE=0.33 TF=1e-09
++XTF=1 VTF=10 ITF=0.01 CJC=1.67157e-09
++VJC=0.95 MJC=0.23 XCJC=0.9 FC=0.5
++TR=1e-07 PTF=0 KF=0 AF=1
+.MODEL q1model npn
++IS=2.92836e-16 BF=233.76 NF=1.2 VAF=1000
++IKF=0.222129 ISE=4.61322e-11 NE=2.48158 BR=1.89854
++NR=0.75 VAR=168.458 IKR=0.108495 ISC=9.99999e-14
++NC=2.00001 RB=7.90758 IRB=0.2 RBM=7.90758
++RE=0.275456 RC=1.42279 XTB=0.232595 XTI=3.02293 EG=1.206
++CJE=1e-11 VJE=0.75 MJE=0.33 TF=1e-09
++XTF=1 VTF=10 ITF=0.01 CJC=0
++VJC=0.95 MJC=0.23 XCJC=0.9 FC=0.5
++TR=1e-07 PTF=0 KF=0 AF=1
+.ENDS
+
+
+
+*** From file TIP145.LIB
+.SUBCKT tip145 1 2 3
+* Model generated on Feb  8, 2004
+* Model format: PSpice
+* Darlington macro model
+* External node designations
+* Node 1 -> Collect
+* Node 2 -> Base
+* Node 3 -> Emitter
+Q1 1 2 4 qmodel
+Q2 1 4 3 q1model 9.26065
+D1 1 3 dmodel
+R1 2 4 8000
+R2 4 3 40
+* Default values used in dmodel
+*   EG=1.11 TT=0 BV=infinite
+.MODEL dmodel d
++IS=1e-12 RS=10 N=1 XTI=3
++CJO=0 VJ=0.75 M=0.33 FC=0.5
+.MODEL qmodel pnp
++IS=1.03024e-14 BF=257.093 NF=1.2 VAF=679.126
++IKF=0.190032 ISE=1.23159e-13 NE=1.73997 BR=1.10206
++NR=1.19838 VAR=126.182 IKR=0.103332 ISC=1.23159e-13
++NC=2 RB=5.06065 IRB=0.2 RBM=5.06065
++RE=0.199903 RC=2.01466 XTB=0.354371 XTI=3.01199 EG=1.206
++CJE=1e-11 VJE=0.75 MJE=0.33 TF=1e-09
++XTF=1 VTF=10 ITF=0.01 CJC=1.67157e-09
++VJC=0.95 MJC=0.23 XCJC=0.9 FC=0.5
++TR=1e-07 PTF=0 KF=0 AF=1
+.MODEL q1model pnp
++IS=1.03024e-14 BF=257.093 NF=1.2 VAF=679.126
++IKF=0.190032 ISE=1.23159e-13 NE=1.73997 BR=1.10206
++NR=1.19838 VAR=126.182 IKR=0.103332 ISC=1.23159e-13
++NC=2 RB=5.06065 IRB=0.2 RBM=5.06065
++RE=0.199903 RC=2.01466 XTB=0.354371 XTI=3.01199 EG=1.206
++CJE=1e-11 VJE=0.75 MJE=0.33 TF=1e-09
++XTF=1 VTF=10 ITF=0.01 CJC=0
++VJC=0.95 MJC=0.23 XCJC=0.9 FC=0.5
++TR=1e-07 PTF=0 KF=0 AF=1
+.ENDS
+
+
+* ==============================================================================
+* FAIRCHILD      CASE: TO-3P      PID: TIP145/146/147
+* FEB-28-2001 CREATION
+
+
+*** From file TIP146.LIB
+.SUBCKT tip146 1 2 3
+* Model generated on Feb  8, 2004
+* Model format: PSpice
+* Darlington macro model
+* External node designations
+* Node 1 -> Collect
+* Node 2 -> Base
+* Node 3 -> Emitter
+Q1 1 2 4 qmodel
+Q2 1 4 3 q1model 9.26065
+D1 1 3 dmodel
+R1 2 4 8000
+R2 4 3 40
+* Default values used in dmodel
+*   EG=1.11 TT=0 BV=infinite
+.MODEL dmodel d
++IS=1e-12 RS=10 N=1 XTI=3
++CJO=0 VJ=0.75 M=0.33 FC=0.5
+.MODEL qmodel pnp
++IS=1.03024e-14 BF=257.093 NF=1.2 VAF=679.126
++IKF=0.190032 ISE=1.23159e-13 NE=1.73997 BR=1.10206
++NR=1.19838 VAR=126.182 IKR=0.103332 ISC=1.23159e-13
++NC=2 RB=5.06065 IRB=0.2 RBM=5.06065
++RE=0.199903 RC=2.01466 XTB=0.354371 XTI=3.01199 EG=1.206
++CJE=1e-11 VJE=0.75 MJE=0.33 TF=1e-09
++XTF=1 VTF=10 ITF=0.01 CJC=1.67157e-09
++VJC=0.95 MJC=0.23 XCJC=0.9 FC=0.5
++TR=1e-07 PTF=0 KF=0 AF=1
+.MODEL q1model pnp
++IS=1.03024e-14 BF=257.093 NF=1.2 VAF=679.126
++IKF=0.190032 ISE=1.23159e-13 NE=1.73997 BR=1.10206
++NR=1.19838 VAR=126.182 IKR=0.103332 ISC=1.23159e-13
++NC=2 RB=5.06065 IRB=0.2 RBM=5.06065
++RE=0.199903 RC=2.01466 XTB=0.354371 XTI=3.01199 EG=1.206
++CJE=1e-11 VJE=0.75 MJE=0.33 TF=1e-09
++XTF=1 VTF=10 ITF=0.01 CJC=0
++VJC=0.95 MJC=0.23 XCJC=0.9 FC=0.5
++TR=1e-07 PTF=0 KF=0 AF=1
+.ENDS
+
+
+
+*** From file TIP147.LIB
+.SUBCKT tip147 1 2 3
+* Model generated on Feb  8, 2004
+* Model format: PSpice
+* Darlington macro model
+* External node designations
+* Node 1 -> Collect
+* Node 2 -> Base
+* Node 3 -> Emitter
+Q1 1 2 4 qmodel
+Q2 1 4 3 q1model 9.26065
+D1 1 3 dmodel
+R1 2 4 8000
+R2 4 3 40
+* Default values used in dmodel
+*   EG=1.11 TT=0 BV=infinite
+.MODEL dmodel d
++IS=1e-12 RS=10 N=1 XTI=3
++CJO=0 VJ=0.75 M=0.33 FC=0.5
+.MODEL qmodel pnp
++IS=1.03024e-14 BF=257.093 NF=1.2 VAF=679.126
++IKF=0.190032 ISE=1.23159e-13 NE=1.73997 BR=1.10206
++NR=1.19838 VAR=126.182 IKR=0.103332 ISC=1.23159e-13
++NC=2 RB=5.06065 IRB=0.2 RBM=5.06065
++RE=0.199903 RC=2.01466 XTB=0.354371 XTI=3.01199 EG=1.206
++CJE=1e-11 VJE=0.75 MJE=0.33 TF=1e-09
++XTF=1 VTF=10 ITF=0.01 CJC=1.67157e-09
++VJC=0.95 MJC=0.23 XCJC=0.9 FC=0.5
++TR=1e-07 PTF=0 KF=0 AF=1
+.MODEL q1model pnp
++IS=1.03024e-14 BF=257.093 NF=1.2 VAF=679.126
++IKF=0.190032 ISE=1.23159e-13 NE=1.73997 BR=1.10206
++NR=1.19838 VAR=126.182 IKR=0.103332 ISC=1.23159e-13
++NC=2 RB=5.06065 IRB=0.2 RBM=5.06065
++RE=0.199903 RC=2.01466 XTB=0.354371 XTI=3.01199 EG=1.206
++CJE=1e-11 VJE=0.75 MJE=0.33 TF=1e-09
++XTF=1 VTF=10 ITF=0.01 CJC=0
++VJC=0.95 MJC=0.23 XCJC=0.9 FC=0.5
++TR=1e-07 PTF=0 KF=0 AF=1
+.ENDS
