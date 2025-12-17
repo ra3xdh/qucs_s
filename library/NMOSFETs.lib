@@ -6892,6 +6892,7 @@
    Manufacturer: International Rectifier
    added by Gunther Kraut <gn.kraut@online.de>
   </Description>
+  <Model>
   .Def:NMOSFETs_IRF7465 _net2 _net1 _net3
     MOSFET:M1 _net7 _net9 _net8 _net8 Type="nfet" L="100u" W="100u" Is="1e-32" Vt0="5.52173" Lambda="0.107939" Kp="4.31953" Cgso="3e-06" Cgdo="1e-11" N="1" Gamma="0" Phi="0.6"
     # .MODEL:MM  NMOS (LEVEL=1 IS=1E-32 VTO=5.52173 LAMBDA=0.107939 KP=4.31953 CGSO=3E-06 CGDO=1E-11) 
