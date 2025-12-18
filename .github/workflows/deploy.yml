@@ -226,6 +226,7 @@ jobs:
           cp -pR ${{ github.workspace }}/build/qucs-s-spar-viewer/qucs-sspar-viewer.app ${{ env.QUCS_MACOS_BIN }}
           cp -pR ${{ github.workspace }}/build/qucs-transcalc/qucs-strans.app ${{ env.QUCS_MACOS_BIN }}
           cp -pR ${{ github.workspace }}/build/qucsator_rf/src/qucsator_rf ${{ env.QUCS_MACOS_BIN }}
+          cp -pR ${{ github.workspace }}/build/rxcalc/rxcalc.app ${{ env.QUCS_MACOS_BIN }}
           cp -pR ${{ github.workspace }}/build/qucsator_rf/src/converter/qucsconv_rf ${{ env.QUCS_MACOS_BIN }}
           cp -pR ${{ github.workspace }}/examples/* ${{ env.QUCS_MACOS_RESOURCES }}/examples
           cp -pR ${{ github.workspace }}/library/*.lib ${{ env.QUCS_MACOS_RESOURCES }}/library
@@ -239,6 +240,7 @@ jobs:
           macdeployqt ${{ env.QUCS_MACOS_BIN }}/qucs-spowercombining.app
           macdeployqt ${{ env.QUCS_MACOS_BIN }}/qucs-sspar-viewer.app
           macdeployqt ${{ env.QUCS_MACOS_BIN }}/qucs-strans.app
+          macdeployqt ${{ env.QUCS_MACOS_BIN }}/rxcalc.app
           strip ${{ env.QUCS_MACOS_BIN }}/qucsator_rf
           strip ${{ env.QUCS_MACOS_BIN }}/qucsconv_rf
           codesign --force --deep --sign - ${{ github.workspace }}/build/qucs/qucs-s.app
