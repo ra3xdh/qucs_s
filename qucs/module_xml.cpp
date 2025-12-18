@@ -240,7 +240,8 @@ void Module::registerXmlComponents(const QString& componentPath)
                         it->x().get(),
                         it->y().get(),
                         it->type().get(),
-                        it->angle().get()
+                        it->angle().get(),
+                        QString::fromUtf8(it->condition())
                 );
 
                 portSyms << portSym;
@@ -279,10 +280,55 @@ void Module::registerXmlComponents(const QString& componentPath)
                         it->len().get(),
                         QString::fromUtf8(it->color()),
                         static_cast<uint32_t>(it->width()),
-                        it->style()
+                        it->style(),
+                        QString::fromUtf8(it->condition())
                 );
 
                 arcs << arc;
+            }
+
+            QList<XmlComponent::Rectangle> rectangles;
+
+            auto compRectangles(component->Symbols().Symbol().Rectangle());
+            for (auto it(compRectangles.begin()); it != compRectangles.end(); ++it)
+            {
+                XmlComponent::Rectangle rectangle(
+                        it->x().get(),
+                        it->y().get(),
+                        it->width().get(),
+                        it->height().get(),
+                        QString::fromUtf8(it->color()),
+                        static_cast<uint32_t>(it->lineWidth()),
+                        it->style(),
+                        QString::fromUtf8(it->fillColor()),
+                        it->fillStyle(),
+                        static_cast<bool>(it->filled()),
+                        QString::fromUtf8(it->condition())
+                );
+
+                rectangles << rectangle;
+            }
+
+            QList<XmlComponent::Arrow> arrows;
+
+            auto compArrows(component->Symbols().Symbol().Arrow());
+            for (auto it(compArrows.begin()); it != compArrows.end(); ++it)
+            {
+                XmlComponent::Arrow arrow(
+                        it->x1().get(),
+                        it->y1().get(),
+                        it->x2().get(),
+                        it->y2().get(),
+                        QString::fromUtf8(it->color()),
+                        static_cast<uint32_t>(it->width()),
+                        it->style(),
+                        it->headHeight(),
+                        it->headWidth(),
+                        it->headStyle(),
+                        QString::fromUtf8(it->condition())
+                );
+
+                arrows << arrow;
             }
 
             QList<XmlComponent::Text> texts;
@@ -382,6 +428,8 @@ void Module::registerXmlComponents(const QString& componentPath)
                         portSyms,
                         lines,
                         arcs,
+                        rectangles,
+                        arrows,
                         texts
                 ));
 
@@ -389,18 +437,17 @@ void Module::registerXmlComponents(const QString& componentPath)
                         QString::fromUtf8(component->library().get()), xmlComponent);
 
 #if 0
-                std::cout << "Component-library: " << component->library().get() << std::endl;
-                //std::cout << "Component-name: " << component->name().get() << std::endl;
-                std::cout << "Component-name: " << name.toStdString() << std::endl;
-                std::cout << "Schematic-id: " << component->schematic_id().get() << std::endl;
-                std::cout << "Description: " << QString::fromUtf8(component->Description()).trimmed().toStdString() << std::endl;
-                std::cout << "Default model: " << component->Models().DefaultModel().value().get() << std::endl;
-                std::cout << "Spice model: " << component->Models().SpiceModel().value().get() << std::endl;
+                std::cout << "  Component-library: " << component->library().get() << std::endl;
+                std::cout << "  Component-name: " << name.toStdString() << std::endl;
+                std::cout << "  Schematic-id: " << component->schematic_id().get() << std::endl;
+                std::cout << "  Description: " << QString::fromUtf8(component->Description()).trimmed().toStdString() << std::endl;
+                std::cout << "  Default model: " << component->Models().DefaultModel().value().get() << std::endl;
+                std::cout << "  Spice model: " << component->Models().SpiceModel().value().get() << std::endl;
 
                 if (component->Netlists().NgspiceNetlist().present())
                 {
                     std::cout
-                        << "Ngspice netlist: "
+                        << "  Ngspice netlist: "
                         << component->Netlists().NgspiceNetlist().get().value().get() << std::endl;
 
                     if (component->Netlists().NgspiceNetlist().get().Include().present())
@@ -415,8 +462,9 @@ void Module::registerXmlComponents(const QString& componentPath)
                 if (component->Netlists().CDLNetlist().present())
                 {
                     std::cout
-                        << "CDL netlist: "
+                        << "  CDL netlist: "
                         << component->Netlists().CDLNetlist().get().value().get() << std::endl;
+
 
                     if (component->Netlists().CDLNetlist().get().Include().present())
                     {
@@ -430,7 +478,7 @@ void Module::registerXmlComponents(const QString& componentPath)
                 if (component->Netlists().QucsatorNetlist().present())
                 {
                     std::cout
-                        << "Qucsator netlist: "
+                        << " Qucsator netlist: "
                         << component->Netlists().QucsatorNetlist().get().value().get() << std::endl;
 
                     if (component->Netlists().QucsatorNetlist().get().Include().present())
@@ -446,11 +494,11 @@ void Module::registerXmlComponents(const QString& componentPath)
                 for (auto it(_lines.begin()); it != _lines.end(); ++it)
                 {
                     std::cout
-                        << "Line x1=" << static_cast<int>(it->x1().get())
+                        << "  Line x1=" << static_cast<int>(it->x1().get())
                         << ", y1=" << static_cast<int>(it->y1().get())
                         << ", x2=" << static_cast<int>(it->x2().get())
                         << ", y2=" << static_cast<int>(it->y2().get())
-                        << ", color=" << it->color().get()
+                        << ", color=" << it->color()
                         << ", width=" << static_cast<int>(it->width().get())
                         << ", style=" << static_cast<int>(it->style().get())
                         << ", condition=" << it->condition()
@@ -461,15 +509,66 @@ void Module::registerXmlComponents(const QString& componentPath)
                 for (auto it(_arcs.begin()); it != _arcs.end(); ++it)
                 {
                     std::cout
-                        << "Arc x=" << static_cast<int>(it->x().get())
+                        << "  Arc x=" << static_cast<int>(it->x().get())
                         << ", y=" << static_cast<int>(it->y().get())
                         << ", arcWidth=" << static_cast<int>(it->arcWidth().get())
                         << ", height=" << static_cast<int>(it->height().get())
                         << ", angle=" << static_cast<int>(it->angle().get())
                         << ", len=" << static_cast<int>(it->len().get())
-                        << ", color=" << it->color().get()
+                        << ", color=" << it->color()
                         << ", width=" << static_cast<int>(it->width())
                         << ", style=" << static_cast<int>(it->style())
+                        << ", condition=" << it->condition()
+                        << std::endl;
+                }
+
+                auto rects(component->Symbols().Symbol().Rectangle());
+                for (auto it(rects.begin()); it != rects.end(); ++it)
+                {
+                    std::cout
+                        << "  Rectangle x=" << static_cast<int>(it->x().get())
+                        << ", y=" << static_cast<int>(it->y().get())
+                        << ", width=" << it->width().get()
+                        << ", height=" << it->height().get()
+                        << ", color=" << it->color()
+                        << ", lwidth=" << static_cast<uint32_t>(it->lineWidth())
+                        << ", style=" << it->style()
+                        << ", fill-color=" << it->fillColor()
+                        << ", fill-style=" << it->fillStyle()
+                        << ", filled=" << static_cast<bool>(it->filled())
+                        << ", condition=" << it->condition()
+                        << std::endl;
+                }
+
+                auto arrows(component->Symbols().Symbol().Arrow());
+                for (auto it(arrows.begin()); it != arrows.end(); ++it)
+                {
+                    std::cout
+                        << "  Arrow x1=" << static_cast<int>(it->x1().get())
+                        << ", y1=" << static_cast<int>(it->y1().get())
+                        << ", x2=" << static_cast<int>(it->x2().get())
+                        << ", y2=" << static_cast<int>(it->y2().get())
+                        << ", color=" << it->color()
+                        << ", width=" << static_cast<uint32_t>(it->width())
+                        << ", style=" << it->style()
+                        << ", head-height=" << it->headHeight()
+                        << ", head-width=" << it->headWidth()
+                        << ", head-style=" << it->headStyle()
+                        << ", condition=" << it->condition()
+                        << std::endl;
+                }
+
+                auto texts(component->Symbols().Symbol().Text());
+                for (auto it(texts.begin()); it != texts.end(); ++it)
+                {
+                    std::cout
+                        << "  Text x=" << static_cast<int>(it->x().get())
+                        << ", y:" << static_cast<int>(it->y().get())
+                        << ", text:" << it->text().get()
+                        << ", color:" << it->color()
+                        << ", size:" << it->size()
+                        << ", cos:" << it->cos()
+                        << ", sin:" << it->sin()
                         << std::endl;
                 }
 
@@ -477,7 +576,7 @@ void Module::registerXmlComponents(const QString& componentPath)
                 for (auto it(_portSyms.begin()); it != _portSyms.end(); ++it)
                 {
                     std::cout
-                        << "PortSym x=" << static_cast<int>(it->x().get())
+                        << "  PortSym x=" << static_cast<int>(it->x().get())
                         << ", y=" << static_cast<int>(it->y().get())
                         << ", type=" << static_cast<int>(it->type().get())
                         << ", angle=" << static_cast<int>(it->angle().get())
@@ -487,7 +586,7 @@ void Module::registerXmlComponents(const QString& componentPath)
                 for (auto it(compParameters.begin()); it != compParameters.end(); ++it)
                 {
                     std::cout
-                        << "Parameter name=" << it->name().get()
+                        << "  Parameter name=" << it->name().get()
                         << ", unit=" << it->unit().get()
                         << ", default-value=" << it->default_value()
                         << ", equation=" << it->equation()

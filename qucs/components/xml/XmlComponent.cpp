@@ -15,6 +15,7 @@
 #include <main.h>
 
 #include <QColor>
+#include <QBrush>
 #include <QPen>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
@@ -27,6 +28,7 @@
 #include <limits>
 #include <algorithm>
 #include <list>
+#include <cmath>
 
 XmlComponent::XmlComponent(
         const QString& name,
@@ -46,6 +48,8 @@ XmlComponent::XmlComponent(
         const QList<PortSym>& portSyms,
         const QList<Line>& lines,
         const QList<Arc>& arcs,
+        const QList<Rectangle>& rectangles,
+        const QList<Arrow>& arrows,
         const QList<Text>& texts) :
     a_name(name),
     a_schematicId(schematicId),
@@ -62,6 +66,8 @@ XmlComponent::XmlComponent(
     a_portSyms(portSyms),
     a_lines(lines),
     a_arcs(arcs),
+    a_rectangles(rectangles),
+    a_arrows(arrows),
     a_texts(texts)
 {
     Description = QObject::tr(description.toUtf8().constData());
@@ -154,6 +160,8 @@ Component* XmlComponent::newOne()
             a_portSyms,
             a_lines,
             a_arcs,
+            a_rectangles,
+            a_arrows,
             a_texts);
 }
 
@@ -179,30 +187,7 @@ void XmlComponent::createSymbol()
 
     foreach (const Line& line, a_lines)
     {
-        bool skipLine(false);
-
-        if (!line.a_condition.isEmpty())
-        {
-            const QStringList condition(line.a_condition.split("=", Qt::SkipEmptyParts));
-
-            if (condition.size() == 2)
-            {
-                skipLine = true;
-                const QString paramName(condition[0]);
-                const QString paramValue(condition[1]);
-
-                foreach (const Property* property, Props)
-                {
-                    if (property->Name == paramName && getValue(*property) == paramValue)
-                    {
-                        skipLine = false;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (skipLine)
+        if (!evaluateConditionInclude(line.a_condition))
         {
             continue;
         }
@@ -224,6 +209,11 @@ void XmlComponent::createSymbol()
 
     foreach (const Arc& arc, a_arcs)
     {
+        if (!evaluateConditionInclude(arc.a_condition))
+        {
+            continue;
+        }
+
         Arcs.append(new qucs::Arc(
             arc.a_x,
             arc.a_y,
@@ -232,6 +222,67 @@ void XmlComponent::createSymbol()
             arc.a_angle,
             arc.a_len,
             QPen(misc::ColorFromString(arc.a_color), arc.a_width, static_cast<Qt::PenStyle>(arc.a_style))));
+    }
+
+    foreach (const Rectangle& rect, a_rectangles)
+    {
+        if (!evaluateConditionInclude(rect.a_condition))
+        {
+            continue;
+        }
+
+        const QPen pen(
+                misc::ColorFromString(rect.a_color),
+                rect.a_lineWidth,
+                static_cast<Qt::PenStyle>(rect.a_style));
+        const QBrush brush(
+                rect.a_filled ? QBrush(
+                    misc::ColorFromString(rect.a_fillColor), static_cast<Qt::BrushStyle>(rect.a_fillStyle)) :
+                QBrush(Qt::NoBrush));
+
+        Rects.append(new qucs::Rect(rect.a_x, rect.a_y, rect.a_width, rect.a_height, pen, brush));
+
+        x1 = rect.a_x < x1 ? rect.a_x : x1;
+        y1 = rect.a_y < y1 ? rect.a_y : y1;
+        x2 = rect.a_x + rect.a_width > x2 ? rect.a_x + rect.a_width : x2;
+        y2 = rect.a_y + rect.a_height > y2 ? rect.a_y + rect.a_height : y2;
+    }
+
+    foreach (const Arrow& arrow, a_arrows)
+    {
+        if (!evaluateConditionInclude(arrow.a_condition))
+        {
+            continue;
+        }
+
+        const QPen pen(
+                misc::ColorFromString(arrow.a_color),
+                arrow.a_width,
+                static_cast<Qt::PenStyle>(arrow.a_style));
+
+        Lines.append(new qucs::Line(arrow.a_x1, arrow.a_y1, arrow.a_x2, arrow.a_y2, pen));
+
+        const double arrowAngle(
+                atan2(
+                    static_cast<double>(arrow.a_y2 - arrow.a_y1),
+                    static_cast<double>(arrow.a_x2 - arrow.a_x1)));
+        const double headAngle(atan2(arrow.a_headWidth, arrow.a_headHeight));
+        const double headWingLength(hypot(arrow.a_headWidth, arrow.a_headHeight));
+
+        const QPoint leftWing(
+                arrow.a_x2 - static_cast<int>(headWingLength * cos(headAngle + arrowAngle)),
+                arrow.a_y2 - static_cast<int>(headWingLength * sin(headAngle + arrowAngle)));
+        const QPoint rightWing(
+                arrow.a_x2 - static_cast<int>(headWingLength * cos(arrowAngle - headAngle)),
+                arrow.a_y2 - static_cast<int>(headWingLength * sin(arrowAngle - headAngle)));
+
+        Lines.append(new qucs::Line(arrow.a_x2, arrow.a_y2, leftWing.x(), leftWing.y(), pen));
+        Lines.append(new qucs::Line(arrow.a_x2, arrow.a_y2, rightWing.x(), rightWing.y(), pen));
+
+        x1 = std::min({x1, arrow.a_x1, arrow.a_x2, leftWing.x(), rightWing.x()});
+        y1 = std::min({y1, arrow.a_y1, arrow.a_y2, leftWing.y(), rightWing.y()});
+        x2 = std::max({x2, arrow.a_x1, arrow.a_x2, leftWing.x(), rightWing.x()});
+        y2 = std::max({y2, arrow.a_y1, arrow.a_y2, leftWing.y(), rightWing.y()});
     }
 
     foreach (const Text& textDef, a_texts)
@@ -266,6 +317,11 @@ void XmlComponent::createSymbol()
 
     foreach (const PortSym& portSym, a_portSyms)
     {
+        if (!evaluateConditionInclude(portSym.a_condition))
+        {
+            continue;
+        }
+
         Ports.append(new Port(portSym.a_x,  portSym.a_y));
     }
 }
@@ -509,6 +565,63 @@ void XmlComponent::removeMultipleSpaces(QString& netlist)
     netlist.replace(multipleSpacePattern, " ");
 }
 
+bool XmlComponent::evaluateConditionInclude(const QString& elementCondition) const
+{
+    if (elementCondition.isEmpty())
+    {
+        return true; // no condition => include
+    }
+
+    const QStringList conditionParts(elementCondition.split("=", Qt::SkipEmptyParts));
+    if (conditionParts.size() != 2)
+    {
+        // Unexpected syntax: to be safe, include element (or you could choose to exclude).
+        return true;
+    }
+
+    const QString paramName = conditionParts[0].trimmed();
+    const QString paramValue = conditionParts[1].trimmed();
+
+    // Default behavior in createSymbol() for lines is to skip unless a matching property is found
+    // => here return true only when a match is found.
+
+    // special-case "name" to compare component name and allow comma-separated list
+    if (paramName == QLatin1String("name"))
+    {
+        const QStringList allowedNames = paramValue.split(',', Qt::SkipEmptyParts);
+        for (const QString& name : allowedNames)
+        {
+            if (name.trimmed() == a_name)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // search matching property and compare its value
+    for (const Property* property : Props)
+    {
+        if (property->Name == paramName)
+        {
+            const QString value = getValue(*property);
+            const QStringList allowedValues = paramValue.split(',', Qt::SkipEmptyParts);
+            for (const QString& value : allowedValues)
+            {
+                if (value == value.trimmed())
+                {
+                    return true;
+                }
+            }
+            // property exists but value doesn't match => do not include
+            return false;
+        }
+    }
+
+    // parameter referenced in condition not found; follow the more conservative behavior:
+    // treat as not matched => exclude element
+    return false;
+}
 void XmlComponent::resolveNetListInclude(const QString& key, QString& netListInclude) const
 {
     if (netListInclude.contains(QString::fromUtf8("{%1}").arg(key)))
