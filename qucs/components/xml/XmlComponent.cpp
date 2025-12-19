@@ -586,7 +586,7 @@ bool XmlComponent::evaluateConditionInclude(const QString& elementCondition) con
     // => here return true only when a match is found.
 
     // special-case "name" to compare component name and allow comma-separated list
-    if (paramName == QLatin1String("name"))
+    if (paramName == "name")
     {
         const QStringList allowedNames = paramValue.split(',', Qt::SkipEmptyParts);
         for (const QString& name : allowedNames)
@@ -604,11 +604,11 @@ bool XmlComponent::evaluateConditionInclude(const QString& elementCondition) con
     {
         if (property->Name == paramName)
         {
-            const QString value = getValue(*property);
+            const QString value = getValue(*property).trimmed();
             const QStringList allowedValues = paramValue.split(',', Qt::SkipEmptyParts);
-            for (const QString& value : allowedValues)
+            for (const QString& allowedValue : allowedValues)
             {
-                if (value == value.trimmed())
+                if (allowedValue.trimmed() == value)
                 {
                     return true;
                 }
@@ -622,6 +622,7 @@ bool XmlComponent::evaluateConditionInclude(const QString& elementCondition) con
     // treat as not matched => exclude element
     return false;
 }
+
 void XmlComponent::resolveNetListInclude(const QString& key, QString& netListInclude) const
 {
     if (netListInclude.contains(QString::fromUtf8("{%1}").arg(key)))
