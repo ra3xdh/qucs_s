@@ -73,7 +73,7 @@ Schematic::Schematic(QucsApp *App_, const QString &Name_) :
     a_ViewY1(0),
     a_ViewX2(1),
     a_ViewY2(1),
-    a_showFrame(0), // don't show
+    a_showFrame(FrameSize::None),
     a_Frame_Text0(tr("Title")),
     a_Frame_Text1(tr("Drawn By:")),
     a_Frame_Text2(tr("Date:")),
@@ -308,26 +308,31 @@ bool Schematic::sizeOfFrame(int &xall, int &yall)
     // Values exclude border of 1.5cm at each side.
     switch (a_showFrame) {
     // DIN A STANDARD FORMATS
-    case 1:  xall = 1020; yall =  765; break; // DIN A5 landscape
-    case 2:  xall =  765; yall = 1020; break; // DIN A5 portrait
-    case 3:  xall = 1530; yall = 1020; break; // DIN A4 landscape
-    case 4:  xall = 1020; yall = 1530; break; // DIN A4 portrait
-    case 5:  xall = 2295; yall = 1530; break; // DIN A3 landscape
-    case 6:  xall = 1530; yall = 2295; break; // DIN A3 portrait
-    // These standard sizes were implemented later (2025), so the index need to be > 8 to avoid breaking backward compatibility with older versions of Qucs-S
-    case 9: xall =  660; yall =  465; break; // DIN A6 landscape
-    case 10: xall =  465; yall =  660; break; // DIN A6 portrait
+    case FrameSize::A5_Landscape: xall = 1020; yall =  765; break; // DIN A5 landscape
+    case FrameSize::A5_Portrait:  xall =  765; yall = 1020; break; // DIN A5 portrait
+    case FrameSize::A4_Landscape: xall = 1530; yall = 1020; break; // DIN A4 landscape
+    case FrameSize::A4_Portrait:  xall = 1020; yall = 1530; break; // DIN A4 portrait
+    case FrameSize::A3_Landscape: xall = 2295; yall = 1530; break; // DIN A3 landscape
+    case FrameSize::A3_Portrait:  xall = 1530; yall = 2295; break; // DIN A3 portrait
+
+    // These standard sizes were implemented later (2025), so the code values need to be > 8
+    // to avoid breaking backward compatibility with older versions of Qucs-S.
+    case FrameSize::A6_Landscape: xall =  660; yall =  465; break; // DIN A6 landscape
+    case FrameSize::A6_Portrait:  xall =  465; yall =  660; break; // DIN A6 portrait
     // A7 and above formats are too small and the title box doesn't fit in the frame
     // A0, A1, and A2 are huge
 
     // US letter format
-    case 7:  xall = 1414; yall = 1054; break; // letter landscape
-    case 8:  xall = 1054; yall = 1414; break; // letter portrait
+    case FrameSize::Letter_Landscape: xall = 1414; yall = 1054; break; // Letter landscape
+    case FrameSize::Letter_Portrait:  xall = 1054; yall = 1414; break; // Letter portrait
+
+    case FrameSize::None:
     default:
         return false;
     }
     return true;
 }
+
 
 
 void Schematic::paintFrame(QPainter* painter) {
@@ -718,7 +723,7 @@ void Schematic::print(QPrinter*, QPainter* painter, bool printAll,
 
     QRect printedArea = printAll ? allBoundingRect() : currentSelection().bounds;
 
-    if (printAll && a_showFrame) {
+    if (printAll && a_showFrame != FrameSize::None) {
         int frame_width, frame_height;
         sizeOfFrame(frame_width, frame_height);
         printedArea |= QRect{0, 0, frame_width, frame_height};
@@ -785,7 +790,7 @@ template <typename T> void draw_preserve_selection(T* elem, QPainter* p) {
 } // namespace
 
 void Schematic::paintSchToViewpainter(QPainter* painter, bool printAll) {
-    if (printAll && a_showFrame && !a_symbolMode) {
+    if (printAll && a_showFrame != FrameSize::None && !a_symbolMode) {
         paintFrame(painter);
     }
 

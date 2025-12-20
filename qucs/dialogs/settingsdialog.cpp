@@ -199,16 +199,21 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
     Input_GridY->setText(QString::number(Doc->getGridY()));
 
     //////////////////////////////////////////////////////////////////////////
-    // Select index in combo according to the actual frame code in the document
-    int frameCode = Doc->getShowFrame();   // this is the <showFrame=...> value
-    int idxToSelect = 0;// default to "no Frame"
+    // Select index in combo according to the document's frame code
+    FrameSize docFrame = Doc->getShowFrame();  // <showFrame=...> value from document
+    int idxToSelect = 0;                       // default: "no Frame" (index 0)
+
     for (int i = 0; i < Combo_Frame->count(); ++i) {
-        if (Combo_Frame->itemData(i, Qt::UserRole).toInt() == frameCode) {
+        FrameSize itemFrame = static_cast<FrameSize>(
+            Combo_Frame->itemData(i, Qt::UserRole).toInt()
+            );
+        if (itemFrame == docFrame) {
             idxToSelect = i;
             break;
         }
     }
     Combo_Frame->setCurrentIndex(idxToSelect);
+
     //////////////////////////////////////////////////////////////////////////
 
     QString Text_;
@@ -313,12 +318,14 @@ void SettingsDialog::slotApply()
         changed = true;
     }
 
-    if(Doc->getShowFrame() != Combo_Frame->currentIndex())
-    {
-        int a_showFrame = Combo_Frame->itemData(Combo_Frame->currentIndex(), Qt::UserRole).toInt();
-        Doc->setShowFrame(a_showFrame);
+    FrameSize current = Doc->getShowFrame(); // Current frame
+    FrameSize selected = static_cast<FrameSize>(Combo_Frame->itemData(Combo_Frame->currentIndex(), Qt::UserRole).toInt()); // Selected frame
+
+    if (current != selected) {
+        Doc->setShowFrame(static_cast<int>(selected));
         changed = true;
     }
+
 
     QString t;
     encode_String(Input_Frame0->toPlainText(), t);
