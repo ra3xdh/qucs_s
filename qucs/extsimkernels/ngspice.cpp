@@ -272,7 +272,9 @@ void Ngspice::createNetlist(
             } else {  // Set Noise1 plot to output noise spectrum
                 spiceNetlist.append("setplot noise1\n");
             }
-            nods = "noise1.all";
+            // NOTE: if we set 'setplot noiseX', and we use 'all'
+            // it will be the equivalent of noiseX.all
+            nods = "all";
         } else if ( sim_typ == ".PZ" ) {
             pzSims++;
             spiceNetlist.append(pc->getSpiceNetlist());
