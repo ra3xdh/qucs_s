@@ -1202,7 +1202,7 @@ void QucsApp::slotShowContentMenu(const QPoint& pos)
   QModelIndex idx = Content->indexAt(pos);
   if (idx.isValid() && idx.parent().isValid()) {
     QItemSelectionModel *selectionModel = Content->selectionModel();
-    bool multipleSelected = selectionModel->selectedIndexes().count() > 1;
+    bool multipleSelected = selectionModel->selectedRows().count() > 1;
 
     ActionCMenuInsert->setVisible(
         idx.sibling(idx.row(), 1).data().toString().contains(tr("-port"))
