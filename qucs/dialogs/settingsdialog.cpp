@@ -118,16 +118,31 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
     QWidget *Tab3 = new QWidget(t);
     QGridLayout *gp3 = new QGridLayout(Tab3);
     Combo_Frame = new QComboBox(Tab3);
-    Combo_Frame->insertItem(1, tr("no Frame"));
-    Combo_Frame->insertItem(2, tr("DIN A5 landscape"));
-    Combo_Frame->insertItem(3, tr("DIN A5 portrait"));
-    Combo_Frame->insertItem(4, tr("DIN A4 landscape"));
-    Combo_Frame->insertItem(5, tr("DIN A4 portrait"));
-    Combo_Frame->insertItem(6, tr("DIN A3 landscape"));
-    Combo_Frame->insertItem(7, tr("DIN A3 portrait"));
-    Combo_Frame->insertItem(8, tr("Letter landscape"));
-    Combo_Frame->insertItem(9, tr("Letter portrait"));
-    gp3->addWidget(Combo_Frame,0,0,1,2);
+
+    // index 0
+    Combo_Frame->insertItem(0, tr("no Frame"));
+
+    // indices 1–6: DIN A5–A3. Implemented before Dec'25
+    Combo_Frame->insertItem(1, tr("DIN A5 landscape"));
+    Combo_Frame->insertItem(2, tr("DIN A5 portrait"));
+    Combo_Frame->insertItem(3, tr("DIN A4 landscape"));
+    Combo_Frame->insertItem(4, tr("DIN A4 portrait"));
+    Combo_Frame->insertItem(5, tr("DIN A3 landscape"));
+    Combo_Frame->insertItem(6, tr("DIN A3 portrait"));
+
+    // indices 7–8: US Letter
+    Combo_Frame->insertItem(7, tr("Letter landscape"));
+    Combo_Frame->insertItem(8, tr("Letter portrait"));
+
+    // indices 9–16: DIN formats implemented in Dec'25
+    // It's needed to add these formats begining at the 9th index to avoid breaking backward compatibility
+    Combo_Frame->insertItem(9, tr("DIN A6 landscape"));
+    Combo_Frame->insertItem(10, tr("DIN A6 portrait"));
+    // A7 and above formats are too small and the title box doesn't fit in the frame
+    // A0, A1, and A2 are huge
+
+    gp3->addWidget(Combo_Frame, 0, 0, 1, 2);
+
 
     Input_Frame0 = new QTextEdit(Tab3);
     Input_Frame0->setWordWrapMode(QTextOption::NoWrap);
