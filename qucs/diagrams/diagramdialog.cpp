@@ -51,6 +51,10 @@
 #include <QDebug>
 #include <QtAlgorithms>
 
+// Variable completion
+#include <QCompleter>
+#include <QStringListModel>
+
 #define CROSS3D_SIZE   30
 #define WIDGET3D_SIZE  2*CROSS3D_SIZE
 // This widget class paints a small 3-dimensional coordinate cross.
@@ -196,6 +200,12 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   Box2->setLayout(Box2Layout);
   InputGroupLayout->addWidget(Box2);
   Box2Layout->setSpacing(5);
+
+  // Variable completion
+  graphCompleter = new QCompleter(this);
+  graphCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+  graphCompleter->setCompletionMode(QCompleter::PopupCompletion);
+  GraphInput->setCompleter(graphCompleter);
 
   if(Diag->Name == "Tab") {
     Label1 = new QLabel(tr("Number Notation: "));
@@ -864,6 +874,8 @@ void DiagramDialog::slotReadVarsAndSetSimulator(int)
     ChooseSimulator->blockSignals(false); // Unlock signals
 
     slotReadVars(0);
+
+    updateCompleter(); // Variable completion
 }
 
 // --------------------------------------------------------------------------
@@ -950,6 +962,9 @@ void DiagramDialog::slotReadVars(int)
   } while(i > 0);
   // sorting should be enabled only after adding items
   ChooseVars->setSortingEnabled(true);
+
+  // Update completer with new variables
+  updateCompleter();
 }
 
 // ------------------------------------------------------------------------
@@ -1681,4 +1696,52 @@ void DiagramDialog::slotRecalcDbLimitsZ()
     startZ->setText(QString::number(qucs::num2db(Diag->zAxis.limit_min, Units)));
     stepZ->setText(QString::number(qucs::num2db(Diag->zAxis.step, Units)));
     stopZ->setText(QString::number(qucs::num2db(Diag->zAxis.limit_max, Units)));
+}
+
+/*!
+ * \brief Updates the autocomplete model for the GraphInput line edit.
+ *
+ * Populates the completer with all available variables from the ChooseVars table,
+ * prefixing each variable name with the appropriate simulator identifier (ngspice/,
+ * xyce/, or spopus/) and dataset name if different from the default dataset.
+ *
+ * This method should be called whenever:
+ * - A new dataset is selected (variables list changes)
+ * - The simulator selection changes (prefix changes)
+ * - Variables are loaded or refreshed from a data file
+ *
+ * The completer provides case-insensitive popup suggestions as the user types
+ * in the GraphInput field, making it easier to select valid variable names.
+ */
+
+void DiagramDialog::updateCompleter() {
+    QStringList varList;
+
+    // Get current dataset and simulator prefix
+    QFileInfo Info(defaultDataSet);
+    QString datasetPrefix = "";
+    if(ChooseData->currentText() != Info.baseName())
+        datasetPrefix = ChooseData->currentText() + ":";
+
+    QString simPrefix = "";
+    if (ChooseSimulator->currentText() == "Ngspice") {
+        simPrefix = "ngspice/";
+    } else if (ChooseSimulator->currentText() == "Xyce") {
+        simPrefix = "xyce/";
+    } else if (ChooseSimulator->currentText() == "SpiceOpus") {
+        simPrefix = "spopus/";
+    }
+
+    // Extract all variable names from ChooseVars table
+    for(int i = 0; i < ChooseVars->rowCount(); i++) {
+        QTableWidgetItem *item = ChooseVars->item(i, 0);
+        if(item) {
+            QString varName = item->text();
+            varList << simPrefix + datasetPrefix + varName;
+        }
+    }
+
+    // Update completer model
+    QStringListModel *model = new QStringListModel(varList, graphCompleter);
+    graphCompleter->setModel(model);
 }

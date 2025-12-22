@@ -42,6 +42,7 @@ class QTableWidgetItem;
 class QListWidgetItem;
 class QTableWidget;
 class QListWidget;
+class QCompleter; // Variable completion
 
 
 class DiagramDialog : public QDialog  {
@@ -130,6 +131,23 @@ private:
   Cross3D     *DiagCross;
   bool changed, transfer, toTake;
   std::vector<std::unique_ptr<Graph>>  Graphs;
+
+  ////////////////////////////////////////////////
+  // Variable completion
+  /**
+   * @brief Autocompleter for the GraphInput line edit widget.
+   *
+   * @see updateCompleter()
+   */
+  QCompleter *graphCompleter;
+
+  ///
+  /// \brief Updates the autocomplete model for the GraphInput line edit.
+  /// @see graphCompleter;
+  ///
+  void updateCompleter();
+  ////////////////////////////////////////////////
+
 };
 
 #endif
