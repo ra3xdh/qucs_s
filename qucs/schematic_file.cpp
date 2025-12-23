@@ -703,7 +703,7 @@ int Schematic::saveDocument()
   stream << "  <OpenDisplay=" << a_SimOpenDpl << ">\n";
   stream << "  <Script=" << a_Script << ">\n";
   stream << "  <RunScript=" << a_SimRunScript << ">\n";
-  stream << "  <showFrame=" << a_showFrame << ">\n";
+  stream << "  <showFrame=" << static_cast<int>(a_showFrame) << ">\n";
 
   QString t;
   misc::convert2ASCII(t = a_Frame_Text0);
@@ -908,9 +908,15 @@ bool Schematic::loadProperties(QTextStream *stream)
     else if(cstr == "RunScript")
     if(nstr.toInt(&ok) == 0) a_SimRunScript = false;
     else a_SimRunScript = true;
-    else if(cstr == "showFrame")
-    a_showFrame = nstr.at(0).toLatin1() - '0';
-    else if(cstr == "FrameText0") misc::convert2Unicode(a_Frame_Text0 = nstr);
+    else if(cstr == "showFrame"){
+        bool ok = false;
+        int value = nstr.toInt(&ok);
+        if (ok) {
+            a_showFrame = static_cast<FrameSize>(value);
+        } else {
+            a_showFrame = FrameSize::None;  // Fallback
+        }
+    }else if(cstr == "FrameText0") misc::convert2Unicode(a_Frame_Text0 = nstr);
     else if(cstr == "FrameText1") misc::convert2Unicode(a_Frame_Text1 = nstr);
     else if(cstr == "FrameText2") misc::convert2Unicode(a_Frame_Text2 = nstr);
     else if(cstr == "FrameText3") misc::convert2Unicode(a_Frame_Text3 = nstr);

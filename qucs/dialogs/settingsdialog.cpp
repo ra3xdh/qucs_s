@@ -118,16 +118,40 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
     QWidget *Tab3 = new QWidget(t);
     QGridLayout *gp3 = new QGridLayout(Tab3);
     Combo_Frame = new QComboBox(Tab3);
-    Combo_Frame->insertItem(1, tr("no Frame"));
-    Combo_Frame->insertItem(2, tr("DIN A5 landscape"));
-    Combo_Frame->insertItem(3, tr("DIN A5 portrait"));
-    Combo_Frame->insertItem(4, tr("DIN A4 landscape"));
-    Combo_Frame->insertItem(5, tr("DIN A4 portrait"));
-    Combo_Frame->insertItem(6, tr("DIN A3 landscape"));
-    Combo_Frame->insertItem(7, tr("DIN A3 portrait"));
-    Combo_Frame->insertItem(8, tr("Letter landscape"));
-    Combo_Frame->insertItem(9, tr("Letter portrait"));
-    gp3->addWidget(Combo_Frame,0,0,1,2);
+
+    // Helper to add items with explicit frame code
+    // A6 format was added later, so its index must be >8 to guarantee backward compatibility with older Qucs-S
+    // versions.
+    // It makes sense to put all the DIN A standard formats together, so a function is needed to
+    // decouple the frame index from the frame combobox
+    auto addFrameItem = [this](QComboBox* cb, const QString& text, int code) {
+        cb->addItem(text);
+        int idx = cb->count() - 1;
+        cb->setItemData(idx, code, Qt::UserRole); // code == a_showFrame / <showFrame>
+    };
+
+
+    // Visual order: all DIN A paper formats, then Letter
+
+    // No frame
+    addFrameItem(Combo_Frame, tr("no Frame"),          0);
+
+    // DIN A formats
+    addFrameItem(Combo_Frame, tr("DIN A3 landscape"),  5);
+    addFrameItem(Combo_Frame, tr("DIN A3 portrait"),   6);
+    addFrameItem(Combo_Frame, tr("DIN A4 landscape"),  3);
+    addFrameItem(Combo_Frame, tr("DIN A4 portrait"),   4);
+    addFrameItem(Combo_Frame, tr("DIN A5 landscape"),  1);
+    addFrameItem(Combo_Frame, tr("DIN A5 portrait"),   2);
+    addFrameItem(Combo_Frame, tr("DIN A6 landscape"), 9);
+    addFrameItem(Combo_Frame, tr("DIN A6 portrait"),  10);
+
+    // US Letter format
+    addFrameItem(Combo_Frame, tr("Letter landscape"),  7);
+    addFrameItem(Combo_Frame, tr("Letter portrait"),   8);
+
+    gp3->addWidget(Combo_Frame, 0, 0, 1, 2);
+
 
     Input_Frame0 = new QTextEdit(Tab3);
     Input_Frame0->setWordWrapMode(QTextOption::NoWrap);
@@ -173,7 +197,24 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
     Check_GridOn->setChecked(Doc->getGridOn());
     Input_GridX->setText(QString::number(Doc->getGridX()));
     Input_GridY->setText(QString::number(Doc->getGridY()));
-    Combo_Frame->setCurrentIndex(Doc->getShowFrame());
+
+    //////////////////////////////////////////////////////////////////////////
+    // Select index in combo according to the document's frame code
+    FrameSize docFrame = Doc->getShowFrame();  // <showFrame=...> value from document
+    int idxToSelect = 0;                       // default: "no Frame" (index 0)
+
+    for (int i = 0; i < Combo_Frame->count(); ++i) {
+        FrameSize itemFrame = static_cast<FrameSize>(
+            Combo_Frame->itemData(i, Qt::UserRole).toInt()
+            );
+        if (itemFrame == docFrame) {
+            idxToSelect = i;
+            break;
+        }
+    }
+    Combo_Frame->setCurrentIndex(idxToSelect);
+
+    //////////////////////////////////////////////////////////////////////////
 
     QString Text_;
     decode_String(Text_ = Doc->getFrame_Text0());
@@ -277,11 +318,14 @@ void SettingsDialog::slotApply()
         changed = true;
     }
 
-    if(Doc->getShowFrame() != Combo_Frame->currentIndex())
-    {
-        Doc->setShowFrame(Combo_Frame->currentIndex());
+    FrameSize current = Doc->getShowFrame(); // Current frame
+    FrameSize selected = static_cast<FrameSize>(Combo_Frame->itemData(Combo_Frame->currentIndex(), Qt::UserRole).toInt()); // Selected frame
+
+    if (current != selected) {
+        Doc->setShowFrame(static_cast<int>(selected));
         changed = true;
     }
+
 
     QString t;
     encode_String(Input_Frame0->toPlainText(), t);

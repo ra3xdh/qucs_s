@@ -79,6 +79,26 @@ struct SubFile {
 };
 typedef QMap<QString, SubFile> SubMap;
 
+enum class FrameSize : int {
+    // No frame
+    None              = 0,
+
+    // DIN A formats
+    A6_Landscape      = 9,
+    A6_Portrait       = 10,
+    A5_Landscape      = 1,
+    A5_Portrait       = 2,
+    A4_Landscape      = 3,
+    A4_Portrait       = 4,
+    A3_Landscape      = 5,
+    A3_Portrait       = 6,
+
+    // US Letter
+    Letter_Landscape  = 7,
+    Letter_Portrait   = 8,
+};
+
+
 class Schematic : public Q3ScrollView, public QucsDoc {
   Q_OBJECT
 
@@ -220,8 +240,8 @@ public:
   void setFrame_Text2(const QString value) { a_Frame_Text2 = value; }
   QString getFrame_Text3() const { return a_Frame_Text3; }
   void setFrame_Text3(const QString value) { a_Frame_Text3 = value; }
-  int getShowFrame() const { return a_showFrame; }
-  void setShowFrame(int value) { a_showFrame = value; }
+  FrameSize getShowFrame() const { return a_showFrame; }
+  void setShowFrame(int value) {a_showFrame = static_cast<FrameSize>(value);}
   int getViewX1() const { return a_ViewX1; }
   int getViewY1() const { return a_ViewY1; }
   int getGridX() const { return a_GridX; }
@@ -274,7 +294,7 @@ private:
   int a_ViewX2;
   int a_ViewY2;
 
-  int a_showFrame;
+  FrameSize a_showFrame; // Frame format
   QString a_Frame_Text0;
   QString a_Frame_Text1;
   QString a_Frame_Text2;
