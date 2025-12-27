@@ -176,7 +176,10 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   Label4 = 0;     // different types with same content
   yrLabel = 0;
   yAxisBox = 0;
-  Property2 = 0;
+  thicknessSpin = 0;
+  thicknessLabel = 0;
+  precisionSpin = 0;
+  precisionLabel = 0;
   ColorButt = 0;
   hideInvisible = 0;
   rotationX = rotationY = rotationZ = 0;
@@ -209,25 +212,26 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   GraphInput->setCompleter(graphCompleter);
 
   if(Diag->Name == "Tab") {
-    Label1 = new QLabel(tr("Number Notation: "));
-    Box2Layout->addWidget(Label1);
-    PropertyBox = new QComboBox();
-    Box2Layout->addWidget(PropertyBox);
-    PropertyBox->addItem(tr("real/imaginary"));
-    PropertyBox->addItem(tr("magnitude/angle (degree)"));
-    PropertyBox->addItem(tr("magnitude/angle (radian)"));
-    PropertyBox->setCurrentIndex(1);
-    connect(PropertyBox, SIGNAL(activated(int)), SLOT(slotSetNumMode(int)));
-    Box2Layout->setStretchFactor(new QWidget(Box2), 5); // stretchable placeholder
+      Label1 = new QLabel(tr("Number Notation: "));
+      Box2Layout->addWidget(Label1);
+      PropertyBox = new QComboBox();
+      Box2Layout->addWidget(PropertyBox);
+      PropertyBox->addItem(tr("real/imaginary"));
+      PropertyBox->addItem(tr("magnitude/angle (degree)"));
+      PropertyBox->addItem(tr("magnitude/angle (radian)"));
+      PropertyBox->setCurrentIndex(1);
+      connect(PropertyBox, SIGNAL(activated(int)), SLOT(slotSetNumMode(int)));
+      Box2Layout->setStretchFactor(new QWidget(Box2), 5);
 
-    Label2 = new QLabel(tr("Precision:"));
-    Box2Layout->addWidget(Label2);
-    Property2 = new QLineEdit();
-    Box2Layout->addWidget(Property2);
-    Property2->setValidator(ValInteger);
-    Property2->setMaxLength(2);
-    Property2->setMaximumWidth(25);
-    Property2->setText("3");
+      precisionLabel = new QLabel(tr("Precision:"));
+      Box2Layout->addWidget(precisionLabel);
+      precisionSpin = new QSpinBox();
+      Box2Layout->addWidget(precisionSpin);
+      precisionSpin->setMinimum(0);
+      precisionSpin->setMaximum(99);
+      precisionSpin->setValue(3);
+      precisionSpin->setMaximumWidth(60);
+      connect(precisionSpin, SIGNAL(valueChanged(int)), SLOT(slotSetPrecision(int)));
   }
   else if(Diag->Name != "Truth") {
     Label1 = new QLabel(tr("Color:"));
@@ -257,14 +261,17 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       SLOT(slotSetGraphStyle(int)));
     Box2Layout->setStretchFactor(new QWidget(Box2), 5); // stretchable placeholder
 
-    Label2 = new QLabel(tr("Thickness:"));
-    Box2Layout->addWidget(Label2);
-    Property2 = new QLineEdit();
-    Box2Layout->addWidget(Property2);
-    Property2->setValidator(ValInteger);
-    Property2->setMaximumWidth(25);
-    Property2->setMaxLength(2);
-    Property2->setText(_settings::Get().item<QString>("DefaultGraphLineWidth"));
+    Box2Layout->setStretchFactor(new QWidget(Box2), 5);
+
+    thicknessLabel = new QLabel(tr("Thickness:"));
+    Box2Layout->addWidget(thicknessLabel);
+    thicknessSpin = new QSpinBox();
+    Box2Layout->addWidget(thicknessSpin);
+    thicknessSpin->setMinimum(0);
+    thicknessSpin->setMaximum(99);
+    thicknessSpin->setValue(_settings::Get().item<QString>("DefaultGraphLineWidth").toInt());
+    thicknessSpin->setMaximumWidth(60);
+    connect(thicknessSpin, SIGNAL(valueChanged(int)), SLOT(slotSetThickness(int)));
 
     if((Diag->Name=="Rect") || (Diag->Name=="PS") || (Diag->Name=="SP") || (Diag->Name=="Curve")) {
       Label4 = new QLabel(tr("y-Axis:"));
@@ -278,14 +285,19 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       connect(yAxisBox, SIGNAL(activated(int)), SLOT(slotSetYAxis(int)));
     }
   }
-  if(Property2) {
-    connect(Property2, SIGNAL(textChanged(const QString&)),
-      SLOT(slotSetProp2(const QString&)));
 
-    Label1->setEnabled(false);
-    PropertyBox->setEnabled(false);
-    Label2->setEnabled(false);
-    Property2->setEnabled(false);
+  if(thicknessSpin) {
+      Label1->setEnabled(false);
+      PropertyBox->setEnabled(false);
+      thicknessLabel->setEnabled(false);
+      thicknessSpin->setEnabled(false);
+  }
+
+  if(precisionSpin) {
+      Label1->setEnabled(false);
+      PropertyBox->setEnabled(false);
+      precisionLabel->setEnabled(false);
+      precisionSpin->setEnabled(false);
   }
 
   QWidget *Box1 = new QWidget();
@@ -1057,7 +1069,7 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
 
     if(Diag->Name != "Tab" && Diag->Name != "Truth") {
         g->Color = misc::getWidgetBackgroundColor(ColorButt);
-        g->Thick = Property2->text().toInt();
+        g->Thick = thicknessSpin->value();
         QColor selectedColor(DefaultColors[GraphList->rowCount() % NumDefaultColors]);
         QString stylesheet = QStringLiteral("QPushButton {background-color: %1};")
                                  .arg(selectedColor.name());
@@ -1078,8 +1090,8 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
         Label3->setEnabled(true);
         ColorButt->setEnabled(true);
     } else if(Diag->Name == "Tab") {  // Changed from 'else' to 'else if'
-        if(Property2) {  // Add null check
-            g->Precision = Property2->text().toInt();
+        if(precisionSpin) {  // Add null check
+            g->Precision = precisionSpin->value();
             g->numMode = PropertyBox->currentIndex();
         }
     }
@@ -1094,11 +1106,17 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
 
     GraphInput->blockSignals(false);
 
-    if(Property2) {
+    if(thicknessSpin) {
         Label1->setEnabled(true);
         PropertyBox->setEnabled(true);
-        Label2->setEnabled(true);
-        Property2->setEnabled(true);
+        thicknessLabel->setEnabled(true);
+        thicknessSpin->setEnabled(true);
+    }
+    if(precisionSpin) {
+        Label1->setEnabled(true);
+        PropertyBox->setEnabled(true);
+        precisionLabel->setEnabled(true);
+        precisionSpin->setEnabled(true);
     }
 }
 
@@ -1128,7 +1146,7 @@ void DiagramDialog::SelectGraph(Graph *g)
 
   if(Diag->Name != "Tab") {
     if(Diag->Name != "Truth") {
-      Property2->setText(QString::number(g->Thick));
+      thicknessSpin->setValue(g->Thick);
       QString stylesheet = QStringLiteral("QPushButton {background-color: %1};").arg(g->Color.name());
       ColorButt->setStyleSheet(stylesheet);
       misc::setPickerColor(ColorButt,g->Color);
@@ -1144,16 +1162,22 @@ void DiagramDialog::SelectGraph(Graph *g)
     }
   }
   else {
-    Property2->setText(QString::number(g->Precision));
+    precisionSpin->setValue(g->Precision);
     PropertyBox->setCurrentIndex(g->numMode);
   }
   toTake = false;
 
-  if(Property2) {
-    Label1->setEnabled(true);
-    PropertyBox->setEnabled(true);
-    Label2->setEnabled(true);
-    Property2->setEnabled(true);
+  if(thicknessSpin) {
+      Label1->setEnabled(true);
+      PropertyBox->setEnabled(true);
+      thicknessLabel->setEnabled(true);
+      thicknessSpin->setEnabled(true);
+  }
+  if(precisionSpin) {
+      Label1->setEnabled(true);
+      PropertyBox->setEnabled(true);
+      precisionLabel->setEnabled(true);
+      precisionSpin->setEnabled(true);
   }
 }
 
@@ -1187,7 +1211,7 @@ void DiagramDialog::slotDeleteGraph()
                                  .arg(selectedColor.name());
         ColorButt->setStyleSheet(stylesheet);
         misc::setPickerColor(ColorButt, selectedColor);
-        Property2->setText("0");
+        if(thicknessSpin) thicknessSpin->setValue(0);
         if(yAxisBox) {
             yAxisBox->setCurrentIndex(0);
             yAxisBox->setEnabled(false);
@@ -1196,18 +1220,25 @@ void DiagramDialog::slotDeleteGraph()
         Label3->setEnabled(false);
         ColorButt->setEnabled(false);
     } else {
-        Property2->setText("3");
+        if(precisionSpin) precisionSpin->setValue(3);
     }
 
     changed = true;
     toTake = false;
 
-    if(Property2) {
+    if(thicknessSpin) {
         PropertyBox->setCurrentIndex(0);
         Label1->setEnabled(false);
         PropertyBox->setEnabled(false);
-        Label2->setEnabled(false);
-        Property2->setEnabled(false);
+        thicknessLabel->setEnabled(false);
+        thicknessSpin->setEnabled(false);
+    }
+    if(precisionSpin) {
+        PropertyBox->setCurrentIndex(0);
+        Label1->setEnabled(false);
+        PropertyBox->setEnabled(false);
+        precisionLabel->setEnabled(false);
+        precisionSpin->setEnabled(false);
     }
 }
 
@@ -1224,7 +1255,7 @@ void DiagramDialog::slotNewGraph()
 
     if(Diag->Name != "Tab" && Diag->Name != "Truth") {
         g->Color = misc::getWidgetBackgroundColor(ColorButt);
-        g->Thick = Property2->text().toInt();
+        g->Thick = thicknessSpin->value();
         g->Style = toGraphStyle(PropertyBox->currentIndex());
         assert(g->Style != GRAPHSTYLE_INVALID);
         if(yAxisBox) {
@@ -1233,7 +1264,7 @@ void DiagramDialog::slotNewGraph()
             g->yAxisNo = 1;
         }
     } else {
-        g->Precision = Property2->text().toInt();
+        g->Precision = precisionSpin->value();
         g->numMode = PropertyBox->currentIndex();
     }
 
@@ -1507,22 +1538,26 @@ void DiagramDialog::slotResetToTake(const QString& s)
     updateXVar();
 }
 
-/*!
- Is called if the user changes the graph thickness or the precision.
-*/
-void DiagramDialog::slotSetProp2(const QString& s)
-{
+void DiagramDialog::slotSetThickness(int value) {
     int i = GraphList->currentRow();
     if(i < 0) return;
 
     Graph *g = Graphs.at(i).get();
-    if(Diag->Name == "Tab") {
-        g->Precision = s.toInt();
-    } else {
-        g->Thick = s.toInt();
-    }
+    g->Thick = value;
 
-    updateGraphListItem(i);  // Update table display
+    updateGraphListItem(i);
+    changed = true;
+    toTake = false;
+}
+
+void DiagramDialog::slotSetPrecision(int value) {
+    int i = GraphList->currentRow();
+    if(i < 0) return;
+
+    Graph *g = Graphs.at(i).get();
+    g->Precision = value;
+
+    updateGraphListItem(i);
     changed = true;
     toTake = false;
 }

@@ -24,6 +24,7 @@
 #endif*/
 
 #include <QDialog>
+#include <QSpinBox>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
 #include <vector>
@@ -43,6 +44,7 @@ class QListWidgetItem;
 class QTableWidget;
 class QListWidget;
 class QCompleter; // Variable completion
+class QSpinBox; // Thickness and decimal precission widgets
 
 
 class DiagramDialog : public QDialog  {
@@ -68,7 +70,6 @@ private slots:
   void slotSetColor();
   void slotSetGridColor();
   void slotResetToTake(const QString&);
-  void slotSetProp2(const QString&);
   void slotSetNumMode(int);
   void slotSetGridBox(int);
   void slotSetGraphStyle(int);
@@ -93,6 +94,9 @@ private slots:
   /// \brief Handles key press events
   ///
   void keyPressEvent(QKeyEvent *event) override;
+
+  void slotSetThickness(int);
+  void slotSetPrecision(int);
 
 protected slots:
     void reject();
@@ -125,7 +129,8 @@ private:
   QTableWidget *GraphList;
 
   QVBoxLayout *all;   // the mother of all widgets
-  QLineEdit   *GraphInput, *Property2, *xLabel, *ylLabel, *yrLabel;
+  QLineEdit   *GraphInput, *xLabel, *ylLabel, *yrLabel;
+  QSpinBox    *thicknessSpin, *precisionSpin;
   QCheckBox   *GridOn, *GridLogX, *GridLogY, *GridLogZ;
   QCheckBox   *manualX, *manualY, *manualZ, *hideInvisible;
   QLineEdit   *startX, *stepX, *stopX;
@@ -134,6 +139,7 @@ private:
   QLineEdit   *rotationX, *rotationY, *rotationZ;
   QLabel      *GridLabel1, *GridLabel2, *Label1, *Label2, *Label3, *Label4,
               *NotationLabel;
+  QLabel      *thicknessLabel, *precisionLabel;
   QComboBox   *PropertyBox, *GridStyleBox, *yAxisBox, *NotationBox;
   QPushButton *ColorButt, *GridColorButt;
   QSlider     *SliderRotX, *SliderRotY, *SliderRotZ;
