@@ -59,8 +59,7 @@ private slots:
   void slotReadVars(int);
   void slotReadVarsAndSetSimulator(int);
   void slotTakeVar(QTableWidgetItem *item);
-//  void slotSelectGraph(int index);
-  void slotSelectGraph(QListWidgetItem*);
+  void slotSelectGraph(QTableWidgetItem*);
   void slotNewGraph();
   void slotDeleteGraph();
   void slotOK();
@@ -101,6 +100,11 @@ protected slots:
 private:
   void SelectGraph(Graph*);
   void updateXVar();
+  ///
+  /// \brief Updates the content of the graph list to see the trace name along with the trace properties
+  /// \param row: Number of the row to update
+  ///
+  void updateGraphListItem(int row);
 
   Diagram *Diag;
   QString defaultDataSet;
@@ -118,7 +122,7 @@ private:
   QComboBox *LogUnitsY;
   QComboBox *LogUnitsZ;
   QTableWidget *ChooseVars;
-  QListWidget  *GraphList;
+  QTableWidget *GraphList;
 
   QVBoxLayout *all;   // the mother of all widgets
   QLineEdit   *GraphInput, *Property2, *xLabel, *ylLabel, *yrLabel;

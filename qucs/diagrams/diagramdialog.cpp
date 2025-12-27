@@ -127,6 +127,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
     defaultDataSet = "unknown";
   }
   setWindowTitle(tr("Edit Diagram Properties"));
+  resize(700, 650); // Initial size of the dialog window
   changed = false;
   transfer = false;  // have changes be applied ? (used by "Cancel")
   toTake = false;   // double-clicked variable be inserted into graph list ?
@@ -342,10 +343,62 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   Box1Layout->addWidget(GraphGroup);
   QVBoxLayout *GraphGroupLayout = new QVBoxLayout();
   GraphGroup->setLayout(GraphGroupLayout);
-  GraphList = new QListWidget();
+
+  // GraphList displays the trace properties along the trace name. This helps the user to identify the visual properties of the trace
+  // such as color, thickness, style and the y-axis
+  GraphList = new QTableWidget();
+
+  // Determine which columns to show based on diagram type
+  // Tabular data and truth tables doesn't contain traces, so it makes no sense to show properties like the width and color, etc.
+  bool showTraceProperties = (Diag->Name != "Tab" && Diag->Name != "Truth");
+
+  if(showTraceProperties) {
+      GraphList->setColumnCount(5);
+      QStringList graphHeaders;
+      graphHeaders << tr("Variable") << tr("Color") << tr("Style")
+                   << tr("Thick") << tr("y-Axis");
+      GraphList->setHorizontalHeaderLabels(graphHeaders);
+  } else {
+      // Tabular data and truth tables
+      GraphList->setColumnCount(1);
+      QStringList graphHeaders;
+      graphHeaders << tr("Variable");
+      GraphList->setHorizontalHeaderLabels(graphHeaders);
+  }
+  GraphList->verticalHeader()->setVisible(false);
+  GraphList->setSelectionBehavior(QAbstractItemView::SelectRows);
+  GraphList->setSelectionMode(QAbstractItemView::SingleSelection);
+  GraphList->setSortingEnabled(false);
+  GraphList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+  // Set column resize modes for compact display
+  GraphList->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch); // Variable column stretches
+
+  if(showTraceProperties) {
+      // Plots with traces (not tabular)
+      GraphList->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed); // Color
+      GraphList->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents); // Style
+      GraphList->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents); // Thick
+      GraphList->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents); // y-Axis
+      GraphList->setColumnWidth(1, 40); // Fixed width for color swatch
+  }
+
+  // Set resize policy
+  GraphList->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+  GraphList->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
+
+  // Set size policy to allow it to shrink
+  GraphList->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+
   GraphGroupLayout->addWidget(GraphList);
-  connect(GraphList, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(slotSelectGraph(QListWidgetItem*)));
-  connect(GraphList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(slotDeleteGraph()));
+
+
+  Box1Layout->addWidget(DataGroup, 0);      // No stretch
+  Box1Layout->addWidget(GraphGroup, 1);     // Stretch factor 1 (takes extra space)
+
+  connect(GraphList, SIGNAL(itemClicked(QTableWidgetItem*)), SLOT(slotSelectGraph(QTableWidgetItem*)));
+  connect(GraphList, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), SLOT(slotDeleteGraph()));
   QPushButton *NewButt = new QPushButton(tr("New Graph"));
   GraphGroupLayout->addWidget(NewButt);
   connect(NewButt, SIGNAL(clicked()), SLOT(slotNewGraph()));
@@ -806,17 +859,22 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   // put all graphs into the ListBox
   Row = 0;
   for (Graph *pg : Diag->Graphs) {
-    GraphList->insertItem(Row, pg->Var);
-    if(pg == currentGraph) {
-      GraphList->setCurrentRow(Row);   // select current graph
-      SelectGraph(currentGraph);
-    }
-    Row++;
+      GraphList->setRowCount(Row + 1);
+
+      // Populate the table row with graph properties
+      // Note: Graphs vector is already populated by copyDiagramGraphs()
+      updateGraphListItem(Row);
+
+      if(pg == currentGraph) {
+          GraphList->selectRow(Row);   // select current graph
+          SelectGraph(currentGraph);
+      }
+      Row++;
   }
 
   if(ColorButt) {
     if(!currentGraph) {
-      QColor selectedColor(DefaultColors[GraphList->count()%NumDefaultColors]);
+      QColor selectedColor(DefaultColors[GraphList->rowCount()%NumDefaultColors]);
       QString stylesheet = QStringLiteral("QPushButton {background-color: %1};").arg(selectedColor.name());
       ColorButt->setStyleSheet(stylesheet);
       misc::setPickerColor(ColorButt, selectedColor);
@@ -973,88 +1031,89 @@ void DiagramDialog::slotReadVars(int)
 // also inserted as graph.
 void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
 {
-  GraphInput->blockSignals(true);
-  if(toTake) GraphInput->setText("");
+    GraphInput->blockSignals(true);
+    if(toTake) GraphInput->setText("");
 
-  GraphInput->cursorPosition();
-  //QString s="";
-  //QString s1 = Item->text();
-  int row = Item->row();
-  QString s1 = ChooseVars->item(row, 0)->text();
-  QFileInfo Info(defaultDataSet);
-  if(ChooseData->currentText() != Info.baseName())
-    s1 = ChooseData->currentText() + ":" + s1;
-  if (ChooseSimulator->currentText()=="Ngspice") {
-      s1 = "ngspice/" + s1;
-  } else if (ChooseSimulator->currentText()=="Xyce") {
-      s1 = "xyce/" + s1;
-  } else if (ChooseSimulator->currentText()=="SpiceOpus") {
-      s1 = "spopus/" + s1;
-  }
-  GraphInput->setText(s1);
-  updateXVar();
+    int row = Item->row();
+    QString s1 = ChooseVars->item(row, 0)->text();
+    QFileInfo Info(defaultDataSet);
+    if(ChooseData->currentText() != Info.baseName())
+        s1 = ChooseData->currentText() + ":" + s1;
+    if(ChooseSimulator->currentText() == "Ngspice") {
+        s1 = "ngspice/" + s1;
+    } else if(ChooseSimulator->currentText() == "Xyce") {
+        s1 = "xyce/" + s1;
+    } else if(ChooseSimulator->currentText() == "SpiceOpus") {
+        s1 = "spopus/" + s1;
+    }
+    GraphInput->setText(s1);
+    updateXVar();
 
-  //if(s.isEmpty()) {
-    GraphList->addItem(GraphInput->text());////addItem(i, GraphInput->text());
-    GraphList->setCurrentRow(GraphList->count()-1);
+           // Add new row to table
+    int newRow = GraphList->rowCount();
+    GraphList->setRowCount(newRow + 1);
 
-    Graph *g = new Graph(Diag, GraphInput->text());   // create a new graph
+    Graph *g = new Graph(Diag, GraphInput->text());
 
-    if(Diag->Name != "Tab") {
-      if(Diag->Name != "Truth") {
+    if(Diag->Name != "Tab" && Diag->Name != "Truth") {
         g->Color = misc::getWidgetBackgroundColor(ColorButt);
         g->Thick = Property2->text().toInt();
-        QColor selectedColor(DefaultColors[GraphList->count()%NumDefaultColors]);
-        QString stylesheet = QStringLiteral("QPushButton {background-color: %1};").arg(selectedColor.name());
+        QColor selectedColor(DefaultColors[GraphList->rowCount() % NumDefaultColors]);
+        QString stylesheet = QStringLiteral("QPushButton {background-color: %1};")
+                                 .arg(selectedColor.name());
         ColorButt->setStyleSheet(stylesheet);
         misc::setPickerColor(ColorButt, selectedColor);
-        if(g->Var.right(3) == ".Vb")   // harmonic balance output ?
-          if(PropertyBox->count() >= GRAPHSTYLE_ARROW)
-            PropertyBox->setCurrentIndex(GRAPHSTYLE_ARROW);
+        if(g->Var.right(3) == ".Vb")
+            if(PropertyBox->count() >= GRAPHSTYLE_ARROW)
+                PropertyBox->setCurrentIndex(GRAPHSTYLE_ARROW);
         g->Style = toGraphStyle(PropertyBox->currentIndex());
-        assert(g->Style!=GRAPHSTYLE_INVALID);
+        assert(g->Style != GRAPHSTYLE_INVALID);
         if(yAxisBox) {
-          g->yAxisNo = yAxisBox->currentIndex();
-          yAxisBox->setEnabled(true);
-          Label4->setEnabled(true);
+            g->yAxisNo = yAxisBox->currentIndex();
+            yAxisBox->setEnabled(true);
+            Label4->setEnabled(true);
+        } else if(Diag->Name == "Rect3D") {
+            g->yAxisNo = 1;
         }
-        else if(Diag->Name == "Rect3D") g->yAxisNo = 1;
-
         Label3->setEnabled(true);
         ColorButt->setEnabled(true);
-      }
+    } else if(Diag->Name == "Tab") {  // Changed from 'else' to 'else if'
+        if(Property2) {  // Add null check
+            g->Precision = Property2->text().toInt();
+            g->numMode = PropertyBox->currentIndex();
+        }
     }
-    else {
-      g->Precision = Property2->text().toInt();
-      g->numMode   = PropertyBox->currentIndex();
-    }
+    // For "Truth" diagrams, we don't set any special properties
 
     Graphs.emplace_back(g);
+    updateGraphListItem(newRow);
+    GraphList->selectRow(newRow);
+
     changed = true;
-    toTake  = true;
-  //}
+    toTake = true;
 
-  GraphInput->blockSignals(false);
+    GraphInput->blockSignals(false);
 
-  if(Property2) {
-    Label1->setEnabled(true);
-    PropertyBox->setEnabled(true);
-    Label2->setEnabled(true);
-    Property2->setEnabled(true);
-  }
+    if(Property2) {
+        Label1->setEnabled(true);
+        PropertyBox->setEnabled(true);
+        Label2->setEnabled(true);
+        Property2->setEnabled(true);
+    }
 }
 
 /*!
   Is called if a graph text is clicked in the ListBox.
 */
-void DiagramDialog::slotSelectGraph(QListWidgetItem *item)
+void DiagramDialog::slotSelectGraph(QTableWidgetItem *item)
 {
-  if(item == 0) {
-    GraphList->clearSelection();
-    return;
-  }
+    if(item == 0) {
+        GraphList->clearSelection();
+        return;
+    }
 
-  SelectGraph (Graphs.at(GraphList->currentRow()).get());
+    int row = item->row();
+    SelectGraph(Graphs.at(row).get());
 }
 
 /*!
@@ -1103,82 +1162,87 @@ void DiagramDialog::SelectGraph(Graph *g)
 */
 void DiagramDialog::slotDeleteGraph()
 {
-  int i = GraphList->currentRow();
-  if(i < 0) return;   // return, if no item selected
+    int i = GraphList->currentRow();
+    if(i < 0) return;
 
-  GraphList->takeItem(i);
-  Graphs.erase(std::next(Graphs.begin(), i));
+    GraphList->removeRow(i);
+    Graphs.erase(std::next(Graphs.begin(), i));
 
-  int k=0;
-  if (GraphList->count()!=0) {
-      if (i>(GraphList->count()-1)) {
-          k = GraphList->count()-1;
-      } else {
-          k=i;
-      }
-      GraphInput->setText(GraphList->item(k)->text());
-  } else {
-      GraphInput->setText("");  // erase input line and back to default values
-  }
-
-  if(Diag->Name != "Tab") {
-    if(Diag->Name != "Truth") {
-      QColor selectedColor(DefaultColors[GraphList->count()%NumDefaultColors]);
-      QString stylesheet = QStringLiteral("QPushButton {background-color: %1};").arg(selectedColor.name());
-      ColorButt->setStyleSheet(stylesheet);
-      misc::setPickerColor(ColorButt,selectedColor);
-      Property2->setText("0");
-      if(yAxisBox) {
-        yAxisBox->setCurrentIndex(0);
-        yAxisBox->setEnabled(false);
-        Label4->setEnabled(false);
-      }
-
-      Label3->setEnabled(false);
-      ColorButt->setEnabled(false);
+    int k = 0;
+    if(GraphList->rowCount() != 0) {
+        if(i > (GraphList->rowCount() - 1)) {
+            k = GraphList->rowCount() - 1;
+        } else {
+            k = i;
+        }
+        GraphList->selectRow(k);
+        SelectGraph(Graphs.at(k).get());
+    } else {
+        GraphInput->setText("");
     }
-  }
-  else  Property2->setText("3");
-  changed = true;
-  toTake  = false;
 
-  if(Property2) {
-    PropertyBox->setCurrentIndex(0);
+    if(Diag->Name != "Tab" && Diag->Name != "Truth") {
+        QColor selectedColor(DefaultColors[GraphList->rowCount() % NumDefaultColors]);
+        QString stylesheet = QStringLiteral("QPushButton {background-color: %1};")
+                                 .arg(selectedColor.name());
+        ColorButt->setStyleSheet(stylesheet);
+        misc::setPickerColor(ColorButt, selectedColor);
+        Property2->setText("0");
+        if(yAxisBox) {
+            yAxisBox->setCurrentIndex(0);
+            yAxisBox->setEnabled(false);
+            Label4->setEnabled(false);
+        }
+        Label3->setEnabled(false);
+        ColorButt->setEnabled(false);
+    } else {
+        Property2->setText("3");
+    }
 
-    Label1->setEnabled(false);
-    PropertyBox->setEnabled(false);
-    Label2->setEnabled(false);
-    Property2->setEnabled(false);
-  }
+    changed = true;
+    toTake = false;
+
+    if(Property2) {
+        PropertyBox->setCurrentIndex(0);
+        Label1->setEnabled(false);
+        PropertyBox->setEnabled(false);
+        Label2->setEnabled(false);
+        Property2->setEnabled(false);
+    }
 }
 
 // --------------------------------------------------------------------------
 void DiagramDialog::slotNewGraph()
 {
-  assert(Diag);
-  if(GraphInput->text().isEmpty()) return;
+    assert(Diag);
+    if(GraphInput->text().isEmpty()) return;
 
-  GraphList->addItem(GraphInput->text());
+    int newRow = GraphList->rowCount();
+    GraphList->setRowCount(newRow + 1);
 
-  Graph *g = new Graph(Diag, GraphInput->text());
-// FIXME: call  Diag->whateverelse();
-  if(Diag->Name != "Tab") { // BUG
-    if(Diag->Name != "Truth") { // BUG
-      g->Color = misc::getWidgetBackgroundColor(ColorButt);
-      g->Thick = Property2->text().toInt();
-      g->Style = toGraphStyle(PropertyBox->currentIndex());
-      assert(g->Style!=GRAPHSTYLE_INVALID);
-      if(yAxisBox)  g->yAxisNo = yAxisBox->currentIndex();
-      else if(Diag->Name == "Rect3D")  g->yAxisNo = 1;
+    Graph *g = new Graph(Diag, GraphInput->text());
+
+    if(Diag->Name != "Tab" && Diag->Name != "Truth") {
+        g->Color = misc::getWidgetBackgroundColor(ColorButt);
+        g->Thick = Property2->text().toInt();
+        g->Style = toGraphStyle(PropertyBox->currentIndex());
+        assert(g->Style != GRAPHSTYLE_INVALID);
+        if(yAxisBox) {
+            g->yAxisNo = yAxisBox->currentIndex();
+        } else if(Diag->Name == "Rect3D") {
+            g->yAxisNo = 1;
+        }
+    } else {
+        g->Precision = Property2->text().toInt();
+        g->numMode = PropertyBox->currentIndex();
     }
-  }
-  else {
-    g->Precision = Property2->text().toInt();
-    g->numMode   = PropertyBox->currentIndex();
-  }
-  Graphs.emplace_back(g);
-  changed = true;
-  toTake  = false;
+
+    Graphs.emplace_back(g);
+    updateGraphListItem(newRow);
+    GraphList->selectRow(newRow);
+
+    changed = true;
+    toTake = false;
 }
 
 /*!
@@ -1401,19 +1465,22 @@ void DiagramDialog::reject()
 // --------------------------------------------------------------------------
 void DiagramDialog::slotSetColor()
 {
-  QColor c = QColorDialog::getColor(misc::getWidgetBackgroundColor(ColorButt),this);
-  if(!c.isValid()) return;
-  QString stylesheet = QStringLiteral("QPushButton {background-color: %1};").arg(c.name());
-  ColorButt->setStyleSheet(stylesheet);
-  misc::setPickerColor(ColorButt,c);
+    QColor c = QColorDialog::getColor(misc::getWidgetBackgroundColor(ColorButt), this);
+    if(!c.isValid()) return;
+  QString stylesheet = QStringLiteral("QPushButton {background-color: %1};")
+                             .arg(c.name());
+    ColorButt->setStyleSheet(stylesheet);
+    misc::setPickerColor(ColorButt, c);
 
-  int i = GraphList->currentRow();
-  if(i < 0) return;   // return, if no item selected
+    int i = GraphList->currentRow();
+    if(i < 0) return;
 
-  Graphs.at(i)->Color = c;
-  changed = true;
-  toTake  = false;
+    Graphs.at(i)->Color = c;
+    updateGraphListItem(i);  // Update table display
+    changed = true;
+    toTake = false;
 }
+
 
 // --------------------------------------------------------------------------
 void DiagramDialog::slotSetGridColor()
@@ -1430,14 +1497,14 @@ void DiagramDialog::slotSetGridColor()
 */
 void DiagramDialog::slotResetToTake(const QString& s)
 {
-  int i = GraphList->currentRow();
-  if(i < 0) return;   // return, if no item selected
+    int i = GraphList->currentRow();
+    if(i < 0) return;
 
-  Graphs.at(i)->Var = s;
-  // \todo GraphList->changeItem(s, i);   // must done after the graph settings !!!
-  changed = true;
-  toTake  = false;
-  updateXVar();
+    Graphs.at(i)->Var = s;
+    updateGraphListItem(i);
+    changed = true;
+    toTake = false;
+    updateXVar();
 }
 
 /*!
@@ -1445,14 +1512,19 @@ void DiagramDialog::slotResetToTake(const QString& s)
 */
 void DiagramDialog::slotSetProp2(const QString& s)
 {
-  int i = GraphList->currentRow();
-  if(i < 0) return;   // return, if no item selected
+    int i = GraphList->currentRow();
+    if(i < 0) return;
 
-  Graph *g = Graphs.at(i).get();
-  if(Diag->Name == "Tab") g->Precision = s.toInt();
-  else  g->Thick = s.toInt();
-  changed = true;
-  toTake  = false;
+    Graph *g = Graphs.at(i).get();
+    if(Diag->Name == "Tab") {
+        g->Precision = s.toInt();
+    } else {
+        g->Thick = s.toInt();
+    }
+
+    updateGraphListItem(i);  // Update table display
+    changed = true;
+    toTake = false;
 }
 
 /*!
@@ -1492,14 +1564,16 @@ void DiagramDialog::slotSetGridBox(int state)
 */
 void DiagramDialog::slotSetGraphStyle(int style)
 {
-  int i = GraphList->currentRow();
-  if(i < 0) return;   // return, if no item selected
+    int i = GraphList->currentRow();
+    if(i < 0) return;
 
-  Graph *g = Graphs.at(i).get();
-  g->Style = toGraphStyle(style);
-  assert(g->Style!=GRAPHSTYLE_INVALID);
-  changed = true;
-  toTake  = false;
+    Graph *g = Graphs.at(i).get();
+    g->Style = toGraphStyle(style);
+    assert(g->Style != GRAPHSTYLE_INVALID);
+
+    updateGraphListItem(i);  // Update table display
+    changed = true;
+    toTake = false;
 }
 
 /*!
@@ -1516,12 +1590,13 @@ void DiagramDialog::copyDiagramGraphs()
 */
 void DiagramDialog::slotSetYAxis(int axis)
 {
-  int i = GraphList->currentRow();
-  if(i < 0) return;   // return, if no item selected
+    int i = GraphList->currentRow();
+    if(i < 0) return;
 
-  Graphs.at(i)->yAxisNo = axis;
-  changed = true;
-  toTake  = false;
+    Graphs.at(i)->yAxisNo = axis;
+    updateGraphListItem(i);  // Update table display
+    changed = true;
+    toTake = false;
 }
 
 // --------------------------------------------------------------------------
@@ -1761,7 +1836,6 @@ void DiagramDialog::updateCompleter() {
  */
 void DiagramDialog::keyPressEvent(QKeyEvent *event)
 {
-    // Delete selected graph when Delete key is pressed
     if(event->key() == Qt::Key_Delete) {
         if(GraphList->hasFocus() && GraphList->currentRow() >= 0) {
             slotDeleteGraph();
@@ -1770,21 +1844,19 @@ void DiagramDialog::keyPressEvent(QKeyEvent *event)
         }
     }
 
-    // Prevent Enter/Return from closing dialog when GraphInput has focus
     if(GraphInput->hasFocus() &&
         (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)) {
         event->accept();
 
-        // Use QTimer to allow completer to finish updating GraphInput first
         QTimer::singleShot(0, this, [this]() {
             if(!GraphInput->text().isEmpty()) {
                 int selectedRow = GraphList->currentRow();
 
                 if(selectedRow >= 0) {
-                    // Update existing selected graph
-                    GraphList->item(selectedRow)->setText(GraphInput->text());
+                    GraphList->item(selectedRow, 0)->setText(GraphInput->text());
+                    Graphs.at(selectedRow)->Var = GraphInput->text();
+                    updateGraphListItem(selectedRow);
                 } else {
-                    // No selection, create new graph
                     slotNewGraph();
                 }
 
@@ -1795,4 +1867,90 @@ void DiagramDialog::keyPressEvent(QKeyEvent *event)
     }
 
     QDialog::keyPressEvent(event);
+}
+
+/*!
+ * \brief Updates a row in the graph list table with current graph properties.
+ * \param row Row index to update with variable name, color, style, thickness, and y-axis.
+ */
+void DiagramDialog::updateGraphListItem(int row)
+{
+    if(row < 0 || row >= (int)Graphs.size()) return;
+    if(row >= GraphList->rowCount()) return;  // Safety check
+
+    Graph *g = Graphs.at(row).get();
+    if(!g) return;  // Safety check
+
+    // Column 0: Variable name (always shown)
+    QTableWidgetItem *varItem = GraphList->item(row, 0);
+    if(!varItem) {
+        varItem = new QTableWidgetItem(g->Var);
+        varItem->setFlags(varItem->flags() ^ Qt::ItemIsEditable);
+        GraphList->setItem(row, 0, varItem);
+    } else {
+        varItem->setText(g->Var);
+    }
+
+    // Only show trace properties if we have more than 1 column
+    if(GraphList->columnCount() > 1 && Diag->Name != "Tab" && Diag->Name != "Truth") {
+        // Column 1: Color swatch
+        QTableWidgetItem *colorItem = GraphList->item(row, 1);
+        if(!colorItem) {
+            colorItem = new QTableWidgetItem();
+            colorItem->setFlags(colorItem->flags() ^ Qt::ItemIsEditable);
+            GraphList->setItem(row, 1, colorItem);
+        }
+        colorItem->setBackground(QBrush(g->Color));
+
+        // Column 2: Style
+        QString styleName;
+        switch(g->Style) {
+        case GRAPHSTYLE_SOLID: styleName = tr("solid"); break;
+        case GRAPHSTYLE_DASH: styleName = tr("dash"); break;
+        case GRAPHSTYLE_DOT: styleName = tr("dot"); break;
+        case GRAPHSTYLE_LONGDASH: styleName = tr("long dash"); break;
+        case GRAPHSTYLE_STAR: styleName = tr("stars"); break;
+        case GRAPHSTYLE_CIRCLE: styleName = tr("circles"); break;
+        case GRAPHSTYLE_ARROW: styleName = tr("arrows"); break;
+        default: styleName = ""; break;
+        }
+        QTableWidgetItem *styleItem = GraphList->item(row, 2);
+        if(!styleItem) {
+            styleItem = new QTableWidgetItem(styleName);
+            styleItem->setFlags(styleItem->flags() ^ Qt::ItemIsEditable);
+            GraphList->setItem(row, 2, styleItem);
+        } else {
+            styleItem->setText(styleName);
+        }
+
+        // Column 3: Thickness
+        QTableWidgetItem *thickItem = GraphList->item(row, 3);
+        if(!thickItem) {
+            thickItem = new QTableWidgetItem(QString::number(g->Thick));
+            thickItem->setFlags(thickItem->flags() ^ Qt::ItemIsEditable);
+            GraphList->setItem(row, 3, thickItem);
+        } else {
+            thickItem->setText(QString::number(g->Thick));
+        }
+
+        // Column 4: y-Axis (if applicable)
+        QString axisName = "";
+        if(yAxisBox) {
+            if((Diag->Name == "Rect") || (Diag->Name == "Curve")) {
+                axisName = (g->yAxisNo == 0) ? tr("left") : tr("right");
+            } else if(Diag->Name == "PS" || Diag->Name == "SP") {
+                axisName = (g->yAxisNo == 0) ? tr("smith") : tr("polar");
+            } else {
+                axisName = (g->yAxisNo == 0) ? tr("y") : tr("z");
+            }
+        }
+        QTableWidgetItem *axisItem = GraphList->item(row, 4);
+        if(!axisItem) {
+            axisItem = new QTableWidgetItem(axisName);
+            axisItem->setFlags(axisItem->flags() ^ Qt::ItemIsEditable);
+            GraphList->setItem(row, 4, axisItem);
+        } else {
+            axisItem->setText(axisName);
+        }
+    }
 }
