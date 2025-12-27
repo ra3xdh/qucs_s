@@ -90,6 +90,11 @@ private slots:
 
   void slotPlotVs(int);
 
+  ///
+  /// \brief Handles Enter key press in the GraphInput line edit.
+  ///
+  void keyPressEvent(QKeyEvent *event) override;
+
 protected slots:
     void reject();
 

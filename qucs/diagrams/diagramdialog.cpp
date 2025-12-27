@@ -201,7 +201,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   InputGroupLayout->addWidget(Box2);
   Box2Layout->setSpacing(5);
 
-  // Variable completion
+  // Variable completion for "GraphInput"
   graphCompleter = new QCompleter(this);
   graphCompleter->setCaseSensitivity(Qt::CaseInsensitive);
   graphCompleter->setCompletionMode(QCompleter::PopupCompletion);
@@ -1744,4 +1744,44 @@ void DiagramDialog::updateCompleter() {
     // Update completer model
     QStringListModel *model = new QStringListModel(varList, graphCompleter);
     graphCompleter->setModel(model);
+}
+
+
+/*!
+ * \brief Handles Enter key press in the GraphInput line edit.
+ *
+ * - If a graph is selected in GraphList: Updates the selected graph with
+ *   the current variable from GraphInput
+ * - If no graph is selected: Creates a new graph with the variable from
+ *   GraphInput
+ *
+ * This avoids using the mouse to press "New Graph" or "Apply" to create graphs
+ */
+void DiagramDialog::keyPressEvent(QKeyEvent *event)
+{
+    // Prevent Enter/Return from closing dialog when GraphInput has focus
+    if(GraphInput->hasFocus() &&
+        (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)) {
+        event->accept();
+
+        // Use QTimer to allow completer to finish updating GraphInput first
+        QTimer::singleShot(0, this, [this]() {
+            if(!GraphInput->text().isEmpty()) {
+                int selectedRow = GraphList->currentRow();
+
+                if(selectedRow >= 0) {
+                    // Update existing selected graph
+                    GraphList->item(selectedRow)->setText(GraphInput->text());
+                } else {
+                    // No selection, create new graph
+                    slotNewGraph();
+                }
+
+                GraphInput->setFocus();
+            }
+        });
+        return;
+    }
+
+    QDialog::keyPressEvent(event);
 }
