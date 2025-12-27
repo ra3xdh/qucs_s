@@ -1748,17 +1748,28 @@ void DiagramDialog::updateCompleter() {
 
 
 /*!
- * \brief Handles Enter key press in the GraphInput line edit.
+ * \brief Handles key press events
  *
+ * Behavior:
  * - If a graph is selected in GraphList: Updates the selected graph with
  *   the current variable from GraphInput
  * - If no graph is selected: Creates a new graph with the variable from
  *   GraphInput
+ * - If the Delete Key is pressed, it removes the graph selected in "GraphList"
  *
  * This avoids using the mouse to press "New Graph" or "Apply" to create graphs
  */
 void DiagramDialog::keyPressEvent(QKeyEvent *event)
 {
+    // Delete selected graph when Delete key is pressed
+    if(event->key() == Qt::Key_Delete) {
+        if(GraphList->hasFocus() && GraphList->currentRow() >= 0) {
+            slotDeleteGraph();
+            event->accept();
+            return;
+        }
+    }
+
     // Prevent Enter/Return from closing dialog when GraphInput has focus
     if(GraphInput->hasFocus() &&
         (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)) {

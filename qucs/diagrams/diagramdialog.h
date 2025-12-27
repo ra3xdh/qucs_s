@@ -91,7 +91,7 @@ private slots:
   void slotPlotVs(int);
 
   ///
-  /// \brief Handles Enter key press in the GraphInput line edit.
+  /// \brief Handles key press events
   ///
   void keyPressEvent(QKeyEvent *event) override;
 
