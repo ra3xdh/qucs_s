@@ -95,7 +95,36 @@ private slots:
   ///
   void keyPressEvent(QKeyEvent *event) override;
 
+  /*!
+   * \brief Sets the thickness of the currently selected graph trace.
+   *
+   * This slot is triggered when the user changes the value in the thickness
+   * spin box. It updates the Thick property of the selected graph and refreshes
+   * the graph list display to show the new thickness value.
+   *
+   * \param value The new thickness value (0-99 pixels)
+   *
+   * \note Only applies to plot-type diagrams (Rect, Polar, Smith, etc.).
+   *       Does not apply to tabular or truth table diagrams.
+   *
+   * \see slotSetPrecision(), updateGraphListItem()
+   */
   void slotSetThickness(int);
+
+  /*!
+   * \brief Sets the decimal precision of the currently selected tabular graph.
+   *
+   * This slot is triggered when the user changes the value in the precision
+   * spin box. It updates the Precision property of the selected graph and
+   * refreshes the graph list display.
+   *
+   * \param value The number of decimal places to display (0-99)
+   *
+   * \note Only applies to tabular diagrams
+   *       Does not apply to plot-type diagrams.
+   *
+   * \see slotSetThickness(), slotSetNumMode()
+   */
   void slotSetPrecision(int);
 
 protected slots:

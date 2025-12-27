@@ -903,7 +903,17 @@ DiagramDialog::~DiagramDialog()
   delete Validator;
 }
 
-
+/*!
+ * \brief Reads variables from the selected dataset file and populates the
+ *        ChooseVars table, also sets the appropriate simulator.
+ *
+ * Called when the dataset selection changes. Determines which simulator
+ * datasets exist (.dat, .dat.ngspice, .dat.xyce, .dat.spopus) and populates
+ * the ChooseSimulator combo box accordingly.
+ *
+ * \param index The index of the selected dataset (unused, kept for signal compatibility)
+ * \see slotReadVars(), updateCompleter()
+ */
 void DiagramDialog::slotReadVarsAndSetSimulator(int)
 {
     QFileInfo Info(defaultDataSet);
@@ -948,7 +958,17 @@ void DiagramDialog::slotReadVarsAndSetSimulator(int)
     updateCompleter(); // Variable completion
 }
 
-// --------------------------------------------------------------------------
+/*!
+ * \brief Reads variables from the current dataset file and populates the
+ *        ChooseVars table.
+ *
+ * Parses the dataset file to extract variable information (dependent and
+ * independent variables) and displays them in the ChooseVars table with
+ * their type and size.
+ *
+ * \param index The simulator index (unused, kept for signal compatibility)
+ * \see slotReadVarsAndSetSimulator(), updateCompleter()
+ */
 void DiagramDialog::slotReadVars(int)
 {
   QFileInfo Info(defaultDataSet);
@@ -1037,10 +1057,31 @@ void DiagramDialog::slotReadVars(int)
   updateCompleter();
 }
 
-// ------------------------------------------------------------------------
-// Inserts the double-clicked variable into the Graph Input Line at the
-// cursor position. If the Graph Input is empty, then the variable is
-// also inserted as graph.
+/*!
+ * \brief Inserts a variable from the dataset into the graph input and creates
+ *        a new graph entry.
+ *
+ * This slot is triggered when the user double-clicks a variable in the
+ * ChooseVars table. It performs the following operations:
+ * - Constructs the full variable name from the dataset and the simulator prefixes
+ * - Sets the variable name in the GraphInput field
+ * - Creates a new Graph object with appropriate properties
+ * - Adds the graph to the internal Graphs vector
+ * - Updates the GraphList table display
+ * - Selects the newly created graph
+ *
+ * Variable name construction:
+ * - If the selected dataset differs from the default, prefixes with
+ *   "dataset_name:"
+ * - If a non-Qucsator simulator is selected, prefixes with "ngspice/",
+ *   "xyce/", or "spopus/"
+ * - Example: "ngspice/mydataset:voltage.V1"
+ *
+ *
+ * \param Item The table widget item that was double-clicked
+ *
+ * \see slotNewGraph(), slotSelectGraph(), updateGraphListItem()
+ */
 void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
 {
     GraphInput->blockSignals(true);
@@ -1121,8 +1162,14 @@ void DiagramDialog::slotTakeVar(QTableWidgetItem* Item)
 }
 
 /*!
-  Is called if a graph text is clicked in the ListBox.
-*/
+ * \brief Handles selection of a graph row in the GraphList table.
+ *
+ * Extracts the Graph pointer from the selected row
+ * and calls SelectGraph() to populate the UI controls.
+ *
+ * \param item The table item that was clicked
+ * \see SelectGraph()
+ */
 void DiagramDialog::slotSelectGraph(QTableWidgetItem *item)
 {
     if(item == 0) {
@@ -1135,8 +1182,23 @@ void DiagramDialog::slotSelectGraph(QTableWidgetItem *item)
 }
 
 /*!
-  Puts the text of the selected graph into the line edit.
-*/
+ * \brief Displays the properties of the selected graph in the UI controls.
+ *
+ * This function is called when a graph is selected from the GraphList table.
+ * It populates all relevant UI controls with the selected graph's properties,
+ * allowing the user to view and edit them.
+ *
+ * For plot-type diagrams (Rectangular, Smith, Polar, etc.):
+ * - Sets thicknessSpin
+ * - Sets ColorButt
+ * - Sets PropertyBox
+ * - Sets yAxisBox
+ *
+ * For tabular diagrams ("Tab" or "Truth"):
+ * - Sets precisionSpin
+ *
+ * \see slotSelectGraph(), slotTakeVar(), updateXVar()
+ */
 void DiagramDialog::SelectGraph(Graph *g)
 {
   GraphInput->blockSignals(true);
@@ -1182,8 +1244,18 @@ void DiagramDialog::SelectGraph(Graph *g)
 }
 
 /*!
- Is called when the 'delelte graph' button is pressed.
-*/
+ * \brief Removes the currently selected graph from the diagram.
+ *
+ * This slot is called when the user presses the "Delete Graph" button or
+ * double-clicks a graph in the GraphList. It performs the following cleanup:
+ * - Removes the selected row from the GraphList table
+ * - Erases the corresponding Graph from the Graphs vector
+ * - Selects an adjacent graph if available
+ * - Resets UI controls to default values
+ * - Updates the default color for new graphs
+ *
+ * \see slotNewGraph(), SelectGraph(), slotSelectGraph()
+ */
 void DiagramDialog::slotDeleteGraph()
 {
     int i = GraphList->currentRow();
@@ -1242,7 +1314,24 @@ void DiagramDialog::slotDeleteGraph()
     }
 }
 
-// --------------------------------------------------------------------------
+/*!
+ * \brief Creates a new graph from the current GraphInput text.
+ *
+ * This slot is triggered when the user presses the "New Graph" button or
+ * presses Enter in the GraphInput field (when no graph is selected). It
+ * creates a new graph entry with the variable expression from GraphInput.
+ *
+ * The function performs the following operations:
+ * - Validates that GraphInput is not empty
+ * - Creates a new Graph object with the input text as the variable expression
+ * - Sets graph properties based on current UI control values
+ * - Adds the graph to the Graphs vector
+ * - Adds a new row to the GraphList table
+ * - Selects the newly created graph
+ *
+ *
+ * \see slotTakeVar(), SelectGraph(), updateGraphListItem()
+ */
 void DiagramDialog::slotNewGraph()
 {
     assert(Diag);
@@ -1277,8 +1366,12 @@ void DiagramDialog::slotNewGraph()
 }
 
 /*!
- Is called if "Ok" button is pressed.
-*/
+ * \brief Applies all changes and closes the dialog.
+ *
+ * Calls slotApply() to commit changes, then slotCancel() to close.
+ *
+ * \see slotApply(), slotCancel()
+ */
 void DiagramDialog::slotOK()
 {
   slotApply();
@@ -1286,8 +1379,12 @@ void DiagramDialog::slotOK()
 }
 
 /*!
- Is called if "Apply" button is pressed.
-*/
+ * \brief Applies all diagram property changes without closing the dialog.
+ *
+ * Transfers all UI control values to the Diagram object
+ *
+ * \see slotOK(), slotCancel()
+ */
 void DiagramDialog::slotApply()
 {
   if(Diag->Name.at(0) != 'T') {  // not tabular or timing
@@ -1476,14 +1573,20 @@ void DiagramDialog::slotApply()
 }
 
 
-// --------------------------------------------------------------------------
-// Is called if "Cancel" button is pressed.
+/*!
+ * \brief Closes the dialog, accepting or rejecting changes based on transfer flag.
+ *
+ * \post Dialog is closed with Accepted status if transfer=true, Rejected otherwise
+ * \see slotOK(), slotApply(), reject()
+ */
 void DiagramDialog::slotCancel()
 {
-//  Diag->loadGraphData(defaultDataSet);
-//  ((QucsView*)parent())->viewport()->repaint();
-  if(transfer) done(QDialog::Accepted);
-  else done(QDialog::Rejected);
+  if(transfer) {
+    done(QDialog::Accepted);
+  }
+  else {
+    done(QDialog::Rejected);
+  }
 }
 
 //-----------------------------------------------------------------
@@ -1493,7 +1596,10 @@ void DiagramDialog::reject()
   slotCancel();
 }
 
-// --------------------------------------------------------------------------
+/*!
+ * \brief Opens a color picker dialog and sets the selected graph's color.
+ *
+ */
 void DiagramDialog::slotSetColor()
 {
     QColor c = QColorDialog::getColor(misc::getWidgetBackgroundColor(ColorButt), this);
@@ -1513,7 +1619,10 @@ void DiagramDialog::slotSetColor()
 }
 
 
-// --------------------------------------------------------------------------
+/*!
+ * \brief Opens a color picker dialog and sets the grid color.
+ *
+ */
 void DiagramDialog::slotSetGridColor()
 {
   QColor c = QColorDialog::getColor(
@@ -1524,8 +1633,10 @@ void DiagramDialog::slotSetGridColor()
 }
 
 /*!
- Is set if the graph input line changes.
-*/
+ * \brief Updates the selected graph's variable expression when GraphInput changes.
+ *
+ * \param s Expression's text
+ */
 void DiagramDialog::slotResetToTake(const QString& s)
 {
     int i = GraphList->currentRow();
@@ -1538,6 +1649,29 @@ void DiagramDialog::slotResetToTake(const QString& s)
     updateXVar();
 }
 
+/*!
+ * \brief Sets the thickness of the currently selected graph trace.
+ *
+ * This function updates the line thickness for the selected graph in the
+ * graph list. The thickness value is stored in the Graph object and the
+ * graph list item is updated to reflect the change visually.
+ *
+ * The function performs the following operations:
+ * - Get the index of the selected row from the graph list
+ * - Updates the thickness property of the corresponding Graph object
+ * - Calls updateGraphListItem() to refresh the display
+ * - Sets the changed flag to indicate unsaved modifications
+ * - Resets the toTake flag to prevent unwanted insertions
+ *
+ * \param value The new thickness value in pixels
+ *
+ * Implementation details:
+ * - Returns immediately if no graph is selected (row < 0)
+ * - Changes are not applied to the diagram until slotApply() or slotOK()
+ *   is called
+ *
+ * \see slotSetPrecision(), slotApply(), updateGraphListItem()
+ */
 void DiagramDialog::slotSetThickness(int value) {
     int i = GraphList->currentRow();
     if(i < 0) return;
@@ -1550,6 +1684,23 @@ void DiagramDialog::slotSetThickness(int value) {
     toTake = false;
 }
 
+
+/*!
+ * \brief Sets the decimal precision for the currently selected tabular graph.
+ *
+ * This function updates the number of decimal places displayed for numerical
+ * values in tabular diagrams. The precision value is stored in the Graph
+ * object and affects how numbers are formatted in the table output.
+ *
+ * The function performs the following operations:
+ * - Gets the index of the selected row from the graph list
+ * - Updates the Precision property of the corresponding Graph object
+ * - Calls updateGraphListItem() to refresh the display
+ * - Sets the changed flag to indicate unsaved modifications
+ * - Resets the toTake flag to prevent unwanted insertions
+ *
+ * \see slotSetThickness(), slotSetNumMode(), slotApply()
+ */
 void DiagramDialog::slotSetPrecision(int value) {
     int i = GraphList->currentRow();
     if(i < 0) return;
@@ -1563,8 +1714,10 @@ void DiagramDialog::slotSetPrecision(int value) {
 }
 
 /*!
- Is called if the user changes the number mode.
-*/
+ * \brief Sets the number notation mode for tabular diagrams.
+ *
+ * \param Mode The number notation mode index
+ */
 void DiagramDialog::slotSetNumMode(int Mode)
 {
   int i = GraphList->currentRow();
@@ -1576,8 +1729,10 @@ void DiagramDialog::slotSetNumMode(int Mode)
 }
 
 /*!
- Is called when the "show grid" checkbox is changed.
-*/
+ * \brief Enables or disables grid-related UI controls based on checkbox state.
+ *
+ * \param state The checkbox state (2=checked, Otherwise: unchecked)
+ */
 void DiagramDialog::slotSetGridBox(int state)
 {
   if(state == 2) {
@@ -1595,8 +1750,10 @@ void DiagramDialog::slotSetGridBox(int state)
 }
 
 /*!
- Is called if the user changes the graph style (combobox).
-*/
+ * \brief Sets the line style for the selected graph.
+ *
+ * \param style The style index from PropertyBox
+ */
 void DiagramDialog::slotSetGraphStyle(int style)
 {
     int i = GraphList->currentRow();
@@ -1612,8 +1769,12 @@ void DiagramDialog::slotSetGraphStyle(int style)
 }
 
 /*!
- Makes a copy of all graphs in the diagram.
-*/
+ * \brief Makes a copy of all graphs from the diagram.
+ *
+ * Creates new Graph objects using sameNewOne() for editing without modifying
+ * the original diagram until Apply is pressed.
+ *
+ */
 void DiagramDialog::copyDiagramGraphs()
 {
   for (Graph *pg : Diag->Graphs)
@@ -1621,8 +1782,10 @@ void DiagramDialog::copyDiagramGraphs()
 }
 
 /*!
- Is called if the combobox changes that defines which y axis uses the graph.
-*/
+ * \brief Sets which y-axis the selected graph uses (left/right).
+ *
+ * \param axis The axis index (0 or 1)
+ */
 void DiagramDialog::slotSetYAxis(int axis)
 {
     int i = GraphList->currentRow();
@@ -1634,7 +1797,12 @@ void DiagramDialog::slotSetYAxis(int axis)
     toTake = false;
 }
 
-// --------------------------------------------------------------------------
+/*!
+ * \brief Enables or disables X-axis limit controls based on manual mode checkbox.
+ *
+ * \param state Checkbox state (2=manual, otherwise: auto)
+ * \post X-axis start, step, stop controls are enabled/disabled
+ */
 void DiagramDialog::slotManualX(int state)
 {
   if(state == 2) {
@@ -1651,7 +1819,12 @@ void DiagramDialog::slotManualX(int state)
   }
 }
 
-// --------------------------------------------------------------------------
+/*!
+ * \brief Enables or disables Y-axis limit controls based on manual mode checkbox.
+ *
+ * \param state Checkbox state (2=manual, Otherwise: auto)
+ * \post Y-axis start, step, stop controls are enabled/disabled
+ */
 void DiagramDialog::slotManualY(int state)
 {
   if(state == 2) {
@@ -1668,7 +1841,12 @@ void DiagramDialog::slotManualY(int state)
   }
 }
 
-// --------------------------------------------------------------------------
+/*!
+ * \brief Enables or disables Z-axis limit controls based on manual mode checkbox.
+ *
+ * \param state Checkbox state (2=manual, Otherwise: auto)
+ * \post Z-axis start, step, stop controls are enabled/disabled
+ */
 void DiagramDialog::slotManualZ(int state)
 {
   if(state == 2) {
@@ -1904,9 +2082,36 @@ void DiagramDialog::keyPressEvent(QKeyEvent *event)
     QDialog::keyPressEvent(event);
 }
 
+
 /*!
- * \brief Updates a row in the graph list table with current graph properties.
- * \param row Row index to update with variable name, color, style, thickness, and y-axis.
+ * \brief Updates a single row in the GraphList table to display current
+ *        graph properties.
+ *
+ * This function synchronizes the visual representation in the GraphList table
+ * with the actual Graph object properties. It updates all columns in the
+ * specified row to reflect the current state of the corresponding graph.
+ *
+ * Column layout for plot-type diagrams (5 columns):
+ * - Column 0: Variable name (always shown, stretches to fill space)
+ * - Column 1: Color swatch (40px fixed width, displays graph color)
+ * - Column 2: Style name (e.g., "solid", "dash", "stars")
+ * - Column 3: Thickness value (numeric)
+ * - Column 4: y-Axis assignment (e.g., "left", "right", "smith", "polar")
+ *
+ * Column layout for tabular/truth diagrams (1 column):
+ * - Column 0: Variable name only
+ *
+ * The function handles:
+ * - Creating table items if they don't exist
+ * - Updating existing table items with new values
+ * - Setting appropriate display flags (non-editable)
+ * - Translating graph style enum to readable text
+ * - Translating y-axis number to readable text
+ *
+ *
+ * \param row The row index in GraphList and Graphs vector to update
+ *
+ * \see SelectGraph(), slotSetThickness(), slotSetPrecision()
  */
 void DiagramDialog::updateGraphListItem(int row)
 {
