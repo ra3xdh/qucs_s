@@ -127,7 +127,6 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
     defaultDataSet = "unknown";
   }
   setWindowTitle(tr("Edit Diagram Properties"));
-  resize(700, 650); // Initial size of the dialog window
   changed = false;
   transfer = false;  // have changes be applied ? (used by "Cancel")
   toTake = false;   // double-clicked variable be inserted into graph list ?
@@ -384,19 +383,18 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   GraphList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
   // Set column resize modes for compact display
-  GraphList->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch); // Variable column stretches
+  GraphList->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents); // Variable column stretches
 
   if(showTraceProperties) {
       // Plots with traces (not tabular)
-      GraphList->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed); // Color
-      GraphList->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents); // Style
-      GraphList->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents); // Thick
-      GraphList->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents); // y-Axis
+      GraphList->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch); // Color
+      GraphList->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch); // Style
+      GraphList->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch); // Thick
+      GraphList->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch); // y-Axis
       GraphList->setColumnWidth(1, 40); // Fixed width for color swatch
   }
 
   // Set resize policy
-  GraphList->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
   GraphList->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
 
