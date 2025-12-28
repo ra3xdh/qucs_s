@@ -219,7 +219,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       PropertyBox->addItem(tr("magnitude/angle (degree)"));
       PropertyBox->addItem(tr("magnitude/angle (radian)"));
       PropertyBox->setCurrentIndex(1);
-      connect(PropertyBox, SIGNAL(activated(int)), SLOT(slotSetNumMode(int)));
+      connect(PropertyBox, QOverload<int>::of(&QComboBox::activated), this, &DiagramDialog::slotSetNumMode);
       Box2Layout->setStretchFactor(new QWidget(Box2), 5);
 
       precisionLabel = new QLabel(tr("Precision:"));
@@ -230,7 +230,8 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       precisionSpin->setMaximum(99);
       precisionSpin->setValue(3);
       precisionSpin->setMaximumWidth(60);
-      connect(precisionSpin, SIGNAL(valueChanged(int)), SLOT(slotSetPrecision(int)));
+      connect(precisionSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &DiagramDialog::slotSetPrecision);
+
   }
   else if(Diag->Name != "Truth") {
     Label1 = new QLabel(tr("Color:"));
@@ -239,7 +240,8 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
     Box2Layout->addWidget(ColorButt);
     ColorButt->setMinimumWidth(50);
     ColorButt->setEnabled(false);
-    connect(ColorButt, SIGNAL(clicked()), SLOT(slotSetColor()));
+    connect(ColorButt, &QPushButton::clicked, this, &DiagramDialog::slotSetColor);
+
     Box2Layout->setStretchFactor(new QWidget(Box2), 5); // stretchable placeholder
 
     Label3 = new QLabel(tr("Style:"));
@@ -256,8 +258,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       PropertyBox->addItem(tr("circles"));
       PropertyBox->addItem(tr("arrows"));
     }
-    connect(PropertyBox, SIGNAL(activated(int)),
-      SLOT(slotSetGraphStyle(int)));
+    connect(PropertyBox, QOverload<int>::of(&QComboBox::activated), this, &DiagramDialog::slotSetGraphStyle);
     Box2Layout->setStretchFactor(new QWidget(Box2), 5); // stretchable placeholder
 
     Box2Layout->setStretchFactor(new QWidget(Box2), 5);
@@ -270,7 +271,8 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
     thicknessSpin->setMaximum(99);
     thicknessSpin->setValue(_settings::Get().item<QString>("DefaultGraphLineWidth").toInt());
     thicknessSpin->setMaximumWidth(60);
-    connect(thicknessSpin, SIGNAL(valueChanged(int)), SLOT(slotSetThickness(int)));
+    connect(thicknessSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &DiagramDialog::slotSetThickness);
+
 
     if((Diag->Name=="Rect") || (Diag->Name=="PS") || (Diag->Name=="SP") || (Diag->Name=="Curve")) {
       Label4 = new QLabel(tr("y-Axis:"));
@@ -281,7 +283,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       yAxisBox->addItem(NameY);
       yAxisBox->addItem(NameZ);
       yAxisBox->setEnabled(false);
-      connect(yAxisBox, SIGNAL(activated(int)), SLOT(slotSetYAxis(int)));
+      connect(yAxisBox, QOverload<int>::of(&QComboBox::activated), this, &DiagramDialog::slotSetYAxis);
     }
   }
 
@@ -313,7 +315,8 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   ChooseData = new QComboBox();
   DataGroupLayout->addWidget(ChooseData);
   ChooseData->setMinimumWidth(300); // will force also min width of table below
-  connect(ChooseData, SIGNAL(activated(int)), SLOT(slotReadVarsAndSetSimulator(int)));
+  connect(ChooseData, QOverload<int>::of(&QComboBox::activated), this, &DiagramDialog::slotReadVarsAndSetSimulator);
+
   // connect(ChooseData, SIGNAL(currentIndexChanged(int)),this,SLOT(slotSetSimulator()));
   // todo: replace by QTableWidget
   // see https://gist.github.com/ClemensFMN/8955411
@@ -323,7 +326,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   QStringList lst_sim;
   lst_sim<<"Qucsator"<<"Ngspice"<<"Xyce"<<"SpiceOpus";
   ChooseSimulator->addItems(lst_sim);
-  connect(ChooseSimulator,SIGNAL(currentIndexChanged(int)),this,SLOT(slotReadVars(int)));
+  connect(ChooseSimulator, &QComboBox::currentIndexChanged, this, &DiagramDialog::slotReadVars);
   lblSim = new QLabel(tr("Data from simulator:"));
   hb1->addWidget(lblSim);
   hb1->addWidget(ChooseSimulator);
@@ -348,7 +351,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   headers << tr("Name") << tr("Type") << tr("Size");
   ChooseVars->setHorizontalHeaderLabels(headers);
 
-  connect(ChooseVars, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), SLOT(slotTakeVar(QTableWidgetItem*)));
+  connect(ChooseVars, &QTableWidget::itemDoubleClicked, this, &DiagramDialog::slotTakeVar);
 
   QGroupBox *GraphGroup = new QGroupBox(tr("Graph"));
   Box1Layout->addWidget(GraphGroup);
@@ -407,16 +410,20 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   Box1Layout->addWidget(DataGroup, 0);      // No stretch
   Box1Layout->addWidget(GraphGroup, 1);     // Stretch factor 1 (takes extra space)
 
-  connect(GraphList, SIGNAL(itemClicked(QTableWidgetItem*)), SLOT(slotSelectGraph(QTableWidgetItem*)));
-  connect(GraphList, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), SLOT(slotDeleteGraph()));
+  connect(GraphList, &QTableWidget::itemClicked, this, &DiagramDialog::slotSelectGraph);
+
+  connect(GraphList, &QTableWidget::itemDoubleClicked, this, &DiagramDialog::slotDeleteGraph);
+
   QPushButton *NewButt = new QPushButton(tr("New Graph"));
   GraphGroupLayout->addWidget(NewButt);
-  connect(NewButt, SIGNAL(clicked()), SLOT(slotNewGraph()));
+  connect(NewButt, &QPushButton::clicked, this, &DiagramDialog::slotNewGraph);
+
   QPushButton *DelButt = new QPushButton(tr("Delete Graph"));
   GraphGroupLayout->addWidget(DelButt);
-  connect(DelButt, SIGNAL(clicked()), SLOT(slotDeleteGraph()));
+  connect(DelButt, &QPushButton::clicked, this, &DiagramDialog::slotDeleteGraph);
 
   t->addTab(Tab1, tr("Data"));
+
 
 
 
@@ -462,7 +469,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       GridLabel1 = new QLabel(tr("Grid Color:"),Tab2);
       gp->addWidget(GridLabel1, Row,0);
       GridColorButt = new QPushButton("        ",Tab2);
-      connect(GridColorButt, SIGNAL(clicked()), SLOT(slotSetGridColor()));
+      connect(GridColorButt, &QPushButton::clicked, this, &DiagramDialog::slotSetGridColor);
       gp->addWidget(GridColorButt, Row,1);
       Row++;
       misc::setPickerColor(GridColorButt, Diag->GridPen.color());
@@ -481,7 +488,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
 
       GridOn->setChecked(Diag->xAxis.GridOn);
       if(!Diag->xAxis.GridOn) slotSetGridBox(0);
-      connect(GridOn, SIGNAL(stateChanged(int)), SLOT(slotSetGridBox(int)));
+      connect(GridOn, &QCheckBox::stateChanged, this, &DiagramDialog::slotSetGridBox);
     }
     else {
       GridOn = 0;
@@ -519,8 +526,10 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       LogUnitsY->addItems(units_name);
       LogUnitsY->setCurrentIndex(Diag->yAxis.Units);
       LogUnitsY->setEnabled(Diag->yAxis.log);
-      connect(GridLogY,SIGNAL(toggled(bool)),LogUnitsY,SLOT(setEnabled(bool)));
-      connect(LogUnitsY,SIGNAL(currentIndexChanged(int)),this,SLOT(slotRecalcDbLimitsY()));
+      connect(GridLogY, &QCheckBox::toggled, LogUnitsY, &QComboBox::setEnabled);
+
+      connect(LogUnitsY, &QComboBox::currentIndexChanged, this, &DiagramDialog::slotRecalcDbLimitsY);
+
       gp->addWidget(LogUnitsY, Row, 1);
       Row++;
 
@@ -530,8 +539,10 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
       LogUnitsZ->addItems(units_name);
       LogUnitsZ->setCurrentIndex(Diag->zAxis.Units);
       LogUnitsZ->setEnabled(Diag->zAxis.log);
-      connect(GridLogZ,SIGNAL(toggled(bool)),LogUnitsZ,SLOT(setEnabled(bool)));
-      connect(LogUnitsZ,SIGNAL(currentIndexChanged(int)),this,SLOT(slotRecalcDbLimitsZ()));
+      connect(GridLogZ, &QCheckBox::toggled, LogUnitsZ, &QComboBox::setEnabled);
+
+      connect(LogUnitsZ, &QComboBox::currentIndexChanged, this, &DiagramDialog::slotRecalcDbLimitsZ);
+
       gp->addWidget(LogUnitsZ, Row, 1);
       Row++;
 
@@ -557,14 +568,14 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
         SliderRotX->setValue(((Rect3DDiagram*)Diag)->rotX);
         SliderRotX->setOrientation(Qt::Horizontal);
         gp->addWidget(SliderRotX, Row,1);
-        connect(SliderRotX, SIGNAL(valueChanged(int)), SLOT(slotNewRotX(int)));
+        connect(SliderRotX, QOverload<int>::of(&QSlider::valueChanged), this, &DiagramDialog::slotNewRotX);
         rotationX = new QLineEdit(Tab2);
         rotationX->setValidator(ValInteger);
         rotationX->setMaxLength(3);
         rotationX->setMaximumWidth(40);
         gp->addWidget(rotationX, Row,2);
-        connect(rotationX, SIGNAL(textChanged(const QString&)),
-          SLOT(slotEditRotX(const QString&)));
+        connect(rotationX, &QLineEdit::textChanged, this, &DiagramDialog::slotEditRotX);
+
         Row++;
 
         QLabel *LabelRotY = new QLabel(tr("Rotation around y-Axis:"), Tab2);
@@ -579,14 +590,15 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
         SliderRotY->setValue(((Rect3DDiagram*)Diag)->rotY);
         SliderRotY->setOrientation(Qt::Horizontal);
         gp->addWidget(SliderRotY, Row,1);
-        connect(SliderRotY, SIGNAL(valueChanged(int)), SLOT(slotNewRotY(int)));
+        connect(SliderRotY, QOverload<int>::of(&QSlider::valueChanged), this, &DiagramDialog::slotNewRotY);
+
         rotationY = new QLineEdit(Tab2);
         rotationY->setValidator(ValInteger);
         rotationY->setMaxLength(3);
         rotationY->setMaximumWidth(40);
         gp->addWidget(rotationY, Row,2);
-        connect(rotationY, SIGNAL(textChanged(const QString&)),
-          SLOT(slotEditRotY(const QString&)));
+        connect(rotationY, &QLineEdit::textChanged, this, &DiagramDialog::slotEditRotY);
+
         Row++;
 
         QLabel *LabelRotZ = new QLabel(tr("Rotation around z-Axis:"), Tab2);
@@ -601,14 +613,14 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
         SliderRotZ->setValue(((Rect3DDiagram*)Diag)->rotZ);
         SliderRotZ->setOrientation(Qt::Horizontal);
         gp->addWidget(SliderRotZ, Row,1);
-        connect(SliderRotZ, SIGNAL(valueChanged(int)), SLOT(slotNewRotZ(int)));
+        connect(SliderRotZ, QOverload<int>::of(&QSlider::valueChanged), this, &DiagramDialog::slotNewRotZ);
         rotationZ = new QLineEdit(Tab2);
         rotationZ->setValidator(ValInteger);
         rotationZ->setMaxLength(3);
         rotationZ->setMaximumWidth(40);
         gp->addWidget(rotationZ, Row,2);
-        connect(rotationZ, SIGNAL(textChanged(const QString&)),
-          SLOT(slotEditRotZ(const QString&)));
+        connect(rotationZ, &QLineEdit::textChanged, this, &DiagramDialog::slotEditRotZ);
+
         Row++;
 
         gp->addWidget(new QLabel(tr("2D-projection:"), Tab2), Row,0);
@@ -643,7 +655,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
     manualX = new QCheckBox(tr("manual"));//, VBox1);
     VBox1Layout->addWidget(manualX);
     VBox1->setLayout(VBox1Layout);
-    connect(manualX, SIGNAL(stateChanged(int)), SLOT(slotManualX(int)));
+    connect(manualX, QOverload<int>::of(&QCheckBox::stateChanged), this, &DiagramDialog::slotManualX);
 
     QWidget *VBox2 = new QWidget();
     axisXLayout->addWidget(VBox2);
@@ -685,7 +697,8 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
     VBox5Layout->addStretch();
     manualY = new QCheckBox(tr("manual"));
     VBox5Layout->addWidget(manualY);
-    connect(manualY, SIGNAL(stateChanged(int)), SLOT(slotManualY(int)));
+    connect(manualY, QOverload<int>::of(&QCheckBox::stateChanged), this, &DiagramDialog::slotManualY);
+
     VBox5->setLayout(VBox5Layout);
 
     QWidget *VBox6 = new QWidget();
@@ -730,7 +743,8 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
     VBox9Layout->addStretch();
     manualZ = new QCheckBox(tr("manual"));
     VBox9Layout->addWidget(manualZ);
-    connect(manualZ, SIGNAL(stateChanged(int)), SLOT(slotManualZ(int)));
+    connect(manualZ, QOverload<int>::of(&QCheckBox::stateChanged), this, &DiagramDialog::slotManualZ);
+
     VBox9->setLayout(VBox9Layout);
 
     QWidget *VBox10 = new QWidget();
@@ -813,7 +827,7 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
   }
   else  stepX = 0;
 
-  connect(t, SIGNAL(currentChanged(int)), SLOT(slotChangeTab(int)));
+  connect(t, &QTabWidget::currentChanged, this, &DiagramDialog::slotChangeTab);
   // ...........................................................
   QWidget *Butts = new QWidget();
   QHBoxLayout *ButtsLayout = new QHBoxLayout();
@@ -824,13 +838,13 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
 
   QPushButton *OkButt = new QPushButton(tr("OK"));
   ButtsLayout->addWidget(OkButt);
-  connect(OkButt, SIGNAL(clicked()), SLOT(slotOK()));
+  connect(OkButt, &QPushButton::clicked, this, &DiagramDialog::slotOK);
   QPushButton *ApplyButt = new QPushButton(tr("Apply"));
   ButtsLayout->addWidget(ApplyButt);
-  connect(ApplyButt, SIGNAL(clicked()), SLOT(slotApply()));
+  connect(ApplyButt, &QPushButton::clicked, this, &DiagramDialog::slotApply);
   QPushButton *CancelButt = new QPushButton(tr("Cancel"));
   ButtsLayout->addWidget(CancelButt);
-  connect(CancelButt, SIGNAL(clicked()), SLOT(slotCancel()));
+  connect(CancelButt, &QPushButton::clicked, this, &DiagramDialog::slotCancel);
 
   OkButt->setDefault(true);
 
