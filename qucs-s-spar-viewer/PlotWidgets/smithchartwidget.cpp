@@ -19,7 +19,7 @@
 #include <QDebug>
 #include <QToolTip>
 
-SmithChartWidget::SmithChartWidget(QWidget* parent)
+SmithChartWidget::SmithChartWidget(QWidget *parent)
     : QWidget(parent), z0(50.0), scaleFactor(1.0), panX(0.0), panY(0.0),
       m_showAdmittanceChart(false) {
   // Default characteristic impedance
@@ -33,17 +33,17 @@ SmithChartWidget::SmithChartWidget(QWidget* parent)
   setPalette(pal);
 
   // Create a QVBoxLayout for controls at the top
-  QVBoxLayout* controlsLayout = new QVBoxLayout();
+  QVBoxLayout *controlsLayout = new QVBoxLayout();
   controlsLayout->setContentsMargins(5, 5, 5, 5);
   controlsLayout->setSpacing(5);
 
   // Create a horizontal layout for the Z0 selector
-  QHBoxLayout* z0Layout = new QHBoxLayout();
+  QHBoxLayout *z0Layout = new QHBoxLayout();
   z0Layout->setContentsMargins(0, 0, 0, 0); // Small margins
   z0Layout->setAlignment(Qt::AlignLeft);    // Align to left
 
   // Create the label
-  QLabel* z0Label = new QLabel("Z<sub>0</sub>", this);
+  QLabel *z0Label = new QLabel("Z<sub>0</sub>", this);
 
   // Create the Z0 combo box
   m_Z0ComboBox = new QComboBox(this);
@@ -67,7 +67,7 @@ SmithChartWidget::SmithChartWidget(QWidget* parent)
   controlsLayout->addLayout(z0Layout);
 
   // Create horizontal layout for checkboxes
-  QHBoxLayout* checkboxLayout = new QHBoxLayout();
+  QHBoxLayout *checkboxLayout = new QHBoxLayout();
   checkboxLayout->setContentsMargins(0, 0, 0, 0);
 
   // Create checkbox for admittance chart
@@ -88,7 +88,7 @@ SmithChartWidget::SmithChartWidget(QWidget* parent)
   controlsLayout->addLayout(checkboxLayout);
 
   // Create the main layout for the widget
-  QVBoxLayout* mainLayout = new QVBoxLayout(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout(this);
   mainLayout->setContentsMargins(0, 0, 0,
                                  0); // Minimize margins for more chart space
 
@@ -96,18 +96,18 @@ SmithChartWidget::SmithChartWidget(QWidget* parent)
   mainLayout->addLayout(controlsLayout);
 
   // Add a widget to contain the chart (this is where your drawing will go)
-  QWidget* chartWidget = new QWidget(this);
+  QWidget *chartWidget = new QWidget(this);
   chartWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   mainLayout->addWidget(
       chartWidget, 1); // Give it a stretch factor of 1 to take available space
 
   // Create frequency range controls layout
-  QGridLayout* freqRangeLayout = new QGridLayout();
+  QGridLayout *freqRangeLayout = new QGridLayout();
   freqRangeLayout->setContentsMargins(5, 5, 5, 5);
 
   // Min frequency label and spinbox
-  QLabel* minFreqLabel = new QLabel("Min:", this);
-  m_minFreqSpinBox     = new QDoubleSpinBox(this);
+  QLabel *minFreqLabel = new QLabel("Min:", this);
+  m_minFreqSpinBox = new QDoubleSpinBox(this);
   m_minFreqSpinBox->setDecimals(1);
   m_minFreqSpinBox->setRange(0.0, 1000.0);
   m_minFreqSpinBox->setValue(0.0);
@@ -118,8 +118,8 @@ SmithChartWidget::SmithChartWidget(QWidget* parent)
           &SmithChartWidget::onMinFreqChanged);
 
   // Max frequency label and spinbox
-  QLabel* maxFreqLabel = new QLabel("Max:", this);
-  m_maxFreqSpinBox     = new QDoubleSpinBox(this);
+  QLabel *maxFreqLabel = new QLabel("Max:", this);
+  m_maxFreqSpinBox = new QDoubleSpinBox(this);
   m_maxFreqSpinBox->setDecimals(1);
   m_maxFreqSpinBox->setRange(0.1, 1000.0);
   m_maxFreqSpinBox->setValue(20.0);
@@ -130,7 +130,7 @@ SmithChartWidget::SmithChartWidget(QWidget* parent)
           &SmithChartWidget::onMaxFreqChanged);
 
   // Min frequency label and spinbox
-  QLabel* FreqUnitsLabel = new QLabel("Units:", this);
+  QLabel *FreqUnitsLabel = new QLabel("Units:", this);
 
   // Frequency unit combobox
   m_freqUnitComboBox = new QComboBox(this);
@@ -152,10 +152,10 @@ SmithChartWidget::SmithChartWidget(QWidget* parent)
   freqRangeLayout->addWidget(m_freqUnitComboBox, 2, 1);
 
   // Create a horizontal layout for the bottom section
-  QHBoxLayout* bottomLayout = new QHBoxLayout();
+  QHBoxLayout *bottomLayout = new QHBoxLayout();
 
   // Add the frequency range controls to the bottom layout (left-aligned)
-  QWidget* freqWidget = new QWidget(this);
+  QWidget *freqWidget = new QWidget(this);
   freqWidget->setLayout(freqRangeLayout);
   bottomLayout->addWidget(freqWidget);
 
@@ -168,9 +168,9 @@ SmithChartWidget::SmithChartWidget(QWidget* parent)
   // Connect the signals
   connect(m_Z0ComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
           this, &SmithChartWidget::onZ0Changed);
-  connect(m_ShowAdmittanceChartCheckBox, &QCheckBox::stateChanged, this,
+  connect(m_ShowAdmittanceChartCheckBox, &QCheckBox::checkStateChanged, this,
           &SmithChartWidget::onShowAdmittanceChartChanged);
-  connect(m_ShowConstantCurvesCheckBox, &QCheckBox::stateChanged, this,
+  connect(m_ShowConstantCurvesCheckBox, &QCheckBox::checkStateChanged, this,
           &SmithChartWidget::onShowConstantCurvesChanged);
 
   setLayout(mainLayout);
@@ -186,7 +186,7 @@ void SmithChartWidget::onZ0Changed(int index) {
   update();
 }
 
-void SmithChartWidget::addTrace(const QString& name, const Trace& trace) {
+void SmithChartWidget::addTrace(const QString &name, const Trace &trace) {
   traces[name] = trace;
 
   // Check if this trace's Z0 is already in the combo box
@@ -215,7 +215,7 @@ void SmithChartWidget::setCharacteristicImpedance(double z) {
   update(); // Redraw the chart with the new Z0
 }
 
-void SmithChartWidget::paintEvent(QPaintEvent* /*event*/) {
+void SmithChartWidget::paintEvent(QPaintEvent * /*event*/) {
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing);
 
@@ -240,14 +240,14 @@ void SmithChartWidget::paintEvent(QPaintEvent* /*event*/) {
   painter.restore();
 }
 
-void SmithChartWidget::mousePressEvent(QMouseEvent* event) {
+void SmithChartWidget::mousePressEvent(QMouseEvent *event) {
   lastMousePos = event->pos();
 
   std::complex<double> reflectionCoefficient = widgetToSmithChart(lastMousePos);
 
   // Iterate through all traces
   for (auto it = traces.constBegin(); it != traces.constEnd(); ++it) {
-    const Trace& trace = it.value();
+    const Trace &trace = it.value();
     std::complex<double> normalizedImpedance =
         (1.0 + reflectionCoefficient) / (1.0 - reflectionCoefficient);
     std::complex<double> impedance = normalizedImpedance * trace.Z0;
@@ -255,7 +255,7 @@ void SmithChartWidget::mousePressEvent(QMouseEvent* event) {
   }
 }
 
-void SmithChartWidget::drawSmithChartGrid(QPainter* painter) {
+void SmithChartWidget::drawSmithChartGrid(QPainter *painter) {
   painter->save();
   painter->setRenderHint(QPainter::Antialiasing, true);
 
@@ -330,11 +330,11 @@ void SmithChartWidget::drawSmithChartGrid(QPainter* painter) {
   painter->restore();
 }
 
-void SmithChartWidget::drawReactanceArc(QPainter* painter,
-                                        const QPointF& center, double radius,
+void SmithChartWidget::drawReactanceArc(QPainter *painter,
+                                        const QPointF &center, double radius,
                                         double reactance) {
   painter->setPen(QPen(Qt::gray, 1));
-  double x           = reactance;
+  double x = reactance;
   double chartRadius = radius;
 
   // Center coordinates in normalized form
@@ -345,8 +345,8 @@ void SmithChartWidget::drawReactanceArc(QPainter* painter,
   double normalizedRadius = 1.0 / std::abs(x);
 
   // Convert to widget coordinates
-  double centerX   = center.x() + chartRadius * normalizedCenterX;
-  double centerY   = center.y() - chartRadius * normalizedCenterY;
+  double centerX = center.x() + chartRadius * normalizedCenterX;
+  double centerY = center.y() - chartRadius * normalizedCenterY;
   double arcRadius = chartRadius * normalizedRadius;
 
   QRectF arcRect(centerX - arcRadius, centerY - arcRadius, 2 * arcRadius,
@@ -411,7 +411,7 @@ void SmithChartWidget::drawReactanceArc(QPainter* painter,
                     QString::number(reactance * z0, 'f', 1));
 
   // Calculate the direction from the center to the end point
-  QPointF directionEnd      = endPoint - center;
+  QPointF directionEnd = endPoint - center;
   double directionLengthEnd = std::sqrt(directionEnd.x() * directionEnd.x() +
                                         directionEnd.y() * directionEnd.y());
 
@@ -429,13 +429,13 @@ void SmithChartWidget::drawReactanceArc(QPainter* painter,
   painter->drawText(labelPositionEnd, label);
 }
 
-void SmithChartWidget::drawSusceptanceArc(QPainter* painter,
-                                          const QPointF& center, double radius,
+void SmithChartWidget::drawSusceptanceArc(QPainter *painter,
+                                          const QPointF &center, double radius,
                                           double susceptance) {
   QPen admittancePen(Qt::red, 1);
   painter->setPen(admittancePen);
 
-  double b           = susceptance;
+  double b = susceptance;
   double chartRadius = radius;
 
   // Center coordinates in normalized form
@@ -446,8 +446,8 @@ void SmithChartWidget::drawSusceptanceArc(QPainter* painter,
   double normalizedRadius = 1.0 / std::abs(b);
 
   // Convert to widget coordinates
-  double centerX   = center.x() + chartRadius * normalizedCenterX;
-  double centerY   = center.y() - chartRadius * normalizedCenterY;
+  double centerX = center.x() + chartRadius * normalizedCenterX;
+  double centerY = center.y() - chartRadius * normalizedCenterY;
   double arcRadius = chartRadius * normalizedRadius;
 
   QRectF arcRect(centerX - arcRadius, centerY - arcRadius, 2 * arcRadius,
@@ -512,7 +512,7 @@ void SmithChartWidget::drawSusceptanceArc(QPainter* painter,
                     QString::number(susceptance / z0, 'f', 3));
 
   // Calculate the direction from the center to the end point
-  QPointF directionEnd      = endPoint - center;
+  QPointF directionEnd = endPoint - center;
   double directionLengthEnd = std::sqrt(directionEnd.x() * directionEnd.x() +
                                         directionEnd.y() * directionEnd.y());
 
@@ -530,17 +530,17 @@ void SmithChartWidget::drawSusceptanceArc(QPainter* painter,
 }
 
 // Function to calculate the starting and ending points of the arc
-void SmithChartWidget::calculateArcPoints(const QRectF& arcRect,
+void SmithChartWidget::calculateArcPoints(const QRectF &arcRect,
                                           double startAngle, double sweepAngle,
-                                          QPointF& startPoint,
-                                          QPointF& endPoint) {
+                                          QPointF &startPoint,
+                                          QPointF &endPoint) {
   // Calculate the center of the ellipse
   double cx = arcRect.center().x();
   double cy = arcRect.center().y();
 
   // Convert angles from degrees to radians
   double startRad = qDegreesToRadians(startAngle);
-  double endRad   = qDegreesToRadians(startAngle + sweepAngle);
+  double endRad = qDegreesToRadians(startAngle + sweepAngle);
 
   // Calculate the starting point
   startPoint.setX(cx + (arcRect.width() / 2.0) * std::cos(startRad));
@@ -555,7 +555,7 @@ void SmithChartWidget::calculateArcPoints(const QRectF& arcRect,
                     std::sin(endRad)); // Subtract for Qt's coordinate system
 }
 
-void SmithChartWidget::plotImpedanceData(QPainter* painter) {
+void SmithChartWidget::plotImpedanceData(QPainter *painter) {
   painter->save();
 
   QPointF center(width() / 2.0, height() / 2.0);
@@ -563,7 +563,7 @@ void SmithChartWidget::plotImpedanceData(QPainter* painter) {
 
   // Iterate through the map of traces
   for (auto it = traces.constBegin(); it != traces.constEnd(); ++it) {
-    const Trace& trace = it.value();
+    const Trace &trace = it.value();
     painter->setPen(trace.pen);
 
     // Check if there are at least two points to draw a line
@@ -573,11 +573,11 @@ void SmithChartWidget::plotImpedanceData(QPainter* painter) {
 
     // Find the range of indices that falls within the frequency range
     int startIdx = -1;
-    int endIdx   = -1;
+    int endIdx = -1;
 
-    double minFreq         = m_minFreqSpinBox->value();
-    double maxFreq         = m_maxFreqSpinBox->value();
-    double multiplier      = getFrequencyMultiplier();
+    double minFreq = m_minFreqSpinBox->value();
+    double maxFreq = m_maxFreqSpinBox->value();
+    double multiplier = getFrequencyMultiplier();
     double min_freq_scaled = minFreq * multiplier;
     double max_freq_scaled = maxFreq * multiplier;
 
@@ -624,7 +624,7 @@ void SmithChartWidget::plotImpedanceData(QPainter* painter) {
   painter->restore();
 }
 
-void SmithChartWidget::drawMarkers(QPainter* painter) {
+void SmithChartWidget::drawMarkers(QPainter *painter) {
   if (markers.isEmpty() || traces.isEmpty()) {
     return;
   }
@@ -641,8 +641,8 @@ void SmithChartWidget::drawMarkers(QPainter* painter) {
   // Iterate through each trace
   for (auto traceIt = traces.constBegin(); traceIt != traces.constEnd();
        ++traceIt) {
-    const QString& traceName = traceIt.key();
-    const Trace& trace       = traceIt.value();
+    const QString &traceName = traceIt.key();
+    const Trace &trace = traceIt.value();
 
     // Skip traces with no frequency data
     if (trace.frequencies.isEmpty() || trace.impedances.isEmpty()) {
@@ -652,9 +652,9 @@ void SmithChartWidget::drawMarkers(QPainter* painter) {
     // Draw markers for this trace
     for (auto markerIt = markers.constBegin(); markerIt != markers.constEnd();
          ++markerIt) {
-      const QString& markerId = markerIt.key();
-      const Marker& marker    = markerIt.value();
-      double markerFreq       = marker.frequency;
+      const QString &markerId = markerIt.key();
+      const Marker &marker = markerIt.value();
+      double markerFreq = marker.frequency;
 
       // Check if marker frequency is within the trace frequency range
       if (markerFreq < trace.frequencies.first() ||
@@ -681,13 +681,13 @@ void SmithChartWidget::drawMarkers(QPainter* painter) {
       double freqValue = markerFreq;
 
       if (markerFreq >= 1e9) {
-        freqUnit  = "GHz";
+        freqUnit = "GHz";
         freqValue = markerFreq / 1e9;
       } else if (markerFreq >= 1e6) {
-        freqUnit  = "MHz";
+        freqUnit = "MHz";
         freqValue = markerFreq / 1e6;
       } else if (markerFreq >= 1e3) {
-        freqUnit  = "kHz";
+        freqUnit = "kHz";
         freqValue = markerFreq / 1e3;
       }
 
@@ -722,8 +722,8 @@ void SmithChartWidget::drawMarkers(QPainter* painter) {
 }
 
 std::complex<double> SmithChartWidget::interpolateImpedance(
-    const QList<double>& frequencies,
-    const QList<std::complex<double>>& impedances, double targetFreq) {
+    const QList<double> &frequencies,
+    const QList<std::complex<double>> &impedances, double targetFreq) {
   // If exact match, return it
   for (int i = 0; i < frequencies.size(); i++) {
     if (qFuzzyCompare(frequencies[i], targetFreq)) {
@@ -751,9 +751,9 @@ std::complex<double> SmithChartWidget::interpolateImpedance(
   }
 
   // Perform linear interpolation
-  int upperIndex              = lowerIndex + 1;
-  double lowerFreq            = frequencies[lowerIndex];
-  double upperFreq            = frequencies[upperIndex];
+  int upperIndex = lowerIndex + 1;
+  double lowerFreq = frequencies[lowerIndex];
+  double upperFreq = frequencies[upperIndex];
   std::complex<double> lowerZ = impedances[lowerIndex];
   std::complex<double> upperZ = impedances[upperIndex];
 
@@ -767,9 +767,9 @@ std::complex<double> SmithChartWidget::interpolateImpedance(
 }
 
 QPointF SmithChartWidget::smithChartToWidget(
-    const std::complex<double>& reflectionCoefficient) {
-  double gammaReal  = reflectionCoefficient.real();
-  double gammaImag  = reflectionCoefficient.imag();
+    const std::complex<double> &reflectionCoefficient) {
+  double gammaReal = reflectionCoefficient.real();
+  double gammaImag = reflectionCoefficient.imag();
   double gammaMagSq = gammaReal * gammaReal + gammaImag * gammaImag;
 
   double x = gammaReal / (1 + gammaMagSq);
@@ -788,7 +788,7 @@ QPointF SmithChartWidget::smithChartToWidget(
 }
 
 std::complex<double>
-SmithChartWidget::widgetToSmithChart(const QPointF& widgetPoint) {
+SmithChartWidget::widgetToSmithChart(const QPointF &widgetPoint) {
   // Calculate the center and radius of the Smith Chart
   QPointF center(width() / 2.0, height() / 2.0);
   double radius = qMin(width(), height()) / 2.0 - 10; // Leave some margin
@@ -808,7 +808,7 @@ void SmithChartWidget::clearTraces() {
   update();       // Trigger a repaint to reflect the changes
 }
 
-QPen SmithChartWidget::getTracePen(const QString& traceName) const {
+QPen SmithChartWidget::getTracePen(const QString &traceName) const {
   if (traces.contains(traceName)) {
     return traces[traceName].pen;
   }
@@ -816,7 +816,7 @@ QPen SmithChartWidget::getTracePen(const QString& traceName) const {
   return QPen();
 }
 
-void SmithChartWidget::setTracePen(const QString& traceName, const QPen& pen) {
+void SmithChartWidget::setTracePen(const QString &traceName, const QPen &pen) {
   if (traces.contains(traceName)) {
     traces[traceName].pen = pen;
     update(); // Trigger a repaint
@@ -836,7 +836,7 @@ QMap<QString, QPen> SmithChartWidget::getTracesInfo() const {
 }
 
 // Remove a trace given its name
-void SmithChartWidget::removeTrace(const QString& traceName) {
+void SmithChartWidget::removeTrace(const QString &traceName) {
   if (traces.contains(traceName)) {
     traces.remove(traceName);
     update(); // Trigger a repaint to reflect the changes
@@ -844,8 +844,8 @@ void SmithChartWidget::removeTrace(const QString& traceName) {
 }
 
 // Add a marker with a string ID at the specified frequency
-bool SmithChartWidget::addMarker(const QString& markerId, double frequency,
-                                 const QPen& pen) {
+bool SmithChartWidget::addMarker(const QString &markerId, double frequency,
+                                 const QPen &pen) {
   // Check if marker ID already exists
   if (markers.contains(markerId)) {
     return false;
@@ -854,7 +854,7 @@ bool SmithChartWidget::addMarker(const QString& markerId, double frequency,
   // Check if any trace contains this frequency
   bool frequencyInRange = false;
   for (auto it = traces.constBegin(); it != traces.constEnd(); ++it) {
-    const Trace& trace = it.value();
+    const Trace &trace = it.value();
     if (!trace.frequencies.isEmpty() &&
         frequency >= trace.frequencies.first() &&
         frequency <= trace.frequencies.last()) {
@@ -869,9 +869,9 @@ bool SmithChartWidget::addMarker(const QString& markerId, double frequency,
 
   // Create a new marker
   Marker marker;
-  marker.id        = markerId;
+  marker.id = markerId;
   marker.frequency = frequency;
-  marker.pen       = pen;
+  marker.pen = pen;
 
   // Add to markers map
   markers.insert(markerId, marker);
@@ -882,7 +882,7 @@ bool SmithChartWidget::addMarker(const QString& markerId, double frequency,
 }
 
 // Remove a marker given its ID
-bool SmithChartWidget::removeMarker(const QString& markerId) {
+bool SmithChartWidget::removeMarker(const QString &markerId) {
   if (!markers.contains(markerId)) {
     return false;
   }
@@ -922,7 +922,7 @@ void SmithChartWidget::onShowConstantCurvesChanged(int state) {
 void SmithChartWidget::onMinFreqChanged(double value) {
   // Convert from displayed unit to Hz
   double multiplier = getFrequencyMultiplier();
-  m_minFreq         = value * multiplier;
+  m_minFreq = value * multiplier;
 
   // Make sure min is less than max
   double minFreq = m_minFreqSpinBox->value();
@@ -943,7 +943,7 @@ void SmithChartWidget::onMinFreqChanged(double value) {
 void SmithChartWidget::onMaxFreqChanged(double value) {
   // Convert from displayed unit to Hz
   double multiplier = getFrequencyMultiplier();
-  m_maxFreq         = value * multiplier;
+  m_maxFreq = value * multiplier;
 
   // Make sure max is greater than min
   double minFreq = m_minFreqSpinBox->value();
@@ -962,8 +962,8 @@ void SmithChartWidget::onMaxFreqChanged(double value) {
 
 void SmithChartWidget::onFreqUnitChanged(int index) {
   // Store the current values in Hz
-  double minFreq    = m_minFreqSpinBox->value();
-  double maxFreq    = m_maxFreqSpinBox->value();
+  double minFreq = m_minFreqSpinBox->value();
+  double maxFreq = m_maxFreqSpinBox->value();
   double oldMinFreq = minFreq;
   double oldMaxFreq = maxFreq;
 
@@ -1022,22 +1022,22 @@ double SmithChartWidget::getFrequencyMultiplier() const {
 
 void SmithChartWidget::updateFrequencyRange() {
   // Find the minimum and maximum frequencies across all traces
-  bool foundAny  = false;
+  bool foundAny = false;
   double minFreq = std::numeric_limits<double>::max();
   double maxFreq = std::numeric_limits<double>::min();
 
   for (auto it = traces.constBegin(); it != traces.constEnd(); ++it) {
-    const Trace& trace = it.value();
+    const Trace &trace = it.value();
     if (!trace.frequencies.isEmpty()) {
-      minFreq  = qMin(minFreq, trace.frequencies.first());
-      maxFreq  = qMax(maxFreq, trace.frequencies.last());
+      minFreq = qMin(minFreq, trace.frequencies.first());
+      maxFreq = qMax(maxFreq, trace.frequencies.last());
       foundAny = true;
     }
   }
 
   // If we found any frequencies, update the range
   if (foundAny) {
-    double multiplier      = getFrequencyMultiplier();
+    double multiplier = getFrequencyMultiplier();
     double min_freq_scaled = minFreq / multiplier;
     double max_freq_scaled = maxFreq / multiplier;
 
@@ -1057,7 +1057,7 @@ void SmithChartWidget::updateFrequencyRange() {
 }
 
 // Update an existing marker's frequency
-bool SmithChartWidget::updateMarkerFrequency(const QString& markerId,
+bool SmithChartWidget::updateMarkerFrequency(const QString &markerId,
                                              double newFrequency) {
   // Check if marker exists
   if (!markers.contains(markerId)) {
@@ -1067,7 +1067,7 @@ bool SmithChartWidget::updateMarkerFrequency(const QString& markerId,
   // Check if any trace contains this frequency
   bool frequencyInRange = false;
   for (auto it = traces.constBegin(); it != traces.constEnd(); ++it) {
-    const Trace& trace = it.value();
+    const Trace &trace = it.value();
     if (!trace.frequencies.isEmpty() &&
         newFrequency >= trace.frequencies.first() &&
         newFrequency <= trace.frequencies.last()) {
@@ -1091,9 +1091,9 @@ bool SmithChartWidget::updateMarkerFrequency(const QString& markerId,
 // Send settings to the main program
 SmithChartWidget::AxisSettings SmithChartWidget::getSettings() const {
   AxisSettings settings;
-  settings.Z0       = m_Z0ComboBox->currentText();
-  settings.freqMin  = m_minFreqSpinBox->value();
-  settings.freqMax  = m_maxFreqSpinBox->value();
+  settings.Z0 = m_Z0ComboBox->currentText();
+  settings.freqMin = m_minFreqSpinBox->value();
+  settings.freqMax = m_maxFreqSpinBox->value();
   settings.freqUnit = m_freqUnitComboBox->currentText();
 
   settings.z_chart = m_ShowConstantCurvesCheckBox->isChecked();
@@ -1103,7 +1103,7 @@ SmithChartWidget::AxisSettings SmithChartWidget::getSettings() const {
 }
 
 // Get settings from the main program
-void SmithChartWidget::setSettings(const AxisSettings& settings) {
+void SmithChartWidget::setSettings(const AxisSettings &settings) {
   m_Z0ComboBox->setCurrentText(settings.Z0);
   m_minFreqSpinBox->setValue(settings.freqMin);
   m_maxFreqSpinBox->setValue(settings.freqMax);
