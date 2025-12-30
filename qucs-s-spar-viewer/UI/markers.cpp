@@ -441,8 +441,8 @@ void Qucs_S_SPAR_Viewer::addMarker(double freq, QString Freq_Marker_Scale) {
   new_marker_Spinbox->setMaximum(Magnitude_PhaseChart->getXmax());
   new_marker_Spinbox->setDecimals(1);
   new_marker_Spinbox->setValue(f_marker);
-  connect(new_marker_Spinbox, SIGNAL(valueChanged(double)),
-          SLOT(updateMarkerTable()));
+  connect(new_marker_Spinbox, &QDoubleSpinBox::valueChanged, this,
+          &Qucs_S_SPAR_Viewer::updateMarkerTable);
   props.freqSpinBox = new_marker_Spinbox;
   this->MarkersGrid->addWidget(new_marker_Spinbox, n_markers, 1);
 
@@ -451,8 +451,8 @@ void Qucs_S_SPAR_Viewer::addMarker(double freq, QString Freq_Marker_Scale) {
   new_marker_Combo->setObjectName(Combobox_name);
   new_marker_Combo->addItems(frequency_units);
   new_marker_Combo->setCurrentIndex(Magnitude_PhaseChart->getFreqIndex());
-  connect(new_marker_Combo, SIGNAL(currentIndexChanged(int)),
-          SLOT(changeMarkerLimits()));
+  connect(new_marker_Combo, &QComboBox::currentIndexChanged, this,
+          [this](int) { Qucs_S_SPAR_Viewer::changeMarkerLimits(); });
   props.scaleComboBox = new_marker_Combo;
   this->MarkersGrid->addWidget(new_marker_Combo, n_markers, 2);
 
@@ -469,7 +469,8 @@ void Qucs_S_SPAR_Viewer::addMarker(double freq, QString Freq_Marker_Scale) {
                 border-radius: 20px;
             }
         )");
-  connect(new_marker_removebutton, SIGNAL(clicked()), SLOT(removeMarker()));
+  QObject::connect(new_marker_removebutton, &QToolButton::clicked, this,
+                   [this]() { removeMarker(); }); // calls the no‑arg overload
   props.deleteButton = new_marker_removebutton;
   this->MarkersGrid->addWidget(new_marker_removebutton, n_markers, 3,
                                Qt::AlignCenter);

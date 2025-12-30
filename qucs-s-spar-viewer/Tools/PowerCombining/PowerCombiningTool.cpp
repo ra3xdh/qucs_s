@@ -181,30 +181,38 @@ PowerCombiningTool::PowerCombiningTool(QWidget *parent) : QWidget(parent) {
 
   // Make connection between widgets and handler functions to update the design
   // in real time
-  connect(TL_Implementation_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(BranchesCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(RefImpSpinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(FreqSpinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(FreqScaleCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(K1Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(K2Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(K2Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(NStagesSpinbox, SIGNAL(valueChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(AlphaSpinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(UnitsCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(TopoCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(on_TopoCombo_currentIndexChanged(int)));
+  connect(TL_Implementation_Combo, &QComboBox::currentIndexChanged, this,
+          [this](int) { UpdateDesignParameters(); });
+
+  connect(BranchesCombo, &QComboBox::currentIndexChanged, this,
+          [this](int) { UpdateDesignParameters(); });
+
+  connect(RefImpSpinbox, &QDoubleSpinBox::valueChanged, this,
+          [this](double) { UpdateDesignParameters(); });
+
+  connect(FreqSpinbox, &QDoubleSpinBox::valueChanged, this,
+          [this](double) { UpdateDesignParameters(); });
+
+  connect(FreqScaleCombo, &QComboBox::currentIndexChanged, this,
+          [this](int) { UpdateDesignParameters(); });
+
+  connect(K1Spinbox, &QDoubleSpinBox::valueChanged, this,
+          [this](double) { UpdateDesignParameters(); });
+
+  connect(K2Spinbox, &QDoubleSpinBox::valueChanged, this,
+          [this](double) { UpdateDesignParameters(); });
+
+  connect(NStagesSpinbox, &QSpinBox::valueChanged, this,
+          [this](int) { UpdateDesignParameters(); });
+
+  connect(AlphaSpinbox, &QDoubleSpinBox::valueChanged, this,
+          [this](double) { UpdateDesignParameters(); });
+
+  connect(UnitsCombo, &QComboBox::currentIndexChanged, this,
+          [this](int) { UpdateDesignParameters(); });
+
+  connect(TopoCombo, &QComboBox::currentIndexChanged, this,
+          &PowerCombiningTool::on_TopoCombo_currentIndexChanged);
 
   Bagley_Validator = new BagleyValidator(this);
 }

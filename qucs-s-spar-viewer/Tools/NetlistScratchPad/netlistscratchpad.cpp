@@ -17,8 +17,8 @@
 
 #include "netlistscratchpad.h"
 
-NetlistScratchPad::NetlistScratchPad(QWidget* parent) : QWidget(parent) {
-  QGridLayout* WidgetLayout = new QGridLayout();
+NetlistScratchPad::NetlistScratchPad(QWidget *parent) : QWidget(parent) {
+  QGridLayout *WidgetLayout = new QGridLayout();
 
   Netlist_Editor_Widget = new CodeEditor();
   Netlist_Editor_Widget->insertPlainText(
@@ -26,7 +26,7 @@ NetlistScratchPad::NetlistScratchPad(QWidget* parent) : QWidget(parent) {
               "50.0Ohm\n"));
   WidgetLayout->addWidget(Netlist_Editor_Widget, 0, 0, 1, 2);
 
-  traceNameLabel    = new QLabel("Trace name");
+  traceNameLabel = new QLabel("Trace name");
   traceNameLineEdit = new QLineEdit("Netlist1");
   WidgetLayout->addWidget(traceNameLabel, 1, 0);
   WidgetLayout->addWidget(traceNameLineEdit, 1, 1);
@@ -34,7 +34,8 @@ NetlistScratchPad::NetlistScratchPad(QWidget* parent) : QWidget(parent) {
   this->setLayout(WidgetLayout);
 
   // Connect the text editor so that any changes in there rereuns the simulation
-  connect(Netlist_Editor_Widget, SIGNAL(textChanged()), this, SLOT(update()));
+  connect(Netlist_Editor_Widget, &CodeEditor::textChanged, this,
+          &NetlistScratchPad::update);
 }
 
 NetlistScratchPad::~NetlistScratchPad() {}

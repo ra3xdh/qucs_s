@@ -196,24 +196,34 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit,
   this->LimitsGrid->addWidget(new_Separator, limit_index + 2, 0, 1, 6);
 
   // Connect widgets to handler
-  connect(limitsMap[new_limit_name].Start_Freq, SIGNAL(valueChanged(double)),
-          SLOT(updateLimits()));
+  connect(limitsMap[new_limit_name].Start_Freq, &QDoubleSpinBox::valueChanged,
+          this, &Qucs_S_SPAR_Viewer::updateLimits);
+
   connect(limitsMap[new_limit_name].Start_Freq_Scale,
-          SIGNAL(currentIndexChanged(int)), SLOT(updateLimits()));
-  connect(limitsMap[new_limit_name].Stop_Freq, SIGNAL(valueChanged(double)),
-          SLOT(updateLimits()));
+          &QComboBox::currentIndexChanged, this,
+          &Qucs_S_SPAR_Viewer::updateLimits);
+
+  connect(limitsMap[new_limit_name].Stop_Freq, &QDoubleSpinBox::valueChanged,
+          this, &Qucs_S_SPAR_Viewer::updateLimits);
+
   connect(limitsMap[new_limit_name].Stop_Freq_Scale,
-          SIGNAL(currentIndexChanged(int)), SLOT(updateLimits()));
-  connect(limitsMap[new_limit_name].Button_Delete_Limit, SIGNAL(clicked()),
-          SLOT(removeLimit()));
-  connect(limitsMap[new_limit_name].Start_Value, SIGNAL(valueChanged(double)),
-          SLOT(updateLimits()));
-  connect(limitsMap[new_limit_name].Couple_Value, SIGNAL(clicked(bool)),
-          SLOT(coupleSpinBoxes()));
-  connect(limitsMap[new_limit_name].Stop_Value, SIGNAL(valueChanged(double)),
-          SLOT(updateLimits()));
-  connect(limitsMap[new_limit_name].axis, SIGNAL(currentIndexChanged(int)),
-          SLOT(updateLimits()));
+          &QComboBox::currentIndexChanged, this,
+          &Qucs_S_SPAR_Viewer::updateLimits);
+
+  connect(limitsMap[new_limit_name].Button_Delete_Limit, &QToolButton::clicked,
+          this, &Qucs_S_SPAR_Viewer::onLimitDeleteClicked);
+
+  connect(limitsMap[new_limit_name].Start_Value, &QDoubleSpinBox::valueChanged,
+          this, &Qucs_S_SPAR_Viewer::updateLimits);
+
+  connect(limitsMap[new_limit_name].Couple_Value, &QPushButton::clicked, this,
+          &Qucs_S_SPAR_Viewer::coupleSpinBoxes);
+
+  connect(limitsMap[new_limit_name].Stop_Value, &QDoubleSpinBox::valueChanged,
+          this, &Qucs_S_SPAR_Viewer::updateLimits);
+
+  connect(limitsMap[new_limit_name].axis, &QComboBox::currentIndexChanged, this,
+          &Qucs_S_SPAR_Viewer::updateLimits);
 
   // Force to update the locked / unlocked status of the y-axis spinboxes
   limitsMap[new_limit_name].Couple_Value->click();
@@ -462,9 +472,18 @@ void Qucs_S_SPAR_Viewer::changeMarkerLimits(QString ID) {
   updateMarkerTable();
 }
 
-// This function is called when the user wants to remove a limit from the plot
-void Qucs_S_SPAR_Viewer::removeLimit() {
-  QString ID = qobject_cast<QToolButton*>(sender())->objectName();
+///
+/// @brief Remove limit via UI
+///
+/// Called when the user hits the delete button for a limit.
+/// Identifies the limit by button ID and removes it.
+///
+/// @note Iterates through all limits to find matching button
+/// @note Calls removeLimit(QString) to perform actual removal
+/// @see removeLimit(QString)
+///
+void Qucs_S_SPAR_Viewer::onLimitDeleteClicked(bool) {
+  QString ID = qobject_cast<QToolButton *>(sender())->objectName();
   // qDebug() << "Clicked button:" << ID;
 
   // Find the index of the button to remove

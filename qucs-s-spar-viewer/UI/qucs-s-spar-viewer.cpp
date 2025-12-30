@@ -87,22 +87,24 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer() {
 
 void Qucs_S_SPAR_Viewer::CreateMenuBar() {
   QMenu *fileMenu = new QMenu(tr("&File"));
-
   QAction *fileQuit = new QAction(tr("&Quit"), this);
   fileQuit->setShortcut(QKeySequence::Quit);
-  connect(fileQuit, SIGNAL(triggered(bool)), SLOT(slotQuit()));
+  connect(fileQuit, &QAction::triggered, this, &Qucs_S_SPAR_Viewer::slotQuit);
 
   QAction *fileOpenSession = new QAction(tr("&Open session file"), this);
   fileOpenSession->setShortcut(QKeySequence::Open);
-  connect(fileOpenSession, SIGNAL(triggered(bool)), SLOT(slotLoadSession()));
+  connect(fileOpenSession, &QAction::triggered, this,
+          &Qucs_S_SPAR_Viewer::slotLoadSession);
 
   QAction *fileSaveAsSession = new QAction(tr("&Save session as ..."), this);
   fileSaveAsSession->setShortcut(QKeySequence::SaveAs);
-  connect(fileSaveAsSession, SIGNAL(triggered(bool)), SLOT(slotSaveAs()));
+  connect(fileSaveAsSession, &QAction::triggered, this,
+          &Qucs_S_SPAR_Viewer::slotSaveAs);
 
   QAction *fileSaveSession = new QAction(tr("&Save session"), this);
   fileSaveSession->setShortcut(QKeySequence::Save);
-  connect(fileSaveSession, SIGNAL(triggered(bool)), SLOT(slotSave()));
+  connect(fileSaveSession, &QAction::triggered, this,
+          &Qucs_S_SPAR_Viewer::slotSave);
 
   recentFilesMenu = fileMenu->addMenu("Recent Files");
   connect(recentFilesMenu, &QMenu::aboutToShow, this,
@@ -118,17 +120,20 @@ void Qucs_S_SPAR_Viewer::CreateMenuBar() {
   QAction *helpHelp = new QAction(tr("&Help"), this);
   helpHelp->setShortcut(Qt::Key_F1);
   helpMenu->addAction(helpHelp);
-  connect(helpHelp, SIGNAL(triggered(bool)), SLOT(slotHelpIntro()));
+  connect(helpHelp, &QAction::triggered, this,
+          &Qucs_S_SPAR_Viewer::slotHelpIntro);
 
   QAction *helpAbout = new QAction(tr("&About"), this);
   helpMenu->addAction(helpAbout);
-  connect(helpAbout, SIGNAL(triggered(bool)), SLOT(slotHelpAbout()));
+  connect(helpAbout, &QAction::triggered, this,
+          &Qucs_S_SPAR_Viewer::slotHelpAbout);
 
   helpMenu->addSeparator();
 
   QAction *helpAboutQt = new QAction(tr("About Qt..."), this);
   helpMenu->addAction(helpAboutQt);
-  connect(helpAboutQt, SIGNAL(triggered(bool)), SLOT(slotHelpAboutQt()));
+  connect(helpAboutQt, &QAction::triggered, this,
+          &Qucs_S_SPAR_Viewer::slotHelpAboutQt);
 
   menuBar()->addMenu(fileMenu);
   menuBar()->addSeparator();
@@ -228,7 +233,8 @@ void Qucs_S_SPAR_Viewer::setFileManagementDock() {
   QString tooltip_message = QString(
       "Add single data file (.dat, .snp). You can also drag and drop it.");
   Button_Add_File->setToolTip(tooltip_message);
-  connect(Button_Add_File, SIGNAL(clicked()), SLOT(addFile()));
+  connect(Button_Add_File, &QPushButton::clicked, this,
+          [this]() { addFile(); });
 
   Delete_All_Files = new QPushButton("Delete all", this);
   Delete_All_Files->setStyleSheet("QPushButton {background-color: red;\
@@ -243,7 +249,8 @@ void Qucs_S_SPAR_Viewer::setFileManagementDock() {
                               }");
   tooltip_message = QString("Remove all data files.");
   Button_Add_File->setToolTip(tooltip_message);
-  connect(Delete_All_Files, SIGNAL(clicked()), SLOT(removeAllFiles()));
+  connect(Button_Add_File, &QPushButton::clicked, this,
+          &Qucs_S_SPAR_Viewer::removeAllFiles);
 
   hLayout_Files_Buttons->addWidget(Button_Add_File);
   hLayout_Files_Buttons->addWidget(Delete_All_Files);
@@ -280,8 +287,9 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
   DatasetsGrid->addWidget(displayTypeLabel, 0, 2, Qt::AlignCenter);
 
   QCombobox_traces = new MatrixComboBox();
-  connect(QCombobox_traces, SIGNAL(currentIndexChanged(int)),
-          SLOT(updateDisplayType()));
+  connect(QCombobox_traces, &QComboBox::currentIndexChanged, this,
+          [this]() { updateDisplayType(); });
+
   DatasetsGrid->addWidget(QCombobox_traces, 1, 1);
 
   Button_add_trace = new QPushButton("Add trace");
@@ -295,8 +303,10 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
                                   min-width: 10em;\
                                   padding: 6px;\
                               }");
-  connect(Button_add_trace, SIGNAL(clicked()),
-          SLOT(addTrace())); // Connect button with the handler
+
+  connect(Button_add_trace, &QPushButton::clicked, this,
+          static_cast<void (Qucs_S_SPAR_Viewer::*)()>(
+              &Qucs_S_SPAR_Viewer::addTrace));
 
   QCombobox_display_mode = new QComboBox();
   QCombobox_display_mode->addItem("dB");
@@ -313,14 +323,13 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
 
   QCombobox_datasets = new QComboBox();
   DatasetsGrid->addWidget(QCombobox_datasets, 1, 0);
-  connect(QCombobox_datasets, SIGNAL(currentIndexChanged(int)),
-          SLOT(updateTracesCombo())); // Each time the dataset is changed it is
-                                      // needed to update the traces combo. This
-                                      // is needed when the user has data with
-                                      // different number of ports.
-  traceTabs = new QTabWidget(this);   // Ensure 'this' is the parent
-  connect(traceTabs, SIGNAL(currentChanged(int)), this,
-          SLOT(raiseWidgetsOnTabSelection(int)));
+
+  connect(QCombobox_datasets, &QComboBox::currentIndexChanged,
+
+          this, &Qucs_S_SPAR_Viewer::updateTracesCombo);
+  traceTabs = new QTabWidget(this); // Ensure 'this' is the parent
+  connect(traceTabs, &QTabWidget::currentChanged, this,
+          &Qucs_S_SPAR_Viewer::raiseWidgetsOnTabSelection);
 
   // Create tabs for Magnitude/Phase and Smith Chart
   magnitudePhaseTab = new QWidget(traceTabs); // Parent is traceTabs
@@ -499,8 +508,11 @@ void Qucs_S_SPAR_Viewer::setMarkerManagementDock() {
                                   min-width: 10em;\
                                   padding: 6px;\
                               }");
-  connect(Button_add_marker, SIGNAL(clicked()),
-          SLOT(addMarker())); // Connect button with the handler
+  connect(Button_add_marker,
+          &QPushButton::clicked, // clicked(bool) – the bool will be ignored
+          this, [this]() {
+            addMarker();
+          }); // calls the overload with default arguments
   MarkersGrid->addWidget(Button_add_marker, 0, 0);
 
   Button_Remove_All_Markers = new QPushButton("Remove all");
@@ -514,8 +526,9 @@ void Qucs_S_SPAR_Viewer::setMarkerManagementDock() {
                                   min-width: 10em;\
                                   padding: 6px;\
                               }");
-  connect(Button_Remove_All_Markers, SIGNAL(clicked()),
-          SLOT(removeAllMarkers())); // Connect button with the handler
+  connect(Button_Remove_All_Markers,
+          &QPushButton::clicked, // emits clicked(bool), the bool is ignored
+          this, &Qucs_S_SPAR_Viewer::removeAllMarkers);
   MarkersGrid->addWidget(Button_Remove_All_Markers, 0, 1);
 
   // Marker management
@@ -538,8 +551,8 @@ void Qucs_S_SPAR_Viewer::setMarkerManagementDock() {
 
   // Create tab widget to hold the two marker tables
   QTabWidget *tabWidgetMarkers = new QTabWidget();
-  connect(tabWidgetMarkers, SIGNAL(currentChanged(int)), this,
-          SLOT(raiseWidgetsOnTabSelection(int)));
+  connect(tabWidgetMarkers, &QTabWidget::currentChanged, this,
+          &Qucs_S_SPAR_Viewer::raiseWidgetsOnTabSelection);
 
   // Create the two tables for different marker types
   tableMarkers_Magnitude_Phase = new QTableWidget(1, 1, this);
@@ -591,8 +604,12 @@ void Qucs_S_SPAR_Viewer::setLimitManagementDock() {
                                   min-width: 10em;\
                                   padding: 6px;\
                               }");
-  connect(Button_add_Limit, SIGNAL(clicked()),
-          SLOT(addLimit())); // Connect button with the handler
+  // Default arguments do NOT matter for Qt signal/slot matching.
+  // It's needed to match using a lambda function with the default arguments
+  // The name of the bool is ommited to avoid a warning
+  connect(Button_add_Limit, &QAbstractButton::clicked, this,
+          [this](bool) { addLimit(-1, "", -1, "", -1, -1, true); });
+
   LimitsGrid->addWidget(Button_add_Limit, 0, 0);
 
   Button_Remove_All_Limits = new QPushButton("Remove all");
@@ -606,8 +623,9 @@ void Qucs_S_SPAR_Viewer::setLimitManagementDock() {
                                   min-width: 10em;\
                                   padding: 6px;\
                               }");
-  connect(Button_Remove_All_Limits, SIGNAL(clicked()),
-          SLOT(removeAllLimits())); // Connect button with the handler
+  connect(Button_Remove_All_Limits, &QPushButton::clicked, this,
+          &Qucs_S_SPAR_Viewer::removeAllLimits);
+
   LimitsGrid->addWidget(Button_Remove_All_Limits, 0, 1);
 
   QGroupBox *LimitSettings = new QGroupBox("Settings");
@@ -618,7 +636,9 @@ void Qucs_S_SPAR_Viewer::setLimitManagementDock() {
   Limits_Offset->setSingleStep(0.1);
   Limits_Offset->setMaximum(1e4);
   Limits_Offset->setMinimum(-1e4);
-  connect(Limits_Offset, SIGNAL(valueChanged(double)), SLOT(updateLimits()));
+  connect(Limits_Offset, &QDoubleSpinBox::valueChanged, this,
+          &Qucs_S_SPAR_Viewer::updateLimits);
+
   LimitsSettingLayout->addWidget(LimitsOffsetLabel, 0, 0);
   LimitsSettingLayout->addWidget(Limits_Offset, 0, 1);
 
@@ -1127,9 +1147,8 @@ void Qucs_S_SPAR_Viewer::CreateFileWidgets(QString filename, int position) {
   List_RemoveButton.append(RemoveButton);
   this->FilesGrid->addWidget(List_RemoveButton.last(), position, 1, 1, 1);
 
-  connect(RemoveButton, SIGNAL(clicked()),
-          SLOT(removeFile())); // Connect button with the handler to remove the
-                               // entry.
+  connect(RemoveButton, &QToolButton::clicked, this,
+          [this]() { removeFile(); });
 }
 
 // Given the name of a dataset, this function removes all traces related to it

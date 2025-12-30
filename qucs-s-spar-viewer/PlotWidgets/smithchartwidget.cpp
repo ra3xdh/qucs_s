@@ -125,8 +125,7 @@ SmithChartWidget::SmithChartWidget(QWidget *parent)
   m_maxFreqSpinBox->setValue(20.0);
   m_maxFreqSpinBox->setSingleStep(1);
   m_maxFreqSpinBox->setMaximumWidth(70);
-  connect(m_maxFreqSpinBox,
-          QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+  connect(m_maxFreqSpinBox, &QDoubleSpinBox::valueChanged, this,
           &SmithChartWidget::onMaxFreqChanged);
 
   // Min frequency label and spinbox
@@ -139,8 +138,7 @@ SmithChartWidget::SmithChartWidget(QWidget *parent)
   m_freqUnitComboBox->addItem("MHz");
   m_freqUnitComboBox->addItem("GHz");
   m_freqUnitComboBox->setCurrentIndex(2); // Default to MHz
-  connect(m_freqUnitComboBox,
-          QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+  connect(m_freqUnitComboBox, &QComboBox::currentIndexChanged, this,
           &SmithChartWidget::onFreqUnitChanged);
 
   // Add widgets to the frequency range layout
@@ -166,8 +164,8 @@ SmithChartWidget::SmithChartWidget(QWidget *parent)
   mainLayout->addLayout(bottomLayout);
 
   // Connect the signals
-  connect(m_Z0ComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
-          this, &SmithChartWidget::onZ0Changed);
+  connect(m_Z0ComboBox, &QComboBox::currentIndexChanged, this,
+          &SmithChartWidget::onZ0Changed);
   connect(m_ShowAdmittanceChartCheckBox, &QCheckBox::checkStateChanged, this,
           &SmithChartWidget::onShowAdmittanceChartChanged);
   connect(m_ShowConstantCurvesCheckBox, &QCheckBox::checkStateChanged, this,

@@ -18,12 +18,12 @@
 #include "qucs-s-spar-viewer.h"
 
 void Qucs_S_SPAR_Viewer::removeTrace() {
-  QToolButton* button = qobject_cast<QToolButton*>(sender());
-  QString ID          = button->objectName();
+  QToolButton *button = qobject_cast<QToolButton *>(sender());
+  QString ID = button->objectName();
   ID.remove("Trace_RemoveButton_");
 
   // Find the display mode from the parent widget
-  QWidget* scroll    = button->parentWidget()->parentWidget()->parentWidget();
+  QWidget *scroll = button->parentWidget()->parentWidget()->parentWidget();
   QString scrollname = scroll->objectName();
 
   DisplayMode mode;
@@ -50,15 +50,15 @@ void Qucs_S_SPAR_Viewer::removeTrace() {
   }
 
   // Get trace properties and call the common removal function
-  TraceProperties& props = traceMap[mode][ID];
+  TraceProperties &props = traceMap[mode][ID];
   removeTraceByProps(mode, ID, props);
 }
 
 void Qucs_S_SPAR_Viewer::removeTraceByProps(DisplayMode mode,
-                                            const QString& traceID,
-                                            TraceProperties& props) {
+                                            const QString &traceID,
+                                            TraceProperties &props) {
   // 1) Find the right layout
-  QGridLayout* targetLayout;
+  QGridLayout *targetLayout;
 
   // Remove trace from the layout and from the chart
   switch (mode) {
@@ -132,7 +132,7 @@ void Qucs_S_SPAR_Viewer::removeTraceByProps(DisplayMode mode,
 void Qucs_S_SPAR_Viewer::addTrace() {
   // Create a TraceInfo object from UI selections
   TraceInfo traceInfo;
-  traceInfo.dataset   = this->QCombobox_datasets->currentText();
+  traceInfo.dataset = this->QCombobox_datasets->currentText();
   traceInfo.parameter = this->QCombobox_traces->currentText();
 
   // Convert display mode selection to enum
@@ -179,7 +179,7 @@ void Qucs_S_SPAR_Viewer::addTrace() {
 }
 
 // Overloaded method that uses the TraceInfo structure
-void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
+void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo &traceInfo,
                                   QColor trace_color, int trace_width,
                                   QString trace_style) {
   DisplayMode mode = traceInfo.displayMode;
@@ -208,54 +208,56 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
   }
 
   // Get the appropriate layout based on the display mode
-  QGridLayout* targetLayout;
+  QGridLayout *targetLayout;
   QString displayMode;
   switch (mode) {
   case DisplayMode::Smith:
     targetLayout = smithLayout;
-    displayMode  = QString("Smith");
+    displayMode = QString("Smith");
     break;
   case DisplayMode::Magnitude_dB:
-    displayMode  = QString("Magnitude");
+    displayMode = QString("Magnitude");
     targetLayout = magnitudePhaseLayout;
     break;
   case DisplayMode::Phase:
-    displayMode  = QString("Phase");
+    displayMode = QString("Phase");
     targetLayout = magnitudePhaseLayout;
     break;
   case DisplayMode::Polar:
-    displayMode  = QString("Polar");
+    displayMode = QString("Polar");
     targetLayout = polarLayout;
     break;
   case DisplayMode::PortImpedance:
-    displayMode  = QString("Port Impedance");
+    displayMode = QString("Port Impedance");
     targetLayout = portImpedanceLayout;
     break;
   case DisplayMode::Stability:
-    displayMode  = QString("Stability");
+    displayMode = QString("Stability");
     targetLayout = stabilityLayout;
     break;
   case DisplayMode::VSWR:
-    displayMode  = QString("VSWR");
+    displayMode = QString("VSWR");
     targetLayout = VSWRLayout;
     break;
   case DisplayMode::GroupDelay:
-    displayMode  = QString("Group Delay");
+    displayMode = QString("Group Delay");
     targetLayout = GroupDelayLayout;
     break;
   }
 
   // Create UI widgets for the trace (mostly unchanged from original code)
   // Label
-  QLabel* new_trace_label = new QLabel(trace_name);
+  QLabel *new_trace_label = new QLabel(trace_name);
   new_trace_label->setObjectName(QStringLiteral("Trace_Name_") + trace_name);
   traceMap[mode][trace_name].nameLabel = new_trace_label;
   targetLayout->addWidget(new_trace_label, n_trace, 0);
 
   // Color picker
-  QPushButton* new_trace_color = new QPushButton();
+  QPushButton *new_trace_color = new QPushButton();
   new_trace_color->setObjectName(QStringLiteral("Trace_Color_") + trace_name);
-  connect(new_trace_color, SIGNAL(clicked()), SLOT(changeTraceColor()));
+  connect(new_trace_color, &QPushButton::clicked, this,
+          &Qucs_S_SPAR_Viewer::changeTraceColor);
+
   QString styleSheet = QStringLiteral("QPushButton { background-color: %1; }")
                            .arg(trace_color.name());
   new_trace_color->setStyleSheet(styleSheet);
@@ -264,7 +266,7 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
   targetLayout->addWidget(new_trace_color, n_trace, 1);
 
   // LineStyle
-  QComboBox* new_trace_linestyle = new QComboBox();
+  QComboBox *new_trace_linestyle = new QComboBox();
   new_trace_linestyle->setObjectName(QStringLiteral("Trace_LineStyle_") +
                                      trace_name);
   new_trace_linestyle->addItem("Solid");
@@ -274,8 +276,9 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
   new_trace_linestyle->addItem("-··-··-");
   int index = new_trace_linestyle->findText(trace_style);
   new_trace_linestyle->setCurrentIndex(index);
-  connect(new_trace_linestyle, SIGNAL(currentIndexChanged(int)),
-          SLOT(changeTraceLineStyle()));
+  connect(new_trace_linestyle, &QComboBox::currentIndexChanged, this,
+          &Qucs_S_SPAR_Viewer::changeTraceLineStyle);
+
   traceMap[mode][trace_name].LineStyleComboBox = new_trace_linestyle;
   targetLayout->addWidget(new_trace_linestyle, n_trace, 2);
 
@@ -294,15 +297,16 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
   }
 
   // Line width
-  QSpinBox* new_trace_width = new QSpinBox();
+  QSpinBox *new_trace_width = new QSpinBox();
   new_trace_width->setObjectName(QStringLiteral("Trace_Width_") + trace_name);
   new_trace_width->setValue(trace_width);
-  connect(new_trace_width, SIGNAL(valueChanged(int)), SLOT(changeTraceWidth()));
+  connect(new_trace_width, &QSpinBox::valueChanged, this,
+          &Qucs_S_SPAR_Viewer::changeTraceWidth);
   traceMap[mode][trace_name].width = new_trace_width;
   targetLayout->addWidget(new_trace_width, n_trace, 3);
 
   // Remove button
-  QToolButton* new_trace_removebutton = new QToolButton();
+  QToolButton *new_trace_removebutton = new QToolButton();
   new_trace_removebutton->setObjectName(QStringLiteral("Trace_RemoveButton_") +
                                         trace_name);
   QIcon icon(":/bitmaps/trash.png");
@@ -315,7 +319,9 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
                 margin: auto;
             }
         )");
-  connect(new_trace_removebutton, SIGNAL(clicked()), SLOT(removeTrace()));
+  connect(new_trace_removebutton, &QPushButton::clicked, this,
+          &Qucs_S_SPAR_Viewer::removeTrace);
+
   traceMap[mode][trace_name].deleteButton = new_trace_removebutton;
   targetLayout->addWidget(new_trace_removebutton, n_trace, 4);
 
@@ -327,7 +333,7 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
 
   // Create and add the appropriate trace based on display mode
   QList<double> frequencies = datasets[traceInfo.dataset]["frequency"];
-  double Z0                 = datasets[traceInfo.dataset]["Z0"].first();
+  double Z0 = datasets[traceInfo.dataset]["Z0"].first();
 
   // Process the trace based on display mode
   switch (mode) {
@@ -366,12 +372,12 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
 
     // Add the trace to the chart
     RectangularPlotWidget::Trace new_trace;
-    new_trace.trace        = trace_data;
-    new_trace.frequencies  = frequencies;
-    new_trace.pen          = pen;
-    new_trace.Z0           = Z0;
-    new_trace.units        = units;
-    new_trace.y_axis       = yaxis;
+    new_trace.trace = trace_data;
+    new_trace.frequencies = frequencies;
+    new_trace.pen = pen;
+    new_trace.Z0 = Z0;
+    new_trace.units = units;
+    new_trace.y_axis = yaxis;
     new_trace.y_axis_title = yaxis_title;
     Magnitude_PhaseChart->addTrace(trace_name, new_trace);
     break;
@@ -396,10 +402,10 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
 
     // Set the impedance data to the Smith Chart widget
     SmithChartWidget::Trace new_trace;
-    new_trace.impedances  = impedances;
+    new_trace.impedances = impedances;
     new_trace.frequencies = frequencies;
-    new_trace.pen         = pen;
-    new_trace.Z0          = Z0;
+    new_trace.pen = pen;
+    new_trace.Z0 = Z0;
 
     SmithChartTraces.append(new_trace);
 
@@ -424,8 +430,8 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
     // Set the data to the Polar Chart widget
     PolarPlotWidget::Trace new_trace;
     new_trace.frequencies = frequencies;
-    new_trace.values      = S;
-    new_trace.pen         = pen;
+    new_trace.values = S;
+    new_trace.pen = pen;
 
     PolarChartTraces.append(new_trace);
 
@@ -446,11 +452,11 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
     QList<double> trace_data = datasets[traceInfo.dataset][fullParam];
 
     RectangularPlotWidget::Trace new_trace;
-    new_trace.frequencies  = frequencies;
-    new_trace.trace        = trace_data;
-    new_trace.pen          = pen;
-    new_trace.units        = "ns";
-    new_trace.y_axis       = 1;
+    new_trace.frequencies = frequencies;
+    new_trace.trace = trace_data;
+    new_trace.pen = pen;
+    new_trace.units = "ns";
+    new_trace.y_axis = 1;
     new_trace.y_axis_title = fullParam;
 
     GroupDelayTraces.append(new_trace);
@@ -472,11 +478,11 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
     QList<double> trace_data = datasets[traceInfo.dataset][fullParam];
 
     RectangularPlotWidget::Trace new_trace;
-    new_trace.frequencies  = frequencies;
-    new_trace.trace        = trace_data;
-    new_trace.pen          = pen;
-    new_trace.units        = "";
-    new_trace.y_axis       = 1;
+    new_trace.frequencies = frequencies;
+    new_trace.trace = trace_data;
+    new_trace.pen = pen;
+    new_trace.units = "";
+    new_trace.y_axis = 1;
     new_trace.y_axis_title = "Time (ns)";
 
     stabilityChartTraces.append(new_trace);
@@ -498,11 +504,11 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
     QList<double> trace_data = datasets[traceInfo.dataset][fullParam];
 
     RectangularPlotWidget::Trace new_trace;
-    new_trace.frequencies  = frequencies;
-    new_trace.trace        = trace_data;
-    new_trace.pen          = pen;
-    new_trace.units        = "";
-    new_trace.y_axis       = 1;
+    new_trace.frequencies = frequencies;
+    new_trace.trace = trace_data;
+    new_trace.pen = pen;
+    new_trace.units = "";
+    new_trace.y_axis = 1;
     new_trace.y_axis_title = "VSWR";
 
     VSWRChartTraces.append(new_trace);
@@ -535,7 +541,7 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
 
       // Determine display characteristics
       QString units = "Ω";
-      int yaxis     = 1;
+      int yaxis = 1;
       QString y_axis_title;
 
       if (traceInfo.parameter.contains("Im{")) {
@@ -543,11 +549,11 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
       }
 
       RectangularPlotWidget::Trace new_trace;
-      new_trace.frequencies  = frequencies;
-      new_trace.trace        = trace_data;
-      new_trace.pen          = pen;
-      new_trace.units        = units;
-      new_trace.y_axis       = yaxis;
+      new_trace.frequencies = frequencies;
+      new_trace.trace = trace_data;
+      new_trace.pen = pen;
+      new_trace.units = units;
+      new_trace.y_axis = yaxis;
       new_trace.y_axis_title = y_axis_title;
 
       impedanceChartTraces.append(new_trace);
@@ -561,9 +567,7 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo& traceInfo,
 }
 
 // Returns the total number of traces
-int Qucs_S_SPAR_Viewer::getNumberOfTraces() {
-  return traceMap.keys().size();
-}
+int Qucs_S_SPAR_Viewer::getNumberOfTraces() { return traceMap.keys().size(); }
 
 // This is the handler that is triggered when the user hits the button to change
 // the color of a given trace
@@ -572,12 +576,12 @@ void Qucs_S_SPAR_Viewer::changeTraceColor() {
   if (color.isValid()) {
     // Do something with the selected color
     // For example, set the background color of the button
-    QPushButton* button = qobject_cast<QPushButton*>(sender());
+    QPushButton *button = qobject_cast<QPushButton *>(sender());
     if (button) {
 
       // 1) Find the display mode
 
-      QWidget* scroll = button->parentWidget()->parentWidget()->parentWidget();
+      QWidget *scroll = button->parentWidget()->parentWidget()->parentWidget();
       QString scrollname = scroll->objectName();
 
       DisplayMode mode;
@@ -656,12 +660,12 @@ void Qucs_S_SPAR_Viewer::changeTraceColor() {
 // This is the handler that is triggered when the user hits the button to change
 // the line style of a given trace
 void Qucs_S_SPAR_Viewer::changeTraceLineStyle() {
-  QComboBox* combo = qobject_cast<QComboBox*>(sender());
-  QString ID       = combo->objectName();
+  QComboBox *combo = qobject_cast<QComboBox *>(sender());
+  QString ID = combo->objectName();
 
   // 1) Find the display mode
 
-  QWidget* scroll    = combo->parentWidget()->parentWidget()->parentWidget();
+  QWidget *scroll = combo->parentWidget()->parentWidget()->parentWidget();
   QString scrollname = scroll->objectName();
 
   DisplayMode mode;
@@ -752,12 +756,12 @@ void Qucs_S_SPAR_Viewer::changeTraceLineStyle() {
 // This is the handler that is triggered when the user hits the button to change
 // the line width of a given trace
 void Qucs_S_SPAR_Viewer::changeTraceWidth() {
-  QSpinBox* spinbox = qobject_cast<QSpinBox*>(sender());
-  QString ID        = spinbox->objectName();
+  QSpinBox *spinbox = qobject_cast<QSpinBox *>(sender());
+  QString ID = spinbox->objectName();
 
   // 1) Find the display mode
 
-  QWidget* scroll    = spinbox->parentWidget()->parentWidget()->parentWidget();
+  QWidget *scroll = spinbox->parentWidget()->parentWidget()->parentWidget();
   QString scrollname = scroll->objectName();
 
   DisplayMode mode;

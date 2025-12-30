@@ -65,16 +65,23 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent)
   MatchingNetworkDesignLayout->addWidget(traceNameLineEdit, 5, 1);
 
   // Connect signals from the input matching network setup widget
-  connect(InputMatchingSetupWidget, SIGNAL(parametersChanged()), this,
-          SLOT(UpdateDesignParameters()));
-  connect(OutputMatchingSetupWidget, SIGNAL(parametersChanged()), this,
-          SLOT(UpdateDesignParameters()));
-  connect(TwoPortCheckBox, SIGNAL(stateChanged(int)), this,
-          SLOT(AdjustOneTwoPortMatchingWidgetsVisibility()));
-  connect(f_match_Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(f_match_Scale_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
+  connect(InputMatchingSetupWidget,
+          &MatchingNetworkParametersWidget::parametersChanged, this,
+          &MatchingNetworkDesignTool::UpdateDesignParameters);
+
+  connect(OutputMatchingSetupWidget,
+          &MatchingNetworkParametersWidget::parametersChanged, this,
+          &MatchingNetworkDesignTool::UpdateDesignParameters);
+
+  connect(
+      TwoPortCheckBox, &QCheckBox::checkStateChanged, this,
+      &MatchingNetworkDesignTool::AdjustOneTwoPortMatchingWidgetsVisibility);
+
+  connect(f_match_Spinbox, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+          this, &MatchingNetworkDesignTool::UpdateDesignParameters);
+
+  connect(f_match_Scale_Combo, &QComboBox::currentIndexChanged, this,
+          &MatchingNetworkDesignTool::UpdateDesignParameters);
 
   connect(LoadSpecWidget, &LoadSpecificationWidget::impedanceChanged, this,
           &MatchingNetworkDesignTool::UpdateDesignParameters);

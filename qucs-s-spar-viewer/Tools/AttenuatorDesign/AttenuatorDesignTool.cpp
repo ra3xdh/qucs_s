@@ -179,32 +179,32 @@ AttenuatorDesignTool::AttenuatorDesignTool(QWidget *parent) : QWidget(parent) {
   AttenuatorDesignLayout->addWidget(traceNameLabel, layout_row, 0);
   AttenuatorDesignLayout->addWidget(traceNameLineEdit, layout_row, 1);
 
-  connect(Topology_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(on_TopoCombo_currentIndexChanged(int)));
-  connect(TL_Implementation_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(AttenuationSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(ZinSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(ZoutSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(freqSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(FreqScaleCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(Pin_SpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(Pin_units_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(R1_Pdiss_Units_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdatePowerDissipationData()));
-  connect(R2_Pdiss_Units_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdatePowerDissipationData()));
-  connect(R3_Pdiss_Units_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdatePowerDissipationData()));
-  connect(R4_Pdiss_Units_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdatePowerDissipationData()));
+  connect(Topology_Combo, &QComboBox::currentIndexChanged, this,
+          &AttenuatorDesignTool::on_TopoCombo_currentIndexChanged);
+  connect(TL_Implementation_Combo, &QComboBox::currentIndexChanged, this,
+          &AttenuatorDesignTool::UpdateDesignParameters);
+  connect(AttenuationSpinBox, &QDoubleSpinBox::valueChanged, this,
+          &AttenuatorDesignTool::UpdateDesignParameters);
+  connect(ZinSpinBox, &QDoubleSpinBox::valueChanged, this,
+          &AttenuatorDesignTool::UpdateDesignParameters);
+  connect(ZoutSpinBox, &QDoubleSpinBox::valueChanged, this,
+          &AttenuatorDesignTool::UpdateDesignParameters);
+  connect(freqSpinBox, &QDoubleSpinBox::valueChanged, this,
+          &AttenuatorDesignTool::UpdateDesignParameters);
+  connect(Pin_SpinBox, &QDoubleSpinBox::valueChanged, this,
+          &AttenuatorDesignTool::UpdateDesignParameters);
+  connect(FreqScaleCombo, &QComboBox::currentIndexChanged, this,
+          &AttenuatorDesignTool::UpdateDesignParameters);
+  connect(Pin_units_Combo, &QComboBox::currentIndexChanged, this,
+          &AttenuatorDesignTool::UpdateDesignParameters);
+  connect(R1_Pdiss_Units_Combo, &QComboBox::currentIndexChanged, this,
+          &AttenuatorDesignTool::UpdatePowerDissipationData);
+  connect(R2_Pdiss_Units_Combo, &QComboBox::currentIndexChanged, this,
+          &AttenuatorDesignTool::UpdatePowerDissipationData);
+  connect(R3_Pdiss_Units_Combo, &QComboBox::currentIndexChanged, this,
+          &AttenuatorDesignTool::UpdatePowerDissipationData);
+  connect(R4_Pdiss_Units_Combo, &QComboBox::currentIndexChanged, this,
+          &AttenuatorDesignTool::UpdatePowerDissipationData);
 
   this->setLayout(AttenuatorDesignLayout);
 

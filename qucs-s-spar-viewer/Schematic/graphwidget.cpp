@@ -41,8 +41,8 @@
 #include "graphwidget.h"
 
 //! [0]
-GraphWidget::GraphWidget(QWidget* parent) : QGraphicsView(parent), timerId(0) {
-  QGraphicsScene* scene = new QGraphicsScene(this);
+GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent), timerId(0) {
+  QGraphicsScene *scene = new QGraphicsScene(this);
   scene->setItemIndexMethod(QGraphicsScene::NoIndex);
   // scene->setSceneRect(-200, -200, 600, 300);
   setScene(scene);
@@ -65,22 +65,22 @@ void GraphWidget::ComponentSelectionHandler(struct ComponentInfo CI) {
   emit this->SendComponentSelectionToMainFunction(CI);
 }
 
-void GraphWidget::keyPressEvent(QKeyEvent* /*event*/) {}
+void GraphWidget::keyPressEvent(QKeyEvent * /*event*/) {}
 //! [3]
 
 //! [4]
-void GraphWidget::timerEvent(QTimerEvent* event) {
+void GraphWidget::timerEvent(QTimerEvent *event) {
   Q_UNUSED(event);
 
-  QList<Symbol*> nodes;
-  foreach (QGraphicsItem* item, scene()->items()) {
-    if (Symbol* node = qgraphicsitem_cast<Symbol*>(item)) {
+  QList<Symbol *> nodes;
+  foreach (QGraphicsItem *item, scene()->items()) {
+    if (Symbol *node = qgraphicsitem_cast<Symbol *>(item)) {
       nodes << node;
     }
   }
 }
 
-void GraphWidget::wheelEvent(QWheelEvent* event) {
+void GraphWidget::wheelEvent(QWheelEvent *event) {
   scaleView(pow((double)2, -event->angleDelta().y() / 240.0));
 }
 
@@ -98,21 +98,17 @@ void GraphWidget::scaleView(qreal scaleFactor) {
 //! [7]
 
 void GraphWidget::shuffle() {
-  foreach (QGraphicsItem* item, scene()->items()) {
-    if (qgraphicsitem_cast<Node*>(item)) {
+  foreach (QGraphicsItem *item, scene()->items()) {
+    if (qgraphicsitem_cast<Node *>(item)) {
       item->setPos(-150 + QRandomGenerator::global()->bounded(300),
                    -150 + QRandomGenerator::global()->bounded(300));
     }
   }
 }
 
-void GraphWidget::zoomIn() {
-  scaleView(qreal(1.2));
-}
+void GraphWidget::zoomIn() { scaleView(qreal(1.2)); }
 
-void GraphWidget::zoomOut() {
-  scaleView(1 / qreal(1.2));
-}
+void GraphWidget::zoomOut() { scaleView(1 / qreal(1.2)); }
 
 // This function sets the properties of the components such as position, type
 // and value
@@ -120,11 +116,12 @@ void GraphWidget::setComponents(QList<ComponentInfo> cmps) {
   this->Components.clear();
   for (int i = 0; i < cmps.length(); i++) {
     struct ComponentInfo CI = cmps.at(i);
-    Component* comp         = new Component(this, CI);
+    Component *comp = new Component(this, CI);
     Components.push_back(comp);
     scene()->addItem(comp);
-    connect(comp, SIGNAL(DoubleClicked(struct ComponentInfo)), this,
-            SLOT(ComponentSelectionHandler(struct ComponentInfo)));
+    connect(comp, &Component::DoubleClicked, this,
+            &GraphWidget::ComponentSelectionHandler);
+
     //  qDebug() << "Component added to the scene: " << CI.ID << " at (" <<
     //  CI.Coordinates.at(0) << ", " << CI.Coordinates.at(1) << ")";
   }
@@ -182,7 +179,7 @@ void GraphWidget::setWires(QList<WireInfo> wrs) {
       }
     }
 
-    Wire* w = new Wire();
+    Wire *w = new Wire();
     w->setColor(wrs.at(i).WireColor);
     OriginIsNode ? w->setSource(Nodes.at(origin), wrs.at(i).PortOrigin)
                  : w->setSource(Components.at(origin), wrs.at(i).PortOrigin);
@@ -201,7 +198,7 @@ void GraphWidget::setNodes(QList<NodeInfo> nds) {
   this->Nodes.clear();
   for (int i = 0; i < nds.length(); i++) {
     struct NodeInfo NI = nds.at(i);
-    Node* nd           = new Node(this, NI);
+    Node *nd = new Node(this, NI);
     Nodes.push_back(nd);
     scene()->addItem(nd);
     //  qDebug() << "Node added to the scene: " << NI.ID;
@@ -231,10 +228,10 @@ void GraphWidget::clear() {
   }
 }
 
-void GraphWidget::setTexts(QList<QGraphicsTextItem*> texts) {
+void GraphWidget::setTexts(QList<QGraphicsTextItem *> texts) {
   this->Texts.clear();
   for (int i = 0; i < texts.length(); i++) {
-    QGraphicsTextItem* TI = texts.at(i);
+    QGraphicsTextItem *TI = texts.at(i);
     Texts.push_back(TI);
     scene()->addItem(TI);
   }

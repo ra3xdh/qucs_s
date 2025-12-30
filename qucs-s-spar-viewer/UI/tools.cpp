@@ -108,22 +108,35 @@ void Qucs_S_SPAR_Viewer::setToolsDock() {
   dockTools->setWidget(container);
 
   // Connect with tools to update the simulated traces
-  connect(FilterTool, SIGNAL(updateSimulation(SchematicContent)), this,
-          SLOT(updateSimulation(SchematicContent)));
-  connect(MatchingTool, SIGNAL(updateSimulation(SchematicContent)), this,
-          SLOT(updateSimulation(SchematicContent)));
-  connect(PowerCombTool, SIGNAL(updateSimulation(SchematicContent)), this,
-          SLOT(updateSimulation(SchematicContent)));
-  connect(AttenuatorTool, SIGNAL(updateSimulation(SchematicContent)), this,
-          SLOT(updateSimulation(SchematicContent)));
-  connect(Netlist_Tool, SIGNAL(updateSimulation(SchematicContent)), this,
-          SLOT(updateSimulation(SchematicContent)));
-  connect(SimulationSetupWidget, SIGNAL(updateSimulation()), this,
-          SLOT(updateSimulation()));
-  connect(SimulationSetupWidget, SIGNAL(updateSubstrate()), this,
-          SLOT(updateSubstrate()));
-  connect(ButtonExportSchematic, SIGNAL(clicked(bool)), this,
-          SLOT(exportSchematic()));
+  connect(
+      FilterTool, &FilterDesignTool::updateSimulation, this,
+      QOverload<SchematicContent>::of(&Qucs_S_SPAR_Viewer::updateSimulation));
+
+  connect(MatchingTool, &MatchingNetworkDesignTool::updateSimulation, this,
+          static_cast<void (Qucs_S_SPAR_Viewer::*)(SchematicContent)>(
+              &Qucs_S_SPAR_Viewer::updateSimulation));
+
+  connect(PowerCombTool, &PowerCombiningTool::updateSimulation, this,
+          static_cast<void (Qucs_S_SPAR_Viewer::*)(SchematicContent)>(
+              &Qucs_S_SPAR_Viewer::updateSimulation));
+
+  connect(AttenuatorTool, &AttenuatorDesignTool::updateSimulation, this,
+          static_cast<void (Qucs_S_SPAR_Viewer::*)(SchematicContent)>(
+              &Qucs_S_SPAR_Viewer::updateSimulation));
+
+  connect(Netlist_Tool, &NetlistScratchPad::updateSimulation, this,
+          static_cast<void (Qucs_S_SPAR_Viewer::*)(SchematicContent)>(
+              &Qucs_S_SPAR_Viewer::updateSimulation));
+
+  connect(SimulationSetupWidget, &SimulationSetup::updateSimulation, this,
+          static_cast<void (Qucs_S_SPAR_Viewer::*)()>(
+              &Qucs_S_SPAR_Viewer::updateSimulation));
+
+  connect(SimulationSetupWidget, &SimulationSetup::updateSubstrate, this,
+          &Qucs_S_SPAR_Viewer::updateSubstrate);
+
+  connect(ButtonExportSchematic, &QPushButton::clicked, this,
+          [this]() { exportSchematic(); });
 
   // Update simulation and schematic when the user clicks on another tab
   connect(toolsTabWidget, &QTabWidget::currentChanged, this,

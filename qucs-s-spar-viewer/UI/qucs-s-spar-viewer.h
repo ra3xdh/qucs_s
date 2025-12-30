@@ -225,7 +225,15 @@ private slots:
                 double f_limit2 = -1, QString f_limit2_unit = "",
                 double y_limit1 = -1, double y_limit2 = -1,
                 bool coupled = true);
-  void removeLimit();
+
+  ///
+  /// \brief Remove selected limit (via dialog)
+  ///
+  void onLimitDeleteClicked(bool);
+
+  ///
+  /// \brief Remove limit by name
+  ///
   void removeLimit(QString);
   void removeAllLimits();
   void updateLimits();

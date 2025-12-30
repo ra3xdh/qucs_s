@@ -33,28 +33,41 @@ SimulationSetup::SimulationSetup(QWidget *parent) : QWidget(parent) {
   this->setLayout(mainLayout);
 
   // Connect all widgets to trigger simulation updates
-  connect(fstartSpinBox, SIGNAL(valueChanged(double)), this, SLOT(update()));
-  connect(fstartScaleComboBox, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(update()));
-  connect(fstopSpinBox, SIGNAL(valueChanged(double)), this, SLOT(update()));
-  connect(fstopScaleComboBox, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(update()));
-  connect(npointsSpinBox, SIGNAL(valueChanged(int)), this, SLOT(update()));
+  connect(fstartSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+          this, [this]() { update(); });
 
-  connect(transmissionLineComboBox, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(onTransmissionLineTypeChanged()));
-  connect(substrateThicknessSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(update()));
-  connect(substratePermittivitySpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(update()));
-  connect(substrateLossTangentSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(update()));
-  connect(conductorThicknessSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(update()));
-  connect(conductorConductivitySpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(update()));
-  connect(groundPlaneThicknessSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(update()));
+  connect(fstartScaleComboBox, &QComboBox::currentIndexChanged, this,
+          [this]() { update(); });
+
+  connect(fstopSpinBox, &QDoubleSpinBox::valueChanged, this,
+          [this]() { update(); });
+
+  connect(fstopScaleComboBox, &QComboBox::currentIndexChanged, this,
+          [this]() { update(); });
+
+  connect(npointsSpinBox, &QSpinBox::valueChanged, this,
+          [this]() { update(); });
+
+  connect(transmissionLineComboBox, &QComboBox::currentIndexChanged, this,
+          [this]() { onTransmissionLineTypeChanged(); });
+
+  connect(substrateThicknessSpinBox, &QDoubleSpinBox::valueChanged, this,
+          [this]() { update(); });
+
+  connect(substratePermittivitySpinBox, &QDoubleSpinBox::valueChanged, this,
+          [this]() { update(); });
+
+  connect(substrateLossTangentSpinBox, &QDoubleSpinBox::valueChanged, this,
+          [this]() { update(); });
+
+  connect(conductorThicknessSpinBox, &QDoubleSpinBox::valueChanged, this,
+          [this]() { update(); });
+
+  connect(conductorConductivitySpinBox, &QDoubleSpinBox::valueChanged, this,
+          [this]() { update(); });
+
+  connect(groundPlaneThicknessSpinBox, &QDoubleSpinBox::valueChanged, this,
+          [this]() { update(); });
 }
 
 SimulationSetup::~SimulationSetup() {}
@@ -225,18 +238,37 @@ QWidget *SimulationSetup::createSubstratePropertiesTab() {
 
   // Connect widgets to the signal to update the substrate definition in the
   // tools
-  connect(substrateThicknessSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(updateSubstrateDefinition()));
-  connect(substratePermittivitySpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(updateSubstrateDefinition()));
-  connect(substrateLossTangentSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(updateSubstrateDefinition()));
-  connect(conductorThicknessSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(updateSubstrateDefinition()));
-  connect(conductorConductivitySpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(updateSubstrateDefinition()));
-  connect(groundPlaneThicknessSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(updateSubstrateDefinition()));
+  // SimulationSetup – Qt 6 style connections (no lambdas)
+
+  connect(substrateThicknessSpinBox,
+          QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          static_cast<void (SimulationSetup::*)()>(
+              &SimulationSetup::updateSubstrateDefinition));
+
+  connect(substratePermittivitySpinBox,
+          QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          static_cast<void (SimulationSetup::*)()>(
+              &SimulationSetup::updateSubstrateDefinition));
+
+  connect(substrateLossTangentSpinBox,
+          QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          static_cast<void (SimulationSetup::*)()>(
+              &SimulationSetup::updateSubstrateDefinition));
+
+  connect(conductorThicknessSpinBox,
+          QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          static_cast<void (SimulationSetup::*)()>(
+              &SimulationSetup::updateSubstrateDefinition));
+
+  connect(conductorConductivitySpinBox,
+          QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          static_cast<void (SimulationSetup::*)()>(
+              &SimulationSetup::updateSubstrateDefinition));
+
+  connect(groundPlaneThicknessSpinBox,
+          QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          static_cast<void (SimulationSetup::*)()>(
+              &SimulationSetup::updateSubstrateDefinition));
 
   // Initial image update
   updateImageDisplay();

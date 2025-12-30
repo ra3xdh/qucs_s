@@ -189,16 +189,15 @@ void FilterDesignTool::openResonatorValuesDialog() {
     ResonatorSpinbox->setValue(resonatorValues[i]);
 
     // Connect value change to trigger design update
-    connect(ResonatorSpinbox,
-            QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+    connect(ResonatorSpinbox, &QDoubleSpinBox::valueChanged, this,
             [this, i](double value) {
               resonatorValues[i] = value;
               UpdateDesignParameters();
             });
 
     // Connect scale change to trigger design update
-    connect(scaleCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, [this, i, scaleCombo]() {
+    connect(scaleCombo, &QComboBox::currentIndexChanged, this,
+            [this, i, scaleCombo]() {
               resonatorScaleValues[i] = scaleCombo->currentText();
               UpdateDesignParameters();
             });
