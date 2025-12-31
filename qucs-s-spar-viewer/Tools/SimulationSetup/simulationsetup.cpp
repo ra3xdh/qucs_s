@@ -309,14 +309,12 @@ double SimulationSetup::getFstart() {
   freq /= scale;
   return freq;
 }
-
 QString SimulationSetup::getFstart_as_Text() {
   double freq = fstartSpinBox->value();
   QString unit = fstartScaleComboBox->currentText();
-  QString text = QString("%1 %2").arg(freq).arg(unit);
+  QString text = QString("%1 %2").arg(QString::number(freq), unit);
   return text;
 }
-
 double SimulationSetup::getFstop() {
   double freq = fstopSpinBox->value();
   QString unit = fstopScaleComboBox->currentText();
@@ -324,11 +322,10 @@ double SimulationSetup::getFstop() {
   freq /= scale;
   return freq;
 }
-
 QString SimulationSetup::getFstop_as_Text() {
   double freq = fstopSpinBox->value();
   QString unit = fstopScaleComboBox->currentText();
-  QString text = QString("%1 %2").arg(freq).arg(unit);
+  QString text = QString("%1 %2").arg(QString::number(freq), unit);
   return text;
 }
 

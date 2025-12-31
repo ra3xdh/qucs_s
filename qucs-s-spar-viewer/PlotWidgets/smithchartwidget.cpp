@@ -689,16 +689,12 @@ void SmithChartWidget::drawMarkers(QPainter *painter) {
         freqValue = markerFreq / 1e3;
       }
 
-      // Create label with marker ID, impedance value, and frequency
-      QString label = QString("%1 [%2]: %3 %4\n%5%6j%7Ω")
-                          .arg(markerId)  // %1
-                          .arg(traceName) // %2
-                          .arg(freqValue, 0, 'g',
-                               3) // %3 Use 'g' for compact representation
-                          .arg(freqUnit)                         // %4
-                          .arg(impedance.real(), 0, 'f', 2)      // %5
-                          .arg(impedance.imag() >= 0 ? "+" : "") // %6
-                          .arg(impedance.imag(), 0, 'f', 2);     // %7
+      QString label =
+          QString("%1 [%2]: %3 %4\n%5%6j%7Ω")
+              .arg(markerId, traceName, QString::number(freqValue, 'g', 3),
+                   freqUnit, QString::number(impedance.real(), 'f', 2),
+                   impedance.imag() >= 0 ? "+" : "",
+                   QString::number(impedance.imag(), 'f', 2));
 
       // Draw label with background
       QFontMetrics fm(markerFont);

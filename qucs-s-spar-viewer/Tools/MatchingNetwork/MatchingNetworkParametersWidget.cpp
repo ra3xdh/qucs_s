@@ -65,9 +65,8 @@ void MatchingNetworkParametersWidget::setupUI() {
   matching_methods.append(tr("L-section"));
   matching_methods.append(tr("Single stub"));
   matching_methods.append(tr("Double stub"));
-  matching_methods.append(QString("%1 %2/4")
-                              .arg(tr("Multisection "))
-                              .arg(QString(QChar(0xBB, 0x03))));
+  matching_methods.append(
+      QString("%1 %2/4").arg(tr("Multisection "), QString(QChar(0xBB, 0x03))));
   matching_methods.append(tr("Cascaded L-sections"));
   matching_methods.append(QString("%1/8 + %1/4 line").arg(QChar(0xBB, 0x03)));
   Topology_Combo->addItems(matching_methods);

@@ -102,8 +102,8 @@ AttenuatorDesignTool::AttenuatorDesignTool(QWidget *parent) : QWidget(parent) {
   QStringList power_units;
   power_units
       << "mW" << "W" << "dBm"
-      << QString("dB%1V [75%2]").arg(QChar(0xbc, 0x03)).arg(QChar(0xa9, 0x03))
-      << QString("dB%1V [50%2]").arg(QChar(0xbc, 0x03)).arg(QChar(0xa9, 0x03))
+      << QString("dB%1V [75%2]").arg(QChar(0xbc, 0x03), QChar(0xa9, 0x03))
+      << QString("dB%1V [50%2]").arg(QChar(0xbc, 0x03), QChar(0xa9, 0x03))
       << QString("dBmV [75%1]").arg(QChar(0xa9, 0x03))
       << QString("dBmV [50%1]").arg(QChar(0xa9, 0x03));
   Pin_units_Combo->addItems(power_units);

@@ -1242,7 +1242,8 @@ void Qucs_S_SPAR_Viewer::updateTracesCombo() {
 
   for (int i = 1; i <= n_ports; i++) {
     for (int j = 1; j <= n_ports; j++) {
-      sParams.append(QStringLiteral("S%1%2").arg(i).arg(j)); // Magnitude (dB)
+      sParams.append(QStringLiteral("S%1%2").arg(
+          QString::number(i), QString::number(j))); // Magnitude (dB)
     }
   }
 

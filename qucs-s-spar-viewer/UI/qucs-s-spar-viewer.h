@@ -120,11 +120,9 @@ struct TraceInfo {
     if ((displayMode == DisplayMode::Magnitude_dB) ||
         (displayMode == DisplayMode::Phase)) {
       return QString("%1.%2_%3")
-          .arg(dataset)
-          .arg(parameter)
-          .arg(static_cast<int>(displayMode));
+          .arg(dataset,parameter), QString::number(static_cast<int>(displayMode));
     } else {
-      return QString("%1.%2").arg(dataset).arg(parameter);
+      return QString("%1.%2").arg(dataset, parameter);
     }
   }
 
@@ -138,10 +136,10 @@ struct TraceInfo {
       if (displayMode == DisplayMode::Phase) {
         modeName = "Phase";
       } else {
-        return QString("%1.%2").arg(dataset).arg(parameter);
+        return QString("%1.%2").arg(dataset, parameter);
       }
     }
-    return QString("%1.%2_%3").arg(dataset).arg(parameter).arg(modeName);
+    return QString("%1.%2_%3").arg(dataset, parameter, modeName);
   }
 };
 

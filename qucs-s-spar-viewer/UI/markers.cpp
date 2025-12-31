@@ -304,20 +304,20 @@ void Qucs_S_SPAR_Viewer::updateMarkerData(QTableWidget& table, DisplayMode mode,
 
         if (imag_part < 0) {
           new_val = QStringLiteral("Z=%1-j%2 Ω\nSWR = %3")
-                        .arg(QString::number(Z.real(), 'f', 1))
-                        .arg(QString::number(Z.imag(), 'f', 1))
-                        .arg(QString::number(SWR, 'f', 2));
+                        .arg(QString::number(Z.real(), 'f', 1),
+                             QString::number(Z.imag(), 'f', 1),
+                             QString::number(SWR, 'f', 2));
         } else {
           if (imag_part > 0) {
             new_val = QStringLiteral("Z=%1+j%2 Ω\nSWR = %3")
-                          .arg(QString::number(Z.real(), 'f', 1))
-                          .arg(QString::number(Z.imag(), 'f', 1))
-                          .arg(QString::number(SWR, 'f', 2));
+                          .arg(QString::number(Z.real(), 'f', 1),
+                               QString::number(Z.imag(), 'f', 1),
+                               QString::number(SWR, 'f', 2));
           } else {
             // Z is pure real
             new_val = QStringLiteral("Z=%1 Ω\nSWR = %3")
-                          .arg(QString::number(Z.real(), 'f', 1))
-                          .arg(QString::number(SWR, 'f', 2));
+                          .arg(QString::number(Z.real(), 'f', 1),
+                               QString::number(SWR, 'f', 2));
           }
         }
       } else {
@@ -344,9 +344,8 @@ void Qucs_S_SPAR_Viewer::updateMarkerData(QTableWidget& table, DisplayMode mode,
             angle += 360;
           }
 
-          new_val = QStringLiteral("%1∠%2")
-                        .arg(QString::number(radius, 'f', 2))
-                        .arg(QString::number(angle, 'f', 1));
+          new_val = QStringLiteral("%1∠%2").arg(QString::number(radius, 'f', 2),
+                                                QString::number(angle, 'f', 1));
         } else {
           // Go directly to the dataset for data
           P       = findClosestPoint(datasets[file]["frequency"],

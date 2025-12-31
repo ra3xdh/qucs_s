@@ -18,25 +18,25 @@
 #include "./../SParameterCalculator.h"
 
 vector<vector<Complex>>
-SParameterCalculator::convertS2Y(const vector<vector<Complex>>& S, double Z0) {
+SParameterCalculator::convertS2Y(const vector<vector<Complex>> &S, double Z0) {
 
-  int N          = S.size();
-  auto I         = createMatrix(N, N);
+  int N = S.size();
+  auto I = createMatrix(N, N);
   auto I_minus_S = createMatrix(N, N);
-  auto I_plus_S  = createMatrix(N, N);
+  auto I_plus_S = createMatrix(N, N);
 
   for (int i = 0; i < N; i++) {
     I[i][i] = Complex(1, 0);
     for (int j = 0; j < N; j++) {
       I_minus_S[i][j] = I[i][j] - S[i][j];
-      I_plus_S[i][j]  = I[i][j] + S[i][j];
+      I_plus_S[i][j] = I[i][j] + S[i][j];
     }
   }
 
   auto I_plus_S_inv = invertMatrix(I_plus_S);
 
   vector<vector<Complex>> Y = createMatrix(N, N);
-  double G0                 = 1.0 / Z0;
+  double G0 = 1.0 / Z0;
 
   for (int i = 0; i < N; i++) {
     for (int j = 0; j < N; j++) {
@@ -52,7 +52,7 @@ SParameterCalculator::convertS2Y(const vector<vector<Complex>>& S, double Z0) {
 }
 
 void SParameterCalculator::addSParamBlockToAdmittance(
-    vector<vector<Complex>>& Y, const Component_SPAR& comp) {
+    vector<vector<Complex>> &Y, const Component_SPAR &comp) {
 
   int numRFPorts = comp.numRFPorts;
 
@@ -77,7 +77,7 @@ void SParameterCalculator::addSParamBlockToAdmittance(
 
 // Handle one-port device (.s1p file)
 void SParameterCalculator::addOnePortSParamToAdmittance(
-    vector<vector<Complex>>& Y, const Component_SPAR& comp) {
+    vector<vector<Complex>> &Y, const Component_SPAR &comp) {
 
   if (comp.nodes.size() != 2) {
     cerr << "Error: One-port S-parameter device must have exactly 2 circuit "
@@ -87,7 +87,7 @@ void SParameterCalculator::addOnePortSParamToAdmittance(
 
   // Extract S11 from 1x1 S-matrix
   Complex S11 = comp.Smatrix[0][0];
-  double Z0   = comp.referenceImpedance;
+  double Z0 = comp.referenceImpedance;
 
   // Convert S11 to impedance: Z = Z0 * (1 + S11) / (1 - S11)
   Complex denominator = Complex(1, 0) - S11;
@@ -124,7 +124,7 @@ void SParameterCalculator::addOnePortSParamToAdmittance(
 
 // Handle two-port device (.s2p file)
 void SParameterCalculator::addTwoPortSParamToAdmittance(
-    vector<vector<Complex>>& Y, const Component_SPAR& comp) {
+    vector<vector<Complex>> &Y, const Component_SPAR &comp) {
 
   if (comp.nodes.size() != 2) {
     cerr << "Error: Two-port S-parameter device must have exactly 2 circuit "
@@ -160,7 +160,7 @@ void SParameterCalculator::addTwoPortSParamToAdmittance(
 
 // Frequency-dependent S-parameter handling
 void SParameterCalculator::addFrequencyDependentSParamBlockToAdmittance(
-    vector<vector<Complex>>& Y, const Component_SPAR& comp) {
+    vector<vector<Complex>> &Y, const Component_SPAR &comp) {
 
   int numRFPorts = comp.numRFPorts;
 
@@ -170,7 +170,7 @@ void SParameterCalculator::addFrequencyDependentSParamBlockToAdmittance(
 
   // Create temporary component with interpolated S-matrix for processing
   Component_SPAR tempComp = comp;
-  tempComp.Smatrix        = S_interp;
+  tempComp.Smatrix = S_interp;
 
   // Process using the same logic as constant S-parameter blocks
   if (numRFPorts == 1) {
@@ -185,8 +185,8 @@ void SParameterCalculator::addFrequencyDependentSParamBlockToAdmittance(
 
 // Helper method to add S-parameter device with explicit port count
 void SParameterCalculator::addSParameterDevice(
-    const string& name, const vector<int>& nodes,
-    const vector<vector<Complex>>& Smatrix, int numRFPorts, double Z0 = 50.0) {
+    const string &name, const vector<int> &nodes,
+    const vector<vector<Complex>> &Smatrix, int numRFPorts, double Z0 = 50.0) {
 
   // Validate inputs
   if (numRFPorts != 1 && numRFPorts != 2) {
@@ -218,8 +218,8 @@ void SParameterCalculator::addSParameterDevice(
 
 // To add a S-par block
 void SParameterCalculator::addSParameterBlock(
-    const string& name, const vector<int>& nodes,
-    const vector<vector<Complex>>& Smatrix) {
+    const string &name, const vector<int> &nodes,
+    const vector<vector<Complex>> &Smatrix) {
   components.emplace_back(ComponentType_SPAR::SPAR_BLOCK, name, nodes, Smatrix);
   for (int node : nodes) {
     if (node > numNodes) {
@@ -231,7 +231,7 @@ void SParameterCalculator::addSParameterBlock(
 // Required for frequency-dependent components
 vector<vector<Complex>>
 SParameterCalculator::interpolateFrequencyDependentSMatrix(
-    const Component_SPAR& comp, double freq) {
+    const Component_SPAR &comp, double freq) {
 
   if (!comp.freqDepData.contains("frequency")) {
     cerr << "Error: Frequency-dependent S-parameter missing frequency data"
@@ -240,8 +240,8 @@ SParameterCalculator::interpolateFrequencyDependentSMatrix(
     return createMatrix(N, N); // Return zero matrix as fallback
   }
 
-  const QList<double>& frequencies = comp.freqDepData["frequency"];
-  int N                            = comp.nodes.size(); // Number of ports
+  const QList<double> &frequencies = comp.freqDepData["frequency"];
+  int N = comp.nodes.size(); // Number of ports
 
   if (frequencies.isEmpty()) {
     return createMatrix(N, N);
@@ -268,7 +268,7 @@ SParameterCalculator::interpolateFrequencyDependentSMatrix(
   // Linear interpolation between two frequency points
   double f1 = frequencies[i];
   double f2 = frequencies[i + 1];
-  double t  = (freq - f1) / (f2 - f1); // Interpolation parameter
+  double t = (freq - f1) / (f2 - f1); // Interpolation parameter
 
   vector<vector<Complex>> S1 = extractSMatrixAtIndex(comp, i);
   vector<vector<Complex>> S2 = extractSMatrixAtIndex(comp, i + 1);
@@ -292,16 +292,21 @@ SParameterCalculator::interpolateFrequencyDependentSMatrix(
 }
 
 vector<vector<Complex>>
-SParameterCalculator::extractSMatrixAtIndex(const Component_SPAR& comp,
+SParameterCalculator::extractSMatrixAtIndex(const Component_SPAR &comp,
                                             int freqIndex) {
 
-  int N                     = comp.nodes.size();
+  int N = comp.nodes.size();
   vector<vector<Complex>> S = createMatrix(N, N);
 
   for (int row = 0; row < N; row++) {
     for (int col = 0; col < N; col++) {
-      QString reKey = QString("S%1%2_re").arg(row + 1).arg(col + 1);
-      QString imKey = QString("S%1%2_im").arg(row + 1).arg(col + 1);
+      QString reKey = QString("S%1%2_re")
+                          .arg(QString::number(row + 1),  // %1
+                               QString::number(col + 1)); // %2
+
+      QString imKey = QString("S%1%2_im")
+                          .arg(QString::number(row + 1),  // %1
+                               QString::number(col + 1)); // %2
 
       double realPart = 0.0, imagPart = 0.0;
 
@@ -324,7 +329,7 @@ SParameterCalculator::extractSMatrixAtIndex(const Component_SPAR& comp,
 
 // Helper function to parse inline S-matrix
 vector<vector<Complex>>
-SParameterCalculator::parseInlineSMatrix(const QString& matrixStr,
+SParameterCalculator::parseInlineSMatrix(const QString &matrixStr,
                                          int numPorts) {
   vector<vector<Complex>> Smat(numPorts,
                                vector<Complex>(numPorts, Complex(0, 0)));
@@ -335,8 +340,8 @@ SParameterCalculator::parseInlineSMatrix(const QString& matrixStr,
         "\\(([-+]?\\d*\\.?\\d+[a-zA-Z]*),([-+]?\\d*\\.?\\d+[a-zA-Z]*)\\)");
     QRegularExpressionMatch match = rx.match(matrixStr);
     if (match.hasMatch()) {
-      double re  = parseScaledValue(match.captured(1));
-      double im  = parseScaledValue(match.captured(2));
+      double re = parseScaledValue(match.captured(1));
+      double im = parseScaledValue(match.captured(2));
       Smat[0][0] = Complex(re, im);
     }
   } else if (numPorts == 2) {
@@ -352,8 +357,8 @@ SParameterCalculator::parseInlineSMatrix(const QString& matrixStr,
       int c = 0;
       while (it.hasNext() && c < 2) {
         auto match = it.next();
-        double re  = parseScaledValue(match.captured(1));
-        double im  = parseScaledValue(match.captured(2));
+        double re = parseScaledValue(match.captured(1));
+        double im = parseScaledValue(match.captured(2));
         Smat[r][c] = Complex(re, im);
         c++;
       }

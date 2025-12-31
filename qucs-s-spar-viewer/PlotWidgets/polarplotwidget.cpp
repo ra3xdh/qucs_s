@@ -621,23 +621,19 @@ void PolarPlotWidget::drawCustomMarkers() {
       QString labelText;
       if (displayMode == 0) {
         // Magnitude/Phase format
-        labelText = QString("%1 [%2]: %3 %4\n%5∠%6°")
-                        .arg(markerId)
-                        .arg(traceName)
-                        .arg(freqValue, 0, 'g', 3)
-                        .arg(freqUnit)
-                        .arg(radius, 0, 'f', 2)
-                        .arg(angle, 0, 'f', 2);
+        labelText =
+            QString("%1 [%2]: %3 %4\n%5∠%6°")
+                .arg(markerId, traceName, QString::number(freqValue, 'g', 3),
+                     freqUnit, QString::number(radius, 'f', 2),
+                     QString::number(angle, 'f', 2));
       } else {
         // Real/Imaginary format
-        labelText = QString("%1 [%2]: %3 %4\n%5%6j%7")
-                        .arg(markerId)
-                        .arg(traceName)
-                        .arg(freqValue, 0, 'g', 3)
-                        .arg(freqUnit)
-                        .arg(value.real(), 0, 'f', 2)
-                        .arg(value.imag() >= 0 ? "+" : "")
-                        .arg(value.imag(), 0, 'f', 2);
+        labelText =
+            QString("%1 [%2]: %3 %4\n%5%6j%7")
+                .arg(markerId, traceName, QString::number(freqValue, 'g', 3),
+                     freqUnit, QString::number(value.real(), 'f', 2),
+                     value.imag() >= 0 ? "+" : "",
+                     QString::number(value.imag(), 'f', 2));
       }
 
       // Create and position the label using QCPItemText

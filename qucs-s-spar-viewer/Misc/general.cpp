@@ -43,9 +43,9 @@ QString num2str(std::complex<double> Z, Units CompType) {
   }
 
   if (Z.imag() < 0) {
-    return QString("%1 -j %2").arg(Real).arg(num2str(abs(Z.imag()), CompType));
+    return QString("%1 -j %2").arg(Real, num2str(abs(Z.imag()), CompType));
   } else {
-    return QString("%1 +j %2").arg(Real).arg(num2str(Z.imag(), CompType));
+    return QString("%1 +j %2").arg(Real, num2str(Z.imag(), CompType));
   }
 }
 
