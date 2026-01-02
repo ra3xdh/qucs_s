@@ -17,6 +17,12 @@
 
 #include "rectangularplotwidget.h"
 
+
+///
+/// @brief Class constructor
+/// Sets the QCustomPlot object, default varialbes and creates the UI
+/// @param parent Parent widget
+///
 RectangularPlotWidget::RectangularPlotWidget(QWidget *parent)
     : QWidget(parent), showTraceValues(true), axisSettingsLocked(false),
       fMin(1e20), fMax(-1) {
@@ -40,6 +46,9 @@ RectangularPlotWidget::RectangularPlotWidget(QWidget *parent)
   setLayout(mainLayout);
 }
 
+///
+/// @brief Class destructor
+///
 RectangularPlotWidget::~RectangularPlotWidget() {
   // Clean up any remaining graphics items
   clearGraphicsItems();
@@ -47,6 +56,9 @@ RectangularPlotWidget::~RectangularPlotWidget() {
   // QCustomPlot will be automatically deleted by Qt's parent-child system
 }
 
+///
+/// @brief Configures the plot properties and the axes. It also creates the connections between the event and their function handlers
+///
 void RectangularPlotWidget::setupPlot() {
   // Configure basic plot properties
   plotWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
@@ -91,6 +103,17 @@ void RectangularPlotWidget::setupPlot() {
           &RectangularPlotWidget::onY2AxisRangeChanged);
 }
 
+
+///
+/// @brief Add or update a trace on the plot
+///
+/// Automatically adjusts frequency and y-axis ranges unless settings are locked.
+/// Applies auto-scaling with padding (5% of range).
+/// Updates the plot to display the new trace.
+///
+/// @param name Unique trace identifier
+/// @param trace Trace data including frequencies, values, units, and axis assignment
+///
 void RectangularPlotWidget::addTrace(const QString &name, const Trace &trace) {
   // Create a local copy of the trace that we can modify
   Trace traceCopy = trace;
@@ -137,7 +160,8 @@ void RectangularPlotWidget::addTrace(const QString &name, const Trace &trace) {
     double traceMin = std::numeric_limits<double>::max();
     double traceMax = std::numeric_limits<double>::lowest();
 
-    for (double value : traceCopy.trace) {
+    const auto &traceConst = traceCopy.trace;        // const reference prevents detach (warning)
+    for (double value : traceConst) {
       if (value < traceMin) {
         traceMin = value;
       }
@@ -145,6 +169,7 @@ void RectangularPlotWidget::addTrace(const QString &name, const Trace &trace) {
         traceMax = value;
       }
     }
+
 
     // Add some padding (5% of range)
     double padding = (traceMax - traceMin) * 0.05;
@@ -186,6 +211,16 @@ void RectangularPlotWidget::addTrace(const QString &name, const Trace &trace) {
   updatePlot();
 }
 
+
+///
+/// @brief Calculate a reasonable step size for axis divisions
+///
+/// Aims for approximately 8-10 divisions on the axis. Selects nice round
+/// numbers (1, 2, 5, or 10 multiplied by appropriate power of 10).
+///
+/// @param range Total range to be divided
+/// @return Optimal step size for tick marks
+///
 double RectangularPlotWidget::calculateNiceStep(double range) {
   // Target 8-10 divisions on the axis
   double rawStep = range / 8.0;
@@ -212,16 +247,28 @@ double RectangularPlotWidget::calculateNiceStep(double range) {
   return niceStep * magnitude;
 }
 
+///
+/// @brief Remove a trace from the plot
+/// @param name Trace identifier to remove
+///
 void RectangularPlotWidget::removeTrace(const QString &name) {
   traces.remove(name);
   updatePlot();
 }
 
+///
+/// @brief Remove all traces from the plot
+///
 void RectangularPlotWidget::clearTraces() {
   traces.clear();
   updatePlot();
 }
 
+///
+/// @brief Get the pen style for a specific trace
+/// @param traceName Name of the trace
+/// @return QPen for the trace, or default black pen if not found
+///
 QPen RectangularPlotWidget::getTracePen(const QString &traceName) const {
   if (traces.contains(traceName)) {
     return traces[traceName].pen;
@@ -234,6 +281,11 @@ QPen RectangularPlotWidget::getTracePen(const QString &traceName) const {
   return defaultPen;
 }
 
+///
+/// @brief Set the pen style for a specific trace
+/// @param traceName Name of the trace
+/// @param pen New pen style to apply
+///
 void RectangularPlotWidget::setTracePen(const QString &traceName,
                                         const QPen &pen) {
   if (traces.contains(traceName)) {
@@ -242,6 +294,11 @@ void RectangularPlotWidget::setTracePen(const QString &traceName,
   }
 }
 
+
+///
+/// @brief Get information about all traces
+/// @return Map of trace names to their pen styles
+///
 QMap<QString, QPen> RectangularPlotWidget::getTracesInfo() const {
   QMap<QString, QPen> penMap;
   for (auto it = traces.constBegin(); it != traces.constEnd(); ++it) {
@@ -250,6 +307,19 @@ QMap<QString, QPen> RectangularPlotWidget::getTracesInfo() const {
   return penMap;
 }
 
+
+///
+/// @brief Add a vertical marker at a specific frequency
+///
+/// Creates a vertical line spanning the plot height at the specified frequency.
+/// The marker must be within the frequency range of at least one trace.
+/// Also creates intersection points and labels where the marker crosses traces with the trace values.
+///
+/// @param markerId Unique marker identifier
+/// @param frequency Frequency in Hz where marker should be placed
+/// @param pen Marker line style (default: red, width 2)
+/// @return true if marker added successfully, false if exists or frequency out of range
+///
 bool RectangularPlotWidget::addMarker(const QString &markerId, double frequency,
                                       const QPen &pen) {
   if (markers.contains(markerId)) {
@@ -281,6 +351,12 @@ bool RectangularPlotWidget::addMarker(const QString &markerId, double frequency,
   return true;
 }
 
+
+///
+/// @brief Remove a marker from the plot
+/// @param markerId Marker identifier to remove
+/// @return true if removed successfully, false if not found
+///
 bool RectangularPlotWidget::removeMarker(const QString &markerId) {
   if (!markers.contains(markerId)) {
     return false;
@@ -291,11 +367,18 @@ bool RectangularPlotWidget::removeMarker(const QString &markerId) {
   return true;
 }
 
+///
+/// @brief Remove all markers from the plot
+///
 void RectangularPlotWidget::clearMarkers() {
   markers.clear();
   updatePlot();
 }
 
+///
+/// @brief Get all markers and their frequencies
+/// @return Map of marker IDs to their frequencies in Hz
+///
 QMap<QString, double> RectangularPlotWidget::getMarkers() const {
   QMap<QString, double> markerFrequencies;
   for (auto it = markers.constBegin(); it != markers.constEnd(); ++it) {
@@ -304,6 +387,17 @@ QMap<QString, double> RectangularPlotWidget::getMarkers() const {
   return markerFrequencies;
 }
 
+///
+/// @brief Redraw the entire plot with current trace, marker, and limit data
+///
+/// Clears all existing graphics items and graphs, then recreates:
+/// - Trace graphs with appropriate y-axis assignment
+/// - Marker lines with frequency labels
+/// - Intersection points with value labels
+/// - Limit lines
+/// - Shows/hides right y-axis based on trace assignments
+/// @see addMarkerIntersections()
+///
 void RectangularPlotWidget::updatePlot() {
   // Clear existing graphics items and graphs
   clearGraphicsItems();
@@ -424,6 +518,17 @@ void RectangularPlotWidget::updatePlot() {
   plotWidget->replot();
 }
 
+///
+/// @brief Add intersection markers where a marker line crosses traces
+///
+/// For each trace, calculates the intersection point using linear interpolation
+/// and creates a tracer (circular marker) at that point. Optionally adds a
+/// text label showing the interpolated value.
+///
+/// @param markerId Marker identifier
+/// @param marker Marker data containing frequency and style
+/// @see updatePlot()
+///
 void RectangularPlotWidget::addMarkerIntersections(const QString &markerId,
                                                    const Marker &marker) {
   double freqScale = getXscale();
@@ -506,6 +611,12 @@ void RectangularPlotWidget::addMarkerIntersections(const QString &markerId,
   }
 }
 
+///
+/// @brief Update X-axis based on control widget values
+///
+/// Applies range and tick settings from spin boxes. Prevents excessive
+/// tick density and updates axis label with current frequency units.
+///
 void RectangularPlotWidget::updateXAxis() {
   double xMin = xAxisMin->value();
   double xMax = xAxisMax->value();
@@ -544,6 +655,9 @@ void RectangularPlotWidget::updateXAxis() {
   updatePlot();
 }
 
+///
+/// @brief Update left Y-axis based on control widget values
+///
 void RectangularPlotWidget::updateYAxis() {
   double yMin = yAxisMin->value();
   double yMax = yAxisMax->value();
@@ -578,6 +692,9 @@ void RectangularPlotWidget::updateYAxis() {
   updatePlot();
 }
 
+///
+/// @brief Update right Y-axis based on control widget values
+///
 void RectangularPlotWidget::updateY2Axis() {
   double y2Min = y2AxisMin->value();
   double y2Max = y2AxisMax->value();
@@ -604,6 +721,12 @@ void RectangularPlotWidget::updateY2Axis() {
   updatePlot();
 }
 
+///
+/// @brief Handle frequency unit changes and rescale X-axis
+///
+/// Updates spin box values to reflect frequencies in the new unit scale
+/// (Hz, kHz, MHz, or GHz) without changing the actual frequency range.
+///
 void RectangularPlotWidget::changeFreqUnits() {
   // Get the current scale factor based on selected units
   double freqScale = getXscale();
@@ -625,6 +748,10 @@ void RectangularPlotWidget::changeFreqUnits() {
   updateXAxis();
 }
 
+///
+/// @brief Create and configure axis settings UI widgets
+/// @return Grid layout containing all axis configuration controls
+///
 QGridLayout *RectangularPlotWidget::setupAxisSettings() {
   QGridLayout *axisLayout = new QGridLayout();
 
@@ -768,33 +895,88 @@ QGridLayout *RectangularPlotWidget::setupAxisSettings() {
 }
 
 // These "get" functions are used by the main program to put markers and limits
+///
+/// @brief Get minimum value of left Y-axis
+/// @return Current minimum value
+///
 double RectangularPlotWidget::getYmin() { return yAxisMin->value(); }
 
+///
+/// @brief Get maximum value of left Y-axis
+/// @return Current maximum value
+///
 double RectangularPlotWidget::getYmax() { return yAxisMax->value(); }
 
+///
+/// @brief Get division step of left Y-axis
+/// @return Current division step
+///
 double RectangularPlotWidget::getYdiv() { return yAxisDiv->value(); }
 
+///
+/// @brief Set division step of left Y-axis
+/// @param val New division step value
+///
 void RectangularPlotWidget::setYdiv(double val) { yAxisDiv->setValue(val); }
 
+///
+/// @brief Set minimum value of left Y-axis
+/// @param val New minimum value
+///
 void RectangularPlotWidget::setYmin(double val) { yAxisMin->setValue(val); }
 
+///
+/// @brief Set maximum value of left Y-axis
+/// @param val New maximum value
+///
 void RectangularPlotWidget::setYmax(double val) { yAxisMax->setValue(val); }
 
+///
+/// @brief Get minimum value of right Y-axis
+/// @return Current minimum value
+///
 double RectangularPlotWidget::getY2min() { return y2AxisMin->value(); }
 
+///
+/// @brief Get maximum value of right Y-axis
+/// @return Current maximum value
+///
 double RectangularPlotWidget::getY2max() { return y2AxisMax->value(); }
 
+///
+/// @brief Get division step of right Y-axis
+/// @return Current division step
+///
 double RectangularPlotWidget::getY2div() { return y2AxisDiv->value(); }
 
+///
+/// @brief Get minimum value of X-axis
+/// @return Current minimum value
+///
 double RectangularPlotWidget::getXmin() { return xAxisMin->value(); }
 
+///
+/// @brief Get maximum value of X-axis
+/// @return Current maximum value
+///
 double RectangularPlotWidget::getXmax() { return xAxisMax->value(); }
 
+///
+/// @brief Get division step of X-axis
+/// @return Current division step
+///
 double RectangularPlotWidget::getXdiv() { return xAxisDiv->value(); }
 
+///
+/// @brief Get current frequency units
+/// @return String containing current units (Hz, kHz, MHz, or GHz)
+///
 QString RectangularPlotWidget::getXunits() { return xAxisUnits->currentText(); }
 
-// Count traces assigned to the primary y-axis
+///
+/// @brief Get the number of traces assigned to the left y-axis
+/// @return Number of traces using left y-axis
+///
 int RectangularPlotWidget::getYAxisTraceCount() const {
   int count = 0;
   for (auto it = traces.constBegin(); it != traces.constEnd(); ++it) {
@@ -805,7 +987,10 @@ int RectangularPlotWidget::getYAxisTraceCount() const {
   return count;
 }
 
-// Count traces assigned to the secondary y-axis
+///
+/// @brief Get the number of traces assigned to the right y-axis
+/// @return Number of traces using right y-axis
+///
 int RectangularPlotWidget::getY2AxisTraceCount() const {
   int count = 0;
   for (auto it = traces.constBegin(); it != traces.constEnd(); ++it) {
@@ -816,7 +1001,10 @@ int RectangularPlotWidget::getY2AxisTraceCount() const {
   return count;
 }
 
-// Returns a scale factor depending on the selection of the frequency units
+///
+/// @brief Get scale factor based on selected frequency units
+/// @return Scale factor (1 for Hz, 1e-3 for kHz, 1e-6 for MHz, 1e-9 for GHz)
+///
 double RectangularPlotWidget::getXscale() {
   QString unit = xAxisUnits->currentText();
   double freqScale = 1;
@@ -830,9 +1018,19 @@ double RectangularPlotWidget::getXscale() {
   return freqScale;
 }
 
-// Gets the index of the frequency units combobox
+///
+/// @brief Get the index of the frequency units combobox
+/// @return Current frequency unit index
+///
 int RectangularPlotWidget::getFreqIndex() { return xAxisUnits->currentIndex(); }
 
+
+///
+/// @brief Update an existing marker's frequency
+/// @param markerId Marker identifier
+/// @param newFrequency New frequency in Hz
+/// @return true if updated successfully, false if marker not found or frequency out of range
+///
 bool RectangularPlotWidget::updateMarkerFrequency(const QString &markerId,
                                                   double newFrequency) {
   // Check if marker exists
@@ -864,8 +1062,10 @@ bool RectangularPlotWidget::updateMarkerFrequency(const QString &markerId,
   return true;
 }
 
-// Removes the old graphic elements, such as the labels from past marker
-// positions
+///
+/// @brief Remove old graphic elements from the plot, such as the labels from past marker
+/// positions
+///
 void RectangularPlotWidget::clearGraphicsItems() {
   // Remove all marker lines
   for (auto it = markerLines.begin(); it != markerLines.end(); ++it) {
@@ -903,11 +1103,21 @@ void RectangularPlotWidget::clearGraphicsItems() {
   traceGraphs.clear();
 }
 
+///
+/// @brief Toggle display of trace values at the intersections with the vertical marker
+/// @param show true to show values, false to hide
+///
 void RectangularPlotWidget::toggleShowValues(bool show) {
   showTraceValues = show;
   updatePlot(); // Redraw with new setting
 }
 
+///
+/// @brief Add a limit line to the plot
+/// @param limitId Unique limit identifier
+/// @param limit Limit data including coordinates and style
+/// @return true if added successfully, false if limit already exists
+///
 bool RectangularPlotWidget::addLimit(const QString &limitId,
                                      const Limit &limit) {
   // Check if limit with this ID already exists
@@ -923,6 +1133,10 @@ bool RectangularPlotWidget::addLimit(const QString &limitId,
   return true;
 }
 
+///
+/// @brief Remove a limit line from the plot
+/// @param limitId Identifier of the limit to remove
+///
 void RectangularPlotWidget::removeLimit(const QString &limitId) {
   // Remove the limit if it exists
   if (limits.contains(limitId)) {
@@ -932,17 +1146,29 @@ void RectangularPlotWidget::removeLimit(const QString &limitId) {
   }
 }
 
+///
+/// @brief Remove all limit lines from the plot
+///
 void RectangularPlotWidget::clearLimits() {
   limits.clear();
   updatePlot();
 }
 
+///
+/// @brief Get all limits currently on the plot
+/// @return Map of limit IDs to their limit data
+///
 QMap<QString, RectangularPlotWidget::Limit>
 RectangularPlotWidget::getLimits() const {
   return limits;
 }
 
-// Update limit given the name
+///
+/// @brief Update an existing limit line (by name)
+/// @param limitId Limit identifier
+/// @param limit New limit data
+/// @return true if updated successfully, false if limit not found
+///
 bool RectangularPlotWidget::updateLimit(const QString &limitId,
                                         const Limit &limit) {
   // Check if the limit exists
@@ -959,34 +1185,62 @@ bool RectangularPlotWidget::updateLimit(const QString &limitId,
   return true;
 }
 
+///
+/// @brief Change the title of the left Y-axis
+/// @param title New axis title
+///
 void RectangularPlotWidget::change_Y_axis_title(QString title) {
   plotWidget->yAxis->setLabel(title);
   plotWidget->replot();
 }
 
+///
+/// @brief Change the units label of the left Y-axis
+/// @param units New units text
+///
 void RectangularPlotWidget::change_Y_axis_units(QString units) {
   yAxisUnits->setText(units);
 }
 
+///
+/// @brief Change the title of the right Y-axis
+/// @param title New axis title
+///
 void RectangularPlotWidget::change_Y2_axis_title(QString title) {
   plotWidget->yAxis2->setLabel(title);
   plotWidget->replot();
 }
 
+///
+/// @brief Change the units label of the right Y-axis
+/// @param units New units text
+///
 void RectangularPlotWidget::change_Y2_axis_units(QString units) {
   y2AxisUnits->setText(units);
 }
 
+///
+/// @brief Change the title of the X-axis
+/// @param title New axis title
+///
 void RectangularPlotWidget::change_X_axis_title(QString title) {
   plotWidget->xAxis->setLabel(title);
   plotWidget->replot();
 }
 
+///
+/// @brief Change the label of the X-axis (alias for change_X_axis_title)
+/// @param title New axis label
+///
 void RectangularPlotWidget::change_X_axis_label(QString title) {
   // This function appears to be unused in the original code
   change_X_axis_title(title);
 }
 
+///
+/// @brief Enable or disable the right Y-axis
+/// @param enabled true to show right y-axis, false to hide
+///
 void RectangularPlotWidget::setRightYAxisEnabled(bool enabled) {
   // Hide or show the right y-axis
   plotWidget->yAxis2->setVisible(enabled);
@@ -1003,11 +1257,18 @@ void RectangularPlotWidget::setRightYAxisEnabled(bool enabled) {
   plotWidget->replot();
 }
 
+///
+/// @brief Check if right Y-axis is currently enabled
+/// @return true if right y-axis is visible, false otherwise
+///
 bool RectangularPlotWidget::isRightYAxisEnabled() const {
   return plotWidget->yAxis2->visible();
 }
 
-// Handle lock axis checkbox
+///
+/// @brief Toggle lock state of axis settings
+/// @param locked true to lock axis settings, false to unlock
+///
 void RectangularPlotWidget::toggleLockAxisSettings(bool locked) {
   axisSettingsLocked = locked;
 
@@ -1044,14 +1305,24 @@ void RectangularPlotWidget::toggleLockAxisSettings(bool locked) {
   }
 }
 
-// Public function to let check whether the axes are locked or not
+///
+/// @brief Check if axis settings are currently locked
+/// @return true if axis settings are locked, false otherwise
+///
 bool RectangularPlotWidget::areAxisSettingsLocked() const {
   return axisSettingsLocked;
 }
 
+///
+/// @brief Enable or disable Y-axis autoscaling
+/// @param value true to enable autoscaling, false to disable
+///
 void RectangularPlotWidget::set_y_autoscale(bool value) { y_autoscale = value; }
 
-// Send settings to the main program
+///
+/// @brief Get current axis settings
+/// @return AxisSettings structure containing all axis configuration values
+///
 RectangularPlotWidget::AxisSettings RectangularPlotWidget::getSettings() const {
   AxisSettings settings;
   settings.xAxisMin = xAxisMin->value();
@@ -1073,7 +1344,10 @@ RectangularPlotWidget::AxisSettings RectangularPlotWidget::getSettings() const {
   return settings;
 }
 
-// Get settings from the main program
+///
+/// @brief Apply axis settings from AxisSettings structure
+/// @param settings AxisSettings structure with configuration values to apply
+///
 void RectangularPlotWidget::setSettings(const AxisSettings &settings) {
   xAxisMin->setValue(settings.xAxisMin);
   xAxisMax->setValue(settings.xAxisMax);
@@ -1106,6 +1380,10 @@ void RectangularPlotWidget::setSettings(const AxisSettings &settings) {
   GRAPH
  */
 
+///
+/// @brief Handle X-axis range changes from user interaction
+/// @param range New X-axis range
+///
 void RectangularPlotWidget::onXAxisRangeChanged(const QCPRange &range) {
   // Only update if axis settings are not locked and the change wasn't triggered
   // by our own update
@@ -1131,6 +1409,10 @@ void RectangularPlotWidget::onXAxisRangeChanged(const QCPRange &range) {
   }
 }
 
+///
+/// @brief Handle left Y-axis range changes from user interaction
+/// @param range New Y-axis range
+///
 void RectangularPlotWidget::onYAxisRangeChanged(const QCPRange &range) {
   // Only update if axis settings are not locked
   if (!axisSettingsLocked) {
@@ -1157,6 +1439,10 @@ void RectangularPlotWidget::onYAxisRangeChanged(const QCPRange &range) {
   }
 }
 
+//
+/// @brief Handle right Y-axis range changes from user interaction
+/// @param range New Y2-axis range
+///
 void RectangularPlotWidget::onY2AxisRangeChanged(const QCPRange &range) {
   // Only update if axis settings are not locked
   if (!axisSettingsLocked) {

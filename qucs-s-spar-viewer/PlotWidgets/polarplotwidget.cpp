@@ -21,6 +21,10 @@
 #include <QVBoxLayout>
 #include <cmath>
 
+///
+/// @brief Construct polar plot widget with default configuration
+/// @param parent Parent widget
+///
 PolarPlotWidget::PolarPlotWidget(QWidget *parent)
     : QWidget(parent), fMin(1e20), fMax(-1) {
   // Initialize the QCustomPlot widget
@@ -95,6 +99,9 @@ PolarPlotWidget::PolarPlotWidget(QWidget *parent)
   plot->replot();
 }
 
+///
+/// @brief Destructor
+///
 PolarPlotWidget::~PolarPlotWidget() {
   // Clean up any remaining graphics items
   clearGraphicsItems();
@@ -102,17 +109,29 @@ PolarPlotWidget::~PolarPlotWidget() {
   // QCustomPlot will handle cleanup of its own objects
 }
 
+///
+/// @brief Add a trace to the plot
+/// @param name Unique identifier for the trace
+/// @param trace Trace data containing complex values and frequencies
+///
 void PolarPlotWidget::addTrace(const QString &name, const Trace &trace) {
   traces[name] = trace;
   updateFrequencyRange(); // Update frequency range based on new trace
   updatePlot();
 }
 
+///
+/// @brief Update global frequency range from all traces
+///
+/// Scans through all traces to find minimum and maximum frequencies,
+/// then updates the frequency spinbox values and ranges accordingly.
+///
 void PolarPlotWidget::updateFrequencyRange() {
   fMin = 1e20;
   fMax = -1;
 
-  for (const auto &trace : traces) {
+  const auto &constTraces = traces;           // const view, no detach (no warning)
+  for (const auto &trace : constTraces) {
     if (!trace.frequencies.isEmpty()) {
       double traceMinFreq = trace.frequencies.first();
       double traceMaxFreq = trace.frequencies.last();
@@ -125,6 +144,7 @@ void PolarPlotWidget::updateFrequencyRange() {
       }
     }
   }
+
 
   // Update spin box values
   double freqMultiplier = getFrequencyMultiplier();
@@ -364,17 +384,20 @@ bool PolarPlotWidget::updateMarkerFrequency(const QString &markerId,
 
 void PolarPlotWidget::clearGraphicsItems() {
   // Remove all marker items
-  for (QCPItemEllipse *item : markerItems) {
+  const auto &items = markerItems;            // const view, no detach (otherwise -> warning)
+  for (QCPItemEllipse *item : items) {
     plot->removeItem(item);
   }
   markerItems.clear();
 
   // Remove all marker labels
-  for (QCPItemText *label : markerLabels) {
+  const auto &labels = markerLabels;         // const view, no detach (otherwise -> warning)
+  for (QCPItemText *label : labels) {
     plot->removeItem(label);
   }
   markerLabels.clear();
 }
+
 
 QGridLayout *PolarPlotWidget::setupAxisSettings() {
   QGridLayout *axisLayout = new QGridLayout();
@@ -508,18 +531,6 @@ PolarPlotWidget::getComplexValueAtFrequency(const Trace &trace,
 
   // Return zero if not found (shouldn't happen if checks are proper)
   return std::complex<double>(0, 0);
-}
-
-std::complex<double>
-PolarPlotWidget::convertToDisplayFormat(const std::complex<double> &value,
-                                        int mode) {
-  if (mode == 0) {
-    // Magnitude/Phase - already handled in plotting function
-    return value;
-  } else {
-    // Real/Imaginary - also handled in plotting function
-    return value;
-  }
 }
 
 void PolarPlotWidget::drawCustomMarkers() {
