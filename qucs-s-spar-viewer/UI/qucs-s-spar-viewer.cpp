@@ -868,28 +868,49 @@ void Qucs_S_SPAR_Viewer::slotHelpIntro() {
 void Qucs_S_SPAR_Viewer::slotHelpAboutQt() {
   QMessageBox::aboutQt(this, tr("About Qt"));
 }
-void Qucs_S_SPAR_Viewer::slotHelpAbout() {
-  QMessageBox::about(
-      this, tr("About..."),
-      "Qucs-S S-parameter Viewer & RF Circuit Synthesis Tool "
-      "Version " PACKAGE_VERSION +
-          tr("\nCopyright (C) 2025 by") +
-          " Andrés Martínez Mera"
-          "\n"
-          "\nThis program is free software: you can redistribute it and/or "
-          "modify"
-          "\nit under the terms of the GNU General Public License as published "
-          "by"
-          "\nthe Free Software Foundation, either version 3 of the License, or"
-          "\n(at your option) any later version."
-          "\n"
-          "\nThis program is distributed in the hope that it will be useful,"
-          "\nbut WITHOUT ANY WARRANTY; without even the implied warranty of"
-          "\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
-          "\nSee the GNU General Public License for more details."
-          "\nYou should have received a copy of the GNU General Public License"
-          "\nalong with this program. If not, see "
-          "<https://www.gnu.org/licenses/>.\n\n");
+
+///
+/// \brief Licensing and author credits
+/// @note This tool uses QCustomPlot, developed by Emanuel Eichhammer. https://www.qcustomplot.com
+///
+void Qucs_S_SPAR_Viewer::slotHelpAbout()
+{
+  // Build the HTML body
+  const QString html = R"(
+        <h2>Qucs‑S S‑parameter Viewer &amp; RF Circuit Synthesis Tool</h2>
+        <p><b>Version </b> )" + QString(PACKAGE_VERSION) + R"(</p>
+
+        <p>&copy; 2026 Andrés Martínez Mera</p>
+
+        <p>
+            This program is free software: you can redistribute it and/or modify
+            it under the terms of the <a href="https://www.gnu.org/licenses/gpl-3.0.html">
+            GNU General Public License</a> as published by the Free Software
+            Foundation, either version 3 of the License, or (at your option) any later version.
+        </p>
+
+        <p>
+            This program is distributed in the hope that will be useful,
+            but <b>WITHOUT ANY WARRANTY</b>; without even the implied warranty of
+            <i>merchantability</i> or <i>fitness for a particular purpose</i>.
+        </p>
+
+        <p>
+            You should have received a copy of the GNU GPL along with this program.
+            If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.
+        </p>
+
+        <hr/>
+
+        <p>This application uses <a href="https://www.qcustomplot.com/"
+                                    style="color:#0066CC;">QCustomPlot</a> –
+           a Qt C++ widget for plotting and data visualization.</p>
+        <p>QCustomPlot is authored by <b>Emanuel Eichhammer</b> and is
+           released under the GPL license.</p>
+    )";
+
+  // Show the message box – it automatically interprets the string as rich‑text
+  QMessageBox::about(this, tr("About…"), html);
 }
 
 void Qucs_S_SPAR_Viewer::slotQuit() { qApp->quit(); }
