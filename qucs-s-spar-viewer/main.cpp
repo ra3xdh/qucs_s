@@ -1,14 +1,19 @@
-/****************************************************************************
-**     Qucs Attenuator Synthesis
-**     main.cpp
-**
-**
-**
-**
-**
-**
-**
-*****************************************************************************/
+/*
+ *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -30,10 +35,20 @@
 
 #include "UI/qucs-s-spar-viewer.h"
 
+
+/// Global structure holding application settings
 struct tQucsSettings QucsSettings;
 
-// #########################################################################
-// Loads the settings file and stores the settings.
+///
+/// @brief Loads application settings from the configuration file
+///
+/// Reads settings from the QSettings storage using the organization name "qucs"
+/// and application name "qucs_s". Loads window position (x, y coordinates),
+/// font settings, and language preferences into the global QucsSettings structure.
+///
+/// @return true if settings were loaded successfully, false otherwise
+/// @see saveApplSettings(Qucs_S_SPAR_Viewer*)
+///
 bool loadSettings() {
   QSettings settings("qucs", "qucs_s");
   settings.beginGroup("QucsSparViewer");
@@ -54,8 +69,16 @@ bool loadSettings() {
   return true;
 }
 
-// #########################################################################
-// Saves the settings in the settings file.
+///
+/// @brief Saves application settings to the configuration file
+///
+/// Persists the current window position to QSettings storage for restoration
+/// in future application sessions.
+///
+/// @param qucs Pointer to the main application window
+/// @return true if settings were saved successfully, false otherwise
+/// @see loadSettings()
+///
 bool saveApplSettings(Qucs_S_SPAR_Viewer* qucs) {
   QSettings settings("qucs", "qucs_s");
   settings.beginGroup("QucsSparViewer");
@@ -65,6 +88,21 @@ bool saveApplSettings(Qucs_S_SPAR_Viewer* qucs) {
   return true;
 }
 
+
+///
+/// @brief Main entry point for the Qucs-S S-Parameter Viewer
+///
+/// Initializes the Qt application, loads settings, configures localization,
+/// creates the main window, and optionally opens a file or directory specified
+/// as a command-line argument.
+///
+///
+/// @param argc Number of command-line arguments
+/// @param argv Array of command-line argument strings
+///              argv[1] (optional): Path to a file or directory to open
+///
+/// @return Application exit code (0 for success)
+///
 int main(int argc, char** argv) {
   QApplication a(argc, argv);
 

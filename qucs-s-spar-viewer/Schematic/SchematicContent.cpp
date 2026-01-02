@@ -573,7 +573,7 @@ int SchematicContent::getComponentCounter(ComponentType Comp) {
     NumberComponents.clear();
 
     // Count each component type in Comps
-    for (const ComponentInfo &comp : qAsConst(Comps)) {
+    for (const ComponentInfo &comp : std::as_const(Comps)) {
       NumberComponents[comp.Type]++;
     }
   }

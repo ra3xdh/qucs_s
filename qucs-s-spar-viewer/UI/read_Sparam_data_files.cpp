@@ -17,8 +17,14 @@
 
 #include "qucs-s-spar-viewer.h"
 
+///
+/// @brief Reads NGspice S-parameter data from Qucs dataset file
+/// @param filePath Path to the dataset file
+/// @return Map of variable names to data arrays (frequency, S-parameters as
+/// re/im/dB/ang, n_ports, Z0)
+///
 QMap<QString, QList<double>>
-Qucs_S_SPAR_Viewer::readNGspiceData(const QString& filePath) {
+Qucs_S_SPAR_Viewer::readNGspiceData(const QString &filePath) {
   QMap<QString, QList<double>>
       file_data; // Data structure to store the file data
 
@@ -41,10 +47,10 @@ Qucs_S_SPAR_Viewer::readNGspiceData(const QString& filePath) {
 
   // Initialize variables
   QString currentVariable;
-  bool isReading    = false;
-  int maxPortNumber = 0;     // Track maximum port number
-  double z0Value    = 50.0;  // Default Z0 value
-  bool z0Found      = false; // Flag to track if Z0 has been found
+  bool isReading = false;
+  int maxPortNumber = 0; // Track maximum port number
+  double z0Value = 50.0; // Default Z0 value
+  bool z0Found = false;  // Flag to track if Z0 has been found
 
   while (!in.atEnd()) {
     line = in.readLine().trimmed();
@@ -55,7 +61,7 @@ Qucs_S_SPAR_Viewer::readNGspiceData(const QString& filePath) {
 
     // Handle variable declaration lines
     if (line.startsWith("<indep ") || line.startsWith("<dep ")) {
-      isReading         = false;
+      isReading = false;
       QStringList parts = line.split(" ");
 
       if (parts.size() >= 3) {
@@ -79,13 +85,13 @@ Qucs_S_SPAR_Viewer::readNGspiceData(const QString& filePath) {
           QRegularExpressionMatch match = re.match(currentVariable);
 
           if (match.hasMatch()) {
-            int row       = match.captured(1).toInt();
-            int col       = match.captured(2).toInt();
+            int row = match.captured(1).toInt();
+            int col = match.captured(2).toInt();
             maxPortNumber = qMax(maxPortNumber, qMax(row, col));
           }
         } else {
           // Skip other variables (like y and z parameters)
-          isReading       = false;
+          isReading = false;
           currentVariable = "";
         }
       }
@@ -135,9 +141,9 @@ Qucs_S_SPAR_Viewer::readNGspiceData(const QString& filePath) {
             QString base = "S" + sparam;
 
             // Calculate magnitude in dB and angle
-            double mag    = sqrt(real * real + imag * imag);
+            double mag = sqrt(real * real + imag * imag);
             double mag_db = 20 * log10(mag);
-            double ang    = atan2(imag, real) * 180 / M_PI;
+            double ang = atan2(imag, real) * 180 / M_PI;
 
             file_data[base + "_re"].append(real);
             file_data[base + "_im"].append(imag);
@@ -160,10 +166,14 @@ Qucs_S_SPAR_Viewer::readNGspiceData(const QString& filePath) {
   return file_data;
 }
 
-// Given a string path to a file, it reads the Qucs dataset into the main
-// dataset
+///
+/// @brief Reads Qucsator S-parameter data from Qucs dataset file
+/// @param filePath Path to the dataset file
+/// @return Map of variable names to data arrays (frequency, S-parameters as
+/// re/im/dB/ang, n_ports, Z0)
+///
 QMap<QString, QList<double>>
-Qucs_S_SPAR_Viewer::readQucsatorDataset(const QString& filePath) {
+Qucs_S_SPAR_Viewer::readQucsatorDataset(const QString &filePath) {
   QMap<QString, QList<double>>
       file_data; // Data structure to store the file data
 
@@ -186,9 +196,9 @@ Qucs_S_SPAR_Viewer::readQucsatorDataset(const QString& filePath) {
 
   // Initialize variables
   QString currentVariable;
-  bool isReading    = false;
-  int maxPortNumber = 0;    // Track maximum port number
-  double z0Value    = 50.0; // Default Z0 value
+  bool isReading = false;
+  int maxPortNumber = 0; // Track maximum port number
+  double z0Value = 50.0; // Default Z0 value
 
   while (!in.atEnd()) {
     line = in.readLine().trimmed();
@@ -199,7 +209,7 @@ Qucs_S_SPAR_Viewer::readQucsatorDataset(const QString& filePath) {
 
     // Handle variable declaration lines
     if (line.startsWith("<indep ") || line.startsWith("<dep ")) {
-      isReading         = false;
+      isReading = false;
       QStringList parts = line.split(" ");
 
       if (parts.size() >= 3) {
@@ -222,13 +232,13 @@ Qucs_S_SPAR_Viewer::readQucsatorDataset(const QString& filePath) {
           QRegularExpressionMatch match = re.match(currentVariable);
 
           if (match.hasMatch()) {
-            int row       = match.captured(1).toInt();
-            int col       = match.captured(2).toInt();
+            int row = match.captured(1).toInt();
+            int col = match.captured(2).toInt();
             maxPortNumber = qMax(maxPortNumber, qMax(row, col));
           }
         } else {
           // Skip other variables
-          isReading       = false;
+          isReading = false;
           currentVariable = "";
         }
       }
@@ -260,7 +270,7 @@ Qucs_S_SPAR_Viewer::readQucsatorDataset(const QString& filePath) {
           int j = indexMatch.captured(2).toInt();
           // Convert to Sji format (where j is row, i is column)
           QString sparam = QString::number(j) + QString::number(i);
-          QString base   = "S" + sparam;
+          QString base = "S" + sparam;
 
           double real, imag;
 

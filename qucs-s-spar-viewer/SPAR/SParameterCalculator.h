@@ -35,6 +35,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <utility> // std::as_const()
 
 #include "../Misc/general.h"
 

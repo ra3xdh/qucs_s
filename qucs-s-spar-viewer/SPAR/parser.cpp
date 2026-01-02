@@ -32,7 +32,7 @@ bool SParameterCalculator::parseNetlist() {
   // Split netlist into lines
   QStringList lines = currentNetlist.split('\n', Qt::SkipEmptyParts);
 
-  for (const QString& line : qAsConst(lines)) {
+  for (const QString& line : std::as_const(lines)) {
     QString trimmedLine = line.trimmed();
 
     // Skip comments and empty lines

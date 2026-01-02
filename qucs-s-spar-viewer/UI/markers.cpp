@@ -18,8 +18,12 @@
 #include "qucs-s-spar-viewer.h"
 
 // This function is called when the user wants to remove a marker from the plot
+///
+/// @brief Removes a marker via UI.
+/// Identifies the marker by the button's object name and removes it.
+///
 void Qucs_S_SPAR_Viewer::removeMarker() {
-  QString ID = qobject_cast<QToolButton*>(sender())->objectName();
+  QString ID = qobject_cast<QToolButton *>(sender())->objectName();
   // qDebug() << "Clicked button:" << ID;
 
   // Find the index of the button to remove
@@ -36,10 +40,14 @@ void Qucs_S_SPAR_Viewer::removeMarker() {
   removeMarker(mkr_name); // Remove marker by name
 }
 
-void Qucs_S_SPAR_Viewer::removeMarker(const QString& markerName) {
+///
+/// @brief Removes a marker from the plot by name (QString).
+/// @param markerName QString The name of the marker to remove
+///
+void Qucs_S_SPAR_Viewer::removeMarker(const QString &markerName) {
   if (markerMap.contains(markerName)) {
     // Get the marker properties
-    MarkerProperties& props = markerMap[markerName];
+    MarkerProperties &props = markerMap[markerName];
 
     // Delete all widgets
     delete props.nameLabel;
@@ -64,6 +72,12 @@ void Qucs_S_SPAR_Viewer::removeMarker(const QString& markerName) {
 }
 
 // Removes all markers on a row
+///
+/// @brief Removes all markers from the plot.
+/// Iterates through all markers in reverse order and removes them.
+/// @note Calls removeMarker(QString) for all markers found
+/// @see removeMarker(QString)
+///
 void Qucs_S_SPAR_Viewer::removeAllMarkers() {
   int n_markers = getNumberOfMarkers();
   for (int i = 0; i < n_markers; i++) {
@@ -73,7 +87,10 @@ void Qucs_S_SPAR_Viewer::removeAllMarkers() {
   traceMap.clear();
 }
 
-// After removing a marker, the names of the other markers must be updated
+///
+/// @brief Updates marker names after a marker is removed
+/// This is needed to keep consistent numbering.
+///
 void Qucs_S_SPAR_Viewer::updateMarkerNames() {
   int n_markers = getNumberOfMarkers();
   for (int i = 0; i < n_markers; i++) {
@@ -82,15 +99,21 @@ void Qucs_S_SPAR_Viewer::updateMarkerNames() {
 
     getMarkerByPosition(i, mkr_name, mkr_props);
 
-    QLabel* MarkerLabel = mkr_props.nameLabel;
+    QLabel *MarkerLabel = mkr_props.nameLabel;
     MarkerLabel->setText(QStringLiteral("Mkr%1").arg(i + 1));
   }
 }
 
-// Get the marker given the position of the entry
+///
+/// @brief Gets a marker by its index in the marker map.
+/// @param position marker index
+/// @param outMarkerName Output parameter for the marker's name
+/// @param outProperties Output parameter for the marker's properties
+/// @return true if the marker was found, false if position is invalid
+///
 bool Qucs_S_SPAR_Viewer::getMarkerByPosition(int position,
-                                             QString& outMarkerName,
-                                             MarkerProperties& outProperties) {
+                                             QString &outMarkerName,
+                                             MarkerProperties &outProperties) {
   // Check if position is valid
   if (position < 0 || position >= markerMap.size()) {
     qWarning() << "Invalid position:" << position;
@@ -110,11 +133,14 @@ bool Qucs_S_SPAR_Viewer::getMarkerByPosition(int position,
   return true;
 }
 
-// Returns the total number of markers
-int Qucs_S_SPAR_Viewer::getNumberOfMarkers() {
-  return markerMap.keys().size();
-}
+///
+/// @brief Find the total number of markers
+/// @return int The number of markers in the marker map
+int Qucs_S_SPAR_Viewer::getNumberOfMarkers() { return markerMap.keys().size(); }
 
+///
+/// @brief Updates all marker tables with current marker data.
+///
 void Qucs_S_SPAR_Viewer::updateMarkerTable() {
 
   // If there are no markers, remove the entries and return
@@ -156,12 +182,12 @@ void Qucs_S_SPAR_Viewer::updateMarkerTable() {
   header_Magnitude_Phase.clear();
   header_Magnitude_Phase.append("freq");
 
-  header_Smith         = header_Magnitude_Phase;
-  header_Polar         = header_Magnitude_Phase;
+  header_Smith = header_Magnitude_Phase;
+  header_Polar = header_Magnitude_Phase;
   header_PortImpedance = header_Magnitude_Phase;
-  header_Stability     = header_Magnitude_Phase;
-  header_VSWR          = header_Magnitude_Phase;
-  header_GroupDelay    = header_Magnitude_Phase;
+  header_Stability = header_Magnitude_Phase;
+  header_VSWR = header_Magnitude_Phase;
+  header_GroupDelay = header_Magnitude_Phase;
 
   // Build headers
 
@@ -212,7 +238,7 @@ void Qucs_S_SPAR_Viewer::updateMarkerTable() {
 
   // Update markers
   QStringList marker_list = markerMap.keys();
-  for (const QString& str : marker_list) {
+  for (const QString &str : marker_list) {
     double marker_freq = getMarkerFreq(str);
     smithChart->updateMarkerFrequency(
         str, marker_freq); // Update Smith Chart widget markers
@@ -231,8 +257,13 @@ void Qucs_S_SPAR_Viewer::updateMarkerTable() {
   }
 }
 
-// Fill the different marker tables
-void Qucs_S_SPAR_Viewer::updateMarkerData(QTableWidget& table, DisplayMode mode,
+///
+//// Fills a marker table with data for a given display mode.
+/// @param table Reference to the table widget to update
+/// @param mode The display mode for which to generate marker data
+/// @param header The list of column headers for the table
+///
+void Qucs_S_SPAR_Viewer::updateMarkerData(QTableWidget &table, DisplayMode mode,
                                           QStringList header) {
 
   QPointF P;
@@ -241,7 +272,7 @@ void Qucs_S_SPAR_Viewer::updateMarkerData(QTableWidget& table, DisplayMode mode,
   QString freq_marker;
 
   int n_markers = getNumberOfMarkers();
-  int n_traces  = header.size();
+  int n_traces = header.size();
   table.setColumnCount(n_traces);
   table.setRowCount(n_markers);
   table.setHorizontalHeaderLabels(header);
@@ -260,7 +291,7 @@ void Qucs_S_SPAR_Viewer::updateMarkerData(QTableWidget& table, DisplayMode mode,
 
       if (c == 0) {
         // First column
-        QTableWidgetItem* new_item = new QTableWidgetItem(freq_marker);
+        QTableWidgetItem *new_item = new QTableWidgetItem(freq_marker);
         table.setItem(r, c, new_item);
         continue;
       }
@@ -271,8 +302,8 @@ void Qucs_S_SPAR_Viewer::updateMarkerData(QTableWidget& table, DisplayMode mode,
       // Look into dataset for the trace data
       QStringList parts = {trace_name.section('.', 0, -2),
                            trace_name.section('.', -1)};
-      QString file      = parts[0];
-      QString trace     = parts[1];
+      QString file = parts[0];
+      QString trace = parts[1];
 
       // Find data on the dataset
       if (mode == DisplayMode::Smith) {
@@ -287,7 +318,7 @@ void Qucs_S_SPAR_Viewer::updateMarkerData(QTableWidget& table, DisplayMode mode,
                                             datasets[file][sxx_re], targetX);
         QPointF sij_imag = findClosestPoint(datasets[file]["frequency"],
                                             datasets[file][sxx_im], targetX);
-        double Z0        = datasets[file]["Z0"].at(0);
+        double Z0 = datasets[file]["Z0"].at(0);
 
         double S_real = sij_real.y();
         double S_imag = sij_imag.y();
@@ -339,7 +370,7 @@ void Qucs_S_SPAR_Viewer::updateMarkerData(QTableWidget& table, DisplayMode mode,
           std::complex<double> S(S_real, S_imag);
 
           double radius = std::abs(S);
-          double angle  = std::arg(S) * 180.0 / M_PI;
+          double angle = std::arg(S) * 180.0 / M_PI;
           if (angle < 0) {
             angle += 360;
           }
@@ -348,8 +379,8 @@ void Qucs_S_SPAR_Viewer::updateMarkerData(QTableWidget& table, DisplayMode mode,
                                                 QString::number(angle, 'f', 1));
         } else {
           // Go directly to the dataset for data
-          P       = findClosestPoint(datasets[file]["frequency"],
-                                     datasets[file][trace], targetX);
+          P = findClosestPoint(datasets[file]["frequency"],
+                               datasets[file][trace], targetX);
           new_val = QStringLiteral("%1").arg(QString::number(P.y(), 'f', 2));
 
           if (mode == DisplayMode::GroupDelay) {
@@ -359,13 +390,18 @@ void Qucs_S_SPAR_Viewer::updateMarkerData(QTableWidget& table, DisplayMode mode,
         }
       }
 
-      QTableWidgetItem* new_item = new QTableWidgetItem(new_val);
+      QTableWidgetItem *new_item = new QTableWidgetItem(new_val);
       table.setItem(r, c, new_item);
     }
   }
 }
 
-// Gets the marker frequency based on the marker name
+///
+/// @brief Gets the marker frequency (in Hz) given the marker name.
+///
+/// @param markerName The name of the marker
+/// @return The frequency in Hz, or 0.0 if marker not found
+///
 double Qucs_S_SPAR_Viewer::getMarkerFreq(QString markerName) {
   // Check if marker exists
   if (!markerMap.contains(markerName)) {
@@ -374,13 +410,13 @@ double Qucs_S_SPAR_Viewer::getMarkerFreq(QString markerName) {
   }
 
   // Get the marker properties
-  const MarkerProperties& props = markerMap[markerName];
+  const MarkerProperties &props = markerMap[markerName];
 
   // Get the base frequency from the spin box
   double baseFrequency = props.freqSpinBox->value();
 
   // Get the scale factor from the combo box
-  QString scaleText  = props.scaleComboBox->currentText();
+  QString scaleText = props.scaleComboBox->currentText();
   double scaleFactor = 1.0;
 
   // Convert scale text to actual multiplication factor
@@ -400,6 +436,13 @@ double Qucs_S_SPAR_Viewer::getMarkerFreq(QString markerName) {
   return baseFrequency * scaleFactor;
 }
 
+///
+/// @brief Adds a new marker to the plot at the specified frequency.
+/// Creates all necessary UI widgets and adds the marker to all chart displays.
+/// @param freq The frequency at which to place the marker (-1 for middle of
+/// range)
+/// @param Freq_Marker_Scale The frequency scale unit
+///
 void Qucs_S_SPAR_Viewer::addMarker(double freq, QString Freq_Marker_Scale) {
 
   // If there are no traces in the display, show a message and exit
@@ -414,7 +457,7 @@ void Qucs_S_SPAR_Viewer::addMarker(double freq, QString Freq_Marker_Scale) {
     // There's no specific frequency argument, then pick the middle point
     double f1 = Magnitude_PhaseChart->getXmin();
     double f2 = Magnitude_PhaseChart->getXmax();
-    f_marker  = f1 + 0.5 * (f2 - f1);
+    f_marker = f1 + 0.5 * (f2 - f1);
   } else {
     f_marker = freq / getFreqScale(Freq_Marker_Scale);
     f_marker *= Magnitude_PhaseChart
@@ -426,15 +469,15 @@ void Qucs_S_SPAR_Viewer::addMarker(double freq, QString Freq_Marker_Scale) {
 
   MarkerProperties props; // Struct to hold Marker widgets
 
-  QString new_marker_name  = QStringLiteral("Mkr%1").arg(n_markers);
-  QLabel* new_marker_label = new QLabel(new_marker_name);
+  QString new_marker_name = QStringLiteral("Mkr%1").arg(n_markers);
+  QLabel *new_marker_label = new QLabel(new_marker_name);
   new_marker_label->setObjectName(new_marker_name);
   props.nameLabel = new_marker_label;
 
   this->MarkersGrid->addWidget(new_marker_label, n_markers, 0);
 
   QString SpinBox_name = QStringLiteral("Mkr_SpinBox%1").arg(n_markers);
-  QDoubleSpinBox* new_marker_Spinbox = new QDoubleSpinBox();
+  QDoubleSpinBox *new_marker_Spinbox = new QDoubleSpinBox();
   new_marker_Spinbox->setObjectName(SpinBox_name);
   new_marker_Spinbox->setMinimum(Magnitude_PhaseChart->getXmin());
   new_marker_Spinbox->setMaximum(Magnitude_PhaseChart->getXmax());
@@ -445,8 +488,8 @@ void Qucs_S_SPAR_Viewer::addMarker(double freq, QString Freq_Marker_Scale) {
   props.freqSpinBox = new_marker_Spinbox;
   this->MarkersGrid->addWidget(new_marker_Spinbox, n_markers, 1);
 
-  QString Combobox_name       = QStringLiteral("Mkr_ComboBox%1").arg(n_markers);
-  QComboBox* new_marker_Combo = new QComboBox();
+  QString Combobox_name = QStringLiteral("Mkr_ComboBox%1").arg(n_markers);
+  QComboBox *new_marker_Combo = new QComboBox();
   new_marker_Combo->setObjectName(Combobox_name);
   new_marker_Combo->addItems(frequency_units);
   new_marker_Combo->setCurrentIndex(Magnitude_PhaseChart->getFreqIndex());
@@ -457,7 +500,7 @@ void Qucs_S_SPAR_Viewer::addMarker(double freq, QString Freq_Marker_Scale) {
 
   // Remove button
   QString DeleteButton_name = QStringLiteral("Mkr_Delete_Btn%1").arg(n_markers);
-  QToolButton* new_marker_removebutton = new QToolButton();
+  QToolButton *new_marker_removebutton = new QToolButton();
   new_marker_removebutton->setObjectName(DeleteButton_name);
   QIcon icon(":/bitmaps/trash.png"); // Use a resource path or a relative path
   new_marker_removebutton->setIcon(icon);
@@ -481,7 +524,7 @@ void Qucs_S_SPAR_Viewer::addMarker(double freq, QString Freq_Marker_Scale) {
   QString new_freq =
       QStringLiteral("%1 ").arg(QString::number(f_marker, 'f', 2)) +
       Freq_Marker_Scale;
-  QTableWidgetItem* newfreq = new QTableWidgetItem(new_freq);
+  QTableWidgetItem *newfreq = new QTableWidgetItem(new_freq);
 
   // Add table entries
 
@@ -544,12 +587,12 @@ void Qucs_S_SPAR_Viewer::addMarker(double freq, QString Freq_Marker_Scale) {
 
   // Find which of the docks is raised to restore that at the end
   bool isDockMagPhaseRaised = !dockChart->visibleRegion().isEmpty();
-  bool isDockSmithRaised    = !dockSmithChart->visibleRegion().isEmpty();
-  bool isDockPolarRaised    = !dockPolarChart->visibleRegion().isEmpty();
+  bool isDockSmithRaised = !dockSmithChart->visibleRegion().isEmpty();
+  bool isDockPolarRaised = !dockPolarChart->visibleRegion().isEmpty();
   bool isDockPortImpedanceRaised =
       !dockImpedanceChart->visibleRegion().isEmpty();
   bool isDockStabilityRaised = !dockStabilityChart->visibleRegion().isEmpty();
-  bool isDockVSWRRaised      = !dockVSWRChart->visibleRegion().isEmpty();
+  bool isDockVSWRRaised = !dockVSWRChart->visibleRegion().isEmpty();
 
   dockChart->raise();
   Magnitude_PhaseChart->addMarker(new_marker_name, f_marker,

@@ -18,7 +18,7 @@
 #ifndef NETLISTSCRATCHPAD_H
 #define NETLISTSCRATCHPAD_H
 
-#include "../../CustomWidgets/codeeditor.h"
+#include "../../UI/CustomWidgets/codeeditor.h"
 #include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include <QGridLayout>

@@ -22,6 +22,7 @@
 #include <QPen>
 #include <QRegularExpression>
 #include <QMessageBox> // Needed to show warnings during export process
+#include <utility> // std::as_const()
 
 #include "../Misc/general.h"
 #include "infoclasses.h"
