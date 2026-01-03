@@ -1,22 +1,12 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file rectangularplotwidget.cpp
+/// @brief Widget for displaying rectangular (Cartesian) plots with dual y-axes
+/// (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 4, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "rectangularplotwidget.h"
-
 
 ///
 /// @brief Class constructor
@@ -57,7 +47,8 @@ RectangularPlotWidget::~RectangularPlotWidget() {
 }
 
 ///
-/// @brief Configures the plot properties and the axes. It also creates the connections between the event and their function handlers
+/// @brief Configures the plot properties and the axes. It also creates the
+/// connections between the event and their function handlers
 ///
 void RectangularPlotWidget::setupPlot() {
   // Configure basic plot properties
@@ -103,16 +94,16 @@ void RectangularPlotWidget::setupPlot() {
           &RectangularPlotWidget::onY2AxisRangeChanged);
 }
 
-
 ///
 /// @brief Add or update a trace on the plot
 ///
-/// Automatically adjusts frequency and y-axis ranges unless settings are locked.
-/// Applies auto-scaling with padding (5% of range).
-/// Updates the plot to display the new trace.
+/// Automatically adjusts frequency and y-axis ranges unless settings are
+/// locked. Applies auto-scaling with padding (5% of range). Updates the plot to
+/// display the new trace.
 ///
 /// @param name Unique trace identifier
-/// @param trace Trace data including frequencies, values, units, and axis assignment
+/// @param trace Trace data including frequencies, values, units, and axis
+/// assignment
 ///
 void RectangularPlotWidget::addTrace(const QString &name, const Trace &trace) {
   // Create a local copy of the trace that we can modify
@@ -160,7 +151,8 @@ void RectangularPlotWidget::addTrace(const QString &name, const Trace &trace) {
     double traceMin = std::numeric_limits<double>::max();
     double traceMax = std::numeric_limits<double>::lowest();
 
-    const auto &traceConst = traceCopy.trace;        // const reference prevents detach (warning)
+    const auto &traceConst =
+        traceCopy.trace; // const reference prevents detach (warning)
     for (double value : traceConst) {
       if (value < traceMin) {
         traceMin = value;
@@ -169,7 +161,6 @@ void RectangularPlotWidget::addTrace(const QString &name, const Trace &trace) {
         traceMax = value;
       }
     }
-
 
     // Add some padding (5% of range)
     double padding = (traceMax - traceMin) * 0.05;
@@ -210,7 +201,6 @@ void RectangularPlotWidget::addTrace(const QString &name, const Trace &trace) {
 
   updatePlot();
 }
-
 
 ///
 /// @brief Calculate a reasonable step size for axis divisions
@@ -294,7 +284,6 @@ void RectangularPlotWidget::setTracePen(const QString &traceName,
   }
 }
 
-
 ///
 /// @brief Get information about all traces
 /// @return Map of trace names to their pen styles
@@ -307,18 +296,19 @@ QMap<QString, QPen> RectangularPlotWidget::getTracesInfo() const {
   return penMap;
 }
 
-
 ///
 /// @brief Add a vertical marker at a specific frequency
 ///
 /// Creates a vertical line spanning the plot height at the specified frequency.
 /// The marker must be within the frequency range of at least one trace.
-/// Also creates intersection points and labels where the marker crosses traces with the trace values.
+/// Also creates intersection points and labels where the marker crosses traces
+/// with the trace values.
 ///
 /// @param markerId Unique marker identifier
 /// @param frequency Frequency in Hz where marker should be placed
 /// @param pen Marker line style (default: red, width 2)
-/// @return true if marker added successfully, false if exists or frequency out of range
+/// @return true if marker added successfully, false if exists or frequency out
+/// of range
 ///
 bool RectangularPlotWidget::addMarker(const QString &markerId, double frequency,
                                       const QPen &pen) {
@@ -350,7 +340,6 @@ bool RectangularPlotWidget::addMarker(const QString &markerId, double frequency,
   updatePlot();
   return true;
 }
-
 
 ///
 /// @brief Remove a marker from the plot
@@ -1024,12 +1013,12 @@ double RectangularPlotWidget::getXscale() {
 ///
 int RectangularPlotWidget::getFreqIndex() { return xAxisUnits->currentIndex(); }
 
-
 ///
 /// @brief Update an existing marker's frequency
 /// @param markerId Marker identifier
 /// @param newFrequency New frequency in Hz
-/// @return true if updated successfully, false if marker not found or frequency out of range
+/// @return true if updated successfully, false if marker not found or frequency
+/// out of range
 ///
 bool RectangularPlotWidget::updateMarkerFrequency(const QString &markerId,
                                                   double newFrequency) {
@@ -1063,8 +1052,8 @@ bool RectangularPlotWidget::updateMarkerFrequency(const QString &markerId,
 }
 
 ///
-/// @brief Remove old graphic elements from the plot, such as the labels from past marker
-/// positions
+/// @brief Remove old graphic elements from the plot, such as the labels from
+/// past marker positions
 ///
 void RectangularPlotWidget::clearGraphicsItems() {
   // Remove all marker lines
@@ -1104,7 +1093,8 @@ void RectangularPlotWidget::clearGraphicsItems() {
 }
 
 ///
-/// @brief Toggle display of trace values at the intersections with the vertical marker
+/// @brief Toggle display of trace values at the intersections with the vertical
+/// marker
 /// @param show true to show values, false to hide
 ///
 void RectangularPlotWidget::toggleShowValues(bool show) {

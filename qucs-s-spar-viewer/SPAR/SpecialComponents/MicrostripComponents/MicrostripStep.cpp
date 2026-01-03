@@ -1,34 +1,24 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *  Based on msstep.cpp from Qucs - Copyright (C) 2004, 2007, 2008 Stefan Jahn
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file MicrostripStep.cpp
+/// @brief Implementation of function for the S-parameter analysis of the
+/// microstrip step line
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 3, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "./../../SParameterCalculator.h"
 
 void SParameterCalculator::addMicrostripStepToAdmittance(
-    vector<vector<Complex>>& Y, const Component_SPAR& comp) {
+    vector<vector<Complex>> &Y, const Component_SPAR &comp) {
   // Extract microstrip step parameters
   int node1 = comp.nodes[0];
   int node2 = comp.nodes[1];
 
-  double W1 = comp.value.value("W1");      // Width of first section in meters
-  double W2 = comp.value.value("W2");      // Width of second section in meters
-  double h  = comp.value.value("h");       // Substrate height in meters
-  double er = comp.value.value("er");      // Relative permittivity
-  double t  = comp.value.value("th", 0.0); // Conductor thickness (optional)
+  double W1 = comp.value.value("W1");     // Width of first section in meters
+  double W2 = comp.value.value("W2");     // Width of second section in meters
+  double h = comp.value.value("h");       // Substrate height in meters
+  double er = comp.value.value("er");     // Relative permittivity
+  double t = comp.value.value("th", 0.0); // Conductor thickness (optional)
 
   // Default model names (hardcoded for now, can be made configurable later)
   string SModel = "Hammerstad";
@@ -70,16 +60,16 @@ void SParameterCalculator::addMicrostripStepToAdmittance(
 
 void SParameterCalculator::calcMicrostripStepZ(
     double W1, double W2, double h, double er, double t, double frequency,
-    const string& SModel, const string& DModel, Complex& z11, Complex& z12,
-    Complex& z21, Complex& z22) {
+    const string &SModel, const string &DModel, Complex &z11, Complex &z12,
+    Complex &z21, Complex &z22) {
   // Compute parallel capacitance
   double t1 = log10(er);
   double t2 = W1 / W2;
   double Cs = sqrt(W1 * W2) * (t2 * (10.1 * t1 + 2.33) - 12.6 * t1 - 3.17);
 
   // Compute series inductance
-  t1        = log10(t2);
-  t2        = t2 - 1.0;
+  t1 = log10(t2);
+  t2 = t2 - 1.0;
   double Ls = h * (t2 * (40.5 + 0.2 * t2) - 75.0 * t1);
 
   // Calculate line parameters for W1

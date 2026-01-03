@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file limits.cpp
+/// @brief Implementation of the functions related to the limits management
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 3, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "qucs-s-spar-viewer.h"
 
@@ -321,7 +311,8 @@ bool Qucs_S_SPAR_Viewer::getLimitByPosition(int position, QString &outLimitName,
 ///
 void Qucs_S_SPAR_Viewer::coupleSpinBoxes() {
   QPushButton *button = qobject_cast<QPushButton *>(sender());
-  if (!button) return;  // Guard against null sender
+  if (!button)
+    return; // Guard against null sender
 
   QString name_button = button->objectName();
   int nlimits = getNumberOfLimits();
@@ -331,7 +322,8 @@ void Qucs_S_SPAR_Viewer::coupleSpinBoxes() {
   int found_index = -1;
   for (int i = 0; i < nlimits; i++) {
     if (getLimitByPosition(i, limit_name, limit_props)) {
-      if (limit_props.Couple_Value && limit_props.Couple_Value->objectName() == name_button) {
+      if (limit_props.Couple_Value &&
+          limit_props.Couple_Value->objectName() == name_button) {
         found_index = i;
         break;
       }
@@ -343,7 +335,7 @@ void Qucs_S_SPAR_Viewer::coupleSpinBoxes() {
     return;
   }
 
-         // Now safe to use limit_props
+  // Now safe to use limit_props
   if (limit_props.Couple_Value->text() == "<--->") {
     limit_props.Couple_Value->setText("<-X->");
     QString tooltip_message = QStringLiteral("Uncouple start and stop values");
@@ -357,7 +349,6 @@ void Qucs_S_SPAR_Viewer::coupleSpinBoxes() {
     limit_props.Stop_Value->setEnabled(true);
   }
 }
-
 
 ///
 /// @brief Update limit line visualization in the chart

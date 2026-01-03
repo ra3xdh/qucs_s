@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2019, 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file general.cpp
+/// \brief Utility functions needed across the whole project
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 4, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "general.h"
 
@@ -36,7 +26,6 @@ QString RoundVariablePrecision(double val) {
   return QString::number(sign * val, 'F',
                          precision); // Round to 'precision' decimals.
 }
-
 
 ///
 /// @brief Converts complex number to string with units
@@ -139,7 +128,6 @@ QString num2str(double Num, Units CompType) {
   return Str;
 }
 
-
 ///
 /// @brief Converts double to string with engineering notation
 /// @param Num Value to convert
@@ -206,7 +194,6 @@ QString num2str(double Num) {
   return Str;
 }
 
-
 ///
 /// @brief Parses string to complex number
 /// @param num String representation (e.g., "50+j25", "j50", "50")
@@ -268,13 +255,13 @@ std::complex<double> Str2Complex(QString num) {
   return std::complex<double>(realStr.toDouble(), imagStr.toDouble());
 }
 
-
 ///
 /// @brief Converts length in meters to appropriate unit with auto-scaling
 /// @param units Current unit (mm, mil, um, nm, inch, ft, m)
 /// @param len Length in meters
 /// @return Formatted string
-/// @note It automatically changes the unit length if the value lies outside [1,999.99]
+/// @note It automatically changes the unit length if the value lies outside
+/// [1,999.99]
 ///
 QString ConvertLengthFromM(QString units, double len) {
   int index;
@@ -379,9 +366,9 @@ QString ConvertLengthFromM(QString units, double len) {
   return QString("");
 }
 
-
 ///
-/// @brief Converts S-parameter from MA/RI/DB format to dB, angle, real, and imaginary
+/// @brief Converts S-parameter from MA/RI/DB format to dB, angle, real, and
+/// imaginary
 /// @param[in,out] S_1 Magnitude (MA), Real (RI), or dB (DB) → dB output
 /// @param[in,out] S_2 Angle (MA/DB) or Imaginary (RI) → angle output
 /// @param[out] S_3 Real part output
@@ -487,7 +474,6 @@ double getFreqFromText(QString freq) {
   return -1;
 }
 
-
 ///
 /// @brief Find the closest x-axis value in a series given a x value
 /// @param xValues X-axis values
@@ -518,7 +504,6 @@ QPointF findClosestPoint(const QList<double> &xValues,
 
   return closestPoint;
 }
-
 
 ///
 /// @brief Gets scale factor from SI prefix (like nF, nH, mm, etc.)

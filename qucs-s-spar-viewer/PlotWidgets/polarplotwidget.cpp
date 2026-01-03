@@ -1,19 +1,10 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file polarplotwidget.cpp
+/// @brief Construct polar plot widget with default configuration
+/// (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 4, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "polarplotwidget.h"
 #include <QDebug>
@@ -130,7 +121,7 @@ void PolarPlotWidget::updateFrequencyRange() {
   fMin = 1e20;
   fMax = -1;
 
-  const auto &constTraces = traces;           // const view, no detach (no warning)
+  const auto &constTraces = traces; // const view, no detach (no warning)
   for (const auto &trace : constTraces) {
     if (!trace.frequencies.isEmpty()) {
       double traceMinFreq = trace.frequencies.first();
@@ -144,7 +135,6 @@ void PolarPlotWidget::updateFrequencyRange() {
       }
     }
   }
-
 
   // Update spin box values
   double freqMultiplier = getFrequencyMultiplier();
@@ -384,20 +374,21 @@ bool PolarPlotWidget::updateMarkerFrequency(const QString &markerId,
 
 void PolarPlotWidget::clearGraphicsItems() {
   // Remove all marker items
-  const auto &items = markerItems;            // const view, no detach (otherwise -> warning)
+  const auto &items =
+      markerItems; // const view, no detach (otherwise -> warning)
   for (QCPItemEllipse *item : items) {
     plot->removeItem(item);
   }
   markerItems.clear();
 
   // Remove all marker labels
-  const auto &labels = markerLabels;         // const view, no detach (otherwise -> warning)
+  const auto &labels =
+      markerLabels; // const view, no detach (otherwise -> warning)
   for (QCPItemText *label : labels) {
     plot->removeItem(label);
   }
   markerLabels.clear();
 }
-
 
 QGridLayout *PolarPlotWidget::setupAxisSettings() {
   QGridLayout *axisLayout = new QGridLayout();
