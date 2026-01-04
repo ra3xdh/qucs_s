@@ -17,10 +17,14 @@
 
 #include "SParameterCalculator.h"
 
-vector<vector<Complex>> SParameterCalculator::createMatrix(int rows, int cols) {
-  return vector<vector<Complex>>(rows, vector<Complex>(cols, Complex(0, 0)));
-}
-
+///
+/// @brief Inverts a complex square matrix using Gaussian elimination
+/// @param matrix Input square matrix to be inverted
+/// @return Inverse matrix (matrix^-1)
+/// @details Uses LU decomposition with row pivoting for numerical stability.
+///          Required for solving the augmented nodal equations in S-parameter
+///          extraction.
+///
 vector<vector<Complex>>
 SParameterCalculator::invertMatrix(const vector<vector<Complex>>& matrix) {
   int n = matrix.size();

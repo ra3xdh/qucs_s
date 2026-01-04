@@ -75,7 +75,15 @@ void SParameterCalculator::addSParamBlockToAdmittance(
   }
 }
 
-// Handle one-port device (.s1p file)
+///
+/// @brief Adds one-port S-parameter device to admittance matrix
+/// @param Y Reference to circuit admittance matrix
+/// @param comp Component containing single S11 parameter
+/// @details Converts one-port S-parameter to admittance: Y = Y0(1-S11)/(1+S11)
+///          where Y0 = 1/Z0 is the reference admittance. One port connects to
+///          circuit node, other terminal is ground. Common for reflective loads
+///          or terminations.
+///
 void SParameterCalculator::addOnePortSParamToAdmittance(
     vector<vector<Complex>> &Y, const Component_SPAR &comp) {
 
@@ -122,7 +130,14 @@ void SParameterCalculator::addOnePortSParamToAdmittance(
   }
 }
 
-// Handle two-port device (.s2p file)
+///
+/// @brief Adds two-port S-parameter device to admittance matrix
+/// @param Y Reference to circuit admittance matrix
+/// @param comp Component containing 2×2 S-parameter matrix
+/// @details Converts 2-port S-parameters to Y-parameters and add it to the
+/// network Y matrix
+/// @see convertS2Y()
+///
 void SParameterCalculator::addTwoPortSParamToAdmittance(
     vector<vector<Complex>> &Y, const Component_SPAR &comp) {
 
@@ -158,7 +173,16 @@ void SParameterCalculator::addTwoPortSParamToAdmittance(
   }
 }
 
-// Frequency-dependent S-parameter handling
+///
+/// @brief Adds frequency-dependent S-parameter block to admittance matrix
+/// @param Y Reference to circuit admittance matrix
+/// @param comp Component with S-parameter data (multiple frequency points)
+/// @details Interpolates S-parameters at current analysis frequency from
+/// S-parameter data,
+///          converts interpolated S→Y using reference impedance, then stamps
+///          Y-parameters into nodal matrix. Handles 1-port through N-port
+///          networks from .s1p, .s2p, etc.
+///
 void SParameterCalculator::addFrequencyDependentSParamBlockToAdmittance(
     vector<vector<Complex>> &Y, const Component_SPAR &comp) {
 
@@ -183,7 +207,14 @@ void SParameterCalculator::addFrequencyDependentSParamBlockToAdmittance(
   }
 }
 
-// Helper method to add S-parameter device with explicit port count
+///
+/// @brief Adds S-parameter device component to circuit
+/// @param name Component identifier string
+/// @param nodes Vector of node numbers for connections
+/// @param Smatrix S-parameter matrix (frequency-independent)
+/// @param numRFPorts Number of RF ports (1, 2, 3, or 4)
+/// @param Z0 Reference impedance for S-parameters (typically 50Ω)
+///
 void SParameterCalculator::addSParameterDevice(
     const string &name, const vector<int> &nodes,
     const vector<vector<Complex>> &Smatrix, int numRFPorts, double Z0 = 50.0) {
@@ -228,7 +259,17 @@ void SParameterCalculator::addSParameterBlock(
   }
 }
 
-// Required for frequency-dependent components
+///
+/// @brief Interpolates S-matrix from frequency-dependent data
+/// @param comp Component containing S-parameter data
+/// @param freq Target frequency for interpolation (Hz)
+/// @return Interpolated S-parameter matrix at specified frequency
+/// @details Performs linear interpolation between adjacent frequency points.
+///          If freq is outside data range, uses nearest endpoint values (no
+///          extrapolation). The real and the imaginary parts are interpolated
+///          independently.
+/// @note Required for frequency-dependent components
+///
 vector<vector<Complex>>
 SParameterCalculator::interpolateFrequencyDependentSMatrix(
     const Component_SPAR &comp, double freq) {
@@ -291,6 +332,15 @@ SParameterCalculator::interpolateFrequencyDependentSMatrix(
   return S_interp;
 }
 
+///
+/// @brief Extracts S-matrix at specific frequency index
+/// @param comp Component containing frequency-dependent S-parameter data
+/// @param freqIndex Index into frequency array
+/// @return S-parameter matrix at the indexed frequency point
+/// @details Direct lookup without interpolation.
+/// @note Used when analysis frequency exactly matches a tabulated point, or as
+/// part of interpolation routine.
+///
 vector<vector<Complex>>
 SParameterCalculator::extractSMatrixAtIndex(const Component_SPAR &comp,
                                             int freqIndex) {
@@ -310,14 +360,18 @@ SParameterCalculator::extractSMatrixAtIndex(const Component_SPAR &comp,
 
       double realPart = 0.0, imagPart = 0.0;
 
-      if (comp.freqDepData.contains(reKey) &&
-          freqIndex < comp.freqDepData[reKey].size()) {
-        realPart = comp.freqDepData[reKey][freqIndex];
+      if (comp.freqDepData.contains(reKey)) {
+        const auto &values = comp.freqDepData.value(reKey);
+        if (freqIndex < values.size()) {
+          realPart = values.at(freqIndex);
+        }
       }
 
-      if (comp.freqDepData.contains(imKey) &&
-          freqIndex < comp.freqDepData[imKey].size()) {
-        imagPart = comp.freqDepData[imKey][freqIndex];
+      if (comp.freqDepData.contains(imKey)) {
+        const auto &values = comp.freqDepData.value(imKey);
+        if (freqIndex < values.size()) {
+          imagPart = values.at(freqIndex);
+        }
       }
 
       S[row][col] = Complex(realPart, imagPart);
@@ -327,7 +381,18 @@ SParameterCalculator::extractSMatrixAtIndex(const Component_SPAR &comp,
   return S;
 }
 
-// Helper function to parse inline S-matrix
+///
+/// @brief Parses inline S-matrix from netlist string format
+/// @param matrixStr String containing S-parameters in format: (re,im) (re,im);
+/// ...
+/// @param numPorts Number of ports
+/// @return S-parameter matrix extracted from string
+/// @details Format examples:
+///          1-port: (S11_re,S11_im)
+///          2-port: (S11_re,S11_im) (S12_re,S12_im); (S21_re,S21_im)
+///          (S22_re,S22_im) Semicolons separate rows, parentheses contain
+///          complex pairs (real,imag).
+///
 vector<vector<Complex>>
 SParameterCalculator::parseInlineSMatrix(const QString &matrixStr,
                                          int numPorts) {

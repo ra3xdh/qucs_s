@@ -17,7 +17,11 @@
 
 #include "./../component.h"
 
-void Component::paintInductor(QPainter* painter) {
+///
+/// \brief Inductor painting method
+/// \param painter Painter object
+///
+void Component::paintInductor(QPainter *painter) {
   if (Rotation != 0) {
     painter->rotate(Rotation);
   }

@@ -19,76 +19,63 @@
 
 static const double Pi = 3.14159265358979323846264338327950288419717;
 
-Wire::Wire(Symbol* sourceNode, int ps, Symbol* destNode, int pd)
+///
+/// @brief Construct wire with source and destination
+/// @param sourceNode Source symbol
+/// @param port_num_source Source port number
+/// @param destNode Destination symbol
+/// @param port_num_dest Destination port number
+///
+Wire::Wire(Symbol *sourceNode, int ps, Symbol *destNode, int pd)
     : arrowSize(10) {
   setAcceptedMouseButtons(Qt::NoButton);
-  source          = sourceNode;
-  dest            = destNode;
+  source = sourceNode;
+  dest = destNode;
   port_num_source = ps;
-  port_num_dest   = pd;
+  port_num_dest = pd;
   source->addWire(this);
   dest->addWire(this);
   WireColor = Qt::black;
   adjust();
 }
 
-Wire::Wire() : arrowSize(10) {
-  setAcceptedMouseButtons(Qt::NoButton);
-}
-
-Wire::~Wire() {}
-
-void Wire::setSource(Symbol* sourceNode, int port) {
-  source          = sourceNode;
-  port_num_source = port;
-}
-
-void Wire::setDestination(Symbol* destNode, int port) {
-  dest          = destNode;
-  port_num_dest = port;
-}
-
-void Wire::setColor(QColor Color) {
-  WireColor = Color;
-}
-
-void Wire::paintWire() {
-  source->addWire(this);
-  dest->addWire(this);
-  adjust();
-}
-
-Symbol* Wire::sourceNode() const {
-  return source;
-}
-
-Symbol* Wire::destNode() const {
-  return dest;
-}
-
+///
+/// @brief Adjust wire geometry based on endpoint positions
+///
 void Wire::adjust() {
   if (!source || !dest) {
     return;
   }
 
   QPoint PortSource = source->getPortLocation(port_num_source);
-  QPoint PortDest   = dest->getPortLocation(port_num_dest);
+  QPoint PortDest = dest->getPortLocation(port_num_dest);
   QLineF line(mapFromItem(source, PortSource.x(), PortSource.y()),
               mapFromItem(dest, PortDest.x(), PortDest.y()));
 
   prepareGeometryChange();
 
   sourcePoint = line.p1();
-  destPoint   = line.p2();
+  destPoint = line.p2();
 }
 
+///
+/// @brief Get wire bounding rectangle
+/// @return Bounding rectangle
+///
 QRectF Wire::boundingRect() const {
   return QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
                                     destPoint.y() - sourcePoint.y()))
       .normalized();
 }
 
-void Wire::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
+///
+/// @brief Paint wire
+/// @param painter QPainter instance
+/// @param option Style options
+/// @param widget Target widget
+///
+void Wire::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
+                 QWidget *) {
   if (!source || !dest) {
     return;
   }

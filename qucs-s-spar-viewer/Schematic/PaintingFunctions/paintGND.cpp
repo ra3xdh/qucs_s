@@ -17,7 +17,11 @@
 
 #include "./../component.h"
 
-void Component::paintGND(QPainter* painter) {
+///
+/// \brief Ground painting method
+/// \param painter Painter object
+///
+void Component::paintGND(QPainter *painter) {
   if (Rotation != 0) {
     painter->rotate(Rotation);
   }

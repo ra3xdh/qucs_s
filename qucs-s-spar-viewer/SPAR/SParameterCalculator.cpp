@@ -351,7 +351,3 @@ void SParameterCalculator::calculateSParameterSweep() {
     }
   }
 }
-
-QMap<QString, QList<double>> SParameterCalculator::getData() {
-  return data;
-}

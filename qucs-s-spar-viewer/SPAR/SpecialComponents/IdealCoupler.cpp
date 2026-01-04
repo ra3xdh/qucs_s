@@ -17,6 +17,18 @@
 
 #include "./../SParameterCalculator.h"
 
+///
+/// @brief Calculates Y-matrix for ideal coupler with coupling coefficient and
+/// phase
+/// @param k Linear coupling coefficient (0 to 1, where k²=coupled power
+/// fraction)
+/// @param phase_deg Phase shift between coupled and through ports (degrees)
+/// @param Z0 Reference impedance for all ports (Ω)
+/// @return 4×4 complex Y-parameter matrix for ideal coupler
+/// @details Constructs coupler S-matrix from coupling and phase, then
+///          converts S→Y using standard transformation. Model assumes lossless,
+///          perfectly matched, and directional (no back-coupling).
+///
 vector<vector<Complex>>
 SParameterCalculator::calculateIdealCouplerYMatrix(double k, double phase_deg,
                                                    double Z0) {
@@ -96,6 +108,11 @@ SParameterCalculator::calculateIdealCouplerYMatrix(double k, double phase_deg,
   return Y;
 }
 
+///
+/// @brief Adds ideal directional coupler to admittance matrix
+/// @param Y Reference to circuit admittance matrix (modified in place)
+/// @param comp Component containing coupler parameters (k, phase, Z0)
+///
 void SParameterCalculator::addIdealCouplerToAdmittance(
     vector<vector<Complex>>& Y, const Component_SPAR& comp) {
   if (comp.nodes.size() != 4) {

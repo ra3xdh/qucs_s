@@ -32,13 +32,16 @@ class WireInfo;
 class NodeInfo;
 class ComponentInfo;
 
-// Inherited by the network implementation classes
+///
+/// @brief Abstract base class for network implementations
+///
 class Network {
 public:
   virtual ~Network() {}
+  ///
+  /// @brief Synthesize the network
+  ///
   virtual void synthesize() = 0;
-  SchematicContent Schematic; // This object contains all the circuit data of
-  // the filter, i.e. components and nets and it
-  // returns data for the simulation
+  SchematicContent Schematic; ///< Circuit data including components, nets, and simulation info
 };
 #endif

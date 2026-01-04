@@ -17,7 +17,11 @@
 
 #include "./../component.h"
 
-void Component::paintCoupler(QPainter* painter) {
+///
+/// \brief Ideal coupler painting method
+/// \param painter Painter object
+///
+void Component::paintCoupler(QPainter *painter) {
 
   if (Rotation != 0) {
     painter->rotate(Rotation);

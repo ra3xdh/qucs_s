@@ -40,35 +40,25 @@
 
 #include "graphwidget.h"
 
-//! [0]
+///
+/// @brief Construct graph widget
+/// @param parent Parent widget
+///
 GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent), timerId(0) {
   QGraphicsScene *scene = new QGraphicsScene(this);
   scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-  // scene->setSceneRect(-200, -200, 600, 300);
   setScene(scene);
   setCacheMode(CacheBackground);
   setViewportUpdateMode(BoundingRectViewportUpdate);
   setRenderHint(QPainter::Antialiasing);
   setTransformationAnchor(AnchorUnderMouse);
   setDragMode(QGraphicsView::ScrollHandDrag);
-  // scale(qreal(0.8), qreal(0.8));
   setWindowTitle(tr("Schematic"));
 }
 
-void GraphWidget::itemMoved() {
-  if (!timerId) {
-    timerId = startTimer(1000 / 25);
-  }
-}
-
-void GraphWidget::ComponentSelectionHandler(struct ComponentInfo CI) {
-  emit this->SendComponentSelectionToMainFunction(CI);
-}
-
-void GraphWidget::keyPressEvent(QKeyEvent * /*event*/) {}
-//! [3]
-
-//! [4]
+///
+/// @brief Handle timer events
+///
 void GraphWidget::timerEvent(QTimerEvent *event) {
   Q_UNUSED(event);
 
@@ -80,23 +70,21 @@ void GraphWidget::timerEvent(QTimerEvent *event) {
   }
 }
 
-void GraphWidget::wheelEvent(QWheelEvent *event) {
-  scaleView(pow((double)2, -event->angleDelta().y() / 240.0));
-}
-
 void GraphWidget::scaleView(qreal scaleFactor) {
   qreal factor = transform()
                      .scale(scaleFactor, scaleFactor)
                      .mapRect(QRectF(0, 0, 1, 1))
                      .width();
-  if (factor < 0.07 || factor > 100) {
+  if ((factor < 0.07) || (factor > 100)) {
     return;
   }
 
   scale(scaleFactor, scaleFactor);
 }
-//! [7]
 
+///
+/// @brief Randomize component positions
+///
 void GraphWidget::shuffle() {
   foreach (QGraphicsItem *item, scene()->items()) {
     if (qgraphicsitem_cast<Node *>(item)) {
@@ -106,12 +94,10 @@ void GraphWidget::shuffle() {
   }
 }
 
-void GraphWidget::zoomIn() { scaleView(qreal(1.2)); }
-
-void GraphWidget::zoomOut() { scaleView(1 / qreal(1.2)); }
-
-// This function sets the properties of the components such as position, type
-// and value
+///
+/// @brief Set components (position, type, values) in the schematic
+/// @param cmps List of component information
+///
 void GraphWidget::setComponents(QList<ComponentInfo> cmps) {
   this->Components.clear();
   for (int i = 0; i < cmps.length(); i++) {
@@ -127,6 +113,10 @@ void GraphWidget::setComponents(QList<ComponentInfo> cmps) {
   }
 }
 
+///
+/// @brief Modify existing component parameters
+/// @param CI Component information with updated values
+///
 void GraphWidget::ModifyComponent(ComponentInfo CI) {
   for (unsigned int i = 0; i < Components.size(); i++) {
     if (!Components.at(i)->getID().compare(CI.ID)) {
@@ -136,64 +126,85 @@ void GraphWidget::ModifyComponent(ComponentInfo CI) {
   }
 }
 
-// This function sets the position and the connection properties of the wires
-void GraphWidget::setWires(QList<WireInfo> wrs) {
-  this->Wires.clear();
-  int origin, destination;
-  bool OriginIsNode, DestIsNode;
+///
+/// @brief Set wires (position and connection properties) in the schematic
+/// @param wrs List of wire information
+///
+void GraphWidget::setWires(const QList<WireInfo> &wrs) {
+  // Remove any previously stored wires
+  Wires.clear();
 
-  for (int i = 0; i < wrs.length(); i++) {
-    //************ Find origin ****************
-    // is Node or Component?
-    OriginIsNode = wrs.at(i).OriginID.at(0) == 'N';
-    for (int index = 0;
-         index < (OriginIsNode) ? Nodes.size() : Components.size(); index++) {
-      if (OriginIsNode) {
-        if (!Nodes.at(index)->getID().compare(wrs.at(i).OriginID)) {
-          origin = index;
-          break;
-        }
-      } else {
-        if (!Components.at(index)->getID().compare(wrs.at(i).OriginID)) {
-          origin = index;
-          break;
-        }
-      }
+  /*
+   * Helper lambda:
+   * Searches a container of Node* or Component* for an element
+   * whose ID matches the given string.
+   *    * @return index of the element if found, -1 otherwise
+   */
+  auto findIndexById = [](const auto &container, const QString &id) -> int {
+    for (int i = 0; i < container.size(); ++i) {
+      if (container.at(i)->getID() == id)
+        return i;
     }
-    // Find destination index
-    // is Node or Component?
-    DestIsNode = wrs.at(i).DestinationID.at(0) == 'N';
-    for (int index = 0; index < (DestIsNode) ? Nodes.size() : Components.size();
-         index++) {
+    return -1;
+  };
 
-      if (DestIsNode) {
-        if (!Nodes.at(index)->getID().compare(wrs.at(i).DestinationID)) {
-          destination = index;
-          break;
-        }
-      } else {
-        if (!Components.at(index)->getID().compare(wrs.at(i).DestinationID)) {
-          destination = index;
-          break;
-        }
-      }
+  // Iterate over all wire descriptions
+  for (const WireInfo &info : wrs) {
+
+    // Determine whether each endpoint refers to a Node or a Component
+    // Convention: IDs starting with 'N' represent Nodes
+    const bool originIsNode = info.OriginID.startsWith('N');
+    const bool destIsNode = info.DestinationID.startsWith('N');
+
+    // Locate origin index in the appropriate container
+    const int originIndex = originIsNode
+                                ? findIndexById(Nodes, info.OriginID)
+                                : findIndexById(Components, info.OriginID);
+
+    // Locate destination index in the appropriate container
+    const int destIndex = destIsNode
+                              ? findIndexById(Nodes, info.DestinationID)
+                              : findIndexById(Components, info.DestinationID);
+
+    // If either endpoint cannot be resolved, skip this wire
+    // and avoid using invalid indices
+    if (originIndex < 0 || destIndex < 0) {
+      qWarning() << "Wire skipped: invalid endpoint"
+                 << "origin =" << info.OriginID
+                 << "destination =" << info.DestinationID;
+      continue;
     }
 
+    // Create and configure the wire graphics item
     Wire *w = new Wire();
-    w->setColor(wrs.at(i).WireColor);
-    OriginIsNode ? w->setSource(Nodes.at(origin), wrs.at(i).PortOrigin)
-                 : w->setSource(Components.at(origin), wrs.at(i).PortOrigin);
-    DestIsNode
-        ? w->setDestination(Nodes.at(destination), wrs.at(i).PortDestination)
-        : w->setDestination(Components.at(destination),
-                            wrs.at(i).PortDestination);
+    w->setColor(info.WireColor);
+
+    // Set the wire source endpoint (node or component)
+    if (originIsNode) {
+      w->setSource(Nodes.at(originIndex), info.PortOrigin);
+    } else {
+      w->setSource(Components.at(originIndex), info.PortOrigin);
+    }
+
+    // Set the wire destination endpoint (node or component)
+    if (destIsNode) {
+      w->setDestination(Nodes.at(destIndex), info.PortDestination);
+    } else {
+      w->setDestination(Components.at(destIndex), info.PortDestination);
+    }
+
+    // Store and display the wire
     Wires.push_back(w);
     scene()->addItem(w);
+
+    // Paint
     w->paintWire();
   }
 }
-
-// This functions sets the position of the wiring nodes
+///
+/// @brief Set nodes (position and wiring) in the schematic
+/// @param nds List of node information
+///
 void GraphWidget::setNodes(QList<NodeInfo> nds) {
   this->Nodes.clear();
   for (int i = 0; i < nds.length(); i++) {
@@ -205,6 +216,10 @@ void GraphWidget::setNodes(QList<NodeInfo> nds) {
   }
 }
 
+///
+/// @brief Set complete schematic content
+/// @param SchContent Schematic content structure
+///
 void GraphWidget::setSchematic(SchematicContent SchContent) {
   this->setNodes(SchContent.getNodes());
   this->setComponents(SchContent.getComponents());
@@ -212,7 +227,9 @@ void GraphWidget::setSchematic(SchematicContent SchContent) {
   this->setTexts(SchContent.getTexts());
 }
 
-// Clear the scene
+///
+/// @brief Clear all items from scene
+///
 void GraphWidget::clear() {
   while (!Components.empty()) {
     delete Components.front(), Components.pop_front(); // Remove components
@@ -228,6 +245,10 @@ void GraphWidget::clear() {
   }
 }
 
+///
+/// @brief Set text items in the schematic
+/// @param texts List of text items
+///
 void GraphWidget::setTexts(QList<QGraphicsTextItem *> texts) {
   this->Texts.clear();
   for (int i = 0; i < texts.length(); i++) {

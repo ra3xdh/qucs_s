@@ -17,7 +17,11 @@
 
 #include "./../component.h"
 
-void Component::paintCapacitor(QPainter* painter) {
+///
+/// \brief Capacitor painting method
+/// \param painter Painter object
+///
+void Component::paintCapacitor(QPainter *painter) {
 
   if (Rotation != 0) {
     painter->rotate(Rotation);

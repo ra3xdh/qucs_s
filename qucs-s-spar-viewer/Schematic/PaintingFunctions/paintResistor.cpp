@@ -17,7 +17,11 @@
 
 #include "./../component.h"
 
-void Component::paintResistor(QPainter* painter) {
+///
+/// \brief Resistor painting method
+/// \param painter Painter object
+///
+void Component::paintResistor(QPainter *painter) {
 
   if (Rotation != 0) {
     painter->rotate(Rotation);

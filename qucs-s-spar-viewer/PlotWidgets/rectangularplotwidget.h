@@ -32,6 +32,7 @@
 #include <limits>
 
 ///
+/// @class RectangularPlotWidget
 /// @brief Widget for displaying rectangular (Cartesian) plots with dual y-axes
 ///
 /// RectangularPlotWidget provides a rectangular plot visualization

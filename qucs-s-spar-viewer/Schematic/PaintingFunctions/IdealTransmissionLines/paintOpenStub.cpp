@@ -17,7 +17,11 @@
 
 #include "./../../component.h"
 
-void Component::paintOpenStub(QPainter* painter) {
+///
+/// \brief Open stub painting method
+/// \param painter Painter object
+///
+void Component::paintOpenStub(QPainter *painter) {
   if (Rotation != 0) {
     painter->rotate(Rotation);
   }

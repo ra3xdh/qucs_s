@@ -32,6 +32,7 @@
 
 
 ///
+/// @class PolarPlotWidget
 /// @brief Widget for displaying complex data in polar plot format with markers and traces
 ///
 /// PolarPlotWidget provides a polar plot visualization

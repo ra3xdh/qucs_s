@@ -17,14 +17,18 @@
 
 #include "./../../component.h"
 
-void Component::paintMicrostripVia(QPainter* painter) {
+///
+/// \brief Microstrip via painting method
+/// \param painter Painter object
+///
+void Component::paintMicrostripVia(QPainter *painter) {
   if (Rotation != 0) {
     painter->rotate(Rotation);
   }
 
   // Define dimensions - similar to GND symbol but with orange rectangle
-  int rectWidth       = 8;  // Width of the vertical orange rectangle
-  int rectHeight      = 10; // Height of the vertical orange rectangle
+  int rectWidth = 8;        // Width of the vertical orange rectangle
+  int rectHeight = 10;      // Height of the vertical orange rectangle
   int groundLineWidth = 20; // Width of the ground line at bottom
 
   // Draw vertical rectangle filled with orange (represents the via)

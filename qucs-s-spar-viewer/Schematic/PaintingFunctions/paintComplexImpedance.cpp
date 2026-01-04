@@ -17,7 +17,11 @@
 
 #include "./../component.h"
 
-void Component::paintComplexImpedance(QPainter* painter) {
+///
+/// \brief Complex impedance painting method
+/// \param painter Painter object
+///
+void Component::paintComplexImpedance(QPainter *painter) {
 
   if (Rotation != 0) {
     painter->rotate(Rotation);

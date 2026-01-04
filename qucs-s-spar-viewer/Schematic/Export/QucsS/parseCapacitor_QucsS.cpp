@@ -17,6 +17,12 @@
 
 #include "./../QucsS/QucsSExporter.h"
 
+///
+/// @brief Converts a capacitor component to Qucs-S format
+/// @param comp ComponentInfo structure containing capacitor parameters
+/// @return QString containing Qucs-S capacitor definition with capacitance
+/// value
+///
 QString QucsSExporter::parseCapacitor_QucsS(ComponentInfo Comp) {
   // Format: <C ID status x y text_x text_y C C_visibility>
   // ID: e.g. Cx, where x is a positive integer

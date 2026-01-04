@@ -1,5 +1,10 @@
 #include "./../QucsS/QucsSExporter.h"
 
+///
+/// @brief Converts an S-parameter block component to Qucs-S format
+/// @param comp ComponentInfo structure containing S-parameter file reference
+/// @return QString containing Qucs-S S-parameter file component definition
+///
 QString QucsSExporter::parseSPAR_Block_QucsS(ComponentInfo Comp) {
   // Format: <SPfile ID status x y text_x text_y 0 rotation C "path_file"
   // file_visibility "interpolation" interpolation_visibility> ID: e.g. Rx,

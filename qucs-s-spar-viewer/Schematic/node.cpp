@@ -17,6 +17,10 @@
 
 #include "node.h"
 
+///
+/// @brief Construct node with graph widget
+/// @param graphWidget Parent graph widget
+///
 Node::Node(GraphWidget *graphWidget) : graph(graphWidget) {
   setFlag(ItemIsMovable);
   setFlag(ItemSendsGeometryChanges);
@@ -26,6 +30,11 @@ Node::Node(GraphWidget *graphWidget) : graph(graphWidget) {
                   // the node not to be visible, they can hide it where needed.
 }
 
+///
+/// @brief Construct node from NodeInfo structure
+/// @param graphWidget Parent graph widget
+/// @param NI Node information structure
+///
 Node::Node(GraphWidget *graphWidget, NodeInfo NI) : graph(graphWidget) {
   setFlag(ItemIsMovable);
   setFlag(ItemSendsGeometryChanges);
@@ -36,25 +45,22 @@ Node::Node(GraphWidget *graphWidget, NodeInfo NI) : graph(graphWidget) {
   visible = NI.visible;
 }
 
-Node::~Node() {}
-
-void Node::addWire(Wire *Wire) {
-  WireList << Wire;
-  Wire->adjust();
-}
-
-QList<Wire *> Node::Wires() const { return WireList; }
-
-QRectF Node::boundingRect() const { return QRectF(-4, -4, 8, 8); }
-
+///
+/// @brief Get node selection shape
+/// @return Path defining selectable area
+///
 QPainterPath Node::shape() const {
   QPainterPath path;
   path.addEllipse(-4, -4, 8, 8);
   return path;
 }
 
-QString Node::getID() { return ID; }
-
+///
+/// @brief Paint node on scene
+/// @param painter QPainter instance
+/// @param option Style options
+/// @param widget Target widget
+///
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem * /*option*/,
                  QWidget *) {
 
@@ -69,6 +75,9 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem * /*option*/,
    painter->drawPath(this->shape());*/
 }
 
+///
+/// @brief Handle item change events
+///
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value) {
   switch (change) {
   case ItemPositionHasChanged:
@@ -83,19 +92,3 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value) {
 
   return QGraphicsItem::itemChange(change, value);
 }
-
-void Node::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-  update();
-  QGraphicsItem::mousePressEvent(event);
-}
-
-void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-  update();
-  QGraphicsItem::mouseReleaseEvent(event);
-}
-
-QPoint Node::getPortLocation(int /*port_number*/) { return QPoint(0, 0); }
-
-void Node::show() { visible = true; }
-
-void Node::hide() { visible = false; }

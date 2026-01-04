@@ -17,7 +17,11 @@
 
 #include "./../QucsS/QucsSExporter.h"
 
-// The short stub is just a transmission line terminated with a GND
+///
+/// @brief Converts a short-circuited stub component to Qucs-S format
+/// @param comp ComponentInfo structure containing stub parameters
+/// @return QString containing Qucs-S short stub definition
+/// @details The short stub is just a transmission line terminated with a GND
 QString QucsSExporter::parseShortStub_QucsS(ComponentInfo Comp) {
   int status = 1;
   int x_pos = Comp.Coordinates.at(0) * scale_x + x_offset;

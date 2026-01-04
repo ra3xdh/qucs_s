@@ -17,6 +17,11 @@
 
 #include "./../QucsS/QucsSExporter.h"
 
+///
+/// @brief Converts an ideal directional coupler to Qucs-S format
+/// @param comp ComponentInfo structure containing coupler parameters
+/// @return QString containing Qucs-S ideal coupler definition
+///
 QString QucsSExporter::parseIdealCoupler_QucsS(ComponentInfo Comp) {
   // Format: <Coupler ID status x y text_x text_y vertical_mirror rotation k
   // k_Visibility phi phi_Visibility Z0 Z0_Visibility>

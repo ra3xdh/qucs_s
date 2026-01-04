@@ -17,7 +17,11 @@
 
 #include "./../component.h"
 
-void Component::paintSPAR(QPainter* painter) {
+///
+/// \brief S-parameter block painting method
+/// \param painter Painter object
+///
+void Component::paintSPAR(QPainter *painter) {
   painter->save();
   if (Rotation != 0) {
     painter->rotate(Rotation);

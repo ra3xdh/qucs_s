@@ -17,7 +17,11 @@
 
 #include "./../../component.h"
 
-void Component::paintShortStub(QPainter* painter) {
+///
+/// \brief Short stub painting method
+/// \param painter Painter object
+///
+void Component::paintShortStub(QPainter *painter) {
 
   if (Rotation != 0) {
     painter->rotate(Rotation);

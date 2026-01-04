@@ -231,7 +231,6 @@ void SParameterCalculator::analyseLoss(double W, double t, double er,
   }
 }
 
-// Helper function implementations (simplified versions)
 void SParameterCalculator::Hammerstad_ab(double u, double er, double &a,
                                          double &b) {
   a = 1 + log((pow(u, 4) + pow(u / 52, 2)) / (pow(u, 4) + 0.432)) / 49 +

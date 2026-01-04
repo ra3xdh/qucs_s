@@ -17,7 +17,11 @@
 
 #include "./../../component.h"
 
-void Component::paintCoupledLines(QPainter* painter) {
+///
+/// \brief Coupled transmission lines painting method
+/// \param painter Painter object
+///
+void Component::paintCoupledLines(QPainter *painter) {
 
   if (Rotation != 0) {
     painter->rotate(Rotation);

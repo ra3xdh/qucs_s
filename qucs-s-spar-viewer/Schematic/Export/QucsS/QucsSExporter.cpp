@@ -19,6 +19,12 @@
 #include <QMap>
 #include <QRegularExpression>
 
+///
+/// @brief Constructs a QucsSExporter with reference to schematic content
+/// @param owner Reference to the SchematicContent object to be exported
+/// @details Initializes scaling factors, offsets, and simulator-specific
+///          component blacklists for NGspice and Xyce backends
+///
 QucsSExporter::QucsSExporter(SchematicContent &sch)
     : schematic(sch), // store the reference
       x_offset(0.0), y_offset(0.0), scale_x(2.0), scale_y(1.2) {
@@ -43,6 +49,12 @@ QucsSExporter::QucsSExporter(SchematicContent &sch)
   Export_Blacklists["Xyce"].append(Coupler);
 }
 
+///
+/// @brief Exports the schematic to Qucs-S format
+/// @return QString containing complete Qucs-S netlist, or "-1" on error
+/// @details Generates a complete Qucs-S schematic including header,
+///          components, wires, simulation parameters, and equations
+///
 QString QucsSExporter::exportSchematic() {
   if (schematic.Comps.isEmpty()) {
     return QString("");
@@ -73,8 +85,15 @@ QString QucsSExporter::exportSchematic() {
   return qucsNetlist;
 }
 
-QucsSExporter::~QucsSExporter() {}
-
+///
+/// @brief Processes all components and generates Qucs-S component definitions
+/// @param backend_simulator Name of the target simulator backend
+/// @return QString containing all component definitions, or "-1" if unsupported
+/// components found
+/// @details Iterates through all components, checks compatibility with backend,
+///          calls appropriate parser for each component type, and generates
+///          simulation boxes and substrate definitions
+///
 QString QucsSExporter::processComponents_QucsS(QString backend_simulator) {
   QString qucs_S_Components_Netlist = QString("");
   qucs_S_Components_Netlist += QString("<Components>\n");
@@ -315,7 +334,13 @@ QString QucsSExporter::processComponents_QucsS(QString backend_simulator) {
   return qucs_S_Components_Netlist;
 }
 
-// This function extracts the substrate properties from a component
+///
+/// @brief Extracts microstrip substrate properties from a component
+/// @param Comp ComponentInfo structure containing substrate parameters
+/// @return MS_Substrate structure with extracted properties (εr, h, tanδ, etc.)
+/// @details Reads substrate parameters like relative permittivity, height,
+///          metal thickness, loss tangent, and conductivity from component data
+///
 MS_Substrate QucsSExporter::get_MS_Substrate(ComponentInfo Comp) {
   MS_Substrate subs;
   subs.er = Comp.val["er"].toDouble();
@@ -327,6 +352,16 @@ MS_Substrate QucsSExporter::get_MS_Substrate(ComponentInfo Comp) {
   return subs;
 }
 
+///
+/// @brief Generates Qucs-S substrate definition boxes for all substrates
+/// @param subs_list List of all MS_Substrate definitions used in the design
+/// @param x_bottom X-coordinate for substrate box placement
+/// @param y_bottom Y-coordinate for substrate box placement
+/// @return QString containing all substrate definitions, or empty string if
+/// none
+/// @details Removes duplicate substrates and formats each unique substrate
+///          with proper units (mm for height, μm for metal thickness)
+///
 QString QucsSExporter::addSubstrateBox(QList<MS_Substrate> subs_list,
                                        int x_bottom, int y_bottom) {
   QString netlist_subs_box;
@@ -354,8 +389,12 @@ QString QucsSExporter::addSubstrateBox(QList<MS_Substrate> subs_list,
   return netlist_subs_box;
 }
 
-// Get the position of the internal nodes. This will be needed later for tracing
-// the wires
+///
+/// @brief Processes internal nodes and records their positions
+/// @details Populates ComponentPinMap with node positions after applying
+///          scaling factors.
+/// @note This will be needed later for tracing the wires
+///
 void QucsSExporter::processNodes_QucsS() {
   for (int i = 0; i < schematic.Nodes.length(); i++) {
 
@@ -369,6 +408,13 @@ void QucsSExporter::processNodes_QucsS() {
   }
 }
 
+///
+/// @brief Processes all wires and generates Qucs-S wire definitions
+/// @return QString containing all wire segments in Qucs-S format
+/// @details Creates orthogonal (horizontal/vertical only) wire paths,
+///          splitting diagonal connections into L-shaped segments.
+///          Automatically skips ground connections that don't need routing.
+///
 QString QucsSExporter::processWires_QucsS() {
   QString qucsWires = "<Wires>\n";
 

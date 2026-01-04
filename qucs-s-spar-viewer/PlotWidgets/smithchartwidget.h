@@ -36,6 +36,7 @@ class Qucs_S_SPAR_Viewer;
 
 
 ///
+/// @class SmithChartWidget
 /// @brief Smith chart visualization and interaction widget.
 ///
 /// Provides impedance/admittance Smith chart drawing, trace management and

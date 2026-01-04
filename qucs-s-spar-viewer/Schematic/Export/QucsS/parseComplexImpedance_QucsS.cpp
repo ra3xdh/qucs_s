@@ -1,5 +1,12 @@
 #include "./../QucsS/QucsSExporter.h"
 
+///
+/// @brief Converts a complex impedance component to Qucs-S RFEDD format
+/// @param comp ComponentInfo structure containing impedance data
+/// @param Z0 System characteristic impedance for normalization
+/// @return QString containing Qucs-S RFEDD (RF Element Data Definition)
+/// component
+///
 QString QucsSExporter::parseComplexImpedance_QucsS(ComponentInfo Comp,
                                                    double Z0) {
   // Format: <RFEDD ID status x y text_x text_y 0 rotation params>
