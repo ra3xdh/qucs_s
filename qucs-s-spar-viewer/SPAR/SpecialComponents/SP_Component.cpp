@@ -66,15 +66,6 @@ void SParameterCalculator::addSParamBlockToAdmittance(
   }
 }
 
-///
-/// @brief Adds one-port S-parameter device to admittance matrix
-/// @param Y Reference to circuit admittance matrix
-/// @param comp Component containing single S11 parameter
-/// @details Converts one-port S-parameter to admittance: Y = Y0(1-S11)/(1+S11)
-///          where Y0 = 1/Z0 is the reference admittance. One port connects to
-///          circuit node, other terminal is ground. Common for reflective loads
-///          or terminations.
-///
 void SParameterCalculator::addOnePortSParamToAdmittance(
     vector<vector<Complex>> &Y, const Component_SPAR &comp) {
 
@@ -121,14 +112,6 @@ void SParameterCalculator::addOnePortSParamToAdmittance(
   }
 }
 
-///
-/// @brief Adds two-port S-parameter device to admittance matrix
-/// @param Y Reference to circuit admittance matrix
-/// @param comp Component containing 2×2 S-parameter matrix
-/// @details Converts 2-port S-parameters to Y-parameters and add it to the
-/// network Y matrix
-/// @see convertS2Y()
-///
 void SParameterCalculator::addTwoPortSParamToAdmittance(
     vector<vector<Complex>> &Y, const Component_SPAR &comp) {
 
@@ -164,16 +147,6 @@ void SParameterCalculator::addTwoPortSParamToAdmittance(
   }
 }
 
-///
-/// @brief Adds frequency-dependent S-parameter block to admittance matrix
-/// @param Y Reference to circuit admittance matrix
-/// @param comp Component with S-parameter data (multiple frequency points)
-/// @details Interpolates S-parameters at current analysis frequency from
-/// S-parameter data,
-///          converts interpolated S→Y using reference impedance, then stamps
-///          Y-parameters into nodal matrix. Handles 1-port through N-port
-///          networks from .s1p, .s2p, etc.
-///
 void SParameterCalculator::addFrequencyDependentSParamBlockToAdmittance(
     vector<vector<Complex>> &Y, const Component_SPAR &comp) {
 

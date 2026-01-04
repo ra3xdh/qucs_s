@@ -7,11 +7,6 @@
 
 #include "./../../QucsS/QucsSExporter.h"
 
-///
-/// @brief Converts a microstrip open-end discontinuity to Qucs-S format
-/// @param comp ComponentInfo structure containing open-end parameters
-/// @return QString containing Qucs-S microstrip open definition
-///
 QString QucsSExporter::parseMicrostripOpen_QucsS(ComponentInfo Comp) {
   //  Open model example
   // <MOPEN MS8 1 550 540 15 -12 0 1 "Sub1" 0 "0.13 mm" 1 "Hammerstad" 0

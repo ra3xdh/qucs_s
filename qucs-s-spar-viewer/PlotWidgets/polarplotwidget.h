@@ -135,25 +135,28 @@ public:
   /// @brief Get current radial axis maximum value
   /// @return Maximum radius value
   ///
-  double getRmax();
+  double getRmax() { return rAxisMax->value(); }
 
   ///
   /// @brief Get current radial axis minimum value
   /// @return Minimum radius value
   ///
-  double getRmin();
+  double getRmin() { return rAxisMin->value(); }
 
   ///
   /// @brief Get radial axis division spacing
   /// @return Division interval for radial grid
   ///
-  double getRdiv();
+  double getRdiv() { return rAxisDiv->value(); }
 
   ///
   /// @brief Get current display mode
   /// @return 0 for Magnitude/Phase, 1 for Real/Imaginary
   ///
-  int getDisplayMode() const;
+  int getDisplayMode() const {
+    return displayModeCombo->currentIndex();
+  }
+
 
   // Marker management functions
 
@@ -185,7 +188,10 @@ public:
   ///
   /// @brief Clear all markers from the plot
   ///
-  void clearMarkers();
+  void clearMarkers() {
+    markers.clear();
+    updatePlot();
+  }
 
   ///
   /// @brief Get all marker IDs and their frequencies
@@ -208,31 +214,43 @@ private slots:
   ///
   /// @brief Update angular axis display (currently placeholder)
   ///
-  void updateAngleAxis();
+  void updateAngleAxis() {
+    updatePlot();
+  }
 
   ///
   /// @brief Toggle between magnitude/phase and real/imaginary display modes
   ///
-  void toggleDisplayMode();
+  void toggleDisplayMode() { updatePlot(); }
 
   ///
   /// @brief Handle frequency minimum spinbox value change
   /// @param value New minimum frequency in current units
   ///
-  void onFMinChanged(double value);
+  void onFMinChanged(double value){
+    fMin = value * getFrequencyMultiplier();
+    updatePlot();
+  }
 
   ///
   /// @brief Handle frequency maximum spinbox value change
   /// @param value New maximum frequency in current units
   ///
-  void onFMaxChanged(double value);
+  void onFMaxChanged(double value) {
+    fMax = value * getFrequencyMultiplier();
+    updatePlot();
+  }
 
   ///
   /// @brief Handle frequency unit combobox change
   ///
   /// Recalculates frequency range using new unit multiplier.
   ///
-  void onFUnitChanged();
+  void onFUnitChanged() {
+    fMin = fMinSpinBox->value() * getFrequencyMultiplier();
+    fMax = fMaxSpinBox->value() * getFrequencyMultiplier();
+    updatePlot();
+  }
 
 private slots: // Slot to update axis settings widget based on the user zoomming and panning
 
@@ -247,7 +265,11 @@ private slots: // Slot to update axis settings widget based on the user zoomming
   /// @brief Overload for mouse event handling
   /// @param event Mouse event (unused)
   /// @see checkAxisRanges()
-  void checkAxisRanges(QMouseEvent* event);
+  void checkAxisRanges(QMouseEvent* event) {
+    // This overload handles mouse events - just call the main function
+    Q_UNUSED(event)
+    checkAxisRanges();
+  }
 
   ///
   /// @brief Prevent negative radial values during programmatic range changes

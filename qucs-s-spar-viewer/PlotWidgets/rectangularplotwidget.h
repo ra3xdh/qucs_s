@@ -113,12 +113,18 @@ public:
   /// @brief Remove a trace from the plot
   /// @param name Trace identifier
   ///
-  void removeTrace(const QString& name);
+  void removeTrace(const QString& name) {
+    traces.remove(name);
+    updatePlot();
+  }
 
   ///
   /// @brief Remove all traces from the plot
   ///
-  void clearTraces();
+  void clearTraces() {
+    traces.clear();
+    updatePlot();
+  }
 
   ///
   /// @brief Calculate an aesthetically pleasing step size for axis divisions
@@ -150,65 +156,65 @@ public:
   ///
   /// @brief Get maximum left Y-axis value
   ///
-  double getYmax();
+  double getYmax() { return yAxisMax->value(); }
 
   ///
   ///  @brief Get minimum left Y-axis value
   ///
-  double getYmin();
+  double getYmin() { return yAxisMin->value(); }
 
   ///
   /// @brief Get left Y-axis division interval
   ///
-  double getYdiv();
+  double getYdiv() { return yAxisDiv->value(); }
 
   ///
   /// @brief Set left Y-axis division interval
   /// @param val New division value
   ///
-  void setYdiv(double);
+  void setYdiv(double val) { yAxisDiv->setValue(val); }
 
   ///
   /// @brief Set maximum left Y-axis value
   /// @param val New maximum value
   ///
-  void setYmax(double);
+  void setYmax(double val) { yAxisMax->setValue(val); }
 
   ///
   /// @brief Set minimum left Y-axis value
   /// @param val New minimum value
   ///
-  void setYmin(double);
+  void setYmin(double val) { yAxisMin->setValue(val); }
 
   ///
   /// @brief Get maximum right Y-axis value
   ///
-  double getY2max();
+  double getY2max() { return y2AxisMax->value(); }
 
   ///
   /// @brief Get minimum right Y-axis value
   ///
-  double getY2min();
+  double getY2min() { return y2AxisMin->value(); }
 
   ///
   /// @brief Get right Y-axis division interval
   ///
-  double getY2div();
+  double getY2div() { return y2AxisDiv->value(); }
 
   ///
   /// @brief Get maximum X-axis value
   ///
-  double getXmax();
+  double getXmax() { return xAxisMax->value(); }
 
   ///
   /// @brief Get minimum X-axis value
   ///
-  double getXmin();
+  double getXmin(){ return xAxisMin->value(); }
 
   ///
   /// @brief Get X-axis division interval
   ///
-  double getXdiv();
+  double getXdiv() { return xAxisDiv->value(); }
 
   ///
   /// @brief Get frequency scale factor for current units
@@ -218,13 +224,15 @@ public:
 
   ///
   /// @brief Get current frequency unit string
+  /// @return String containing current units (Hz, kHz, MHz, or GHz)
   ///
-  QString getXunits();
+  QString getXunits() { return xAxisUnits->currentText(); }
 
   ///
   /// @brief Get frequency unit combo box index
+  /// @return Current frequency unit index
   ///
-  int getFreqIndex();
+  int getFreqIndex()  { return xAxisUnits->currentIndex(); }
 
   ///
   /// @brief Redraw the entire plot with current data
@@ -233,15 +241,17 @@ public:
 
   ///
   /// @brief Enable or disable automatic Y-axis scaling
-  /// @param value true to enable auto-scaling
+  /// @param value true to enable auto-scaling, false to disable
   ///
-  void set_y_autoscale(bool value);
+  void set_y_autoscale(bool value) { y_autoscale = value; }
 
   ///
   /// @brief Check if axis settings are locked
   /// @return true if axes are locked and won't auto-adjust
   ///
-  bool areAxisSettingsLocked() const;
+  bool areAxisSettingsLocked() const {
+    return axisSettingsLocked;
+  }
 
   ///
   /// @brief Enable or disable the right Y-axis
@@ -253,43 +263,53 @@ public:
   /// @brief Check if right Y-axis is enabled
   /// @return true if right Y-axis is visible
   ///
-  bool isRightYAxisEnabled() const;
+  bool isRightYAxisEnabled() const {
+    return plotWidget->yAxis2->visible();
+  }
 
   ///
   /// @brief Set left Y-axis title
   /// @param title New title text
   ///
-  void change_Y_axis_title(QString title);
+  void change_Y_axis_title(QString title) {
+    plotWidget->yAxis->setLabel(title);
+    plotWidget->replot();
+  }
 
   ///
   /// @brief Set left Y-axis unit label
   /// @param units New unit text
   ///
-  void change_Y_axis_units(QString title);
+  void change_Y_axis_units(QString units){
+    yAxisUnits->setText(units);
+  }
 
   ///
   /// @brief Set right Y-axis title
   /// @param title New title text
   ///
-  void change_Y2_axis_title(QString title);
+  void change_Y2_axis_title(QString title){
+    plotWidget->yAxis2->setLabel(title);
+    plotWidget->replot();
+  }
 
   ///
   /// @brief Set right Y-axis unit label
   /// @param units New unit text
   ///
-  void change_Y2_axis_units(QString title);
+  void change_Y2_axis_units(QString units) {
+    y2AxisUnits->setText(units);
+  }
 
   ///
   /// @brief Set X-axis title
   /// @param title New title text
   ///
-  void change_X_axis_title(QString title);
+  void change_X_axis_title(QString title){
+    plotWidget->xAxis->setLabel(title);
+    plotWidget->replot();
+  }
 
-  ///
-  /// @brief Alias for change_X_axis_title
-  /// @param title New title text
-  ///
-  void change_X_axis_label(QString title);
 
   QLabel* xAxisLabel; ///< x-axis label
 
@@ -321,7 +341,10 @@ public:
   ///
   /// @brief Remove all markers from the plot
   ///
-  void clearMarkers();
+  void clearMarkers() {
+    markers.clear();
+    updatePlot();
+  }
 
   ///
   /// @brief Get all markers and their frequencies
@@ -346,13 +369,18 @@ public:
   ///
   /// @brief Remove all limit lines from the plot
   ///
-  void clearLimits();
+  void clearLimits() {
+    limits.clear();
+    updatePlot();
+  }
 
   ///
   /// @brief Get all defined limits
   /// @return Map of limit IDs to limit properties
   ///
-  QMap<QString, Limit> getLimits() const;
+  QMap<QString, Limit> getLimits() const {
+    return limits;
+  }
 
   ///
   /// @brief Update an existing limit line
@@ -402,7 +430,9 @@ private slots:
   void changeFreqUnits();
 
   ///
-  /// @brief Show/hide the marker display
+  /// @brief Toggle display of trace values at the intersections with the vertical
+  /// marker
+  /// @param show true to show values, false to hide
   ///
   void toggleShowValues(bool show);
 

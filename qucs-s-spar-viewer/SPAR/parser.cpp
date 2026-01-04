@@ -7,30 +7,6 @@
 
 #include "SParameterCalculator.h"
 
-///
-/// @brief Parses netlist from currentNetlist string line by line and populates
-/// the circuit
-/// @return true if parsing succeeded, false on error
-///
-/// @note Netlist format supports:
-/// - R: Resistor (R1 node1 node2 value)
-/// - C: Capacitor (C1 node1 node2 value)
-/// - L: Inductor (L1 node1 node2 value)
-/// - Z: Complex impedance (Z1 node1 node2 R±jX)
-/// - TLIN: Transmission line (TLIN1 node1 node2 Z0 length)
-/// - OSTUB: Open stub (OSTUB1 node1 node2 Z0 length)
-/// - SSTUB: Short stub (SSTUB1 node1 node2 Z0 length)
-/// - MLIN: Microstrip line (MLIN1 node1 node2 W L er h cond th tand)
-/// - MSCOUP: Microstrip coupled lines (MSCOUP1 n1 n2 n3 n4 W L S er h cond th
-/// tand)
-/// - MSTEP: Microstrip step (MSTEP1 node1 node2 W1 W2 er h cond th tand)
-/// - MSOPEN: Microstrip open (MSOPEN1 node1 W er h cond th tand)
-/// - MSVIA: Microstrip via (MSVIA1 node1 D N er h cond th tand)
-/// - CLIN: Coupled line (CLIN1 n1 n2 n3 n4 Z0e Z0o length)
-/// - COUPLER: Ideal coupler (COUPLER1 n1 n2 n3 n4 k phase_deg [Z0])
-/// - P: Port (P1 node [impedance])
-/// - SPAR: S-parameter block (SPAR1 n1 n2 filename OR inline matrix)
-///
 bool SParameterCalculator::parseNetlist() {
   if (currentNetlist.isEmpty()) {
     cerr << "Error: No netlist content provided" << endl;

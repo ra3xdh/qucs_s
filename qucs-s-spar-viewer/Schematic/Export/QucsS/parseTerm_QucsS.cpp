@@ -7,11 +7,6 @@
 
 #include "./../QucsS/QucsSExporter.h"
 
-///
-/// @brief Converts a termination/port component to Qucs-S format
-/// @param comp ComponentInfo structure containing component data
-/// @return QString containing Qucs-S port definition with ground connection
-///
 QString QucsSExporter::parseTerm_QucsS(ComponentInfo Comp) {
   // Format: <Pac ID status x y text_x text_y Num Num_visibility Z0
   // Z0_visibility> ID: e.g. Lx, where x is a positive integer

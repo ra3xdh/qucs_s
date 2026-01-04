@@ -8,14 +8,6 @@
 
 #include "./../SParameterCalculator.h"
 
-///
-/// @brief Calculates Y-matrix for coupled transmission lines
-/// @param Z0e Even-mode characteristic impedance (Ω)
-/// @param Z0o Odd-mode characteristic impedance (Ω)
-/// @param length Physical length of coupled section (m)
-/// @param freq Operating frequency (Hz)
-/// @return 4×4 complex Y-parameter matrix for coupled line
-///
 vector<vector<Complex>>
 SParameterCalculator::calculateCoupledLineYMatrix(double Z0e, double Z0o,
                                                   double length, double freq) {
@@ -84,15 +76,6 @@ SParameterCalculator::calculateCoupledLineYMatrix(double Z0e, double Z0o,
   return Y;
 }
 
-/// @brief Adds coupled transmission line to admittance matrix
-/// @param Y Reference to circuit admittance matrix (modified in place)
-/// @param comp Component containing coupled line parameters (Z0e, Z0o, length)
-/// @details Implements 4-port coupled transmission line using even/odd mode
-/// analysis.
-///          Calculates ABCD parameters for even and odd modes separately, then
-///          converts to Y-parameters and stamps into nodal matrix at the four
-///          connection nodes. Even mode impedance Z0e and odd mode impedance
-///          Z0o characterize coupling strength.
 void SParameterCalculator::addCoupledLineToAdmittance(
     vector<vector<Complex>> &Y, const Component_SPAR &comp) {
   if (comp.nodes.size() != 4) {

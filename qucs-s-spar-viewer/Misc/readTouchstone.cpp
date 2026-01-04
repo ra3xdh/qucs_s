@@ -7,12 +7,6 @@
 
 #include "general.h"
 
-///
-/// @brief Reads Touchstone file and extracts S-parameter data
-/// @param filePath Path to the Touchstone file (.sNp)
-/// @return Map of variable names to data arrays (frequency, S-parameters as
-/// dB/ang/re/im, n_ports, Z0)
-///
 QMap<QString, QList<double>> readTouchstoneFile(const QString &filePath) {
   QMap<QString, QList<double>>
       file_data; // Data structure to store the file data

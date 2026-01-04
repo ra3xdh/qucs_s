@@ -956,11 +956,6 @@ void Qucs_S_SPAR_Viewer::setupScrollableLayout() {
                            "GroupDelayScrollArea");
 }
 
-///
-/// @brief Show introduction help dialog
-///
-/// Displays a message box with a short description of the program
-///
 void Qucs_S_SPAR_Viewer::slotHelpIntro() {
   QMessageBox msgBox(this);
   msgBox.setWindowTitle(tr("Help"));
@@ -985,18 +980,10 @@ void Qucs_S_SPAR_Viewer::slotHelpIntro() {
   msgBox.exec();
 }
 
-///
-/// \brief Information regarding the Qt libraries
-///
 void Qucs_S_SPAR_Viewer::slotHelpAboutQt() {
   QMessageBox::aboutQt(this, tr("About Qt"));
 }
 
-///
-/// \brief Licensing and author credits
-/// @note This tool uses QCustomPlot, developed by Emanuel Eichhammer.
-/// https://www.qcustomplot.com
-///
 void Qucs_S_SPAR_Viewer::slotHelpAbout() {
   // Build the HTML body
   const QString html = R"(
@@ -1037,20 +1024,6 @@ void Qucs_S_SPAR_Viewer::slotHelpAbout() {
   QMessageBox::about(this, tr("About…"), html);
 }
 
-///
-/// \brief Close the program
-///
-void Qucs_S_SPAR_Viewer::slotQuit() { qApp->quit(); }
-
-//
-/// @brief Helper function to extract S-parameter indices from S[i,j] format
-///
-/// Parses S-parameter strings in the format "S[i,j]" and extracts
-/// the port indices, returning them in "Sji" format.
-///
-/// @param sparam S-parameter string (e.g., "S[1,2]")
-/// @return QString Extracted indices
-///
 QString Qucs_S_SPAR_Viewer::extractSParamIndices(const QString &sparam) {
   QRegularExpression re("S\\[(\\d+),(\\d+)\\]");
   QRegularExpressionMatch match = re.match(sparam);
@@ -1064,19 +1037,6 @@ QString Qucs_S_SPAR_Viewer::extractSParamIndices(const QString &sparam) {
   return "";
 }
 
-///
-/// @brief Apply default trace visualizations for newly loaded files depending
-/// on their type
-///
-/// Automatically creates appropriate default traces based on file
-/// characteristics:
-/// - Single S1P file: S11 in dB, Smith, Polar, impedance, and VSWR
-/// - Single S2P file: S21, S11, S22 in dB; S11, S22 in Smith and Polar;
-///                    impedance, group delay, VSWR, and stability factors
-/// - Multiple S2P files: S21 in dB for each file with different colors
-///
-/// @param fileNames List of file names that were loaded
-///
 void Qucs_S_SPAR_Viewer::applyDefaultVisualizations(
     const QStringList &fileNames) {
   if (fileNames.length() == 1) {
@@ -1206,18 +1166,6 @@ void Qucs_S_SPAR_Viewer::applyDefaultVisualizations(
   dockTracesList->raise();
 }
 
-/// @brief Add optional traces depending on the number of ports of the data file
-///
-/// Adds trace placeholders for derived parameters (i.e. computer from the
-/// S-data) based on number of ports:
-/// - 1-port: Re{Zin}, Im{Zin}, VSWR{in}
-/// - 2-port: delta, K, mu, mu_p, MSG, MAG, Re{Zin}, Im{Zin}, VSWR{in},
-///           Re{Zout}, Im{Zout}, VSWR{out}
-///
-/// @param file_data Reference to file data map to add trace placeholders to
-///
-/// @note Traces are added as empty lists and populated when requested. It makes
-/// no sense to compute all of them without necessity
 void Qucs_S_SPAR_Viewer::addOptionalTraces(
     QMap<QString, QList<double>> &file_data) {
   QStringList optional_traces;
@@ -1251,15 +1199,6 @@ void Qucs_S_SPAR_Viewer::addOptionalTraces(
   }
 }
 
-/// @brief Create label and the button for a new file in the file list
-///
-/// Creates and adds to the file grid:
-/// - Label with filename (without extension)
-/// - Remove button with trash icon
-///
-/// @param filename Full filename including path
-/// @param position Position in the file list (0 = append to end)
-///
 void Qucs_S_SPAR_Viewer::CreateFileWidgets(QString filename, int position) {
 
   if (position == 0) {
@@ -1296,16 +1235,6 @@ void Qucs_S_SPAR_Viewer::CreateFileWidgets(QString filename, int position) {
           [this]() { removeFile(); });
 }
 
-///
-/// @brief Remove all traces associated with a dataset given its name (QString)
-///
-/// Iterates through all display modes and removes any traces
-/// that belong to the specified dataset.
-///
-/// @param dataset_to_remove Name of the dataset whose traces should be removed
-///
-/// @note Uses removeTraceByProps() to handle the actual removal
-///
 void Qucs_S_SPAR_Viewer::removeTracesByDataset(
     const QString &dataset_to_remove) {
   // Iterate through the outer QMap (display modes)
@@ -1338,17 +1267,6 @@ void Qucs_S_SPAR_Viewer::removeTracesByDataset(
   }
 }
 
-///
-/// @brief Remove a row from grid layout and collapse remaining rows
-///
-/// Performs three operations:
-/// 1. Removes and deletes all widgets in the target row
-/// 2. Shifts all rows below upward by one position
-/// 3. Forces layout update to remove empty space
-///
-/// @param targetLayout Grid layout to modify
-/// @param row_to_remove Index of row to remove
-///
 void Qucs_S_SPAR_Viewer::removeAndCollapseRow(QGridLayout *targetLayout,
                                               int row_to_remove) {
   int rows = targetLayout->rowCount();
@@ -1391,13 +1309,6 @@ void Qucs_S_SPAR_Viewer::removeAndCollapseRow(QGridLayout *targetLayout,
   }
 }
 
-///
-/// @brief Update traces combo box based on selected dataset
-///
-/// Populates the traces combo box with:
-/// - All S-parameters available for the current dataset (based on port count)
-/// - Additional derived parameters (stability factors, impedance, etc.)
-///
 void Qucs_S_SPAR_Viewer::updateTracesCombo() {
   QCombobox_traces->clear();
   QStringList sParams;
@@ -1445,9 +1356,6 @@ void Qucs_S_SPAR_Viewer::updateTracesCombo() {
   QCombobox_traces->setParameters(sParams, otherParams);
 }
 
-///
-/// @brief Update available display types based on selected trace
-///
 void Qucs_S_SPAR_Viewer::updateDisplayType() {
   QString trace_selected = QCombobox_traces->currentText();
   QCombobox_display_mode->clear();
@@ -1471,20 +1379,6 @@ void Qucs_S_SPAR_Viewer::updateDisplayType() {
   QCombobox_display_mode->addItems(display_mode);
 }
 
-///
-/// @brief Get minimum and maximum values for a trace for both axis
-///
-/// Analyzes the frequency and amplitude data to determine plot limits.
-/// Special handling for:
-/// - Phase traces: Fixed -180° to +180° range
-/// - Magnitude traces: Actual min/max from data
-///
-/// @param filename Dataset filename
-/// @param tracename Trace parameter name
-/// @param minX Output minimum frequency
-/// @param maxX Output maximum frequency
-/// @param minY Output minimum amplitude
-/// @param maxY Output maximum amplitude
 void Qucs_S_SPAR_Viewer::getMinMaxValues(QString filename, QString tracename,
                                          qreal &minX, qreal &maxX, qreal &minY,
                                          qreal &maxY) {
@@ -1515,24 +1409,12 @@ void Qucs_S_SPAR_Viewer::getMinMaxValues(QString filename, QString tracename,
   }
 }
 
-///
-/// @brief Handle drag enter event for file dropping
-///
-/// Accepts drag events containing file paths
-///
 void Qucs_S_SPAR_Viewer::dragEnterEvent(QDragEnterEvent *event) {
   if (event->mimeData()->hasUrls()) {
     event->acceptProposedAction();
   }
 }
 
-///
-/// @brief Handle drop event for file dropping
-///
-/// Processes dropped files:
-/// - Single .spar file: Loads as session file
-/// - Other files: Adds as S-parameter data files
-///
 void Qucs_S_SPAR_Viewer::dropEvent(QDropEvent *event) {
   QList<QUrl> urls = event->mimeData()->urls();
   QStringList fileList;
@@ -1563,15 +1445,6 @@ void Qucs_S_SPAR_Viewer::dropEvent(QDropEvent *event) {
   }
 }
 
-///
-/// @brief Update grid layout by collapsing empty rows
-///
-/// Collects all widget information, clears the layout, and re-adds
-/// widgets in a compact arrangement without gaps.
-///
-/// @param layout Grid layout to update
-///
-/// @note Preserves widget properties including alignment and span
 void Qucs_S_SPAR_Viewer::updateGridLayout(QGridLayout *layout) {
   // Store widget information
   struct WidgetInfo {
@@ -1621,22 +1494,6 @@ void Qucs_S_SPAR_Viewer::updateGridLayout(QGridLayout *layout) {
   }
 }
 
-///
-/// @brief Calculate derived S-parameter traces (user request)
-///
-/// Computes various derived parameters from raw S-parameter data:
-/// - Group delay: From phase using numerical differentiation
-/// - Stability factors: K (Rollett factor), μs, μp
-/// - Gain factors: MSG, MAG
-/// - Impedances: Zin, Zout (real and imaginary parts)
-/// - VSWR: For input and output ports
-/// - Determinant: |Δ| of S-matrix
-///
-/// @param file Dataset filename
-/// @param metric Parameter to calculate (e.g., "K", "Group Delay", "Re{Zin}")
-///
-/// @note Results are stored in the dataset map
-///
 void Qucs_S_SPAR_Viewer::calculate_Sparameter_trace(QString file,
                                                     QString metric) {
 
@@ -1830,13 +1687,6 @@ void Qucs_S_SPAR_Viewer::calculate_Sparameter_trace(QString file,
   }
 }
 
-///
-/// @brief Setup file system watcher
-///
-/// Configures the file watcher to monitor:
-/// - Individual S-parameter files for changes
-/// - Directories containing watched files for additions/deletions
-///
 void Qucs_S_SPAR_Viewer::setupFileWatcher() {
   // Clear existing paths
   if (!fileWatcher->files().isEmpty()) {
@@ -1856,18 +1706,6 @@ void Qucs_S_SPAR_Viewer::setupFileWatcher() {
   }
 }
 
-///
-/// @brief Handle file change event from file watcher
-///
-/// Implements debouncing and robust file handling:
-/// 1. Debounces rapid file change events (500ms window)
-/// 2. Waits for file to be completely written (200ms delay + retry logic)
-/// 3. Reloads the file data using appropriate parser
-/// 4. Updates all plots using the new data
-/// 5. Re-adds file to watcher if needed
-///
-/// @param path Full path to the changed file
-///
 void Qucs_S_SPAR_Viewer::fileChanged(const QString &path) {
   // Don't process the same file within a short time window
   static QMap<QString, QDateTime> lastProcessedTimes;
@@ -1966,17 +1804,6 @@ void Qucs_S_SPAR_Viewer::fileChanged(const QString &path) {
   });
 }
 
-///
-/// @brief Handle directory change event from file watcher
-///
-/// Monitors watched directories for new S-parameter files:
-/// 1. Scans directory for .snp, .dat, and .ngspice.dat files
-/// 2. Identifies files not already loaded
-/// 3. Presents dialog for user to select which new files to add
-/// 4. Loads selected files
-///
-/// @param path Full path to the changed directory
-///
 void Qucs_S_SPAR_Viewer::directoryChanged(const QString &path) {
   qDebug() << "Directory changed:" << path;
   QDir dir(path);
@@ -2072,14 +1899,6 @@ void Qucs_S_SPAR_Viewer::directoryChanged(const QString &path) {
   }
 }
 
-///
-/// @brief Update all plots when dataset changes
-///
-/// Refreshes traces in all chart widgets that use the specified dataset.
-/// Called when file data is reloaded due to external changes.
-///
-/// @param datasetName Name of the dataset that was updated
-///
 void Qucs_S_SPAR_Viewer::updateAllPlots(const QString &datasetName) {
   // Refresh all traces on each chart
   updateTracesInWidget(Magnitude_PhaseChart, datasetName);
@@ -2089,19 +1908,6 @@ void Qucs_S_SPAR_Viewer::updateAllPlots(const QString &datasetName) {
   updateTracesInWidget(GroupDelayChart, datasetName);
 }
 
-///
-/// @brief Update traces in a specific widget
-///
-/// Handles the three widget types separatedly:
-/// - RectangularPlotWidget
-/// - PolarPlotWidget
-/// - SmithChartWidget
-///
-/// Preserves trace visual properties (color, width, style) during update.
-///
-/// @param widget Chart widget to update
-/// @param datasetName Dataset name containing the data
-///
 void Qucs_S_SPAR_Viewer::updateTracesInWidget(QWidget *widget,
                                               const QString &datasetName) {
   if (!widget || !datasets.contains(datasetName)) {
@@ -2264,12 +2070,6 @@ void Qucs_S_SPAR_Viewer::updateTracesInWidget(QWidget *widget,
   }
 }
 
-///
-/// @brief Check if a file is an S-parameter data file
-///
-/// @param path Full file path to check
-/// @return bool True if file is S-parameter format, false otherwise
-///
 bool Qucs_S_SPAR_Viewer::isSparamFile(const QString &path) {
   QFileInfo fi(path);
   return fi.exists() &&
@@ -2280,11 +2080,6 @@ bool Qucs_S_SPAR_Viewer::isSparamFile(const QString &path) {
               .hasMatch());
 }
 
-///
-/// @brief Add a directory path to the file watcher system
-///
-/// @param path Directory path to watch
-///
 void Qucs_S_SPAR_Viewer::addPathToWatcher(const QString &path) {
   if (QFileInfo(path).isDir()) {
     fileWatcher->addPath(path);
@@ -2319,22 +2114,6 @@ void Qucs_S_SPAR_Viewer::addPathToWatcher(const QString &path) {
   }
 }
 
-///
-/// @brief Raise appropriate widgets when trace tab is selected
-///
-/// Synchronizes the trace tab selection with:
-/// - Active chart dock (raises matching chart)
-///
-/// @param index Index of selected trace tab (0-6)
-///
-/// Tab mapping:
-/// - 0: Magnitude/Phase → dB mode, S11
-/// - 1: Smith Chart → Smith mode, S11
-/// - 2: Polar → Polar mode, S11
-/// - 3: Port Impedance → n.u. mode, Re{Zin}
-/// - 4: Stability → n.u. mode
-/// - 5: VSWR → n.u. mode, VSWR{in}
-/// - 6: Group Delay → Group Delay mode
 void Qucs_S_SPAR_Viewer::raiseWidgetsOnTabSelection(int index) {
   switch (index) {
   case 0:
@@ -2380,15 +2159,6 @@ void Qucs_S_SPAR_Viewer::raiseWidgetsOnTabSelection(int index) {
   }
 }
 
-///
-/// @brief Trigger synthesis when a design tool is selected
-///
-/// Automatically runs the synthesis/design function for the currently
-/// selected tool when the tools dock becomes visible.
-///
-/// @param visible True if tools dock is now visible (TO DO: Review if this is
-/// needed)
-///
 void Qucs_S_SPAR_Viewer::callTools(bool visible) {
   if (visible) {
     // Dock is now visible - trigger your function

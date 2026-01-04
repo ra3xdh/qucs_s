@@ -7,11 +7,6 @@
 
 #include "./../QucsS/QucsSExporter.h"
 
-///
-/// @brief Converts an inductor component to Qucs-S format
-/// @param comp ComponentInfo structure containing inductor parameters
-/// @return QString containing Qucs-S inductor definition with inductance value
-///
 QString QucsSExporter::parseInductor_QucsS(ComponentInfo Comp) {
   // Format: <L ID status x y text_x text_y L L_visibility>
   // ID: e.g. Lx, where x is a positive integer

@@ -7,11 +7,6 @@
 
 #include "./../QucsS/QucsSExporter.h"
 
-///
-/// @brief Converts a resistor component to Qucs-S format
-/// @param comp ComponentInfo structure containing resistor parameters
-/// @return QString containing Qucs-S resistor definition with resistance value
-///
 QString QucsSExporter::parseResistor_QucsS(ComponentInfo Comp) {
   // Format: <R ID status x y text_x text_y 0 rotation C C_visibility>
   // ID: e.g. Rx, where x is a positive integer

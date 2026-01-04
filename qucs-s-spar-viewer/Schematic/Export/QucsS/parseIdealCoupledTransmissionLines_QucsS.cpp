@@ -7,11 +7,6 @@
 
 #include "./../QucsS/QucsSExporter.h"
 
-///
-/// @brief Converts ideal coupled transmission lines to Qucs-S format
-/// @param comp ComponentInfo structure containing coupled line parameters
-/// @return QString containing Qucs-S coupled transmission line definition
-///
 QString
 QucsSExporter::parseIdealCoupledTransmissionLines_QucsS(ComponentInfo Comp) {
   // Format: <CTLIN ID status x y text_x text_y vertical_mirror rotation Z0e

@@ -7,32 +7,16 @@
 
 #include "qucs-s-spar-viewer.h"
 
-///
-/// @brief Loads recent files list from QSettings
-/// @note This is called when the program starts up
-///
 void Qucs_S_SPAR_Viewer::loadRecentFiles() {
   QSettings settings;
   recentFiles = settings.value("recentFiles").value<std::vector<QString>>();
 }
 
-///
-/// @brief Clears the recent files list
-///
-void Qucs_S_SPAR_Viewer::clearRecentFiles() { recentFiles.clear(); }
-
-///
-/// @brief Saves recent files list to QSettings
-/// @note This is called when the program is about to close
-///
 void Qucs_S_SPAR_Viewer::saveRecentFiles() {
   QSettings settings;
   settings.setValue("recentFiles", QVariant::fromValue(recentFiles));
 }
 
-///
-/// @brief Saves session to existing path or prompts for new path
-///
 void Qucs_S_SPAR_Viewer::slotSave() {
   if (savepath.isEmpty()) {
     slotSaveAs();
@@ -41,10 +25,6 @@ void Qucs_S_SPAR_Viewer::slotSave() {
   save();
 }
 
-///
-/// @brief Prompts user for save path and saves session
-/// @note The session file has .spar extension
-///
 void Qucs_S_SPAR_Viewer::slotSaveAs() {
   if (datasets.isEmpty()) {
     // Nothing to save
@@ -65,9 +45,6 @@ void Qucs_S_SPAR_Viewer::slotSaveAs() {
   save();
 }
 
-///
-/// @brief Opens file dialog to load a session file
-///
 void Qucs_S_SPAR_Viewer::slotLoadSession() {
   QString fileName = QFileDialog::getOpenFileName(
       this, tr("Open S-parameter Viewer Session"), QDir::homePath(),
@@ -76,12 +53,6 @@ void Qucs_S_SPAR_Viewer::slotLoadSession() {
   loadSession(fileName);
 }
 
-///
-/// @brief Loads session from specified file
-/// @param session_file Path to the session file
-/// @note This is used by slotLoadSession()
-/// @see slotLoadSession()
-///
 void Qucs_S_SPAR_Viewer::loadSession(QString session_file) {
   QFile file(session_file);
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -296,10 +267,6 @@ void Qucs_S_SPAR_Viewer::loadSession(QString session_file) {
   updateMarkerTable();
 }
 
-///
-/// @brief Saves current session to file
-/// @return True if save succeeded, false otherwise
-///
 bool Qucs_S_SPAR_Viewer::save() {
   if (savepath.isEmpty()) {
     return false; // No save path specified
@@ -457,10 +424,6 @@ bool Qucs_S_SPAR_Viewer::save() {
   return true;
 }
 
-///
-/// @brief Adds file to recent files list (max 10 entries)
-/// @param filePath Path to add to recent files
-///
 void Qucs_S_SPAR_Viewer::addRecentFile(const QString &filePath) {
   recentFiles.insert(recentFiles.begin(), filePath);
   recentFiles.erase(std::unique(recentFiles.begin(), recentFiles.end()),
@@ -470,9 +433,6 @@ void Qucs_S_SPAR_Viewer::addRecentFile(const QString &filePath) {
   }
 }
 
-///
-/// @brief Updates recent files menu with current list
-///
 void Qucs_S_SPAR_Viewer::updateRecentFilesMenu() {
   recentFilesMenu->clear();
   for (const auto &filePath : recentFiles) {
@@ -485,13 +445,6 @@ void Qucs_S_SPAR_Viewer::updateRecentFilesMenu() {
                              &Qucs_S_SPAR_Viewer::clearRecentFiles);
 }
 
-///
-/// @brief Saves polar plot settings to XML
-/// @param xml XML stream writer
-/// @param widget Polar plot widget
-/// @param elementName XML element name
-/// @note Called from save()
-/// @see save()
 void Qucs_S_SPAR_Viewer::savePolarPlotSettings(QXmlStreamWriter &xml,
                                                PolarPlotWidget *widget,
                                                const QString &elementName) {
@@ -516,14 +469,6 @@ void Qucs_S_SPAR_Viewer::savePolarPlotSettings(QXmlStreamWriter &xml,
   xml.writeEndElement(); // elementName
 }
 
-///
-/// @brief Loads polar plot settings from XML
-/// @param xml XML stream reader
-/// @param widget Polar plot widget
-/// @param elementName XML element name
-/// @note Called from loadSession()
-/// @see loadSession()
-///
 void Qucs_S_SPAR_Viewer::loadPolarPlotSettings(QXmlStreamReader &xml,
                                                PolarPlotWidget *widget,
                                                const QString &elementName) {
@@ -566,14 +511,7 @@ void Qucs_S_SPAR_Viewer::loadPolarPlotSettings(QXmlStreamReader &xml,
   widget->setSettings(settings);
   xml.readNext();
 }
-///
-/// @brief Saves rectangular plot settings to XML
-/// @param xml XML stream writer
-/// @param widget Rectangular plot widget
-/// @param elementName XML element name
-/// @note Called from save()
-/// @see save()
-///
+
 void Qucs_S_SPAR_Viewer::saveRectangularPlotSettings(
     QXmlStreamWriter &xml, RectangularPlotWidget *widget,
     const QString &elementName) {
@@ -604,14 +542,6 @@ void Qucs_S_SPAR_Viewer::saveRectangularPlotSettings(
   xml.writeEndElement(); // elementName
 }
 
-///
-/// @brief Loads rectangular plot settings from XML
-/// @param xml XML stream reader
-/// @param widget Rectangular plot widget
-/// @param elementName XML element name
-/// @note Called from loadSession()
-/// @see loadSession()
-///
 void Qucs_S_SPAR_Viewer::loadRectangularPlotSettings(
     QXmlStreamReader &xml, RectangularPlotWidget *widget,
     const QString &elementName) {
@@ -665,14 +595,6 @@ void Qucs_S_SPAR_Viewer::loadRectangularPlotSettings(
   xml.readNext();
 }
 
-///
-/// @brief Saves Smith chart settings to XML
-/// @param xml XML stream writer
-/// @param widget Smith chart widget
-/// @param elementName XML element name
-/// @note Called from save()
-/// @see save()
-///
 void Qucs_S_SPAR_Viewer::saveSmithPlotSettings(QXmlStreamWriter &xml,
                                                SmithChartWidget *widget,
                                                const QString &elementName) {
@@ -695,13 +617,6 @@ void Qucs_S_SPAR_Viewer::saveSmithPlotSettings(QXmlStreamWriter &xml,
   xml.writeEndElement(); // elementName
 }
 
-///
-/// @brief Loads Smith chart settings from XML
-/// @param xml XML stream reader
-/// @param widget Smith chart widget
-/// @param elementName XML element name
-/// @note Called from loadSession()
-/// @see loadSession()
 void Qucs_S_SPAR_Viewer::loadSmithPlotSettings(QXmlStreamReader &xml,
                                                SmithChartWidget *widget,
                                                const QString &elementName) {

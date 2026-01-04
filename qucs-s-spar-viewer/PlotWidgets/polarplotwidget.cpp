@@ -12,10 +12,6 @@
 #include <QVBoxLayout>
 #include <cmath>
 
-///
-/// @brief Construct polar plot widget with default configuration
-/// @param parent Parent widget
-///
 PolarPlotWidget::PolarPlotWidget(QWidget *parent)
     : QWidget(parent), fMin(1e20), fMax(-1) {
   // Initialize the QCustomPlot widget
@@ -90,9 +86,6 @@ PolarPlotWidget::PolarPlotWidget(QWidget *parent)
   plot->replot();
 }
 
-///
-/// @brief Destructor
-///
 PolarPlotWidget::~PolarPlotWidget() {
   // Clean up any remaining graphics items
   clearGraphicsItems();
@@ -100,23 +93,12 @@ PolarPlotWidget::~PolarPlotWidget() {
   // QCustomPlot will handle cleanup of its own objects
 }
 
-///
-/// @brief Add a trace to the plot
-/// @param name Unique identifier for the trace
-/// @param trace Trace data containing complex values and frequencies
-///
 void PolarPlotWidget::addTrace(const QString &name, const Trace &trace) {
   traces[name] = trace;
   updateFrequencyRange(); // Update frequency range based on new trace
   updatePlot();
 }
 
-///
-/// @brief Update global frequency range from all traces
-///
-/// Scans through all traces to find minimum and maximum frequencies,
-/// then updates the frequency spinbox values and ranges accordingly.
-///
 void PolarPlotWidget::updateFrequencyRange() {
   fMin = 1e20;
   fMax = -1;
@@ -235,11 +217,6 @@ bool PolarPlotWidget::removeMarker(const QString &markerId) {
   return true;
 }
 
-void PolarPlotWidget::clearMarkers() {
-  markers.clear();
-  updatePlot();
-}
-
 QMap<QString, double> PolarPlotWidget::getMarkers() const {
   QMap<QString, double> markerFrequencies;
   for (auto it = markers.constBegin(); it != markers.constEnd(); ++it) {
@@ -333,13 +310,6 @@ void PolarPlotWidget::updateRAxis() {
   radialAxis->setRange(rMin, rMax);
   updatePlot();
 }
-
-void PolarPlotWidget::updateAngleAxis() {
-  // Angular axis is typically fixed at 360 degrees
-  updatePlot();
-}
-
-void PolarPlotWidget::toggleDisplayMode() { updatePlot(); }
 
 bool PolarPlotWidget::updateMarkerFrequency(const QString &markerId,
                                             double newFrequency) {
@@ -469,16 +439,6 @@ QGridLayout *PolarPlotWidget::setupAxisSettings() {
   axisLayout->addWidget(displayModeCombo, 2, 1, 1, 2);
 
   return axisLayout;
-}
-
-double PolarPlotWidget::getRmax() { return rAxisMax->value(); }
-
-double PolarPlotWidget::getRmin() { return rAxisMin->value(); }
-
-double PolarPlotWidget::getRdiv() { return rAxisDiv->value(); }
-
-int PolarPlotWidget::getDisplayMode() const {
-  return displayModeCombo->currentIndex();
 }
 
 std::complex<double>
@@ -659,22 +619,6 @@ void PolarPlotWidget::drawCustomMarkers() {
   }
 }
 
-void PolarPlotWidget::onFMinChanged(double value) {
-  fMin = value * getFrequencyMultiplier();
-  updatePlot();
-}
-
-void PolarPlotWidget::onFMaxChanged(double value) {
-  fMax = value * getFrequencyMultiplier();
-  updatePlot();
-}
-
-void PolarPlotWidget::onFUnitChanged() {
-  fMin = fMinSpinBox->value() * getFrequencyMultiplier();
-  fMax = fMaxSpinBox->value() * getFrequencyMultiplier();
-  updatePlot();
-}
-
 double PolarPlotWidget::getFrequencyMultiplier() const {
   int index = fUnitComboBox->currentIndex();
   switch (index) {
@@ -787,10 +731,4 @@ void PolarPlotWidget::checkAxisRanges() {
     rAxisMax->setValue(newMax);
     rAxisMax->blockSignals(false);
   }
-}
-
-void PolarPlotWidget::checkAxisRanges(QMouseEvent *event) {
-  // This overload handles mouse events - just call the main function
-  Q_UNUSED(event)
-  checkAxisRanges();
 }

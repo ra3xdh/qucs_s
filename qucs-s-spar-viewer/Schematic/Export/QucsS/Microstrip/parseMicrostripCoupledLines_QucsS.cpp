@@ -7,11 +7,6 @@
 
 #include "./../../QucsS/QucsSExporter.h"
 
-///
-/// @brief Converts microstrip coupled lines to Qucs-S format
-/// @param comp ComponentInfo structure containing coupled line geometry
-/// @return QString containing Qucs-S microstrip coupled lines definition
-///
 QString QucsSExporter::parseMicrostripCoupledLines_QucsS(ComponentInfo Comp) {
   // Format: <MCOUPLED ID status x y text_x text_y vertical_mirror rotation
   // <properties>> ...>

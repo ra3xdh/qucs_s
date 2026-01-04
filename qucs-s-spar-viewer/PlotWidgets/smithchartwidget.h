@@ -92,7 +92,7 @@ public:
   ///
   /// @brief Class destructor
   ///
-  ~SmithChartWidget() override;
+  ~SmithChartWidget() override {}
 
   ///
   /// @brief Add or update a trace on the plot
@@ -110,13 +110,19 @@ public:
   ///
   /// @brief Remove all traces from the plot
   ///
-  void clearTraces();
+  void clearTraces() {
+    traces.clear(); // Remove all traces
+    update();       // Trigger a repaint to reflect the changes
+  }
 
   ///
   /// \brief Set the characteristic impedance of the diagram
   /// \param z0 Characteristic impedance (e.g. 50 Ohm, 75 Ohm)
   ///
-  void setCharacteristicImpedance(double z0);
+  void setCharacteristicImpedance(double z) {
+    z0 = z;
+    update(); // Redraw the chart with the new Z0
+  }
 
   ///
   /// \brief Get the characteristic impedance of the diagram
@@ -172,7 +178,10 @@ public:
   ///
   /// @brief Remove all markers from the plot
   ///
-  void clearMarkers();
+  void clearMarkers(){
+    markers.clear();
+    update();
+  }
 
   ///
   /// @brief Get all markers and their frequencies
@@ -297,13 +306,19 @@ private slots:
   /// @brief Toggles admittance chart overlay
   /// @param int State of the visibility of the constant admittance lines
   ///
-  void onShowAdmittanceChartChanged(int);
+  void onShowAdmittanceChartChanged(int state) {
+    m_showAdmittanceChart = (state == Qt::Checked);
+    update(); // Trigger a repaint
+  }
 
   ///
   /// @brief Toggles impedance constant-curve grid.
   /// @param int State of the visibility of the constant impedance lines
   ///
-  void onShowConstantCurvesChanged(int);
+  void onShowConstantCurvesChanged(int state) {
+    m_showConstantCurves = (state == Qt::Checked);
+    update(); // Trigger a repaint
+  }
 
 private:
   QComboBox* m_Z0ComboBox;                  ///< Characteristic impedance input widget

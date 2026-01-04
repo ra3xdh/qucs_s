@@ -7,11 +7,6 @@
 
 #include "./../QucsS/QucsSExporter.h"
 
-///
-/// @brief Converts a ground reference component to Qucs-S format
-/// @param comp ComponentInfo structure containing ground node information
-/// @return QString containing Qucs-S ground definition
-///
 QString QucsSExporter::parseGND_QucsS(ComponentInfo Comp) {
   // Format: <GND * status x y 0 0 0 0>
   // status:

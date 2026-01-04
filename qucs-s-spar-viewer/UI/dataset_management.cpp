@@ -7,17 +7,6 @@
 
 #include "qucs-s-spar-viewer.h"
 
-///
-/// @brief Remove all loaded files from the application
-///
-/// Performs complete cleanup:
-/// 1. Collects all file IDs from remove buttons
-/// 2. Calls removeFile() for each file individually
-/// 3. Removes all file paths from the file system watcher
-/// 4. Clears the watchedFilePaths map
-///
-/// @note This also removes all associated traces and markers
-/// @note File watcher paths are cleared to stop monitoring
 void Qucs_S_SPAR_Viewer::removeAllFiles() {
   // Remove files
   QStringList fileIDs;
@@ -39,22 +28,6 @@ void Qucs_S_SPAR_Viewer::removeAllFiles() {
   watchedFilePaths.clear();
 }
 
-///
-/// @brief Remove a specific file by its ID
-///
-/// Removes a file and all associated data:
-/// 1. Locates the file widgets by button ID
-/// 2. Deletes the file name label and remove button
-/// 3. Collapses the layout to remove gaps
-/// 4. Removes all traces belonging to the dataset
-/// 5. Removes the dataset from the data structure
-/// 6. Updates the dataset combo box
-///
-/// @param ID Unique identifier of the file to remove
-///
-/// @note The ID corresponds to the button's objectName
-/// @note All traces associated with this dataset are automatically removed
-/// @note The datasets combo box is updated
 void Qucs_S_SPAR_Viewer::removeFile(QString ID) {
   // Find the row number of the button to remove
   int row_to_remove = -1;
@@ -87,33 +60,12 @@ void Qucs_S_SPAR_Viewer::removeFile(QString ID) {
   updateTracesCombo();
 }
 
-///
-/// @brief Remove file via UI
-///
-/// Called when a remove button is clicked. Identifies which file
-/// to remove based on the sender's object name and calls removeFile(QString).
-///
-/// @note This is a Qt slot connected to remove button click signals
-/// @note Gets the button ID from sender()->objectName()
-/// @see removeFile(QString
-/// )
 void Qucs_S_SPAR_Viewer::removeFile() {
   QToolButton *button = qobject_cast<QToolButton *>(sender());
   QString ID = button->objectName();
   removeFile(ID);
 }
 
-///
-/// @brief Add a single file using QFileInfo
-///
-/// Wrapper function for adding a single file. Used when opening
-/// files from command line.
-///
-/// @param fileInfo QFileInfo object containing file path information
-///
-/// @note Validates file existence before attempting to load
-/// @note Shows warning dialog if file doesn't exist
-/// @note Internally calls addFiles(QStringList) with single-item list
 void Qucs_S_SPAR_Viewer::addFile(const QFileInfo &fileInfo) {
   if (fileInfo.exists()) {
     QStringList fileNames;
@@ -125,19 +77,6 @@ void Qucs_S_SPAR_Viewer::addFile(const QFileInfo &fileInfo) {
   }
 }
 
-///
-/// @brief Open file dialog to add files
-///
-/// Displays a file selection dialog allowing the user to choose files.
-/// Supported formats:
-/// - Touchstone files (.s1p, .s2p, .s3p, .s4p)
-/// - Qucsator data files (.dat)
-/// - NGspice data files (.ngspice.dat)
-///
-/// @note Multiple file selection is enabled
-/// @note Dialog starts in user's home directory
-/// @see addFiles(QStringList)
-///
 void Qucs_S_SPAR_Viewer::addFile() {
   QFileDialog dialog(this, QStringLiteral("Select S-parameter data files"),
                      QDir::homePath(),
@@ -154,26 +93,6 @@ void Qucs_S_SPAR_Viewer::addFile() {
   addFiles(fileNames);
 }
 
-///
-/// @brief Add multiple files to the dataset
-///
-/// Main file loading function that:
-/// 1. Checks for duplicate files already in dataset
-/// 2. Determines file format from extension
-/// 3. Parses files using appropriate reader:
-///    - Touchstone format (.snp): readTouchstoneFile()
-///    - Qucsator format (.dat): readQucsatorDataset()
-///    - NGspice format (.ngspice): readNGspiceData()
-/// 4. Validates parsed data for S-parameters
-/// 5. Creates UI widgets for valid files
-/// 6. Adds datasets to internal data structure
-/// 7. Registers files with file system watcher
-/// 8. Updates dataset combo box
-/// 9. Adds optional derived traces
-/// 10. Applies default visualizations
-///
-/// @param fileNames List of full file paths to add
-///
 void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames) {
   int existing_files =
       this->datasets.size(); // Get the number of entries in the map

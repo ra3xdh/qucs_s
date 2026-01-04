@@ -9,12 +9,6 @@
 #include <QDebug>
 #include <QToolTip>
 
-///
-/// @brief Smith chart visualization and interaction widget.
-///
-/// Provides impedance/admittance Smith chart drawing, trace management and
-/// marker handling, with basic zoom, pan and frequency-range controls.
-///
 SmithChartWidget::SmithChartWidget(QWidget *parent)
     : QWidget(parent), z0(50.0), scaleFactor(1.0), panX(0.0), panY(0.0),
       m_showAdmittanceChart(false) {
@@ -170,11 +164,6 @@ SmithChartWidget::SmithChartWidget(QWidget *parent)
   setLayout(mainLayout);
 }
 
-///
-/// \brief Class destructor
-///
-SmithChartWidget::~SmithChartWidget() {}
-
 void SmithChartWidget::onZ0Changed(int index) {
   // Get the selected Z0 value from the combo box
   z0 = m_Z0ComboBox->itemData(index).toDouble();
@@ -183,11 +172,6 @@ void SmithChartWidget::onZ0Changed(int index) {
   update();
 }
 
-///
-/// @brief Add or update a trace on the plot
-/// @param name Unique trace identifier
-/// @param trace Trace data structure
-///
 void SmithChartWidget::addTrace(const QString &name, const Trace &trace) {
   traces[name] = trace;
 
@@ -212,18 +196,6 @@ void SmithChartWidget::addTrace(const QString &name, const Trace &trace) {
   update(); // Trigger a repaint
 }
 
-///
-/// \brief Set the characteristic impedance of the diagram
-/// \param z0 Characteristic impedance (e.g. 50 Ohm, 75 Ohm)
-///
-void SmithChartWidget::setCharacteristicImpedance(double z) {
-  z0 = z;
-  update(); // Redraw the chart with the new Z0
-}
-
-///
-/// @brief Reimplements paintEvent to draw the Smith chart and overlays.
-///
 void SmithChartWidget::paintEvent(QPaintEvent * /*event*/) {
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing);
@@ -249,9 +221,6 @@ void SmithChartWidget::paintEvent(QPaintEvent * /*event*/) {
   painter.restore();
 }
 
-///
-/// @brief Handles mouse clicks to pick impedances and emit impedanceSelected().
-///
 void SmithChartWidget::mousePressEvent(QMouseEvent *event) {
   lastMousePos = event->pos();
 
@@ -267,10 +236,6 @@ void SmithChartWidget::mousePressEvent(QMouseEvent *event) {
   }
 }
 
-///
-/// @brief Draws the Smith chart grid (circles, arcs and labels).
-/// @param painter Target painter.
-///
 void SmithChartWidget::drawSmithChartGrid(QPainter *painter) {
   painter->save();
   painter->setRenderHint(QPainter::Antialiasing, true);
@@ -346,13 +311,6 @@ void SmithChartWidget::drawSmithChartGrid(QPainter *painter) {
   painter->restore();
 }
 
-///
-/// @brief Draws a constant reactance arc and its labels.
-/// @param painter Target painter.
-/// @param center Chart center.
-/// @param radius Chart radius.
-/// @param reactance Normalized reactance value.
-///
 void SmithChartWidget::drawReactanceArc(QPainter *painter,
                                         const QPointF &center, double radius,
                                         double reactance) {
@@ -452,13 +410,6 @@ void SmithChartWidget::drawReactanceArc(QPainter *painter,
   painter->drawText(labelPositionEnd, label);
 }
 
-///
-/// @brief Draws a constant susceptance arc and its labels.
-/// @param painter Target painter.
-/// @param center Chart center.
-/// @param radius Chart radius.
-/// @param reactance Normalized reactance value.
-///
 void SmithChartWidget::drawSusceptanceArc(QPainter *painter,
                                           const QPointF &center, double radius,
                                           double susceptance) {
@@ -559,14 +510,6 @@ void SmithChartWidget::drawSusceptanceArc(QPainter *painter,
   painter->drawText(labelPositionEnd, label);
 }
 
-///
-/// @brief Computes start and end points of an arc.
-/// @param arcRect Arc bounding rectangle.
-/// @param startAngle Start angle (degrees).
-/// @param sweepAngle Sweep angle (degrees).
-/// @param startPoint Output start point.
-/// @param endPoint Output end point.
-///
 void SmithChartWidget::calculateArcPoints(const QRectF &arcRect,
                                           double startAngle, double sweepAngle,
                                           QPointF &startPoint,
@@ -592,10 +535,6 @@ void SmithChartWidget::calculateArcPoints(const QRectF &arcRect,
                     std::sin(endRad)); // Subtract for Qt's coordinate system
 }
 
-///
-/// @brief Plots all traces within the selected frequency range.
-/// @param painter Target painter.
-///
 void SmithChartWidget::plotImpedanceData(QPainter *painter) {
   painter->save();
 
@@ -665,10 +604,6 @@ void SmithChartWidget::plotImpedanceData(QPainter *painter) {
   painter->restore();
 }
 
-///
-/// @brief Draws all enabled markers for all traces.
-/// @param painter Target painter.
-///
 void SmithChartWidget::drawMarkers(QPainter *painter) {
   if (markers.isEmpty() || traces.isEmpty()) {
     return;
@@ -762,13 +697,6 @@ void SmithChartWidget::drawMarkers(QPainter *painter) {
   painter->restore();
 }
 
-///
-/// @brief Linearly interpolates impedance at a given frequency.
-/// @param frequencies Sorted frequency list [Hz]
-/// @param impedances Impedance samples at those frequencies [Ohm]
-/// @param targetFreq Target frequency [Hz]
-/// @return Interpolated impedance value.
-///
 std::complex<double> SmithChartWidget::interpolateImpedance(
     const QList<double> &frequencies,
     const QList<std::complex<double>> &impedances, double targetFreq) {
@@ -814,11 +742,6 @@ std::complex<double> SmithChartWidget::interpolateImpedance(
   return std::complex<double>(realPart, imagPart);
 }
 
-///
-/// @brief Converts a reflection coefficient to widget coordinates.
-/// @param reflectionCoefficient Reflection coefficient value
-/// @return Position of the refletion coefficient on the Smith Chart
-///
 QPointF SmithChartWidget::smithChartToWidget(
     const std::complex<double> &reflectionCoefficient) {
   double gammaReal = reflectionCoefficient.real();
@@ -840,11 +763,6 @@ QPointF SmithChartWidget::smithChartToWidget(
   return QPointF(widgetX, widgetY);
 }
 
-///
-/// @brief Converts a widget coordinate to a reflection coefficient.
-/// @param widgetPoint Point on the Smith Chart
-/// @return Value of the reflection coefficient
-///
 std::complex<double>
 SmithChartWidget::widgetToSmithChart(const QPointF &widgetPoint) {
   // Calculate the center and radius of the Smith Chart
@@ -860,19 +778,6 @@ SmithChartWidget::widgetToSmithChart(const QPointF &widgetPoint) {
   return std::complex<double>(gammaReal, gammaImag);
 }
 
-///
-/// @brief Remove all traces from the plot
-///
-void SmithChartWidget::clearTraces() {
-  traces.clear(); // Remove all traces
-  update();       // Trigger a repaint to reflect the changes
-}
-
-///
-/// \brief Get the diagram QPen style of a trace (by name)
-/// \param traceName Name of the trace
-/// \return Trace QPen style object
-///
 QPen SmithChartWidget::getTracePen(const QString &traceName) const {
   if (traces.contains(traceName)) {
     return traces[traceName].pen;
@@ -881,11 +786,6 @@ QPen SmithChartWidget::getTracePen(const QString &traceName) const {
   return QPen();
 }
 
-///
-/// @brief Sets the pen for an existing trace (given its name)
-/// @param traceName Name of the trace.
-/// @param pen New pen to use.
-///
 void SmithChartWidget::setTracePen(const QString &traceName, const QPen &pen) {
   if (traces.contains(traceName)) {
     traces[traceName].pen = pen;
@@ -893,11 +793,6 @@ void SmithChartWidget::setTracePen(const QString &traceName, const QPen &pen) {
   }
 }
 
-///
-/// @brief Returns a map with trace names and their QPens.
-/// @return QMap object relating the name of the trace with the QPen style
-/// object
-///
 QMap<QString, QPen> SmithChartWidget::getTracesInfo() const {
 
   QMap<QString, QPen> penMap;
@@ -908,10 +803,6 @@ QMap<QString, QPen> SmithChartWidget::getTracesInfo() const {
   return penMap;
 }
 
-///
-/// @brief Remove a trace from the plot
-/// @param name Trace identifier
-///
 void SmithChartWidget::removeTrace(const QString &traceName) {
   if (traces.contains(traceName)) {
     traces.remove(traceName);
@@ -919,15 +810,6 @@ void SmithChartWidget::removeTrace(const QString &traceName) {
   }
 }
 
-///
-/// @brief Adds a marker at a given frequency.
-/// @param markerId Unique marker identifier.
-/// @param frequency Marker frequency (Hz).
-/// @param pen Pen used to draw marker and label.
-/// @note By default, the trace styling is red and its width = 2
-/// @return @c true on success, @c false if ID exists or no trace covers the
-/// frequency.
-///
 bool SmithChartWidget::addMarker(const QString &markerId, double frequency,
                                  const QPen &pen) {
   // Check if marker ID already exists
@@ -965,10 +847,6 @@ bool SmithChartWidget::addMarker(const QString &markerId, double frequency,
   return true;
 }
 
-///
-/// @brief Remove a trace from the plot, given its name
-/// @param name Trace identifier
-///
 bool SmithChartWidget::removeMarker(const QString &markerId) {
   if (!markers.contains(markerId)) {
     return false;
@@ -979,18 +857,6 @@ bool SmithChartWidget::removeMarker(const QString &markerId) {
   return true;
 }
 
-///
-/// @brief Remove all markers from the plot
-///
-void SmithChartWidget::clearMarkers() {
-  markers.clear();
-  update();
-}
-
-///
-/// @brief Get all markers and their frequencies
-/// @return Map of marker IDs to frequencies in Hz
-///
 QMap<QString, double> SmithChartWidget::getMarkers() const {
   QMap<QString, double> markerFrequencies;
 
@@ -1001,28 +867,6 @@ QMap<QString, double> SmithChartWidget::getMarkers() const {
   return markerFrequencies;
 }
 
-///
-/// @brief Toggles admittance chart overlay
-/// @param int State of the visibility of the constant admittance lines
-///
-void SmithChartWidget::onShowAdmittanceChartChanged(int state) {
-  m_showAdmittanceChart = (state == Qt::Checked);
-  update(); // Trigger a repaint
-}
-
-///
-/// @brief Toggles impedance constant-curve grid.
-/// @param int State of the visibility of the constant impedance lines
-///
-void SmithChartWidget::onShowConstantCurvesChanged(int state) {
-  m_showConstantCurves = (state == Qt::Checked);
-  update(); // Trigger a repaint
-}
-
-///
-/// @brief Slot called when minimum frequency value changes
-/// @param value Value of the minimum frequency settings
-///
 void SmithChartWidget::onMinFreqChanged(double value) {
   // Convert from displayed unit to Hz
   double multiplier = getFrequencyMultiplier();
@@ -1044,10 +888,6 @@ void SmithChartWidget::onMinFreqChanged(double value) {
   update(); // Redraw the chart with the new frequency range
 }
 
-///
-/// @brief Slot called when maximum frequency value changes
-/// @param value Value of the maximum frequency settings
-///
 void SmithChartWidget::onMaxFreqChanged(double value) {
   // Convert from displayed unit to Hz
   double multiplier = getFrequencyMultiplier();
@@ -1068,10 +908,6 @@ void SmithChartWidget::onMaxFreqChanged(double value) {
   update(); // Redraw the chart with the new frequency range
 }
 
-///
-/// \brief  Slot called when the frequency scaling changes
-/// \param index Index of the frequency scaling
-///
 void SmithChartWidget::onFreqUnitChanged(int index) {
   // Store the current values in Hz
   double minFreq = m_minFreqSpinBox->value();
@@ -1115,10 +951,6 @@ void SmithChartWidget::onFreqUnitChanged(int index) {
   update(); // Redraw the chart
 }
 
-///
-/// \brief Gets the frequency scaling factor based on the current selection
-/// \return Scale factor: (1, Hz); (1e3, kHz); (1e6, MHz), (1e9, GHz)
-///
 double SmithChartWidget::getFrequencyMultiplier() const {
   // Return multiplier to convert display units to Hz
   int freq_index = m_freqUnitComboBox->currentIndex();
@@ -1136,9 +968,6 @@ double SmithChartWidget::getFrequencyMultiplier() const {
   }
 }
 
-///
-/// @brief Updates spinboxes from trace data frequency range.
-///
 void SmithChartWidget::updateFrequencyRange() {
   // Find the minimum and maximum frequencies across all traces
   bool foundAny = false;
@@ -1175,13 +1004,6 @@ void SmithChartWidget::updateFrequencyRange() {
   }
 }
 
-///
-/// @brief Update the frequency of an existing marker
-/// @param markerId Marker identifier
-/// @param newFrequency New frequency in Hz
-/// @return true if updated successfully, false if marker not found or frequency
-/// invali
-///
 bool SmithChartWidget::updateMarkerFrequency(const QString &markerId,
                                              double newFrequency) {
   // Check if marker exists
@@ -1213,11 +1035,6 @@ bool SmithChartWidget::updateMarkerFrequency(const QString &markerId,
   return true;
 }
 
-///
-/// @brief Returns the current axis settings
-/// @return AxisSettings of the diagram
-/// @note It is used to send the settings to the main program
-///
 SmithChartWidget::AxisSettings SmithChartWidget::getSettings() const {
   AxisSettings settings;
   settings.Z0 = m_Z0ComboBox->currentText();
@@ -1231,11 +1048,6 @@ SmithChartWidget::AxisSettings SmithChartWidget::getSettings() const {
   return settings;
 }
 
-///
-/// @brief Set the current axis settings
-/// @param settings New AxisSettings
-/// @note It is used to set the settings from the main program
-///
 void SmithChartWidget::setSettings(const AxisSettings &settings) {
   m_Z0ComboBox->setCurrentText(settings.Z0);
   m_minFreqSpinBox->setValue(settings.freqMin);

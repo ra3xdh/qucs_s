@@ -6,11 +6,6 @@
 /// @license GPL-3.0-or-later
 #include "qucs-s-spar-viewer.h"
 
-// This function is called when the user wants to remove a marker from the plot
-///
-/// @brief Removes a marker via UI.
-/// Identifies the marker by the button's object name and removes it.
-///
 void Qucs_S_SPAR_Viewer::removeMarker() {
   QString ID = qobject_cast<QToolButton *>(sender())->objectName();
   // qDebug() << "Clicked button:" << ID;
@@ -29,10 +24,6 @@ void Qucs_S_SPAR_Viewer::removeMarker() {
   removeMarker(mkr_name); // Remove marker by name
 }
 
-///
-/// @brief Removes a marker from the plot by name (QString).
-/// @param markerName QString The name of the marker to remove
-///
 void Qucs_S_SPAR_Viewer::removeMarker(const QString &markerName) {
   if (markerMap.contains(markerName)) {
     // Get the marker properties
@@ -60,13 +51,6 @@ void Qucs_S_SPAR_Viewer::removeMarker(const QString &markerName) {
   }
 }
 
-// Removes all markers on a row
-///
-/// @brief Removes all markers from the plot.
-/// Iterates through all markers in reverse order and removes them.
-/// @note Calls removeMarker(QString) for all markers found
-/// @see removeMarker(QString)
-///
 void Qucs_S_SPAR_Viewer::removeAllMarkers() {
   int n_markers = getNumberOfMarkers();
   for (int i = 0; i < n_markers; i++) {
@@ -76,10 +60,6 @@ void Qucs_S_SPAR_Viewer::removeAllMarkers() {
   traceMap.clear();
 }
 
-///
-/// @brief Updates marker names after a marker is removed
-/// This is needed to keep consistent numbering.
-///
 void Qucs_S_SPAR_Viewer::updateMarkerNames() {
   int n_markers = getNumberOfMarkers();
   for (int i = 0; i < n_markers; i++) {
@@ -93,13 +73,6 @@ void Qucs_S_SPAR_Viewer::updateMarkerNames() {
   }
 }
 
-///
-/// @brief Gets a marker by its index in the marker map.
-/// @param position marker index
-/// @param outMarkerName Output parameter for the marker's name
-/// @param outProperties Output parameter for the marker's properties
-/// @return true if the marker was found, false if position is invalid
-///
 bool Qucs_S_SPAR_Viewer::getMarkerByPosition(int position,
                                              QString &outMarkerName,
                                              MarkerProperties &outProperties) {
@@ -122,14 +95,6 @@ bool Qucs_S_SPAR_Viewer::getMarkerByPosition(int position,
   return true;
 }
 
-///
-/// @brief Find the total number of markers
-/// @return int The number of markers in the marker map
-int Qucs_S_SPAR_Viewer::getNumberOfMarkers() { return markerMap.keys().size(); }
-
-///
-/// @brief Updates all marker tables with current marker data.
-///
 void Qucs_S_SPAR_Viewer::updateMarkerTable() {
 
   // If there are no markers, remove the entries and return
@@ -246,12 +211,6 @@ void Qucs_S_SPAR_Viewer::updateMarkerTable() {
   }
 }
 
-///
-//// Fills a marker table with data for a given display mode.
-/// @param table Reference to the table widget to update
-/// @param mode The display mode for which to generate marker data
-/// @param header The list of column headers for the table
-///
 void Qucs_S_SPAR_Viewer::updateMarkerData(QTableWidget &table, DisplayMode mode,
                                           QStringList header) {
 
@@ -385,12 +344,6 @@ void Qucs_S_SPAR_Viewer::updateMarkerData(QTableWidget &table, DisplayMode mode,
   }
 }
 
-///
-/// @brief Gets the marker frequency (in Hz) given the marker name.
-///
-/// @param markerName The name of the marker
-/// @return The frequency in Hz, or 0.0 if marker not found
-///
 double Qucs_S_SPAR_Viewer::getMarkerFreq(QString markerName) {
   // Check if marker exists
   if (!markerMap.contains(markerName)) {
@@ -425,13 +378,6 @@ double Qucs_S_SPAR_Viewer::getMarkerFreq(QString markerName) {
   return baseFrequency * scaleFactor;
 }
 
-///
-/// @brief Adds a new marker to the plot at the specified frequency.
-/// Creates all necessary UI widgets and adds the marker to all chart displays.
-/// @param freq The frequency at which to place the marker (-1 for middle of
-/// range)
-/// @param Freq_Marker_Scale The frequency scale unit
-///
 void Qucs_S_SPAR_Viewer::addMarker(double freq, QString Freq_Marker_Scale) {
 
   // If there are no traces in the display, show a message and exit

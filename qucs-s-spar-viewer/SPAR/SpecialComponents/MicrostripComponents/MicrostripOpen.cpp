@@ -8,11 +8,6 @@
 
 #include "./../../SParameterCalculator.h"
 
-///
-/// @brief Adds microstrip open-end to admittance matrix
-/// @param Y Reference to circuit admittance matrix (modified in place)
-/// @param comp Component with open-end parameters (W, substrate properties)
-///
 void SParameterCalculator::addMicrostripOpenToAdmittance(
     vector<vector<Complex>> &Y, const Component_SPAR &comp) {
   // Extract microstrip open end parameters

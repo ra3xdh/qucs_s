@@ -7,11 +7,6 @@
 
 #include "general.h"
 
-///
-/// @brief Rounds double to minimum decimal places needed
-/// @param val Value to round
-/// @return Formatted string
-///
 QString RoundVariablePrecision(double val) {
   int precision = 0; // By default, it takes 2 decimal places
   int sign = 1;
@@ -27,13 +22,6 @@ QString RoundVariablePrecision(double val) {
                          precision); // Round to 'precision' decimals.
 }
 
-///
-/// @brief Converts complex number to string with units
-/// @param Z Complex value
-/// @param CompType Unit type
-/// @return Formatted string
-/// @see num2str()
-///
 QString num2str(std::complex<double> Z, Units CompType) {
   QString Real = num2str(Z.real());
 
@@ -50,11 +38,6 @@ QString num2str(std::complex<double> Z, Units CompType) {
   }
 }
 
-/// @brief Converts double to string with engineering notation and units
-/// @param Num Value to convert
-/// @param CompType Unit type
-/// @return Formatted string
-/// @see num2str()
 QString num2str(double Num, Units CompType) {
   char c = 0;
   double cal = std::abs(Num);
@@ -128,11 +111,6 @@ QString num2str(double Num, Units CompType) {
   return Str;
 }
 
-///
-/// @brief Converts double to string with engineering notation
-/// @param Num Value to convert
-/// @return Formatted string
-///
 QString num2str(double Num) {
   char c = 0;
   double cal = std::abs(Num);
@@ -194,11 +172,6 @@ QString num2str(double Num) {
   return Str;
 }
 
-///
-/// @brief Parses string to complex number
-/// @param num String representation (e.g., "50+j25", "j50", "50")
-/// @return Complex number
-///
 std::complex<double> Str2Complex(QString num) {
   // Remove suffixes: "Ohm" and "Ω"
   num.replace("Ohm", "");
@@ -255,14 +228,6 @@ std::complex<double> Str2Complex(QString num) {
   return std::complex<double>(realStr.toDouble(), imagStr.toDouble());
 }
 
-///
-/// @brief Converts length in meters to appropriate unit with auto-scaling
-/// @param units Current unit (mm, mil, um, nm, inch, ft, m)
-/// @param len Length in meters
-/// @return Formatted string
-/// @note It automatically changes the unit length if the value lies outside
-/// [1,999.99]
-///
 QString ConvertLengthFromM(QString units, double len) {
   int index;
 
@@ -366,15 +331,6 @@ QString ConvertLengthFromM(QString units, double len) {
   return QString("");
 }
 
-///
-/// @brief Converts S-parameter from MA/RI/DB format to dB, angle, real, and
-/// imaginary
-/// @param[in,out] S_1 Magnitude (MA), Real (RI), or dB (DB) → dB output
-/// @param[in,out] S_2 Angle (MA/DB) or Imaginary (RI) → angle output
-/// @param[out] S_3 Real part output
-/// @param[out] S_4 Imaginary part output
-/// @param format Input format: "MA", "RI", or "DB"
-///
 void convert_MA_RI_to_dB(double *S_1, double *S_2, double *S_3, double *S_4,
                          QString format) {
   double S_dB = *S_1, S_ang = *S_2;
@@ -404,11 +360,6 @@ void convert_MA_RI_to_dB(double *S_1, double *S_2, double *S_3, double *S_4,
   *S_4 = S_im;
 }
 
-///
-/// @brief Gets frequency scale factor from unit string
-/// @param frequency_unit Unit string (Hz, kHz, MHz, GHz)
-/// @return Scale factor relative to Hz
-///
 double getFreqScale(QString frequency_unit) {
   double freq_scale = 1;
   if (frequency_unit == "kHz") {
@@ -425,12 +376,6 @@ double getFreqScale(QString frequency_unit) {
   return freq_scale;
 }
 
-///
-/// @brief Finds index of closest value in list
-/// @param list List to search
-/// @param value Target value
-/// @return Index of closest element
-///
 int findClosestIndex(const QList<double> &list, double value) {
   return std::min_element(list.begin(), list.end(),
                           [value](double a, double b) {
@@ -439,11 +384,6 @@ int findClosestIndex(const QList<double> &list, double value) {
          list.begin();
 }
 
-///
-/// @brief Parses frequency string to Hz
-/// @param freq Frequency string (e.g., "2.4 GHz", "100MHz")
-/// @return Frequency in Hz, or -1 if invalid
-///
 double getFreqFromText(QString freq) {
   // Remove any whitespace from the string
   freq = freq.simplified();
@@ -474,13 +414,6 @@ double getFreqFromText(QString freq) {
   return -1;
 }
 
-///
-/// @brief Find the closest x-axis value in a series given a x value
-/// @param xValues X-axis values
-/// @param yValues Y-axis values
-/// @param targetX Target x value
-/// @return Closest point as QPointF
-///
 QPointF findClosestPoint(const QList<double> &xValues,
                          const QList<double> &yValues, double targetX) {
   if (xValues.isEmpty() || yValues.isEmpty() ||
@@ -505,11 +438,6 @@ QPointF findClosestPoint(const QList<double> &xValues,
   return closestPoint;
 }
 
-///
-/// @brief Gets scale factor from SI prefix (like nF, nH, mm, etc.)
-/// @param scale Prefix string (Y, Z, E, P, T, G, M, k, m, u, n, p, f, a, z, y)
-/// @return Scale factor
-///
 double getScaleFactor(QString scale) {
   if (scale.isEmpty())
     return 1.0;

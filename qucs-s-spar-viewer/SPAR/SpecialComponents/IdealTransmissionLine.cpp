@@ -8,11 +8,6 @@
 
 #include "./../SParameterCalculator.h"
 
-///
-/// @brief Adds ideal transmission line to admittance matrix
-/// @param Y Reference to circuit admittance matrix
-/// @param comp Component containing line parameters (Z0, length)
-///
 void SParameterCalculator::addTransmissionLineToAdmittance(
     vector<vector<Complex>> &Y, const Component_SPAR &comp) {
   // Extract TLIN parameters

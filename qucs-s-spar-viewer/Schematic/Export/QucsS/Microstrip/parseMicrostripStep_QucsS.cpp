@@ -7,11 +7,6 @@
 
 #include "./../../QucsS/QucsSExporter.h"
 
-///
-/// @brief Converts a microstrip impedance step to Qucs-S format
-/// @param comp ComponentInfo structure containing step discontinuity parameters
-/// @return QString containing Qucs-S microstrip step definition
-///
 QString QucsSExporter::parseMicrostripStep_QucsS(ComponentInfo Comp) {
   // Format: <MSTEP ID status x y text_x text_y vertical_mirror rotation
   // <properties>> Temp_Visibility> ID: e.g. Lx, where x is a positive integer

@@ -7,12 +7,6 @@
 
 #include "./../../QucsS/QucsSExporter.h"
 
-///
-/// @brief Converts a microstrip line component to Qucs-S format
-/// @param comp ComponentInfo structure containing microstrip line parameters
-/// @return QString containing Qucs-S microstrip line definition with substrate
-/// reference
-///
 QString QucsSExporter::parseMicrostripLine_QucsS(ComponentInfo Comp) {
   // Format: <MLIN ID status x y text_x text_y vertical_mirror rotation
   // <properties>> Temp_Visibility> ID: e.g. Lx, where x is a positive integer

@@ -7,11 +7,6 @@
 
 #include "./../../QucsS/QucsSExporter.h"
 
-///
-/// @brief Converts a microstrip via component to Qucs-S format
-/// @param comp ComponentInfo structure containing via parameters
-/// @return QString containing Qucs-S microstrip via definition
-///
 QString QucsSExporter::parseMicrostripVia_QucsS(ComponentInfo Comp) {
   // Format: <MVIA ID status x y text_x text_y vertical_mirror rotation
   // substrate substrate_visibility diameter diameter_visibility

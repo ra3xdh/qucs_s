@@ -202,28 +202,130 @@ public:
 
   private slots:
   // Menu actions
-  void slotHelpIntro();      ///< Show introduction help dialog
-  void slotHelpAbout();      ///< Show about dialog
-  void slotHelpAboutQt();    ///< Show Qt about dialog
-  void slotQuit();           ///< Quit application
-  void slotSave();           ///< Save current session
-  void slotSaveAs();         ///< Save session to new file
-  void slotLoadSession();    ///< Load a session file
+  ///
+  /// @brief Show introduction help dialog
+  ///
+  /// Displays a message box with a short description of the program
+  ///
+  void slotHelpIntro();
 
   ///
-  /// @brief Raise appropriate widgets when a tab is selected
-  /// @param index Index of the selected tab
+  /// \brief Licensing and author credits
+  /// @note This tool uses QCustomPlot, developed by Emanuel Eichhammer.
+  /// https://www.qcustomplot.com
   ///
+  void slotHelpAbout();
+
+  ///
+  /// \brief Information regarding the Qt libraries
+  ///
+  void slotHelpAboutQt();
+
+  ///
+  /// \brief Close the program
+  ///
+  void slotQuit() { qApp->quit(); }
+
+  ///
+  /// @brief Saves session to existing path or prompts for new path
+  ///
+  void slotSave();
+
+  ///
+  /// @brief Prompts user for save path and saves session
+  /// @note The session file has .spar extension
+  ///
+  void slotSaveAs();
+
+  ///
+  /// @brief Opens file dialog to load a session file
+  ///
+  void slotLoadSession();
+
+  ///
+  /// @brief Raise appropriate widgets when trace tab is selected
+  ///
+  /// Synchronizes the trace tab selection with:
+  /// - Active chart dock (raises matching chart)
+  ///
+  /// @param index Index of selected trace tab (0-6)
+  ///
+  /// Tab mapping:
+  /// - 0: Magnitude/Phase → dB mode, S11
+  /// - 1: Smith Chart → Smith mode, S11
+  /// - 2: Polar → Polar mode, S11
+  /// - 3: Port Impedance → n.u. mode, Re{Zin}
+  /// - 4: Stability → n.u. mode
+  /// - 5: VSWR → n.u. mode, VSWR{in}
+  /// - 6: Group Delay → Group Delay mode
   void raiseWidgetsOnTabSelection(int index);
 
 
   // File management
-  void addFile();                                    ///< Add a new file dialog
-  void addFiles(QStringList);                        ///< Add multiple files
-  void removeFile();                                 ///< Remove selected file
-  void removeFile(QString ID);                       ///< Remove file by ID
-  void removeAllFiles();                             ///< Remove all loaded files
-  void removeTracesByDataset(const QString& dataset_to_remove);  ///< Remove all traces for a dataset
+
+  ///
+  /// @brief Open file dialog to add files
+  ///
+  /// Displays a file selection dialog allowing the user to choose files.
+  /// Supported formats:
+  /// - Touchstone files (.s1p, .s2p, .s3p, .s4p)
+  /// - Qucsator data files (.dat)
+  /// - NGspice data files (.ngspice.dat)
+  ///
+  /// @see addFiles(QStringList)
+  ///
+  void addFile();
+
+  ///
+  /// @brief Add a single file using QFileInfo
+  ///
+  /// Wrapper function for adding a single file. Used when opening
+  /// files from command line.
+  ///
+  /// @param fileInfo QFileInfo object containing file path information
+  /// @note Validates file existence before attempting to load
+  /// @note Shows warning dialog if file doesn't exist
+  /// @note Internally calls addFiles(QStringList) with single-item list
+  void addFiles(QStringList);
+
+  ///
+  /// @brief Remove file via UI
+  /// Called when a remove button is clicked. Identifies which file
+  /// to remove based on the sender's object name and calls removeFile(QString).
+  /// @note This is a Qt slot connected to remove button click signals
+  /// @note Gets the button ID from sender()->objectName()
+  /// @see removeFile(QString)
+  ///
+  void removeFile();
+
+  ///
+  /// @brief Remove a specific file by its ID
+  /// @param ID Unique identifier of the file to remove
+  /// @note The ID corresponds to the button's objectName
+  /// @note All traces associated with this dataset are automatically removed
+  /// @note The datasets combo box is updated
+  ///
+  void removeFile(QString ID);
+
+  ///
+  /// @brief Remove all loaded files from the application
+  /// @note This also removes all associated traces and markers
+  /// @note File watcher paths are cleared to stop monitoring
+  /// @see removeFile()
+  ///
+  void removeAllFiles();
+
+  ///
+  /// @brief Remove all traces associated with a dataset given its name (QString)
+  ///
+  /// Iterates through all display modes and removes any traces
+  /// that belong to the specified dataset.
+  ///
+  /// @param dataset_to_remove Name of the dataset whose traces should be removed
+  ///
+  /// @note Uses removeTraceByProps() to handle the actual removal
+  ///
+  void removeTracesByDataset(const QString& dataset_to_remove);
 
 
   ///
@@ -248,15 +350,33 @@ public:
   QString extractSParamIndices(const QString& sparam);
 
   ///
-  /// @brief Apply default trace visualizations for loaded files
-  /// @param fileNames List of file names to process
+  /// @brief Apply default trace visualizations for newly loaded files depending
+  /// on their type
+  ///
+  /// Automatically creates appropriate default traces based on file
+  /// characteristics:
+  /// - Single S1P file: S11 in dB, Smith, Polar, impedance, and VSWR
+  /// - Single S2P file: S21, S11, S22 in dB; S11, S22 in Smith and Polar;
+  ///                    impedance, group delay, VSWR, and stability factors
+  /// - Multiple S2P files: S21 in dB for each file with different colors
+  ///
+  /// @param fileNames List of file names that were loaded
   ///
   void applyDefaultVisualizations(const QStringList& fileNames);
 
   ///
-  /// @brief Add optional derived traces (impedance, stability, etc.)
-  /// @param file_data Reference to file data map to add traces to
+  /// @brief Add optional traces depending on the number of ports of the data file
   ///
+  /// Adds trace placeholders for derived parameters (i.e. computer from the
+  /// S-data) based on number of ports:
+  /// - 1-port: Re{Zin}, Im{Zin}, VSWR{in}
+  /// - 2-port: delta, K, mu, mu_p, MSG, MAG, Re{Zin}, Im{Zin}, VSWR{in},
+  ///           Re{Zout}, Im{Zout}, VSWR{out}
+  ///
+  /// @param file_data Reference to file data map to add trace placeholders to
+  ///
+  /// @note Traces are added as empty lists and populated when requested. It makes
+  /// no sense to compute all of them without necessity
   void addOptionalTraces(QMap<QString, QList<double>>& file_data);
 
   void removeTraceByProps(DisplayMode mode, const QString& traceID,
@@ -270,8 +390,40 @@ public:
   void CreateFileWidgets(QString filename, int position = 0);
 
   // File watching
-  void setupFileWatcher();                    ///< Initialize file watching system
-  void fileChanged(const QString& path);      ///< Handle file change event
+  ///
+  /// @brief Setup file system watcher
+  ///
+  /// Configures the file watcher to monitor:
+  /// - Individual S-parameter files for changes
+  /// - Directories containing watched files for additions/deletions
+  ///
+  void setupFileWatcher();
+
+  ///
+  /// @brief Handle file change event from file watcher
+  ///
+  /// Implements debouncing and robust file handling:
+  /// 1. Debounces rapid file change events (500ms window)
+  /// 2. Waits for file to be completely written (200ms delay + retry logic)
+  /// 3. Reloads the file data using appropriate parser
+  /// 4. Updates all plots using the new data
+  /// 5. Re-adds file to watcher if needed
+  ///
+  /// @param path Full path to the changed file
+  ///
+  void fileChanged(const QString& path);
+
+  ///
+  /// @brief Handle directory change event from file watcher
+  ///
+  /// Monitors watched directories for new S-parameter files:
+  /// 1. Scans directory for .snp, .dat, and .ngspice.dat files
+  /// 2. Identifies files not already loaded
+  /// 3. Presents dialog for user to select which new files to add
+  /// 4. Loads selected files
+  ///
+  /// @param path Full path to the changed directory
+  ///
   void directoryChanged(const QString& path); ///< Handle directory change event
 
   // Trace management
@@ -298,8 +450,14 @@ public:
 
   ///
   /// @brief Remove a row from grid layout and collapse remaining rows
-  /// @param targetLayout Target grid layout
-  /// @param row_to_remove Row index to remove
+  ///
+  /// Performs three operations:
+  /// 1. Removes and deletes all widgets in the target row
+  /// 2. Shifts all rows below upward by one position
+  /// 3. Forces layout update to remove empty space
+  ///
+  /// @param targetLayout Grid layout to modify
+  /// @param row_to_remove Index of row to remove
   ///
   void removeAndCollapseRow(QGridLayout* targetLayout, int row_to_remove);
 
@@ -316,12 +474,16 @@ public:
   void cleanToolsDatasets(const QString& excludeDataset = QString());
 
   ///
-  /// \brief Update the traces combo box
+  /// @brief Update traces combo box based on selected dataset
+  ///
+  /// Populates the traces combo box with:
+  /// - All S-parameters available for the current dataset (based on port count)
+  /// - Additional derived parameters (stability factors, impedance, etc.)
   ///
   void updateTracesCombo();
 
   ///
-  /// \brief Update display type options
+  /// @brief Update available display types based on selected trace
   ///
   void updateDisplayType();
 
@@ -329,7 +491,21 @@ public:
   void changeTraceColor();           ///< Change trace color
   void changeTraceLineStyle();       ///< Change trace line style
   void changeTraceWidth();           ///< Change trace width
-  void changeMarkerLimits();         ///< Change marker limits
+
+  ///
+  /// @brief Update marker frequency limits when scale changes.
+  ///
+  /// @note Connected to marker scale combo box currentIndexChanged signal
+  /// @note Extracts ID from sender's object name
+  ///
+  void changeMarkerLimits();
+
+  ///
+  /// @brief Update marker frequency spinbox limits based on selected scale
+  ///
+  /// Adjusts marker frequency spinbox min/max values when frequency unit changes:
+  /// @param ID Object name of the combo box that triggered the change
+  ///
   void changeMarkerLimits(QString);  ///< Change marker limits for specific marker
 
   // Marker management
@@ -341,17 +517,23 @@ public:
   void addMarker(double freq = -1, QString Freq_Marker_Scale = QString("MHz"));
 
   ///
-  /// \brief Remove selected marker (via dialog)
+  /// @brief Removes a marker via UI.
+  /// Identifies the marker by the button's object name and removes it.
+  /// This function is called when the user wants to remove a marker from the plot
   ///
   void removeMarker();
 
   ///
-  /// \brief Remove marker by name
+  /// @brief Removes a marker from the plot by name (QString).
+  /// @param markerName QString The name of the marker to remove
   ///
   void removeMarker(const QString&);
 
   ///
-  /// \brief Remove all markers
+  /// @brief Removes all markers from the plot.
+  /// Iterates through all markers in reverse order and removes them.
+  /// @note Calls removeMarker(QString) for all markers found
+  /// @see removeMarker(QString)
   ///
   void removeAllMarkers();
 
@@ -359,15 +541,16 @@ public:
   /// \brief Get total number of markers
   /// \return int Total number of markers
   ///
-  int getNumberOfMarkers();
+  int getNumberOfMarkers() { return markerMap.keys().size(); }
 
   ///
-  /// \brief Update marker table display
+  /// @brief Updates all marker tables with current marker data.
   ///
   void updateMarkerTable();
 
   ///
-  /// \brief Update marker name labels
+  /// @brief Updates marker names after a marker is removed
+  /// This is needed to keep consistent numbering.
   ///
   void updateMarkerNames();
 
@@ -405,27 +588,74 @@ public:
                 bool coupled = true);
 
   ///
-  /// \brief Remove selected limit (via dialog)
+  /// @brief Remove limit via UI
+  ///
+  /// Called when the user hits the delete button for a limit.
+  /// Identifies the limit by button ID and removes it.
+  ///
+  /// @note Iterates through all limits to find matching button
+  /// @note Calls removeLimit(QString) to perform actual removal
+  /// @see removeLimit(QString)
   ///
   void onLimitDeleteClicked(bool);
 
   ///
-  /// \brief Remove limit by name
+  /// @brief Remove a specific limit by name
+  ///
+  /// Performs complete removal:
+  /// 1. Retrieves limit properties from limitsMap
+  /// 2. Deletes all associated widgets (11 total):
+  ///    - axis selector, delete button, couple button
+  ///    - label, separator
+  ///    - start/stop frequency spinboxes and scale selectors
+  ///    - start/stop value spinboxes
+  /// 3. Removes entry from limitsMap
+  /// 4. Removes limit line from the chart
+  /// 5. Updates grid layout to remove gaps
+  /// 6. Updates remaining limit names/numbers
+  ///
+  /// @param limit_to_remove Name of the limit to remove (e.g., "Limit 1")
+  ///
+  /// @note Layout is collapsed after removal
+  /// @note Remaining limits are renumbered sequentially
   ///
   void removeLimit(QString);
 
   ///
-  /// \brief Remove all limits
+  /// @brief Remove all limits from the chart
+  ///
+  /// Iterates through all limits and removes each one individually.
+  ///
+  /// @note Calls removeLimit() for each limit in the map
+  /// @note Layout updates and name renumbering handled by removeLimit()
+  /// @see removeLimit(QString)
   ///
   void removeAllLimits();
 
   ///
-  /// \brief Update limit displays
+  /// @brief Update limit line visualization in the chart
+  ///
+  /// Called when any limit widget value changes. Performs:
+  /// 1. Checks all limits for value coupling and synchronizes if needed
+  /// 2. Identifies which limit triggered the update (from sender)
+  /// 3. Extracts limit name from widget object name
+  /// 4. Retrieves current widget values
+  /// 5. Converts frequencies using appropriate scale factors
+  /// 6. Updates the limit in the chart
+  /// 7. Refreshes the chart display
   ///
   void updateLimits();
 
   ///
-  /// \brief Update the name of the limit lines
+  /// @brief Update limit names after removal
+  ///
+  /// Renumbers all remaining limits sequentially (Limit 1, Limit 2, etc.)
+  /// after a limit has been removed. This maintains consistent numbering
+  /// without gaps.
+  ///
+  /// @note Called automatically after removeLimit()
+  /// @note Only updates the label text, not the internal map keys
+  /// @note Numbers start from 1 for display purposes
   ///
   void updateLimitNames();
 
@@ -433,26 +663,42 @@ public:
   /// \brief Get the total number of limits
   /// \return int Number of limits
   ///
-  int getNumberOfLimits();
+  int getNumberOfLimits() { return limitsMap.keys().size(); }
 
   ///
-  /// @brief Get limit properties by position
-  /// @param position Limit position
+  /// @brief Get limit properties by index
+  ///
+  /// Retrieves limit information by its index in the limitsMap.
+  /// Uses iterator advancement to access the map by position.
+  ///
+  /// @param position Zero-based index of the limit in the map
   /// @param outLimitName Output parameter for limit name
-  /// @param outProperties Output parameter for limit properties
-  /// @return bool True if limit found
+  /// @param outProperties Output parameter for limit properties structure
+  /// @return bool True if position is valid and limit retrieved, false otherwise
   ///
   bool getLimitByPosition(int, QString&, LimitProperties&);
 
   ///
-  /// \brief Couple limit start/stop spinboxes
+  /// @brief Toggle coupling between start and stop Y values
+  ///
+  /// Controls whether start and stop Y values are synchronized:
+  /// - Coupled mode ("<--->"): Stop value matches start value, stop spinbox
+  /// disabled
+  /// - Uncoupled mode ("<-X->"): Values independent, both spinboxes enabled
+  ///
+  /// @note In coupled mode, stop value is set to match start value and disabled
   ///
   void coupleSpinBoxes();
 
   ///
-  /// @brief Update grid layout arrangement
+  /// @brief Update grid layout by collapsing empty rows
+  ///
+  /// Collects all widget information, clears the layout, and re-adds
+  /// widgets in a compact arrangement without gaps.
+  ///
   /// @param layout Grid layout to update
   ///
+  /// @note Preserves widget properties including alignment and span
   void updateGridLayout(QGridLayout*);
 
   ///
@@ -463,8 +709,16 @@ public:
 
   ///
   /// @brief Update traces in a specific widget
-  /// @param widget Widget containing traces to update
-  /// @param datasetName Dataset name to update
+  ///
+  /// Handles the three widget types separatedly:
+  /// - RectangularPlotWidget
+  /// - PolarPlotWidget
+  /// - SmithChartWidget
+  ///
+  /// Preserves trace visual properties (color, width, style) during update.
+  ///
+  /// @param widget Chart widget to update
+  /// @param datasetName Dataset name containing the data
   ///
   void updateTracesInWidget(QWidget* widget, const QString& datasetName);
 
@@ -641,11 +895,12 @@ private:
   ///
   QMap<QString, MarkerProperties> markerMap;
 
-  /**
-   * @brief Get frequency value for a marker
-   * @param markerName Name of the marker
-   * @return double Frequency value
-   */
+  ///
+  /// @brief Gets the marker frequency (in Hz) given the marker name.
+  ///
+  /// @param markerName The name of the marker
+  /// @return The frequency in Hz, or 0.0 if marker not found
+  ///
   double getMarkerFreq(QString);
 
   // Limit widgets
@@ -686,8 +941,14 @@ private:
   void updateSchematicContent();
 
   ///
-  /// \brief Triggers synthesis tools based on the tab selected
-  /// \param visible [TO DO: See if this flag can be removed]
+  /// @brief Trigger synthesis when a design tool is selected
+  ///
+  /// Automatically runs the synthesis/design function for the currently
+  /// selected tool when the tools dock becomes visible.
+  ///
+  /// @param visible True if tools dock is now visible (TO DO: Review if this is
+  /// needed)
+  /// @todo Can the visible bool be removed?
   ///
   void callTools(bool visible);
 
@@ -727,32 +988,84 @@ private:
   QString savepath;
 
   ///
-  /// \brief Save current session
-  /// \return bool Status of the operation
+  /// @brief Saves current session to file
+  /// @return True if save succeeded, false otherwise
   ///
   bool save();
 
   ///
-  /// \brief Loads a previous session from a file
-  /// \param path QString indicating the full path to the session file
+  /// @brief Loads session from specified file
+  /// @param session_file Path to the session file
+  /// @note This is used by slotLoadSession()
+  /// @see slotLoadSession()
   ///
   void loadSession(QString path);
 
-  // Save rectangular plot settings
+  ///
+  /// @brief Saves rectangular plot settings to XML
+  /// @param xml XML stream writer
+  /// @param widget Rectangular plot widget
+  /// @param elementName XML element name
+  /// @note Called from save()
+  /// @see save()
+  ///
   void saveRectangularPlotSettings(QXmlStreamWriter& xml,
                                    RectangularPlotWidget* widget,
                                    const QString& elementName);
+
+  ///
+  /// @brief Loads rectangular plot settings from XML
+  /// @param xml XML stream reader
+  /// @param widget Rectangular plot widget
+  /// @param elementName XML element name
+  /// @note Called from loadSession()
+  /// @see loadSession()
+  ///
   void loadRectangularPlotSettings(QXmlStreamReader& xml,
                                    RectangularPlotWidget* widget,
                                    const QString& elementName);
 
+  ///
+  /// @brief Saves Smith chart settings to XML
+  /// @param xml XML stream writer
+  /// @param widget Smith chart widget
+  /// @param elementName XML element name
+  /// @note Called from save()
+  /// @see save()
+  ///
   void saveSmithPlotSettings(QXmlStreamWriter& xml, SmithChartWidget* widget,
                              const QString& elementName);
+
+  ///
+  /// @brief Loads Smith chart settings from XML
+  /// @param xml XML stream reader
+  /// @param widget Smith chart widget
+  /// @param elementName XML element name
+  /// @note Called from loadSession()
+  /// @see loadSession()
+  ///
   void loadSmithPlotSettings(QXmlStreamReader& xml, SmithChartWidget* widget,
                              const QString& elementName);
 
+  ///
+  /// @brief Saves polar plot settings to XML
+  /// @param xml XML stream writer
+  /// @param widget Polar plot widget
+  /// @param elementName XML element name
+  /// @note Called from save()
+  /// @see save()
+  ///
   void savePolarPlotSettings(QXmlStreamWriter& xml, PolarPlotWidget* widget,
                              const QString& elementName);
+
+  ///
+  /// @brief Loads polar plot settings from XML
+  /// @param xml XML stream reader
+  /// @param widget Polar plot widget
+  /// @param elementName XML element name
+  /// @note Called from loadSession()
+  /// @see loadSession()
+  ///
   void loadPolarPlotSettings(QXmlStreamReader& xml, PolarPlotWidget* widget,
                              const QString& elementName);
 
@@ -763,11 +1076,34 @@ private:
   // Recent files
   std::vector<QString> recentFiles;  ///< List of recent files
   QMenu* recentFilesMenu;            ///< Menu for recent files
-  void updateRecentFilesMenu();      ///< Update recent files menu
-  void loadRecentFiles();            ///< Load recent files list
-  void addRecentFile(const QString&);  ///< Add file to recent list
-  void clearRecentFiles();           ///< Clear recent files list
-  void saveRecentFiles();            ///< Save recent files list
+
+  ///
+  /// @brief Updates recent files menu with current list
+  ///
+  void updateRecentFilesMenu();
+
+  ///
+  /// @brief Loads recent files list from QSettings
+  /// @note This is called when the program starts up
+  ///
+  void loadRecentFiles();
+
+  ///
+  /// @brief Adds file to recent files list (max 10 entries)
+  /// @param filePath Path to add to recent files
+  ///
+  void addRecentFile(const QString&);
+
+  ///
+  /// @brief Clears the recent files list
+  ///
+  void clearRecentFiles(){ recentFiles.clear(); }
+
+  ///
+  /// @brief Saves recent files list to QSettings
+  /// @note This is called when the program is about to close
+  ///
+  void saveRecentFiles();
 
   // Setup UI
   void CreateMenuBar();              ///< Create menu bar
@@ -802,8 +1138,15 @@ private:
   // File monitoring
   void setupSimulationWatcher();
   QStringList getWatchDirectories() const;
-  bool isSparamFile(const QString& path); // Used to accept only data files when
-                                          // scanning project directories
+
+  ///
+  /// @brief Check if a file is an S-parameter data file
+  ///
+  /// @param path Full file path to check
+  /// @return bool True if file is S-parameter format, false otherwise
+  /// @note It's used to accept only data files when scenning project directories
+  bool isSparamFile(const QString& path);
+
   QStringList filePaths; // Full path of the files in the progrom. It's used for
                          // file monitoring.
 

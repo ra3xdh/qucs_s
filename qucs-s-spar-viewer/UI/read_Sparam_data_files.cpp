@@ -7,12 +7,6 @@
 
 #include "qucs-s-spar-viewer.h"
 
-///
-/// @brief Reads NGspice S-parameter data from Qucs dataset file
-/// @param filePath Path to the dataset file
-/// @return Map of variable names to data arrays (frequency, S-parameters as
-/// re/im/dB/ang, n_ports, Z0)
-///
 QMap<QString, QList<double>>
 Qucs_S_SPAR_Viewer::readNGspiceData(const QString &filePath) {
   QMap<QString, QList<double>>
@@ -156,12 +150,6 @@ Qucs_S_SPAR_Viewer::readNGspiceData(const QString &filePath) {
   return file_data;
 }
 
-///
-/// @brief Reads Qucsator S-parameter data from Qucs dataset file
-/// @param filePath Path to the dataset file
-/// @return Map of variable names to data arrays (frequency, S-parameters as
-/// re/im/dB/ang, n_ports, Z0)
-///
 QMap<QString, QList<double>>
 Qucs_S_SPAR_Viewer::readQucsatorDataset(const QString &filePath) {
   QMap<QString, QList<double>>

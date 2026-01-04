@@ -7,12 +7,6 @@
 
 #include "./../QucsS/QucsSExporter.h"
 
-///
-/// @brief Converts an ideal transmission line component to Qucs-S format
-/// @param comp ComponentInfo structure containing line parameters (Z0, length,
-/// etc.)
-/// @return QString containing Qucs-S ideal transmission line definition
-///
 QString QucsSExporter::parseIdealTransmissionLine_QucsS(ComponentInfo Comp) {
   // Format: <TLIN ID status x y text_x text_y vertical_mirror rotation Z0
   // Z0_Visibility Length Length_Visibility Alpha Alpha_Visibility Temp

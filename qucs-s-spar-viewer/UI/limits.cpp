@@ -7,32 +7,6 @@
 
 #include "qucs-s-spar-viewer.h"
 
-///
-/// @brief Add a limit line to the magnitude/phase chart
-///
-/// Creates a new limit line with UI controls and visualization:
-/// 1. Sets default values if not provided (25%-75% of frequency range)
-/// 2. Creates UI widgets:
-///    - Label with limit name
-///    - Start/stop frequency spinboxes with unit selectors
-///    - Start/stop value spinboxes
-///    - Value coupling button
-///    - Y-axis selector (left/right)
-///    - Delete button
-///    - Separator line
-/// 3. Connects all widgets to update handlers
-/// 4. Adds limit line to the chart
-///
-/// @param f_limit1 Start frequency (-1 for default: 25% of range)
-/// @param f_limit1_unit Start frequency unit (empty for chart units)
-/// @param f_limit2 Stop frequency (-1 for default: 75% of range)
-/// @param f_limit2_unit Stop frequency unit (empty for chart units)
-/// @param y_limit1 Start Y value (-1 for default: middle of Y range)
-/// @param y_limit2 Stop Y value (-1 for default: same as y_limit1)
-/// @param coupled Whether start and stop Y values are coupled
-///
-/// @note Only rectangular plots are supported
-///
 void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit,
                                   double f_limit2, QString f_limit2_unit,
                                   double y_limit1, double y_limit2,
@@ -267,17 +241,6 @@ void Qucs_S_SPAR_Viewer::addLimit(double f_limit1, QString f_limit1_unit,
   Magnitude_PhaseChart->update();
 }
 
-///
-/// @brief Get limit properties by index
-///
-/// Retrieves limit information by its index in the limitsMap.
-/// Uses iterator advancement to access the map by position.
-///
-/// @param position Zero-based index of the limit in the map
-/// @param outLimitName Output parameter for limit name
-/// @param outProperties Output parameter for limit properties structure
-/// @return bool True if position is valid and limit retrieved, false otherwise
-///
 bool Qucs_S_SPAR_Viewer::getLimitByPosition(int position, QString &outLimitName,
                                             LimitProperties &outProperties) {
   // Check if position is valid
@@ -299,16 +262,6 @@ bool Qucs_S_SPAR_Viewer::getLimitByPosition(int position, QString &outLimitName,
   return true;
 }
 
-///
-/// @brief Toggle coupling between start and stop Y values
-///
-/// Controls whether start and stop Y values are synchronized:
-/// - Coupled mode ("<--->"): Stop value matches start value, stop spinbox
-/// disabled
-/// - Uncoupled mode ("<-X->"): Values independent, both spinboxes enabled
-///
-/// @note In coupled mode, stop value is set to match start value and disabled
-///
 void Qucs_S_SPAR_Viewer::coupleSpinBoxes() {
   QPushButton *button = qobject_cast<QPushButton *>(sender());
   if (!button)
@@ -350,18 +303,6 @@ void Qucs_S_SPAR_Viewer::coupleSpinBoxes() {
   }
 }
 
-///
-/// @brief Update limit line visualization in the chart
-///
-/// Called when any limit widget value changes. Performs:
-/// 1. Checks all limits for value coupling and synchronizes if needed
-/// 2. Identifies which limit triggered the update (from sender)
-/// 3. Extracts limit name from widget object name
-/// 4. Retrieves current widget values
-/// 5. Converts frequencies using appropriate scale factors
-/// 6. Updates the limit in the chart
-/// 7. Refreshes the chart display
-///
 void Qucs_S_SPAR_Viewer::updateLimits() {
   // First check if some value-coupling button is activated. If not, simply call
   // updateTraces()
@@ -411,33 +352,6 @@ void Qucs_S_SPAR_Viewer::updateLimits() {
   Magnitude_PhaseChart->update();
 }
 
-///
-/// @brief Get the total number of limits
-///
-/// @return int Number of limits currently in the limitsMap
-///
-int Qucs_S_SPAR_Viewer::getNumberOfLimits() { return limitsMap.keys().size(); }
-
-///
-/// @brief Remove a specific limit by name
-///
-/// Performs complete removal:
-/// 1. Retrieves limit properties from limitsMap
-/// 2. Deletes all associated widgets (11 total):
-///    - axis selector, delete button, couple button
-///    - label, separator
-///    - start/stop frequency spinboxes and scale selectors
-///    - start/stop value spinboxes
-/// 3. Removes entry from limitsMap
-/// 4. Removes limit line from the chart
-/// 5. Updates grid layout to remove gaps
-/// 6. Updates remaining limit names/numbers
-///
-/// @param limit_to_remove Name of the limit to remove (e.g., "Limit 1")
-///
-/// @note Layout is collapsed after removal
-/// @note Remaining limits are renumbered sequentially
-///
 void Qucs_S_SPAR_Viewer::removeLimit(QString limit_to_remove) {
 
   // Get the widgets
@@ -466,14 +380,6 @@ void Qucs_S_SPAR_Viewer::removeLimit(QString limit_to_remove) {
   updateLimitNames();
 }
 
-///
-/// @brief Remove all limits from the chart
-///
-/// Iterates through all limits and removes each one individually.
-///
-/// @note Calls removeLimit() for each limit in the map
-/// @note Layout updates and name renumbering handled by removeLimit()
-/// @see removeLimit(QString)
 void Qucs_S_SPAR_Viewer::removeAllLimits() {
   int n_limits = getNumberOfLimits();
   for (int i = 0; i < n_limits; i++) {
@@ -484,23 +390,12 @@ void Qucs_S_SPAR_Viewer::removeAllLimits() {
   }
 }
 
-///
-/// @brief Update marker frequency limits when scale changes.
-///
-/// @note Connected to marker scale combo box currentIndexChanged signal
-/// @note Extracts ID from sender's object name
 void Qucs_S_SPAR_Viewer::changeMarkerLimits() {
   QString ID = qobject_cast<QComboBox *>(sender())->objectName();
   // qDebug() << "Clicked button:" << ID;
   changeMarkerLimits(ID);
 }
 
-///
-/// @brief Update marker frequency spinbox limits based on selected scale
-///
-/// Adjusts marker frequency spinbox min/max values when frequency unit changes:
-/// @param ID Object name of the combo box that triggered the change
-///
 void Qucs_S_SPAR_Viewer::changeMarkerLimits(QString ID) {
   // Find the index of the marker
   int index = -1;
@@ -561,16 +456,6 @@ void Qucs_S_SPAR_Viewer::changeMarkerLimits(QString ID) {
   updateMarkerTable();
 }
 
-///
-/// @brief Remove limit via UI
-///
-/// Called when the user hits the delete button for a limit.
-/// Identifies the limit by button ID and removes it.
-///
-/// @note Iterates through all limits to find matching button
-/// @note Calls removeLimit(QString) to perform actual removal
-/// @see removeLimit(QString)
-///
 void Qucs_S_SPAR_Viewer::onLimitDeleteClicked(bool checked) {
   QString ID = qobject_cast<QToolButton *>(sender())->objectName();
   // qDebug() << "Clicked button:" << ID;
@@ -590,16 +475,6 @@ void Qucs_S_SPAR_Viewer::onLimitDeleteClicked(bool checked) {
   }
 }
 
-///
-/// @brief Update limit names after removal
-///
-/// Renumbers all remaining limits sequentially (Limit 1, Limit 2, etc.)
-/// after a limit has been removed. This maintains consistent numbering
-/// without gaps.
-///
-/// @note Called automatically after removeLimit()
-/// @note Only updates the label text, not the internal map keys
-/// @note Numbers start from 1 for display purposes
 void Qucs_S_SPAR_Viewer::updateLimitNames() {
   int n_limits = getNumberOfLimits();
   for (int i = 0; i < n_limits; i++) {

@@ -262,6 +262,8 @@ private:
   /// @brief Adds frequency-dependent S-parameter block to admittance matrix
   /// @param Y Reference to circuit admittance matrix
   /// @param comp Component with S-parameter data (multiple frequency points)
+  /// @details Interpolates S-parameters at current analysis frequency from
+  /// S-parameter data,
   ///
   void addFrequencyDependentSParamBlockToAdmittance(vector<vector<Complex>>& Y,
                                                     const Component_SPAR& comp);
