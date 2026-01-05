@@ -1,52 +1,11 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
-/**
- * @file CapacitiveCoupledSeriesResonators.cpp
- * @brief Synthesis of capacitive-coupled series resonators filters
- * @author Andrés Martínez Mera
- * @date 2025
- */
+/// @file CapacitiveCoupledSeriesResonators.cpp
+/// @brief Synthesis of capacitive-coupled series resonators filters
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 4, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "DirectCoupledFilters.h"
-
-///
-/// \internal
-///
-/// About the synthesis process:
-/// 1) Given the resonator's inductance as design parameter, the
-/// capacitance is calculated to tune the resonator at the center frequency.
-///
-/// 2) Then, the coupling parameters, Kxy, are calculated from the response's
-/// lowpass prototype. After that, the shunt coupling capacitors are
-/// synthesized (capacitive inverters).
-///
-/// 3) The negative capacitances from the inverters are absorbed into the
-/// series resonator capacitances.
-///
-/// 4) For the source and load ports, series-to-parallel conversion is applied
-/// to the first and last inverters, and impedance matching is achieved using
-/// a reactive element (capacitor or inductor as specified by the user).
-///
-/// References:
-/// [1] "Microwave Filters, Impedance-Matching Networks, and Coupling
-/// Structures", George L. Matthaei, L. Young, E. M. Jones, Artech House pg. 484
-/// [2] "Filter Handbook", Anatol I. Zverev. John Wiley and Sons, 1967,
-/// pages 562-563
 
 void DirectCoupledFilters::Synthesize_Capacitive_Coupled_Series_Resonators() {
   ComponentInfo Lseries, Cseries, Cshunt, Ground, MatchComponent;

@@ -1,26 +1,9 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
-/**
- * @file DirectCoupledFilters.h
- * @brief Synthesis of different types of Direct Coupled filters
- * @author Andrés Martínez Mera
- * @date 2025
- */
+/// @file DirectCoupledFilters.h
+/// @brief Synthesis of different types of direct-coupled resonator filters (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 4, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef DIRECTCOUPLEDFILTERS_H
 #define DIRECTCOUPLEDFILTERS_H
@@ -30,21 +13,37 @@
 #include "./../../../Schematic/component.h"
 #include "./../LowpassPrototypeCoeffs.h"
 
-/**
- * @class DirectCoupledFilters
- * @brief Synthesis of different topologies of Direct-Coupled filters
- *
- * This class implements the design equations for the design of the following Direct-Coupled circuit topologies:
- * - Capacitatively-coupled shunt resonators
- * - Inductively-coupled shunt resonators
- *
- * The resonators' values may be calculated by fixing the inductance or the capacitance
- */
+///
+/// @brief Implements synthesis of various direct-coupled resonator filter topologies.
+///
+/// This class provides comprehensive design equations for direct-coupled bandpass
+/// filters
+///
+/// Reference: "Microwave Filters, Impedance-Matching Networks, and Coupling Structures" by Matthaei, Young, and Jones.
+///
 class DirectCoupledFilters : public Network {
 public:
-  DirectCoupledFilters();
-  virtual ~DirectCoupledFilters();
-  DirectCoupledFilters(FilterSpecifications);
+  ///
+  /// \brief Class constructor
+  ///
+  DirectCoupledFilters() {}
+
+  virtual ~DirectCoupledFilters() {}
+
+  ///
+  /// \brief Class constructor initialized with the filter specifications
+  ///
+  DirectCoupledFilters(FilterSpecifications FS) {
+    Specification = FS;
+  }
+
+  ///
+  /// \brief Handles the direct-coupled filter implementation
+  ///
+  /// \internal 1) First of all, the lowpass prototype coefficients are obtained,
+  /// depending on the desired response. 2) Then, depending on the topology
+  /// specified, this function calls the appropiate synthesis function
+  ///
   void synthesize();
 
 private:

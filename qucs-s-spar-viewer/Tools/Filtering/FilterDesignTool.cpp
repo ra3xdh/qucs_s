@@ -1,19 +1,10 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file FilterDesignTool.cpp
+/// @brief GUI and control logic for RF filter design and synthesis
+/// (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 4, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "FilterDesignTool.h"
 
@@ -1240,9 +1231,6 @@ double FilterDesignTool::getScale(QString scale) {
   return units.value(view, 1.0);
 }
 
-// The purpose of this function is to trigger a design from the main application
-void FilterDesignTool::design() { UpdateDesignParameters(); }
-
 // This function updates the input combos according to the filter implementation
 void FilterDesignTool::ImplementationComboChanged(int index) {
 
@@ -1315,10 +1303,6 @@ void FilterDesignTool::ImplementationComboChanged(int index) {
     break;
   }
   UpdateDesignParameters();
-}
-
-void FilterDesignTool::set_MS_Subs(MS_Substrate SUBSTRATE) {
-  MS_Subs = SUBSTRATE;
 }
 
 // Some BPF topology cannot handle an arbitrary relative bandwith. This function
