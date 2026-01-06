@@ -1,5 +1,5 @@
 /// @file paintTransmissionLine.cpp
-/// \brief Transmission line painting method
+/// @brief Transmission line painting method
 /// @author Andrés Martínez Mera - andresmmera@protonmail.com
 /// @date Jan 3, 2026
 /// @copyright Copyright (C) 2026 Andrés Martínez Mera
@@ -8,7 +8,7 @@
 #include "./../../component.h"
 
 ///
-/// \brief Transmission lines painting method
+/// @brief Transmission lines painting method
 /// \param painter Painter object
 ///
 void Component::paintTransmissionLine(QPainter *painter) {

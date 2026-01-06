@@ -14,6 +14,7 @@
 #include "AttenuatorBase.h"
 #include <QPen>
 
+/// @class QW_SeriesAttenuator
 /// @brief Quarter wavelength first-series attenuator synthesis
 /// Reference: The PIN diode circuit designer's handbook. W.E. Doherty, Jr., R.D. Joos, Microsemi Corp., 1998
 class QW_SeriesAttenuator : public AttenuatorBase {

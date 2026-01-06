@@ -1,5 +1,5 @@
 /// @file paintCoupledLines.cpp
-/// \brief Coupled lines painting method
+/// @brief Coupled lines painting method
 /// @author Andrés Martínez Mera - andresmmera@protonmail.com
 /// @date Jan 3, 2026
 /// @copyright Copyright (C) 2026 Andrés Martínez Mera
@@ -8,7 +8,7 @@
 #include "./../../component.h"
 
 ///
-/// \brief Coupled transmission lines painting method
+/// @brief Coupled transmission lines painting method
 /// \param painter Painter object
 ///
 void Component::paintCoupledLines(QPainter *painter) {

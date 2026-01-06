@@ -13,7 +13,7 @@
 #include "../TransmissionLineSynthesis/Microstrip.h"
 #include "LowpassPrototypeCoeffs.h"
 
-///
+/// @class SteppedImpedanceFilter
 /// @brief Implements a stepped-impedance lowpass filter.
 ///
 /// This class synthesizes lowpass filters using the stepped-impedance technique,
@@ -22,50 +22,35 @@
 /// High-impedance lines approximate series inductors, while low-impedance
 /// lines approximate shunt capacitors.
 /// [1] "Microwave Engineering" by David M. Pozar. 4th Edition. page 424
-///
 class SteppedImpedanceFilter : public Network {
 public:
-  ///
   /// @brief Default constructor.
-  ///
   SteppedImpedanceFilter(){}
 
-  ///
   /// @brief Virtual destructor.
-  ///
   virtual ~SteppedImpedanceFilter(){}
 
-  ///
   /// @brief Constructor with filter specifications.
   /// @param FS Filter specifications including order, cutoff frequency, impedance,
   ///           minimum/maximum impedance values, and transmission line type.
-  ///
   SteppedImpedanceFilter(FilterSpecifications FS) {
     Specification = FS;
   }
 
-  ///
   /// @brief Synthesizes the filter based on the provided specifications.
-  ///
   void synthesize();
 
 private:
 
-  ///
   /// @brief Filter specifications structure containing all design parameters.
-  ///
   struct FilterSpecifications Specification;
 
-  ///
   /// @brief Builds the filter using microstrip transmission lines.
   /// @param gi Lowpass prototype element values (g-parameters).
-  ///
   void buildFilter_Microstrip(const std::deque<double>& gi);
 
-  ///
   /// @brief Builds the filter using ideal transmission lines.
   /// @param gi Lowpass prototype element values (g-parameters).
-  ///
   void buildFilter_IdealTL(const std::deque<double>& gi);
 };
 

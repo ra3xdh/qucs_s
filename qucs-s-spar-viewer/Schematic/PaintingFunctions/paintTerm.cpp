@@ -18,7 +18,7 @@
 #include "./../component.h"
 
 ///
-/// \brief Port terminal painting method
+/// @brief Port terminal painting method
 /// \param painter Painter object
 ///
 void Component::paintTerm(QPainter *painter) {

@@ -14,19 +14,20 @@
 #include "AttenuatorBase.h"
 #include <QPen>
 
+/// @class QW_ShuntAttenuator
 /// @brief Quarter wavelength first-shunt attenuator synthesis
 /// Reference: The PIN diode circuit designer's handbook. W.E. Doherty, Jr., R.D. Joos, Microsemi Corp., 1998
 class QW_ShuntAttenuator : public AttenuatorBase {
     public:
-      /// \brief Class constructor
+      /// @brief Class constructor
       QW_ShuntAttenuator() {}
 
-      /// \brief Class constructor with parameters
+      /// @brief Class constructor with parameters
       /// @param AS Design specifications
       QW_ShuntAttenuator(AttenuatorDesignParameters AS)
           : AttenuatorBase(AS) {}
 
-      /// \brief Class destructor
+      /// @brief Class destructor
       virtual ~QW_ShuntAttenuator() {}
 
       /// @brief Calculate component values and build schematic

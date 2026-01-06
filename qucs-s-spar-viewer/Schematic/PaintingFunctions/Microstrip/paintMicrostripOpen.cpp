@@ -18,7 +18,7 @@
 #include "./../../component.h"
 
 ///
-/// \brief Microstrip open painting method
+/// @brief Microstrip open painting method
 /// \param painter Painter object
 ///
 void Component::paintMicrostripOpen(QPainter *painter) {

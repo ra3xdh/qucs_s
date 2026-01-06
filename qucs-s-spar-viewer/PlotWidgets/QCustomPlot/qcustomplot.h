@@ -3053,7 +3053,7 @@ protected:
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPDataContainer
-  \brief The generic data container for one-dimensional plottables
+  @brief The generic data container for one-dimensional plottables
 
   This class template provides a fast container for data storage of
   one-dimensional data. The data type is specified as template parameter (called
@@ -4828,7 +4828,7 @@ private:
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPPlottableInterface1D
-  \brief Defines an abstract interface for one-dimensional plottables
+  @brief Defines an abstract interface for one-dimensional plottables
 
   This class contains only pure virtual methods which define a common interface
   to the data of one-dimensional plottables.
@@ -4986,7 +4986,7 @@ private:
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPAbstractPlottable1D
-  \brief A template base class for plottables with one-dimensional data
+  @brief A template base class for plottables with one-dimensional data
 
   This template class derives from \ref QCPAbstractPlottable and from the
   abstract interface \ref QCPPlottableInterface1D. It serves as a base class for

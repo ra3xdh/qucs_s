@@ -1,5 +1,5 @@
 /// @file paintMicrostripVia.cpp
-/// \brief Microstrip via painting method
+/// @brief Microstrip via painting method
 /// @author Andrés Martínez Mera - andresmmera@protonmail.com
 /// @date Jan 3, 2026
 /// @copyright Copyright (C) 2026 Andrés Martínez Mera
@@ -8,7 +8,7 @@
 #include "./../../component.h"
 
 ///
-/// \brief Microstrip via painting method
+/// @brief Microstrip via painting method
 /// \param painter Painter object
 ///
 void Component::paintMicrostripVia(QPainter *painter) {

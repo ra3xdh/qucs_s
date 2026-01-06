@@ -7,10 +7,6 @@
 
 #include "graphwidget.h"
 
-///
-/// @brief Construct graph widget
-/// @param parent Parent widget
-///
 GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent), timerId(0) {
   QGraphicsScene *scene = new QGraphicsScene(this);
   scene->setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -23,9 +19,6 @@ GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent), timerId(0) {
   setWindowTitle(tr("Schematic"));
 }
 
-///
-/// @brief Handle timer events
-///
 void GraphWidget::timerEvent(QTimerEvent *event) {
   Q_UNUSED(event);
 
@@ -49,9 +42,6 @@ void GraphWidget::scaleView(qreal scaleFactor) {
   scale(scaleFactor, scaleFactor);
 }
 
-///
-/// @brief Randomize component positions
-///
 void GraphWidget::shuffle() {
   foreach (QGraphicsItem *item, scene()->items()) {
     if (qgraphicsitem_cast<Node *>(item)) {
@@ -61,10 +51,6 @@ void GraphWidget::shuffle() {
   }
 }
 
-///
-/// @brief Set components (position, type, values) in the schematic
-/// @param cmps List of component information
-///
 void GraphWidget::setComponents(QList<ComponentInfo> cmps) {
   this->Components.clear();
   for (int i = 0; i < cmps.length(); i++) {
@@ -80,10 +66,6 @@ void GraphWidget::setComponents(QList<ComponentInfo> cmps) {
   }
 }
 
-///
-/// @brief Modify existing component parameters
-/// @param CI Component information with updated values
-///
 void GraphWidget::ModifyComponent(ComponentInfo CI) {
   for (unsigned int i = 0; i < Components.size(); i++) {
     if (!Components.at(i)->getID().compare(CI.ID)) {
@@ -93,10 +75,6 @@ void GraphWidget::ModifyComponent(ComponentInfo CI) {
   }
 }
 
-///
-/// @brief Set wires (position and connection properties) in the schematic
-/// @param wrs List of wire information
-///
 void GraphWidget::setWires(const QList<WireInfo> &wrs) {
   // Remove any previously stored wires
   Wires.clear();
@@ -168,10 +146,7 @@ void GraphWidget::setWires(const QList<WireInfo> &wrs) {
     w->paintWire();
   }
 }
-///
-/// @brief Set nodes (position and wiring) in the schematic
-/// @param nds List of node information
-///
+
 void GraphWidget::setNodes(QList<NodeInfo> nds) {
   this->Nodes.clear();
   for (int i = 0; i < nds.length(); i++) {
@@ -183,10 +158,6 @@ void GraphWidget::setNodes(QList<NodeInfo> nds) {
   }
 }
 
-///
-/// @brief Set complete schematic content
-/// @param SchContent Schematic content structure
-///
 void GraphWidget::setSchematic(SchematicContent SchContent) {
   this->setNodes(SchContent.getNodes());
   this->setComponents(SchContent.getComponents());
@@ -194,9 +165,6 @@ void GraphWidget::setSchematic(SchematicContent SchContent) {
   this->setTexts(SchContent.getTexts());
 }
 
-///
-/// @brief Clear all items from scene
-///
 void GraphWidget::clear() {
   while (!Components.empty()) {
     delete Components.front(), Components.pop_front(); // Remove components
@@ -212,10 +180,6 @@ void GraphWidget::clear() {
   }
 }
 
-///
-/// @brief Set text items in the schematic
-/// @param texts List of text items
-///
 void GraphWidget::setTexts(QList<QGraphicsTextItem *> texts) {
   this->Texts.clear();
   for (int i = 0; i < texts.length(); i++) {

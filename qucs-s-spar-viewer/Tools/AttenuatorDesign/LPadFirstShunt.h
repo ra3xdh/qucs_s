@@ -13,21 +13,22 @@
 #include "AttenuatorBase.h"
 #include <QPen>
 
+/// @class LPadFirstShunt
 /// @brief L-pad (first shunt) 1-port matched attenuator (definition)
 class LPadFirstShunt : public AttenuatorBase {
     public:
-      /// \brief Class constructor
+      /// @brief Class constructor
       LPadFirstShunt() {}
 
-      /// \brief Class destructor
+      /// @brief Class destructor
       virtual ~LPadFirstShunt(){}
 
-      /// \brief Class constructor with parameters
+      /// @brief Class constructor with parameters
       /// @param AS Design specifications
       LPadFirstShunt(AttenuatorDesignParameters AS)
           : AttenuatorBase(AS) {}
 
-      /// \brief Class constructor with parameters
+      /// @brief Class constructor with parameters
       /// @param AS Design specifications
       void synthesize() override;
 

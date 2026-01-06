@@ -10,6 +10,7 @@
 
 #include "AttenuatorBase.h"
 
+/// @class PiAttenuator
 /// @brief Pi attenuator synthesis
 /// Reference: RF design guide. Systems, circuits, and equations. Peter Vizmuller. Artech House, 1995
 class PiAttenuator : public AttenuatorBase {
@@ -23,7 +24,7 @@ class PiAttenuator : public AttenuatorBase {
     /// @brief Class destructor
     virtual ~PiAttenuator() {}
 
-    /// \brief Class constructor with parameters
+    /// @brief Class constructor with parameters
     /// @param AS Design specifications
     void synthesize() override;
 

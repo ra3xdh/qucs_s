@@ -1,5 +1,5 @@
 /// @file general.cpp
-/// \brief Utility functions needed across the whole project
+/// @brief Utility functions needed across the whole project
 /// @author Andrés Martínez Mera - andresmmera@protonmail.com
 /// @date Jan 4, 2026
 /// @copyright Copyright (C) 2026 Andrés Martínez Mera

@@ -35,7 +35,7 @@ class Symbol : public QGraphicsObject {
 public:
 
   ///
-  /// \brief Class constructor
+  /// @brief Class constructor
   ///
   Symbol(){}
 

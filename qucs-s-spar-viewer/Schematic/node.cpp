@@ -7,10 +7,6 @@
 
 #include "node.h"
 
-///
-/// @brief Construct node with graph widget
-/// @param graphWidget Parent graph widget
-///
 Node::Node(GraphWidget *graphWidget) : graph(graphWidget) {
   setFlag(ItemIsMovable);
   setFlag(ItemSendsGeometryChanges);
@@ -20,11 +16,6 @@ Node::Node(GraphWidget *graphWidget) : graph(graphWidget) {
                   // the node not to be visible, they can hide it where needed.
 }
 
-///
-/// @brief Construct node from NodeInfo structure
-/// @param graphWidget Parent graph widget
-/// @param NI Node information structure
-///
 Node::Node(GraphWidget *graphWidget, NodeInfo NI) : graph(graphWidget) {
   setFlag(ItemIsMovable);
   setFlag(ItemSendsGeometryChanges);
@@ -35,22 +26,12 @@ Node::Node(GraphWidget *graphWidget, NodeInfo NI) : graph(graphWidget) {
   visible = NI.visible;
 }
 
-///
-/// @brief Get node selection shape
-/// @return Path defining selectable area
-///
 QPainterPath Node::shape() const {
   QPainterPath path;
   path.addEllipse(-4, -4, 8, 8);
   return path;
 }
 
-///
-/// @brief Paint node on scene
-/// @param painter QPainter instance
-/// @param option Style options
-/// @param widget Target widget
-///
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem * /*option*/,
                  QWidget *) {
 
@@ -65,9 +46,6 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem * /*option*/,
    painter->drawPath(this->shape());*/
 }
 
-///
-/// @brief Handle item change events
-///
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value) {
   switch (change) {
   case ItemPositionHasChanged:

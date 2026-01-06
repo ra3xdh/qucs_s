@@ -7,14 +7,6 @@
 
 #include "component.h"
 
-///
-/// @brief Component class constructor (individual parameters)
-/// @param graphWidget Parent graph widget
-/// @param type Component type
-/// @param rotation Rotation angle in degrees
-/// @param val Parameter map
-/// @param ID Component identifier
-///
 Component::Component(GraphWidget *graphWidget, ComponentType comp, double Rot_,
                      QMap<QString, QString> val, QString ID_)
     : graph(graphWidget) {
@@ -28,11 +20,6 @@ Component::Component(GraphWidget *graphWidget, ComponentType comp, double Rot_,
   setZValue(-1);
 }
 
-///
-/// @brief Construct component from ComponentInfo struct
-/// @param graphWidget Parent graph widget
-/// @param CI Component information structure
-///
 Component::Component(GraphWidget *graphWidget, ComponentInfo CI)
     : graph(graphWidget) {
   ID = CI.ID;
@@ -47,22 +34,11 @@ Component::Component(GraphWidget *graphWidget, ComponentInfo CI)
   setZValue(-1);
 }
 
-///
-/// @brief Add wire connection to component
-/// @param Wire Wire to connect
-/// @note Each component has a list of wires, this function adds a new wire to
-/// that list
-///
 void Component::addWire(Wire *Wire) {
   WireList << Wire;
   Wire->adjust();
 }
 
-///
-/// @brief Get component bounding rectangle
-/// @return Bounding rectangle for painting
-/// @note This is the region where the component can be painted
-///
 QRectF Component::boundingRect() const {
   QRect R;
   switch (CompType) {
@@ -109,11 +85,6 @@ QRectF Component::boundingRect() const {
   return R;
 }
 
-///
-/// @brief Get component selection shape
-/// @return Path defining shape
-/// @note This is the area where the component can be selected
-///
 QPainterPath Component::shape() const {
   QPainterPath path;
   switch (CompType) {
@@ -145,12 +116,6 @@ QPainterPath Component::shape() const {
   return path;
 }
 
-///
-/// @brief Paint component on scene
-/// @param painter QPainter instance
-/// @param option Style options
-/// @param widget Target widget
-///
 void Component::paint(QPainter *painter,
                       const QStyleOptionGraphicsItem * /*option*/, QWidget *) {
   painter->setPen(QPen(Qt::darkBlue, 1));
@@ -227,9 +192,6 @@ void Component::paint(QPainter *painter,
   }
 }
 
-///
-/// @brief Handle item change events
-///
 QVariant Component::itemChange(GraphicsItemChange change,
                                const QVariant &value) {
   switch (change) {
@@ -246,9 +208,6 @@ QVariant Component::itemChange(GraphicsItemChange change,
   return QGraphicsItem::itemChange(change, value);
 }
 
-///
-/// @brief Handle double click events
-///
 void Component::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
   update();
   struct ComponentInfo CI;
@@ -260,13 +219,6 @@ void Component::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
   QGraphicsItem::mouseDoubleClickEvent(event);
 }
 
-///
-/// @brief Get port location in component coordinates
-/// @param port_number Port index
-/// @return Port position
-/// @note This is used by a wire object in order to know where to attach the
-/// wire termination
-///
 QPoint Component::getPortLocation(int port_number) {
   QPoint P;
   switch (CompType) {
@@ -369,10 +321,6 @@ QPoint Component::getPortLocation(int port_number) {
   return P;
 }
 
-///
-/// @brief Rotate the port with respect to the object centroid
-/// @param P Position of the port
-///
 void Component::RotatePoint(QPoint &P) {
   double r = (M_PI / 180) * Rotation;
   double x_rotated = P.x() * cos(r) - P.y() * sin(r);
@@ -381,11 +329,6 @@ void Component::RotatePoint(QPoint &P) {
   P.setY(y_rotated);
 }
 
-///
-/// @brief Rotate the port with respect to the object centroid
-/// @param P Position of the port
-/// @param angle Angle of rotation
-///
 void Component::RotatePoint(QPoint &P, double angle) {
   double r = (M_PI / 180) * angle;
   double x_rotated = P.x() * cos(r) - P.y() * sin(r);
@@ -394,11 +337,6 @@ void Component::RotatePoint(QPoint &P, double angle) {
   P.setY(y_rotated);
 }
 
-///
-/// @brief Parse parameter value with SI suffix
-/// @param Property Parameter name
-/// @return Numeric value with scale applied
-///
 double ComponentInfo::getVal(const QString &property) {
   QString val_ = this->val[property];
   val_.remove(' '); // strip blanks

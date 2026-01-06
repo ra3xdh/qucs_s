@@ -17,7 +17,7 @@
 class AttenuatorBase : public Network {
     public:
         ///
-        /// \brief Class constructor
+        /// @brief Class constructor
         ///
         AttenuatorBase() = default;
 
@@ -28,7 +28,7 @@ class AttenuatorBase : public Network {
         AttenuatorBase(AttenuatorDesignParameters AS) : Specification(AS) {}
 
         ///
-        /// \brief Class destructor
+        /// @brief Class destructor
         ///
         virtual ~AttenuatorBase() = default;
 

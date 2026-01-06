@@ -43,48 +43,33 @@
 #define RSERIES 8                ///< Series resistor topology
 #define RSHUNT 9                 ///< Shunt resistor topology
 
-///
+/// @class AttenuatorDesignTool
 /// @brief GUI tool for RF attenuator design tool
-///
 class AttenuatorDesignTool : public QWidget {
   Q_OBJECT
 public:
-  ///
   /// @brief Class constructor
   /// @param parent Parent widget
-  ///
   AttenuatorDesignTool(QWidget* parent = nullptr);
 
-  ///
   /// @brief Class destructor
-  ///
   ~AttenuatorDesignTool();
 
-  ///
   /// @brief Trigger design process
-  ///
   void design() { UpdateDesignParameters(); }
 
-  ///
   /// @brief Synthesize attenuator circuit based on selected topology
-  ///
   void synthesize();
 
 private slots:
-  ///
   /// @brief Update design parameters from GUI and trigger synthesis
-  ///
   void UpdateDesignParameters();
 
-  ///
   /// @brief Update power dissipation displays with unit conversion
-  ///
   void UpdatePowerDissipationData();
 
-  ///
   /// @brief Handle topology selection changes
   /// @param index Selected topology index
-  ///
   void on_TopoCombo_currentIndexChanged(int);
 
 private:
@@ -148,23 +133,17 @@ private:
   QComboBox* R4_Pdiss_Units_Combo;
   ///@}
 
-  ///
   /// @brief Get frequency in Hz from spinbox and scale combo
-  ///
   double getFreq();
 
-  ///
   /// @brief Convert power to Watts
   /// @param Pin Power value
   /// @param index Unit index (0=mW, 1=W, 2=dBm, 3-6=dBµV/dBmV variants)
-  ///
   double getPowerW(double, unsigned int);
 
-  ///
   /// @brief Convert power from Watts to selected units
   /// @param Pin Power in Watts
   /// @param index Unit index
-  ///
   double ConvertPowerFromW(double, unsigned int);
 
   // Transmission line implementation

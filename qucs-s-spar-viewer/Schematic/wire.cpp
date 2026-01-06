@@ -9,13 +9,6 @@
 
 static const double Pi = 3.14159265358979323846264338327950288419717;
 
-///
-/// @brief Construct wire with source and destination
-/// @param sourceNode Source symbol
-/// @param port_num_source Source port number
-/// @param destNode Destination symbol
-/// @param port_num_dest Destination port number
-///
 Wire::Wire(Symbol *sourceNode, int ps, Symbol *destNode, int pd)
     : arrowSize(10) {
   setAcceptedMouseButtons(Qt::NoButton);
@@ -29,9 +22,6 @@ Wire::Wire(Symbol *sourceNode, int ps, Symbol *destNode, int pd)
   adjust();
 }
 
-///
-/// @brief Adjust wire geometry based on endpoint positions
-///
 void Wire::adjust() {
   if (!source || !dest) {
     return;
@@ -48,22 +38,12 @@ void Wire::adjust() {
   destPoint = line.p2();
 }
 
-///
-/// @brief Get wire bounding rectangle
-/// @return Bounding rectangle
-///
 QRectF Wire::boundingRect() const {
   return QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
                                     destPoint.y() - sourcePoint.y()))
       .normalized();
 }
 
-///
-/// @brief Paint wire
-/// @param painter QPainter instance
-/// @param option Style options
-/// @param widget Target widget
-///
 void Wire::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
                  QWidget *) {
   if (!source || !dest) {

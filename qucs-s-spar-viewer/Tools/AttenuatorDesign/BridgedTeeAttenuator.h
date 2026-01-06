@@ -10,32 +10,24 @@
 
 #include "AttenuatorBase.h"
 
-///
+/// @class BridgedTeeAttenuator
 /// @brief Bridged-Tee attenuator implementation
 /// @details Four-resistor topology: R1 (series), R2/R3 (shunt to ground = Z0), R4 (bridge to ground)
 /// Reference: RF Design Guide. Systems, Circuits, and Equations. Peter Vizmuller. Artech House, 1995
-///
 class BridgedTeeAttenuator : public AttenuatorBase {
     public:
-      ///
-      /// \brief Class constructor
-      ///
+      /// @brief Class constructor
       BridgedTeeAttenuator(){}
-      ///
-      /// \brief Class destructor
-      ///
+
+      /// @brief Class destructor
       virtual ~BridgedTeeAttenuator() {}
 
-      ///
-      /// \brief Class constructor with parameters
+      /// @brief Class constructor with parameters
       /// @param AS Design specifications
-      ///
       BridgedTeeAttenuator(AttenuatorDesignParameters AS)
           : AttenuatorBase(AS) {}
 
-      ///
       /// @brief Calculate component values and build schematic
-      ///
       void synthesize() override;
 
     private:

@@ -18,7 +18,7 @@
 #include "./../../component.h"
 
 ///
-/// \brief Microstrip step painting method
+/// @brief Microstrip step painting method
 /// \param painter Painter object
 ///
 void Component::paintMicrostripStep(QPainter *painter) {

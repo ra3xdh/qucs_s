@@ -28,12 +28,12 @@ class SchematicContent;
 class SchematicExporter {
 public:
   ///
-  /// \brief Class destructor
+  /// @brief Class destructor
   ///
   virtual ~SchematicExporter() = default;
 
   ///
-  /// \brief Export function
+  /// @brief Export function
   /// \note The implementation will be provided in the classes inheriting this base class
   ///
   virtual QString exportSchematic() = 0;

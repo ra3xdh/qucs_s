@@ -13,17 +13,18 @@
 #include "AttenuatorBase.h"
 #include <QPen>
 
+/// @class RShuntAttenuator
 /// @brief Shunt resistor (unmatched) attenuator synthesi0
 class RShuntAttenuator : public AttenuatorBase {
     public:
-      /// \brief Class constructor
+      /// @brief Class constructor
       RShuntAttenuator() {}
 
-      /// \brief Class constructor with parameters
+      /// @brief Class constructor with parameters
       /// @param AS Design specifications
       RShuntAttenuator(AttenuatorDesignParameters AS) : AttenuatorBase(AS) {}
 
-      /// \brief Class destructor
+      /// @brief Class destructor
       virtual ~RShuntAttenuator() {}
 
       /// @brief Calculate component values and build schematic

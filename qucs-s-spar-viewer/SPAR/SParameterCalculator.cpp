@@ -269,12 +269,6 @@ vector<vector<Complex>> SParameterCalculator::calculateSParameters() {
   return S;
 }
 
-void SParameterCalculator::clear() {
-  components.clear();
-  ports.clear();
-  numNodes = 0;
-}
-
 void SParameterCalculator::setFrequencySweep(double start, double stop,
                                              int points) {
   f_start = start;

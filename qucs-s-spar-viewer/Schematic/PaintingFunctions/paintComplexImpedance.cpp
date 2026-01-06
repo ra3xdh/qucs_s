@@ -1,5 +1,5 @@
 /// @file paintComplexImpedance.cpp
-/// \brief Complex impedance painting method
+/// @brief Complex impedance painting method
 /// @author Andrés Martínez Mera - andresmmera@protonmail.com
 /// @date Jan 3, 2026
 /// @copyright Copyright (C) 2026 Andrés Martínez Mera
@@ -8,7 +8,7 @@
 #include "./../component.h"
 
 ///
-/// \brief Complex impedance painting method
+/// @brief Complex impedance painting method
 /// \param painter Painter object
 ///
 void Component::paintComplexImpedance(QPainter *painter) {

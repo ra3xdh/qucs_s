@@ -44,7 +44,6 @@
 
 #define COUPLED_LINE_SIR 9
 
-///
 /// @class FilterDesignTool
 /// @brief Interactive filter design tool with real-time synthesis and visualization
 ///
@@ -55,57 +54,38 @@
 /// - Semi-lumped implementations
 ///
 /// Features automatic synthesis, parameter validation, and schematic generation.
-///
 class FilterDesignTool : public QWidget {
   Q_OBJECT
 public:
-  ///
   /// @brief Constructor initializes UI and connects signals
   /// @param parent Parent widget
-  ///
   FilterDesignTool(QWidget* parent = nullptr);
 
-  ///
   /// @brief Destructor cleans up UI elements
-  ///
   ~FilterDesignTool();
 
-  ///
   /// @brief Triggers filter design with current parameters
-  ///
   void design() { UpdateDesignParameters(); }
 
 private slots:
-
-  ///
   /// @brief Updates filter design parameters and triggers synthesis
-  ///
   void UpdateDesignParameters();
 
-  ///
   /// @brief Handles filter response type changes (Butterworth, Chebyshev, etc.)
-  ///
   void ResposeComboChanged();
 
-  ///
   /// @brief Handles filter implementation type changes
   /// @param index Implementation combo box index
-  ///
   void ImplementationComboChanged(int);
 
-  ///
   /// @brief Handles elliptic filter type changes (Type A, B, C, S)
-  ///
   void EllipticTypeChanged();
 
-  ///
   /// @brief Opens dialog to adjust resonator component values
   /// @details Direct-coupled filters only
-  ///
   void openResonatorValuesDialog();
 
-  ///
-  /// \brief Adjusts the tunable variables in the resonators (Direct-Coupled filters only)
+  /// @brief Adjusts the tunable variables in the resonators (Direct-Coupled filters only)
   /// This function is called when the type of Direct-Coupled filter is changed.
   /// The synthesis procedure of Direct-Coupled filters (see Matthaei's book) allows de user
   /// to specify custom values for the inductance/capacitance of the resonators. This depends
@@ -118,7 +98,6 @@ private slots:
   /// L-coupled series resonators    |       C
   /// Magnetic-coupled               |      None
   /// Quarter-wave line coupled      |      None
-  ///
   void setAdjustableResonatorVariables_DirectCoupled();
 
 private:
@@ -202,32 +181,23 @@ private:
   QLineEdit* traceNameLineEdit;             ///< Trace identifier for simulation
   /// @}
 
-  ///
+  /// @struct FilterSpecifications
   /// @brief Filter specifications structure
   struct FilterSpecifications Filter_SP;
 
-
-  ///
   /// @brief Generated schematic content
-  ///
   SchematicContent SchContent;
 
-  ///
   /// @brief Microstrip substrate parameters
-  ///
   MS_Substrate MS_Subs;
 
-  ///
   /// @brief Populates response type combo box
   /// @return List of available filter responses
-  ///
   QStringList setItemsResponseTypeCombo();
 
-  ///
   /// @brief Gets frequency scale multiplier from combo box
   /// @param scale Scale string (GHz, MHz, kHz, Hz)
   /// @return Multiplier value (1e9, 1e6, 1e3, 1.0)
-  ///
   double getScale(QString);
 
   /// @name UI Configuration Methods
@@ -242,45 +212,34 @@ private:
   void setSettings_SideCoupled_BPF();              ///< Configure UI for side-coupled BPF
   /// @}
 
-  ///
-  /// \brief Checks the center frequency and the bandwidth selected by the user.
+  /// @brief Checks the center frequency and the bandwidth selected by the user.
   /// If the relativa BW exceeds the limit (fixed by certain filter topology), the BW is adjuster
   /// \param max_rel_bw: Maximum admisible relative bandwidth
-  ///
   void adjustRelativeBW(double max_rel_bw);
 
-  ///
-  /// \brief Direct-coupled filters only. Get a hint of a resonators' component value depending on the frequency
+  /// @brief Direct-coupled filters only. Get a hint of a resonators' component value depending on the frequency
   /// \param freq: Frequency in Hz
   /// \param Component: "Inductor" or "Capacitor"
   /// \returns Hint of the component value to have a suitable resonator for a given frequency
   double getResonatorComponentValueHint(double freq, ComponentType component);
 
 public:
-  ///
   /// @brief Performs filter synthesis with current specifications
-  ///
   void synthesize();
 
-  ///
   /// @brief Sets microstrip substrate parameters
   /// @param MS_Subs Substrate properties (εr, h, tanδ, etc.)
-  ///
   void set_MS_Subs(MS_Substrate SUBSTRATE) {
     MS_Subs = SUBSTRATE;
   }
 
 signals:
-  ///
   /// @brief Emitted when schematic is updated
   /// @param content New schematic content
-  ///
   void updateSchematic(SchematicContent);
 
-  ///
   /// @brief Emitted to trigger simulation update
   /// @param content Schematic content to simulate
-  ///
   void updateSimulation(SchematicContent);
 };
 

@@ -1,5 +1,5 @@
 /// @file QucsSExporter.cpp
-/// \brief Qucs-S schematic export class (implementation)
+/// @brief Qucs-S schematic export class (implementation)
 /// @author Andrés Martínez Mera - andresmmera@protonmail.com
 /// @date Jan 3, 2026
 /// @copyright Copyright (C) 2026 Andrés Martínez Mera

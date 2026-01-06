@@ -210,19 +210,19 @@ public:
   void slotHelpIntro();
 
   ///
-  /// \brief Licensing and author credits
+  /// @brief Licensing and author credits
   /// @note This tool uses QCustomPlot, developed by Emanuel Eichhammer.
   /// https://www.qcustomplot.com
   ///
   void slotHelpAbout();
 
   ///
-  /// \brief Information regarding the Qt libraries
+  /// @brief Information regarding the Qt libraries
   ///
   void slotHelpAboutQt();
 
   ///
-  /// \brief Close the program
+  /// @brief Close the program
   ///
   void slotQuit() { qApp->quit(); }
 
@@ -428,7 +428,7 @@ public:
 
   // Trace management
   ///
-  /// \brief Add a new trace via dialog
+  /// @brief Add a new trace via dialog
   ///
   void addTrace();
 
@@ -443,7 +443,7 @@ public:
                 QString trace_style = "Solid");
 
   ///
-  /// \brief Remove a trace via dialog
+  /// @brief Remove a trace via dialog
   ///
   void removeTrace();
 
@@ -538,7 +538,7 @@ public:
   void removeAllMarkers();
 
   ///
-  /// \brief Get total number of markers
+  /// @brief Get total number of markers
   /// \return int Total number of markers
   ///
   int getNumberOfMarkers() { return markerMap.keys().size(); }
@@ -660,7 +660,7 @@ public:
   void updateLimitNames();
 
   ///
-  /// \brief Get the total number of limits
+  /// @brief Get the total number of limits
   /// \return int Number of limits
   ///
   int getNumberOfLimits() { return limitsMap.keys().size(); }
@@ -731,13 +731,13 @@ public:
 
 protected:
   ///
-  /// \brief Handle drag enter event for file drop
+  /// @brief Handle drag enter event for file drop
   /// \param event Drag enter event
   ///
   void dragEnterEvent(QDragEnterEvent* event) override;
 
   ///
-  /// \brief Handle drop event for file drop
+  /// @brief Handle drop event for file drop
   /// \param event Drop event
   ///
   void dropEvent(QDropEvent* event) override;
@@ -762,7 +762,7 @@ private:
   QGridLayout* TracesGrid;             ///< Grid layout for traces
 
   ///
-  /// \brief Based on the display mode (key), items groups all the widgets related to a trace (string)
+  /// @brief Based on the display mode (key), items groups all the widgets related to a trace (string)
   ///
   QMap<DisplayMode, QMap<QString, TraceProperties>> traceMap;
 
@@ -796,13 +796,13 @@ private:
 
   // Set-up Scrollable trace areas
   ///
-  /// \brief Sets all the scrollable areas on a single call. Internally, it calls setupScrollAreaForLayout() for all the areas
+  /// @brief Sets all the scrollable areas on a single call. Internally, it calls setupScrollAreaForLayout() for all the areas
   /// \see setupScrollAreaForLayout
   ///
   void setupScrollableLayout();
 
   ///
-  /// \brief Given the layout and the parent, it sets up the scrollable areas
+  /// @brief Given the layout and the parent, it sets up the scrollable areas
   /// \param layout
   /// \param parentTab
   /// \param objectName
@@ -820,7 +820,7 @@ private:
 
   // Datasets
   ///
-  /// \brief Based on the file name (key), it groups all the relevant traces
+  /// @brief Based on the file name (key), it groups all the relevant traces
   ///
   ///
   QMap<QString, QMap<QString, QList<double>>> datasets;
@@ -891,7 +891,7 @@ private:
   QTableWidget *tableMarkers_GroupDelay;       ///< Marker table for group delay
 
   ///
-  /// \brief All marker widgets are here. This way they can be accessed by name (map key)
+  /// @brief All marker widgets are here. This way they can be accessed by name (map key)
   ///
   QMap<QString, MarkerProperties> markerMap;
 
@@ -912,7 +912,7 @@ private:
   QDoubleSpinBox* Limits_Offset;           ///< Spin box for limit offset
 
   ///
-  /// \brief Groups the widgets related to the traces. They are accessible by name (map key)
+  /// @brief Groups the widgets related to the traces. They are accessible by name (map key)
   ///
   QMap<QString, LimitProperties> limitsMap;
 
@@ -923,7 +923,7 @@ private:
   SimulationSetup* SimulationSetupWidget;  ///< Simulation setup widget
 
   ///
-  /// \brief Circuit description object.
+  /// @brief Circuit description object.
   /// \note It needs to be a member variable since the simulation can be triggered by a change in the simulation settings, i.e. in this case there's no SchematicContent object to emit
   ///
   SchematicContent Circuit;
@@ -935,7 +935,7 @@ private:
   QComboBox* ComboExportOutputMethod;      ///< Export method combo
 
   ///
-  /// \brief Update schematic content
+  /// @brief Update schematic content
   /// \note This is called by the updateSimulation() function
   ///
   void updateSchematicContent();
@@ -953,7 +953,7 @@ private:
   void callTools(bool visible);
 
   ///
-  /// \brief Handle tool tab change
+  /// @brief Handle tool tab change
   /// \param index int Tab index
   ///
   void onToolsTabChanged(int index);
@@ -962,7 +962,7 @@ private:
   QTabWidget* toolsTabs;                   ///< Tab widget for design tools
 
   ///
-  /// \brief Datasets from design tools
+  /// @brief Datasets from design tools
   /// \note The synthesis tools create datasets, but they need to be removed when switching
   /// between tools. It makes no sense to keep, e.g. the filter dataset if the user decides to
   /// switch to the attenuator panel. This structure is used to see which datasets must be removed
@@ -980,7 +980,7 @@ private:
   MS_Substrate MS_Subs;
 
   ///
-  /// \brief Netlist editing tool
+  /// @brief Netlist editing tool
   ///
   NetlistScratchPad* Netlist_Tool;
 
@@ -1128,7 +1128,7 @@ private:
   void getMinMaxValues(QString, QString, qreal&, qreal&, qreal&, qreal&);
 
   ///
-  /// \brief Adjust X axis to file data
+  /// @brief Adjust X axis to file data
   /// \param path to the file
   ///
   void adjust_x_axis_to_file(QString);
@@ -1158,17 +1158,17 @@ private slots:
   void updateSimulation(SchematicContent SI);
 
   ///
-  /// \brief Force simulation update
+  /// @brief Force simulation update
   ///
   void updateSimulation();
 
   ///
-  /// \brief Update substrate parameters
+  /// @brief Update substrate parameters
   ///
   void updateSubstrate();
 
   ///
-  /// \brief Export schematic (as text) to Qucs-S
+  /// @brief Export schematic (as text) to Qucs-S
   ///
   void exportSchematic();
 };

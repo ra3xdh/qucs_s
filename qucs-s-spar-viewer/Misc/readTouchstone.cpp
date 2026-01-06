@@ -1,5 +1,5 @@
 /// @file readTouchstone.cpp
-/// \brief Touchstone data reader
+/// @brief Touchstone data reader
 /// @author Andrés Martínez Mera - andresmmera@protonmail.com
 /// @date Jan 4, 2026
 /// @copyright Copyright (C) 2026 Andrés Martínez Mera

@@ -13,18 +13,19 @@
 #include "AttenuatorBase.h"
 #include <QPen>
 
+/// @class ReflectionAttenuator
 /// @brief Reflection attenuator synthesis
 /// Reference: The PIN diode circuit designer's handbook. W.E. Doherty, Jr., R.D. Joos, Microsemi Corp., 1998
 class ReflectionAttenuator : public AttenuatorBase {
     public:
-      /// \brief Class constructor
+      /// @brief Class constructor
       ReflectionAttenuator() {}
 
-      /// \brief Class constructor with parameters
+      /// @brief Class constructor with parameters
       /// @param AS Design specifications
       ReflectionAttenuator(AttenuatorDesignParameters AS) : AttenuatorBase(AS) {}
 
-      /// \brief Class destructor
+      /// @brief Class destructor
       virtual ~ReflectionAttenuator() {}
 
       /// @brief Calculate component values and build schematic

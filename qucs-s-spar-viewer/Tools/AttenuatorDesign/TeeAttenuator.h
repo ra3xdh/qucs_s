@@ -10,6 +10,7 @@
 
 #include "AttenuatorBase.h"
 
+/// @class TeeAttenuator
 /// @brief Tee attenuator synthesis
 /// Reference: RF design guide. Systems, circuits, and equations. Peter Vizmuller. Artech House, 1995
 class TeeAttenuator : public AttenuatorBase {
@@ -23,7 +24,7 @@ class TeeAttenuator : public AttenuatorBase {
     /// @brief Class destructor
     virtual ~TeeAttenuator() {}
 
-    /// \brief Class constructor with parameters
+    /// @brief Class constructor with parameters
     /// @param AS Design specifications
     void synthesize() override;
 

@@ -86,13 +86,6 @@ PolarPlotWidget::PolarPlotWidget(QWidget *parent)
   plot->replot();
 }
 
-PolarPlotWidget::~PolarPlotWidget() {
-  // Clean up any remaining graphics items
-  clearGraphicsItems();
-
-  // QCustomPlot will handle cleanup of its own objects
-}
-
 void PolarPlotWidget::addTrace(const QString &name, const Trace &trace) {
   traces[name] = trace;
   updateFrequencyRange(); // Update frequency range based on new trace

@@ -1,5 +1,5 @@
 /// @file paintResistor.cpp
-/// \brief Resistor painting method
+/// @brief Resistor painting method
 /// @author Andrés Martínez Mera - andresmmera@protonmail.com
 /// @date Jan 3, 2026
 /// @copyright Copyright (C) 2026 Andrés Martínez Mera
@@ -8,7 +8,7 @@
 #include "./../component.h"
 
 ///
-/// \brief Resistor painting method
+/// @brief Resistor painting method
 /// \param painter Painter object
 ///
 void Component::paintResistor(QPainter *painter) {

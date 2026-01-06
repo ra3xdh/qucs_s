@@ -7,10 +7,6 @@
 
 #include "SchematicContent.h"
 
-///
-/// @brief Class constructor
-/// @note Enforces counters to 0 and ensures the list of elements is clear
-///
 SchematicContent::SchematicContent() {
   Comps.clear();
   Nodes.clear();
@@ -31,16 +27,6 @@ SchematicContent::SchematicContent() {
   NumberWires = 0;
 }
 
-///
-/// @brief Class destructor
-///
-SchematicContent::~SchematicContent() {}
-
-///
-/// @brief Assign net to all wires connected to a node
-/// @param NodeID Node identifier
-/// @param net Net name to assign
-///
 void SchematicContent::assignNetToWiresConnectedToNode(QString NodeID,
                                                        QString net) {
   for (int i = 0; i < Wires.length(); i++) {
@@ -53,10 +39,6 @@ void SchematicContent::assignNetToWiresConnectedToNode(QString NodeID,
   }
 }
 
-///
-/// @brief Generate netlist for the built-in S-parameter simulator
-/// @return Netlist
-///
 QString SchematicContent::getSParameterNetlist() {
   if (Comps.isEmpty()) {
     return netlist; // This is used in case the network is defined using a plain
@@ -509,16 +491,6 @@ QString SchematicContent::getSParameterNetlist() {
   return netlist;
 }
 
-///
-/// @brief Set netlist directly
-/// @param Netlist string
-///
-void SchematicContent::setNetlist(QString netlist) { this->netlist = netlist; }
-
-///
-/// @brief Add wire to schematic
-/// @param WI Wire information
-///
 void SchematicContent::appendWire(WireInfo WI) {
   // Set wire ID
   QString ID = QString("W%1").arg(++NumberWires);
@@ -526,13 +498,6 @@ void SchematicContent::appendWire(WireInfo WI) {
   Wires.append(WI);
 }
 
-///
-/// @brief Add wire with connection details
-/// @param O Origin ID
-/// @param ON Origin port
-/// @param D Destination ID
-/// @param DN Destination port
-///
 void SchematicContent::appendWire(QString O, int ON, QString D, int DN) {
   WireInfo WI(O, ON, D, DN);
   // Set wire ID
@@ -541,14 +506,6 @@ void SchematicContent::appendWire(QString O, int ON, QString D, int DN) {
   Wires.append(WI);
 }
 
-///
-/// @brief Add wire with connection details and color
-/// @param O Origin ID
-/// @param ON Origin port
-/// @param D Destination ID
-/// @param DN Destination port
-/// @param c Wire color
-///
 void SchematicContent::appendWire(QString O, int ON, QString D, int DN,
                                   QColor c) {
   WireInfo WI(O, ON, D, DN);
@@ -559,11 +516,6 @@ void SchematicContent::appendWire(QString O, int ON, QString D, int DN,
   Wires.append(WI);
 }
 
-///
-/// @brief Get count of specific component type
-/// @param Comp Component type
-/// @return Number of components of that type
-///
 int SchematicContent::getComponentCounter(ComponentType Comp) {
   // If NumberComponents map is empty, build it from Comps list
   if (NumberComponents.isEmpty() && !Comps.isEmpty()) {
@@ -581,12 +533,6 @@ int SchematicContent::getComponentCounter(ComponentType Comp) {
   return NumberComponents.value(Comp, 0);
 }
 
-///
-/// @brief Export schematic to specified environment (so far, Qucs-S only)
-/// @param environment Target environment (e.g., "Qucs-S")
-/// @param backend Backend simulator
-/// @return Exported schematic string
-///
 QString SchematicContent::exportSchematic(QString environment,
                                           QString backend) {
 

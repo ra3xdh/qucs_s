@@ -1,5 +1,5 @@
 /// @file paintGND.cpp
-/// \brief Ground painting method
+/// @brief Ground painting method
 /// @author Andrés Martínez Mera - andresmmera@protonmail.com
 /// @date Jan 3, 2026
 /// @copyright Copyright (C) 2026 Andrés Martínez Mera
@@ -8,7 +8,7 @@
 #include "./../component.h"
 
 ///
-/// \brief Ground painting method
+/// @brief Ground painting method
 /// \param painter Painter object
 ///
 void Component::paintGND(QPainter *painter) {
