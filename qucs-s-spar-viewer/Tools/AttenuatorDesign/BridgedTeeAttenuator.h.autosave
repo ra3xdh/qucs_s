@@ -21,6 +21,7 @@ class BridgedTeeAttenuator : public AttenuatorBase {
       /// \brief Class constructor
       ///
       BridgedTeeAttenuator(){}
+      
       ///
       /// \brief Class destructor
       ///

@@ -1,29 +1,14 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file ReflectionAttenuator.cpp
+/// @brief Reflection attenuator synthesis (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 5, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "ReflectionAttenuator.h"
 
-ReflectionAttenuator::ReflectionAttenuator() {}
-
-ReflectionAttenuator::ReflectionAttenuator(AttenuatorDesignParameters AS)
-    : AttenuatorBase(AS) {}
-
-ReflectionAttenuator::~ReflectionAttenuator() {}
-
+/// Reference: The PIN diode circuit designer's handbook. W.E. Doherty, Jr.,
+/// R.D. Joos, Microsemi Corp., 1998
 void ReflectionAttenuator::calculateParams() {
   // Design equations
   double L = pow(10, -.05 * Specification.Attenuation);
