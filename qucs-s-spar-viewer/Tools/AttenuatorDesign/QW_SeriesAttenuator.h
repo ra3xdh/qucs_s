@@ -19,14 +19,14 @@
 /// Reference: The PIN diode circuit designer's handbook. W.E. Doherty, Jr., R.D. Joos, Microsemi Corp., 1998
 class QW_SeriesAttenuator : public AttenuatorBase {
     public:
-      /// \brief Class constructor
+      /// @brief Class constructor
       QW_SeriesAttenuator() {}
 
-      /// \brief Class constructor with parameters
+      /// @brief Class constructor with parameters
       /// @param AS Design specifications
       QW_SeriesAttenuator(AttenuatorDesignParameters AS) : AttenuatorBase(AS) {}
 
-      /// \brief Class destructor
+      /// @brief Class destructor
       virtual ~QW_SeriesAttenuator() {}
 
       /// @brief Calculate component values and build schematic

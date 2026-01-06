@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file LoadSpecificationWidget.cpp
+/// @brief Widget for entering the load impedance data (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 6, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "LoadSpecificationWidget.h"
 
@@ -59,8 +49,6 @@ LoadSpecificationWidget::LoadSpecificationWidget(QWidget *parent)
   // good to keep it as compact as possible
   setCollapsed(true);
 }
-
-LoadSpecificationWidget::~LoadSpecificationWidget() {}
 
 void LoadSpecificationWidget::setupUI() {
   // Create main layout for the group box
@@ -823,14 +811,3 @@ void LoadSpecificationWidget::mousePressEvent(QMouseEvent *event) {
   }
   QGroupBox::mousePressEvent(event);
 }
-
-void LoadSpecificationWidget::onToggleCollapse() {
-  setCollapsed(!m_isCollapsed);
-}
-
-std::array<std::complex<double>, 4>
-LoadSpecificationWidget::getSParameters() const {
-  return {getS11(), getS12(), getS21(), getS22()};
-}
-
-QString LoadSpecificationWidget::getSparFilePath() { return spar_file_path; }

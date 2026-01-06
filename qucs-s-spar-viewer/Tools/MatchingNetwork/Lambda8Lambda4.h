@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file Lambda8Lambda4.h
+/// @brief Lambda/8 + Lambda/4 matching network synthesis (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 6, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef LAMBDA8LAMBDA4_H
 #define LAMBDA8LAMBDA4_H
@@ -22,21 +12,41 @@
 #include "../../Schematic/component.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
 
+/// @class Lambda8Lambda4
+/// @brief Lambda/8 + Lambda/4 matching network synthesis
+/// Reference: Inder J. Bahl. "Fundamentals of RF and microwave transistor
+/// amplifiers". John Wiley and Sons. 2009. Pages 159 - 160
 class Lambda8Lambda4 : public Network {
+  public:
+    /// @brief Class constructor
+    Lambda8Lambda4() {}
 
-public:
-  Lambda8Lambda4();
-  virtual ~Lambda8Lambda4();
+    /// @brief Class constructor with parameters
+    /// @param AS Design specifications
+    /// @param freq Corner frequency for matching
+    Lambda8Lambda4(MatchingNetworkDesignParameters AS,
+                   double freq) {
+      Specs = AS;
+      f_match = freq;
+    }
 
-  Lambda8Lambda4(MatchingNetworkDesignParameters, double freq);
-  void synthesize();
+    /// @brief Class destructor
+    virtual ~Lambda8Lambda4() {}
 
-private:
-  struct MatchingNetworkDesignParameters Specs;
-  double f_match;
+    /// @brief Calculate component values and build schematic
+    void synthesize();
 
-  void buildMatchingNetwork_IdealTL(double Zm, double Zmm, double XL);
-  void buildMatchingNetwork_Microstrip(double Zm, double Zmm, double XL);
+  private:
+    /// @brief Matching network specifications
+    struct MatchingNetworkDesignParameters Specs;
+
+    double f_match; ///< Corner frequency for matching
+
+    /// @brief Build schematic with ideal transmission lines
+    void buildMatchingNetwork_IdealTL(double Zm, double Zmm, double XL);
+
+    /// @brief Build schematic with microstrip transmission lines
+    void buildMatchingNetwork_Microstrip(double Zm, double Zmm, double XL);
 };
 
 #endif // LAMBDA8LAMBDA4_H
