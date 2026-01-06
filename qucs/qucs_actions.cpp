@@ -242,15 +242,12 @@ void QucsApp::slotEditDelete(bool on) {
 // Is called if "Strech (move w/wiring)"-Button is pressed.
 void QucsApp::slotEditStretch(bool on) {
   Schematic *Doc = dynamic_cast<Schematic *>(DocumentTab->currentWidget());
-  if (!on || Doc->currentSelection().isEmpty()) {
-    // if we were already on, or selection is empty
-    // cancel action and return to select mode
+  // if we were already on and  selection is empty
+  // cancel action and return to select mode
+  if (on && Doc->currentSelection().isEmpty()) {
     editStretch->blockSignals(true);
     editStretch->setChecked(false);
     editStretch->blockSignals(false);
-
-    activeAction = nullptr;
-
     slotEscape();
     return;
   }
@@ -263,15 +260,12 @@ void QucsApp::slotEditStretch(bool on) {
 // Is called if "Move (w/o wiring)"-Button is pressed.
 void QucsApp::slotEditMove(bool on) {
   Schematic *Doc = dynamic_cast<Schematic *>(DocumentTab->currentWidget());
-  if (!on || Doc->currentSelection().isEmpty()) {
-    // if we were already on, or selection is emtpy
-    // cancel action and return to select mode
+  // if we were already on and selection is empty
+  // cancel action and return to select mode
+  if (on && Doc->currentSelection().isEmpty()) {
     editMove->blockSignals(true);
     editMove->setChecked(false);
     editMove->blockSignals(false);
-
-    activeAction = nullptr;
-
     slotEscape();
     return;
   }
