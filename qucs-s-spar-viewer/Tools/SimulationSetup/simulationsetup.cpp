@@ -1,19 +1,10 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file simulationsetup.cpp
+/// @brief UI component to set the simulation settings (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 7, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-laterng with this program.  If not, see
+/// <https://www.gnu.org/licenses/>.
 
 #include "simulationsetup.h"
 
@@ -69,8 +60,6 @@ SimulationSetup::SimulationSetup(QWidget *parent) : QWidget(parent) {
   connect(groundPlaneThicknessSpinBox, &QDoubleSpinBox::valueChanged, this,
           [this]() { update(); });
 }
-
-SimulationSetup::~SimulationSetup() {}
 
 QWidget *SimulationSetup::createFrequencySweepTab() {
   QWidget *frequencyWidget = new QWidget();
