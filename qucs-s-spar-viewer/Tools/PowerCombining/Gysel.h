@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file Gysel.h
+/// @brief Gysel power combiner/divider network (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 7, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef GYSEL_H
 #define GYSEL_H
@@ -24,56 +14,72 @@
 #include "../TransmissionLineSynthesis/Microstrip.h"
 #include <QPen>
 
+/// @class Gysel
+/// @brief Gysel power combiner/divider network
 class Gysel : public Network {
-public:
-  Gysel();
-  virtual ~Gysel();
-  Gysel(PowerCombinerParams);
-  void synthesize();
+  public:
+    /// @brief Class constructor
+    Gysel() {}
 
-private:
-  PowerCombinerParams Specification;
-  
-  double lambda4, lambda2;
-  
-  void calculateParams();
-  void buildGysel_IdealTL();
-  void buildGysel_Microstrip();
+    /// @brief Constructor with power combiner parameters
+    /// @param params Power combiner specification parameters
+    Gysel(PowerCombinerParams PS) { Specification = PS; }
+
+    /// @brief Class destructor
+    virtual ~Gysel() {}
+
+    /// @brief Synthesize the double-box branchline network
+    void synthesize();
 
   private:
+    /// @brief Power combiner specifications
+    PowerCombinerParams Specification;
 
-  // Components' locations
+    double lambda4; ///< Quarter wavelength length
+    double lambda2; ///< Half wavelength length
 
-  // These variables are put as class private because these positions are shared between TLIN and MS implemenations
+    /// @brief Calculate electrical parameters
+    void calculateParams();
 
-  // This function sets the component's location before the schematic is built
-  void setComponentsLocation();
+    /// @brief Set component locations for schematic layout
+    void setComponentsLocation();
 
-  // Private variables for components location
-  int x_spacing, y_spacing; // General components spacing
+    /// @brief Build Gysel network using ideal transmission lines
+    void buildGysel_IdealTL();
 
-  // Ports
-  QPoint Port_in;
-  QPoint Port_out_up;
-  QPoint Port_out_bottom;
+    /// @brief Build Gysel network using microstrip transmission lines
+    void buildGysel_Microstrip();
 
-  // Nodes
-  QPoint N1_pos; // Node in front of the input port
-  QPoint N2_pos; // Node in front of the upper output port
-  QPoint N3_pos; // Node in front of the lower output port
-  QPoint N4_pos; // Node in front of the upper resistor
-  QPoint N5_pos; // Node in front of the lower resistor
+    /// Component spacing parameters
+    int x_spacing;  ///< Horizontal spacing between components
+    int y_spacing;  ///< Vertical spacing between components
 
-  // Transmission lines
-  QPoint TL1_pos;
-  QPoint TL2_pos;
-  QPoint TL3_pos;
-  QPoint TL4_pos;
-  QPoint TL5_pos;
+    /// Ports
+    QPoint Port_in;   ///< Input port position
+    QPoint Port_out_up; ///< Output port 1 position
+    QPoint Port_out_bottom; ///< Output port 2 position
 
-  // Resistors
-  QPoint R_top, R_GND_top;
-  QPoint R_bottom, R_GND_bottom;
+    /// Node positions
+    QPoint N1_pos; // Node in front of the input port
+    QPoint N2_pos; // Node in front of the upper output port
+    QPoint N3_pos; // Node in front of the lower output port
+    QPoint N4_pos; // Node in front of the upper resistor
+    QPoint N5_pos; // Node in front of the lower resistor
+
+    /// Transmission line positions
+    QPoint TL1_pos;
+    QPoint TL2_pos;
+    QPoint TL3_pos;
+    QPoint TL4_pos;
+    QPoint TL5_pos;
+
+    /// Top resistor
+    QPoint R_top;      ///< Position of the top resistor
+    QPoint R_GND_top;  ///< Position of the top resistor's GND
+
+    /// Bottom resistor
+    QPoint R_bottom;      ///< Position of the top resistor
+    QPoint R_GND_bottom;  ///< Position of the top resistor's GND
 
 };
 
