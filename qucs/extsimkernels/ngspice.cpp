@@ -171,6 +171,12 @@ void Ngspice::createNetlist(
         bool hasDblSWP = false;
         QString cnt_var;
 
+        // track whether we want to netlist equations
+        bool netlist_equations = true;
+        // track whether we want the dependent vars (e.g. equation variables)
+        // to be included in the save node statement
+        bool write_dep_vars = true;
+
         // Duplicate .PARAM in .control section. They may be used in euqations
         for (Component* pc1 : a_schematic->a_DocComps) {
             if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
@@ -275,8 +281,11 @@ void Ngspice::createNetlist(
             // NOTE: if we set 'setplot noiseX', and we use 'all'
             // it will be the equivalent of noiseX.all
             nods = "all";
+            // since 'all' is included, we don't need to write the dependent variables explicitly
+            write_dep_vars = false;
         } else if ( sim_typ == ".PZ" ) {
             pzSims++;
+            netlist_equations = false;
             spiceNetlist.append(pc->getSpiceNetlist());
             QString out = "spice4qucs." + sim_name + ".cir.pz";
             // Add it twice for poles and zeros
@@ -284,10 +293,12 @@ void Ngspice::createNetlist(
             outputs.append(out);
         } else if ( sim_typ == ".SENS" ) {
             dcSims++;
+            netlist_equations = false;
             spiceNetlist.append(pc->getSpiceNetlist());
             outputs.append("spice4qucs." + sim_name + ".ngspice.sens.dc.prn");
         } else if ( sim_typ == ".SENS_AC" ) {
             freqSims++;
+            netlist_equations = false;
             spiceNetlist.append(pc->getSpiceNetlist());
             outputs.append("spice4qucs." + sim_name + ".sens.prn");
         } else if ( sim_typ == ".SP" ) {
@@ -313,14 +324,16 @@ void Ngspice::createNetlist(
         } else
             continue;
 
-        if ( (sim_typ != ".PZ") && (sim_typ != ".SENS") && (sim_typ != ".SENS_AC") ) {
+        if (netlist_equations) {
             QStringList dep_vars;
             for (Component* pc1 : a_schematic->a_DocComps) {
                 if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
                 if ( pc1->Model == "Eqn" || pc1->Model == "NutmegEq" )
                     spiceNetlist.append(pc1->getEquations(sim_name, dep_vars));
             }
-            nods.append(' ' + dep_vars.join(' '));
+            if (write_dep_vars) {
+                nods.append(' ' + dep_vars.join(' '));
+            }
         }
 
         if ( sim_typ == ".DC" ) {
