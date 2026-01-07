@@ -140,6 +140,7 @@ void Qucs_S_SPAR_Viewer::updateSimulation() {
   qDebug() << netlist;
 
   SPAR_engine.setNetlist(netlist);
+  // The frequency sweep is taken directly from the SimulationSetup widget
   double fstart = SimulationSetupWidget->getFstart();
   double fstop = SimulationSetupWidget->getFstop();
   int npoints = SimulationSetupWidget->getNpoints();

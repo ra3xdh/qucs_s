@@ -63,7 +63,7 @@ class SimulationSetup : public QWidget {
 
     /// @brief Get the number of frequency points.
     /// @return Number of points.
-    int getNpoints();
+    int getNpoints() { return npointsSpinBox->value(); }
     /// }@
 
     /// @name Substrate properties methods
@@ -75,28 +75,40 @@ class SimulationSetup : public QWidget {
     TransmissionLineType getTransmissionLineType();
 
     /// @brief Substrate thickness (mm).
-    double getSubstrateThickness();
+    double getSubstrateThickness(){
+      return substrateThicknessSpinBox->value(); // in mm
+    }
 
     /// @brief Relative permittivity (εᵣ)
-    double getSubstratePermittivity();
+    double getSubstratePermittivity(){
+      return substratePermittivitySpinBox->value();
+    }
 
     /// @brief Loss tangent (tan δ)
-    double getSubstrateLossTangent();
+    double getSubstrateLossTangent(){
+      return substrateLossTangentSpinBox->value();
+    }
 
     /// @brief Conductor thickness (µm)
-    double getConductorThickness();
+    double getConductorThickness(){
+      return conductorThicknessSpinBox->value();
+    }
 
     /// @brief Conductor conductivity (S/m)
-    double getConductorConductivity();
+    double getConductorConductivity() {
+      return conductorConductivitySpinBox->value();
+    }
 
     /// @brief Ground‑plane thickness (µm).
     /// @note Stripline only
-    double getGroundPlaneThickness();
+    double getGroundPlaneThickness(){
+      return groundPlaneThicknessSpinBox->value();
+    }
     /// }@
 
     /// @brief Retrieve the populated @c MS_Substrate structure.
     /// @return Substrate description compatible with the synthesis code.
-    MS_Substrate get_MS_Substrate();
+    MS_Substrate get_MS_Substrate() { return MS_Subs; }
 
   private:
     // Tab widget
@@ -136,6 +148,9 @@ class SimulationSetup : public QWidget {
   private slots:
     /// @brief Refresh the stored substrate data after a UI change.
     void updateSubstrateDefinition();
+
+    /// @brief Refresh the frequency sweep settings
+    void updateFrequencySweep() {emit updateSimulation();}
 
     /// @brief React to a change in transmission‑line type (enable/disable controls)
     void onTransmissionLineTypeChanged();

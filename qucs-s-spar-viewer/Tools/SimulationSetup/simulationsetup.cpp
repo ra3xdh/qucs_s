@@ -28,37 +28,37 @@ SimulationSetup::SimulationSetup(QWidget *parent) : QWidget(parent) {
           this, [this]() { update(); });
 
   connect(fstartScaleComboBox, &QComboBox::currentIndexChanged, this,
-          [this]() { update(); });
+          [this]() { updateFrequencySweep(); });
 
   connect(fstopSpinBox, &QDoubleSpinBox::valueChanged, this,
-          [this]() { update(); });
+          [this]() { updateFrequencySweep(); });
 
   connect(fstopScaleComboBox, &QComboBox::currentIndexChanged, this,
-          [this]() { update(); });
+          [this]() { updateFrequencySweep(); });
 
   connect(npointsSpinBox, &QSpinBox::valueChanged, this,
-          [this]() { update(); });
+          [this]() { updateFrequencySweep(); });
 
   connect(transmissionLineComboBox, &QComboBox::currentIndexChanged, this,
           [this]() { onTransmissionLineTypeChanged(); });
 
   connect(substrateThicknessSpinBox, &QDoubleSpinBox::valueChanged, this,
-          [this]() { update(); });
+          [this]() { updateSubstrateDefinition(); });
 
   connect(substratePermittivitySpinBox, &QDoubleSpinBox::valueChanged, this,
-          [this]() { update(); });
+          [this]() { updateSubstrateDefinition(); });
 
   connect(substrateLossTangentSpinBox, &QDoubleSpinBox::valueChanged, this,
-          [this]() { update(); });
+          [this]() { updateSubstrateDefinition(); });
 
   connect(conductorThicknessSpinBox, &QDoubleSpinBox::valueChanged, this,
-          [this]() { update(); });
+          [this]() { updateSubstrateDefinition(); });
 
   connect(conductorConductivitySpinBox, &QDoubleSpinBox::valueChanged, this,
-          [this]() { update(); });
+          [this]() { updateSubstrateDefinition(); });
 
   connect(groundPlaneThicknessSpinBox, &QDoubleSpinBox::valueChanged, this,
-          [this]() { update(); });
+          [this]() { updateSubstrateDefinition(); });
 }
 
 QWidget *SimulationSetup::createFrequencySweepTab() {
@@ -66,7 +66,7 @@ QWidget *SimulationSetup::createFrequencySweepTab() {
   QGridLayout *frequencyLayout = new QGridLayout();
 
   // Start frequency
-  QLabel *fstartLabel = new QLabel("Start freq");
+  QLabel *fstartLabel = new QLabel("<b>Start freq<\b>");
   fstartSpinBox = new QDoubleSpinBox();
   fstartSpinBox->setMinimum(0);
   fstartSpinBox->setMaximum(1e7);
@@ -84,7 +84,7 @@ QWidget *SimulationSetup::createFrequencySweepTab() {
   frequencyLayout->addWidget(fstartScaleComboBox, 0, 2);
 
   // Stop frequency
-  QLabel *fstopLabel = new QLabel("Stop freq");
+  QLabel *fstopLabel = new QLabel("<b>Stop freq<\b>");
   fstopSpinBox = new QDoubleSpinBox();
   fstopSpinBox->setMinimum(0);
   fstopSpinBox->setMaximum(1e7);
@@ -102,7 +102,7 @@ QWidget *SimulationSetup::createFrequencySweepTab() {
   frequencyLayout->addWidget(fstopScaleComboBox, 1, 2);
 
   // Number of points
-  QLabel *npointsLabel = new QLabel("Number of points");
+  QLabel *npointsLabel = new QLabel("<b>Number of points<\b>");
   npointsSpinBox = new QSpinBox();
   npointsSpinBox->setMinimum(10);
   npointsSpinBox->setMaximum(1e6);
@@ -298,12 +298,14 @@ double SimulationSetup::getFstart() {
   freq /= scale;
   return freq;
 }
+
 QString SimulationSetup::getFstart_as_Text() {
   double freq = fstartSpinBox->value();
   QString unit = fstartScaleComboBox->currentText();
   QString text = QString("%1 %2").arg(QString::number(freq), unit);
   return text;
 }
+
 double SimulationSetup::getFstop() {
   double freq = fstopSpinBox->value();
   QString unit = fstopScaleComboBox->currentText();
@@ -311,6 +313,7 @@ double SimulationSetup::getFstop() {
   freq /= scale;
   return freq;
 }
+
 QString SimulationSetup::getFstop_as_Text() {
   double freq = fstopSpinBox->value();
   QString unit = fstopScaleComboBox->currentText();
@@ -318,36 +321,10 @@ QString SimulationSetup::getFstop_as_Text() {
   return text;
 }
 
-int SimulationSetup::getNpoints() { return npointsSpinBox->value(); }
-
 TransmissionLineType SimulationSetup::getTransmissionLineType() {
   return transmissionLineComboBox->currentIndex() == 0
              ? TransmissionLineType::MLIN
              : TransmissionLineType::SLIN;
-}
-
-double SimulationSetup::getSubstrateThickness() {
-  return substrateThicknessSpinBox->value(); // in mm
-}
-
-double SimulationSetup::getSubstratePermittivity() {
-  return substratePermittivitySpinBox->value();
-}
-
-double SimulationSetup::getSubstrateLossTangent() {
-  return substrateLossTangentSpinBox->value();
-}
-
-double SimulationSetup::getConductorThickness() {
-  return conductorThicknessSpinBox->value(); // in μm
-}
-
-double SimulationSetup::getConductorConductivity() {
-  return conductorConductivitySpinBox->value(); // in S/m
-}
-
-double SimulationSetup::getGroundPlaneThickness() {
-  return groundPlaneThicknessSpinBox->value(); // in μm
 }
 
 void SimulationSetup::updateSubstrateDefinition() {
@@ -378,7 +355,5 @@ void SimulationSetup::onTransmissionLineTypeChanged() {
   updateImageDisplay();
 
   // Trigger simulation update
-  update();
+  emit updateSimulation();
 }
-
-MS_Substrate SimulationSetup::get_MS_Substrate() { return MS_Subs; }
