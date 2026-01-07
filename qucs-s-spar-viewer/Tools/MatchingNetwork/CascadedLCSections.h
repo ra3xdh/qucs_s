@@ -28,8 +28,7 @@ public:
   /// @brief Class constructor with parameters
   /// @param AS Design specifications
   /// @param freq Corner frequency for matching
-  CascadedLCSections(MatchingNetworkDesignParameters AS,
-                     double freq) {
+  CascadedLCSections(MatchingNetworkDesignParameters AS, double freq) {
     Specs            = AS;
     NumberOfSections = 3; // Default, should be configurable
     f_match          = freq;

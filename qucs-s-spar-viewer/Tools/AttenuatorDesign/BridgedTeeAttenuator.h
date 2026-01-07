@@ -24,8 +24,7 @@ class BridgedTeeAttenuator : public AttenuatorBase {
 
       /// @brief Class constructor with parameters
       /// @param AS Design specifications
-      BridgedTeeAttenuator(AttenuatorDesignParameters AS)
-          : AttenuatorBase(AS) {}
+      BridgedTeeAttenuator(AttenuatorDesignParameters AS) : AttenuatorBase(AS) {}
 
       /// @brief Calculate component values and build schematic
       void synthesize() override;

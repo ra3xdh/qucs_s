@@ -19,8 +19,7 @@
 ///
 /// This class synthesizes bandpass filters using end-coupled resonator topology,
 /// where resonators are coupled through series capacitors at their ends.
-/// Reference: "Microstrip Filters for RF/Microwave Applications"
-/// Jia-Sheng Hong and M. J. Lancaster (2001, pages 121-123).
+/// Reference: "Microwave Engineering", David M. Pozar. 4th edition. Page 441-442
 /// @note Supports:
 ///   - Ideal transmission lines
 ///   - Microstrip transmission lines

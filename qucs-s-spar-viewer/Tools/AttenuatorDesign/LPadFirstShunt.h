@@ -25,8 +25,7 @@ class LPadFirstShunt : public AttenuatorBase {
 
       /// @brief Class constructor with parameters
       /// @param AS Design specifications
-      LPadFirstShunt(AttenuatorDesignParameters AS)
-          : AttenuatorBase(AS) {}
+      LPadFirstShunt(AttenuatorDesignParameters AS) : AttenuatorBase(AS) {}
 
       /// @brief Class constructor with parameters
       /// @param AS Design specifications

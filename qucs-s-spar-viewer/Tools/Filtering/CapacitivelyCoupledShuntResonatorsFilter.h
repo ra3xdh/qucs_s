@@ -34,9 +34,7 @@ public:
   /// @brief Constructor with filter specifications.
   /// @param FS Filter specifications including order, bandwidth, center frequency,
   ///           impedance, and transmission line implementation type.
-  CapacitivelyCoupledShuntResonatorsFilter(FilterSpecifications FS) {
-    Specification = FS;
-  }
+  CapacitivelyCoupledShuntResonatorsFilter(FilterSpecifications FS) {Specification = FS;}
 
   /// @brief Synthesizes the filter based on the provided specifications.
   void synthesize();

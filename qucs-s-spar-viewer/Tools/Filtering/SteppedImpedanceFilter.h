@@ -33,9 +33,7 @@ public:
   /// @brief Constructor with filter specifications.
   /// @param FS Filter specifications including order, cutoff frequency, impedance,
   ///           minimum/maximum impedance values, and transmission line type.
-  SteppedImpedanceFilter(FilterSpecifications FS) {
-    Specification = FS;
-  }
+  SteppedImpedanceFilter(FilterSpecifications FS) {Specification = FS;}
 
   /// @brief Synthesizes the filter based on the provided specifications.
   void synthesize();

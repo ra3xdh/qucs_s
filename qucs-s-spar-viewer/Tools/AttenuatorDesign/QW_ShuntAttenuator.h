@@ -24,8 +24,7 @@ class QW_ShuntAttenuator : public AttenuatorBase {
 
       /// @brief Class constructor with parameters
       /// @param AS Design specifications
-      QW_ShuntAttenuator(AttenuatorDesignParameters AS)
-          : AttenuatorBase(AS) {}
+      QW_ShuntAttenuator(AttenuatorDesignParameters AS) : AttenuatorBase(AS) {}
 
       /// @brief Class destructor
       virtual ~QW_ShuntAttenuator() {}

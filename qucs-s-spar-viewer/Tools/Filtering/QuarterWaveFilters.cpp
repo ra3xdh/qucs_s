@@ -14,6 +14,12 @@ void QuarterWaveFilters::synthesize() {
   gi.pop_back();
   gi.pop_front();
 
+  // Initialize list of components
+  Schematic.NumberComponents[Term] = 0;
+  Schematic.NumberComponents[GND] = 0;
+  Schematic.NumberComponents[ConnectionNodes] = 0;
+  Schematic.NumberComponents[TransmissionLine] = 0;
+
   // Dispatch to appropriate implementation
   if (Specification.TL_implementation == TransmissionLineType::Ideal) {
     buildFilter_IdealTL(gi);

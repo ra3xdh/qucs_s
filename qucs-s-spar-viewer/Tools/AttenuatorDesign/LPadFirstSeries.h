@@ -26,8 +26,7 @@ class LPadFirstSeries : public AttenuatorBase {
 
       /// @brief Class constructor with parameters
       /// @param AS Design specifications
-      LPadFirstSeries(AttenuatorDesignParameters AS)
-          : AttenuatorBase(AS) {}
+      LPadFirstSeries(AttenuatorDesignParameters AS) : AttenuatorBase(AS) {}
 
       /// @brief Class constructor with parameters
       /// @param AS Design specifications

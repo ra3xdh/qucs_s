@@ -28,9 +28,7 @@ class Recombinant3WayWilkinson : public Network {
 
     /// @brief Constructor with power combiner parameters
     /// @param params Power combiner specification parameters
-    Recombinant3WayWilkinson(PowerCombinerParams PS) {
-      Specification = PS;
-    }
+    Recombinant3WayWilkinson(PowerCombinerParams PS) {Specification = PS;}
 
     /// @brief Class destructor
     virtual ~Recombinant3WayWilkinson() {}

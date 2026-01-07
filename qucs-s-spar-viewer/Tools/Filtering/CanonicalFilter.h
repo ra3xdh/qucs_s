@@ -33,9 +33,7 @@ public:
 
   /// @brief Constructor with filter specifications
   /// @param specs Filter parameters (order, type, frequency, ripple, etc.)
-  CanonicalFilter(FilterSpecifications FS) {
-    Specification = FS;
-  }
+  CanonicalFilter(FilterSpecifications FS) {Specification = FS;}
 
   /// @brief Performs complete filter synthesis from specifications
   void synthesize();

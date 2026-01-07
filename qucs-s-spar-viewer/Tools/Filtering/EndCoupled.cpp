@@ -9,7 +9,8 @@
 #include "EndCoupled.h"
 
 // This function synthesizes an end-coupled bandpass filter
-// implementation Reference: Microstrip filters for RF/Microwave Applications.
+// implementation
+// Reference: Microstrip filters for RF/Microwave Applications.
 // Jia-Sheng Hong. M. J. Lancaster. 2001. John Wiley and Sons. Pages 121-123.
 void EndCoupled::synthesize() {
   LowpassPrototypeCoeffs LP_coeffs(Specification);

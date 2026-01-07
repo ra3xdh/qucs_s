@@ -34,9 +34,7 @@ class CoupledLineBandpassFilter : public Network {
       /// @brief Constructor with filter specifications.
       /// @param FS Filter specifications including order, bandwidth, center frequency,
       ///           impedance, and transmission line implementation type.
-      CoupledLineBandpassFilter(FilterSpecifications FS) {
-        Specification = FS;
-      }
+      CoupledLineBandpassFilter(FilterSpecifications FS) {Specification = FS;}
 
       /// @brief Synthesizes the filter based on the provided specifications.
       ///

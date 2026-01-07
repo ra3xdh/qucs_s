@@ -18,23 +18,16 @@
 /// @brief Implements quarter-wave stub bandpass and bandstop filters.
 ///
 /// This class synthesizes filters using quarter-wave transmission line sections
-/// with shunt stubs. For bandpass filters, short-circuited stubs are used, while
-/// bandstop filters employ open-circuited stubs. The topology consists of cascaded
-/// quarter-wave lines with alternating stub sections that provide the frequency
-/// selectivity. Both ideal and microstrip implementations are supported.
+/// with shunt stubs.
+/// Bandpass filters: short-circuited stubs
+/// Bandstop filters: open-circuited stubs
+/// Both ideal and microstrip implementations are supported.
+/// Reference: "Microwave Engineering", David M. Pozar. 4th edition. Page 437 - 440
 class QuarterWaveFilters : public Network {
 public:
   /// @brief Default constructor.
   /// Initializes component counters for the schematic.
-  /// @todo See if it's necessary to update counters
-  QuarterWaveFilters() {
-    // Initialize list of components
-    Schematic.NumberComponents[Capacitor] = 0;
-    Schematic.NumberComponents[Inductor] = 0;
-    Schematic.NumberComponents[Term] = 0;
-    Schematic.NumberComponents[GND] = 0;
-    Schematic.NumberComponents[ConnectionNodes] = 0;
-  }
+  QuarterWaveFilters() {}
 
   /// @brief Virtual destructor.
   virtual ~QuarterWaveFilters() {}
@@ -42,16 +35,7 @@ public:
   /// @brief Constructor with filter specifications.
   /// @param FS Filter specifications including order, bandwidth, center frequency,
   ///           filter type (bandpass/bandstop), impedance, and implementation type
-  /// @todo See if it's necessary to update counters
-  QuarterWaveFilters(FilterSpecifications FS) {
-    Specification = FS;
-    // Initialize list of components
-    Schematic.NumberComponents[Capacitor] = 0;
-    Schematic.NumberComponents[Inductor] = 0;
-    Schematic.NumberComponents[Term] = 0;
-    Schematic.NumberComponents[GND] = 0;
-    Schematic.NumberComponents[ConnectionNodes] = 0;
-  }
+  QuarterWaveFilters(FilterSpecifications FS) {Specification = FS;}
 
   /// @brief Synthesizes the filter based on the provided specifications.
   void synthesize();

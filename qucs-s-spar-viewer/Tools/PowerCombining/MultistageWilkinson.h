@@ -25,9 +25,7 @@ class MultistageWilkinson : public Network {
 
         /// @brief Constructor with power combiner parameters
         /// @param params Power combiner specification parameters
-        MultistageWilkinson(PowerCombinerParams)(PowerCombinerParams PS) {
-          Specification = PS;
-        }
+        MultistageWilkinson(PowerCombinerParams PS) {Specification = PS;}
 
         /// @brief Class destructor
         virtual ~MultistageWilkinson() {}

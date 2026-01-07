@@ -85,7 +85,7 @@ Standard format for N-port S-parameter data. Supports:
 - MA (Magnitude-Angle), RI (Real-Imaginary), DB (dB-Angle) formats
 - Reference impedance specification
 
-### Qucs-D Dataset
+### Qucs-S Dataset
 Qucs-S format supporting:
 - **Qucsator format**: `S[i,j]` matrix notation
 - **NGspice format**: `ac.v(s_j_i)` voltage source notation
@@ -104,4 +104,4 @@ Andrés Martínez Mera - andresmmera@protonmail.com
 
 ## Copyright
 
-Copyright (C) 2019, 2025 Andrés Martínez Mera
+Copyright (C) 2026 Andrés Martínez Mera

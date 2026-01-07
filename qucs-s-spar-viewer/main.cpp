@@ -28,7 +28,6 @@
 /// Global structure holding application settings
 struct tQucsSettings QucsSettings;
 
-///
 /// @brief Loads application settings from the configuration file
 ///
 /// Reads settings from the QSettings storage using the organization name "qucs"
@@ -38,7 +37,6 @@ struct tQucsSettings QucsSettings;
 ///
 /// @return true if settings were loaded successfully, false otherwise
 /// @see saveApplSettings(Qucs_S_SPAR_Viewer*)
-///
 bool loadSettings() {
   QSettings settings("qucs", "qucs_s");
   settings.beginGroup("QucsSparViewer");
@@ -59,7 +57,6 @@ bool loadSettings() {
   return true;
 }
 
-///
 /// @brief Saves application settings to the configuration file
 ///
 /// Persists the current window position to QSettings storage for restoration
@@ -68,7 +65,6 @@ bool loadSettings() {
 /// @param qucs Pointer to the main application window
 /// @return true if settings were saved successfully, false otherwise
 /// @see loadSettings()
-///
 bool saveApplSettings(Qucs_S_SPAR_Viewer *qucs) {
   QSettings settings("qucs", "qucs_s");
   settings.beginGroup("QucsSparViewer");
@@ -78,7 +74,6 @@ bool saveApplSettings(Qucs_S_SPAR_Viewer *qucs) {
   return true;
 }
 
-///
 /// @brief Main entry point for the Qucs-S S-Parameter Viewer
 ///
 /// Initializes the Qt application, loads settings, configures localization,
@@ -91,7 +86,6 @@ bool saveApplSettings(Qucs_S_SPAR_Viewer *qucs) {
 ///              argv[1] (optional): Path to a file or directory to open
 ///
 /// @return Application exit code (0 for success)
-///
 int main(int argc, char **argv) {
   QApplication a(argc, argv);
 
