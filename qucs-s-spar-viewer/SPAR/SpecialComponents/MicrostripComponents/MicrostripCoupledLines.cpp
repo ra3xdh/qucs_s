@@ -419,7 +419,7 @@ void SParameterCalculator::analyseDispersionCoupled(
 }
 
 void SParameterCalculator::analyseLossCoupled(
-    double W, double S, double t, double er, double rho, double D, double tand,
+    double W, double t, double er, double rho, double D, double tand,
     double ZlEff1, double ZlEff2, double ErEff, double frequency,
     const string &Model, bool evenMode, double &ac, double &ad) {
 

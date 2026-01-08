@@ -456,7 +456,7 @@ void Qucs_S_SPAR_Viewer::changeMarkerLimits(QString ID) {
   updateMarkerTable();
 }
 
-void Qucs_S_SPAR_Viewer::onLimitDeleteClicked(bool checked) {
+void Qucs_S_SPAR_Viewer::onLimitDeleteClicked(bool /*checked*/) {
   QString ID = qobject_cast<QToolButton *>(sender())->objectName();
   // qDebug() << "Clicked button:" << ID;
 

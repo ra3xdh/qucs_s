@@ -86,7 +86,7 @@ void GraphWidget::setWires(const QList<WireInfo> &wrs) {
    *    * @return index of the element if found, -1 otherwise
    */
   auto findIndexById = [](const auto &container, const QString &id) -> int {
-    for (int i = 0; i < container.size(); ++i) {
+    for (std::size_t i = 0; i < container.size(); ++i) {
       if (container.at(i)->getID() == id)
         return i;
     }

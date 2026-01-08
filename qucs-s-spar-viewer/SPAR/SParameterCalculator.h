@@ -62,10 +62,10 @@ struct Component_SPAR {
   ComponentType_SPAR type;          ///< Component type identifier
   string name;                       ///< Component name/label
   vector<int> nodes;                 ///< Node connectivity list
+  double frequency;                  ///< Operating frequency for frequency-dependent components
   QMap<QString, double> value;       ///< Real-valued parameters (R, L, C, etc.)
   QMap<QString, Complex> Zvalue;     ///< Complex impedance values
   vector<vector<Complex>> Smatrix;   ///< S-parameter matrix for network blocks
-  double frequency;                  ///< Operating frequency for frequency-dependent components
   QMap<QString, QList<double>> freqDepData; ///< Frequency-dependent data tables
   int numRFPorts;                    ///< Number of RF ports for network blocks
   double referenceImpedance;         ///< Reference impedance (typically 50Ω)
@@ -74,30 +74,30 @@ struct Component_SPAR {
   Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds,
                  const vector<vector<Complex>>& S, int rfPorts,
                  double Z0 = 50.0)
-      : type(t), name(n), nodes(nds), Smatrix(S), frequency(0.0),
-        numRFPorts(rfPorts), referenceImpedance(Z0) {}
+      : type(t), name(n), nodes(nds), frequency(0.0),
+        Smatrix(S), numRFPorts(rfPorts), referenceImpedance(Z0) {}
 
   /// @brief Constructor for frequency-dependent S-parameter block
   Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds,
                  QMap<QString, QList<double>> freqData, int rfPorts,
                  double Z0 = 50.0)
-      : type(t), name(n), nodes(nds), frequency(0.0), freqDepData(freqData),
-        numRFPorts(rfPorts), referenceImpedance(Z0) {}
+      : type(t), name(n), nodes(nds), frequency(0.0),
+        freqDepData(freqData), numRFPorts(rfPorts), referenceImpedance(Z0) {}
 
   /// @brief Constructor for lumped components with real parameters
   Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds,
-                 QMap<QString, double> val);
+                 QMap<QString, double> val)
+      : type(t), name(n), nodes(nds), frequency(0.0), value(val) {}
 
   /// @brief Constructor for complex impedance components
-  Component_SPAR(
-      ComponentType_SPAR t, const string& n, const vector<int>& nds,
-      QMap<QString, Complex> zval);
+  Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds,
+                 QMap<QString, Complex> zval)
+      : type(t), name(n), nodes(nds), frequency(0.0), Zvalue(zval) {}
 
   /// @brief Constructor for S-parameter device without port count
   Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds,
                  const vector<vector<Complex>>& S)
-      : type(t), name(n), nodes(nds), Smatrix(S), frequency(0.0) {
-  }
+      : type(t), name(n), nodes(nds), frequency(0.0), Smatrix(S) {}
 
   /// @brief Constructor for frequency-dependent impedance
   Component_SPAR(ComponentType_SPAR t, const string& n, const vector<int>& nds,
@@ -114,7 +114,7 @@ struct Port {
   /// @brief Constructor with default 50Ω impedance
   /// @param n Node number
   /// @param z Port impedance (default 50Ω)
-  Port(int n, double z = 50.0);
+  Port(int n, double z = 50.0) : node(n), impedance(z) {}
 };
 
 /// @class SParameterCalculator
@@ -513,7 +513,6 @@ private:
 
   /// @brief Analyzes losses for coupled microstrip lines (even or odd mode)
   /// @param W Line width (m)
-  /// @param S Spacing between lines (m)
   /// @param t Metal thickness (m)
   /// @param er Relative permittivity
   /// @param rho Metal resistivity (Ω·m)
@@ -527,7 +526,7 @@ private:
   /// @param evenMode true for even mode, false for odd mode
   /// @param[out] ac Conductor attenuation (Np/m)
   /// @param[out] ad Dielectric attenuation (Np/m)
-  void analyseLossCoupled(double W, double S, double t, double er, double rho,
+  void analyseLossCoupled(double W, double t, double er, double rho,
                           double D, double tand, double ZlEff1, double ZlEff2,
                           double ErEff, double frequency, const string& Model,
                           bool evenMode, double& ac, double& ad);
@@ -551,12 +550,15 @@ private:
 
 public:
   /// @brief Constructor
-  SParameterCalculator();
+  SParameterCalculator() : numNodes(0), frequency(1e9) {}
 
   /// @brief Sets netlist and parses components
   /// @param netlist Circuit netlist in custom format
   /// @return true if parsing succeeded, false otherwise
-  bool setNetlist(const QString& netlist);
+  bool setNetlist(const QString &netlist) {
+    currentNetlist = netlist;
+    return parseNetlist();
+  }
 
   /// @brief Returns current netlist string
   const QString& getNetlist() const { return currentNetlist; }

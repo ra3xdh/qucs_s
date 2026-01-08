@@ -7,28 +7,6 @@
 
 #include "SParameterCalculator.h"
 
-// Component constructor
-Component_SPAR::Component_SPAR(ComponentType_SPAR t, const string &n,
-                               const vector<int> &nds,
-                               QMap<QString, double> val)
-    : type(t), name(n), nodes(nds), value(val), frequency(0.0) {}
-
-Component_SPAR::Component_SPAR(ComponentType_SPAR t, const string &n,
-                               const vector<int> &nds, QMap<QString, Complex> z)
-    : type(t), name(n), nodes(nds), value(), frequency(0.0), Zvalue(z) {}
-
-// Port constructor
-Port::Port(int n, double z) : node(n), impedance(z) {}
-
-// SParameterCalculator constructor
-SParameterCalculator::SParameterCalculator() : numNodes(0), frequency(1e9) {}
-
-// Set netlist and parse it
-bool SParameterCalculator::setNetlist(const QString &netlist) {
-  currentNetlist = netlist;
-  return parseNetlist();
-}
-
 Complex SParameterCalculator::getImpedance(const Component_SPAR &comp,
                                            double freq) {
   double omega = 2 * M_PI * freq;
