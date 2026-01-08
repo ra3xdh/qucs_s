@@ -616,6 +616,7 @@ QGridLayout *RectangularPlotWidget::setupAxisSettings() {
   xAxisMin->setValue(0);
   xAxisMin->setDecimals(1);
   xAxisMin->setSingleStep(0.1);
+  xAxisMin->setToolTip("Minimum frequency");
   connect(xAxisMin, &QDoubleSpinBox::valueChanged, this,
           &RectangularPlotWidget::updateXAxis);
 
@@ -627,6 +628,7 @@ QGridLayout *RectangularPlotWidget::setupAxisSettings() {
   xAxisMax->setValue(1000);
   xAxisMax->setDecimals(1);
   xAxisMax->setSingleStep(0.1);
+  xAxisMax->setToolTip("Maximum frequency");
   connect(xAxisMax, &QDoubleSpinBox::valueChanged, this,
           &RectangularPlotWidget::updateXAxis);
   axisLayout->addWidget(xAxisMax, 0, 2);
@@ -636,6 +638,7 @@ QGridLayout *RectangularPlotWidget::setupAxisSettings() {
   xAxisDiv->setMaximum(1000000);
   xAxisDiv->setValue(100);
   xAxisDiv->setSingleStep(1);
+  xAxisDiv->setToolTip("Frequency step");
   connect(xAxisDiv, &QDoubleSpinBox::valueChanged, this,
           &RectangularPlotWidget::updateXAxis);
 
@@ -659,6 +662,7 @@ QGridLayout *RectangularPlotWidget::setupAxisSettings() {
   yAxisMin->setValue(-10);
   yAxisMin->setDecimals(1);
   yAxisMin->setSingleStep(1);
+  yAxisMin->setToolTip("y-axis minimum value");
   connect(yAxisMin, &QDoubleSpinBox::valueChanged, this,
           &RectangularPlotWidget::updateYAxis);
   axisLayout->addWidget(yAxisMin, 1, 1);
@@ -669,6 +673,7 @@ QGridLayout *RectangularPlotWidget::setupAxisSettings() {
   yAxisMax->setValue(10);
   yAxisMax->setDecimals(1);
   yAxisMax->setSingleStep(1);
+  yAxisMax->setToolTip("y-axis maximum value");
   connect(yAxisMax, &QDoubleSpinBox::valueChanged, this,
           &RectangularPlotWidget::updateYAxis);
 
@@ -679,6 +684,7 @@ QGridLayout *RectangularPlotWidget::setupAxisSettings() {
   yAxisDiv->setMaximum(1000000);
   yAxisDiv->setValue(5);
   yAxisDiv->setSingleStep(1);
+  yAxisDiv->setToolTip("y-axis step");
   connect(yAxisDiv, &QDoubleSpinBox::valueChanged, this,
           &RectangularPlotWidget::updateYAxis);
   axisLayout->addWidget(yAxisDiv, 1, 3);
@@ -696,6 +702,7 @@ QGridLayout *RectangularPlotWidget::setupAxisSettings() {
   y2AxisMin->setValue(-180);
   y2AxisMin->setDecimals(1);
   y2AxisMin->setSingleStep(10);
+  y2AxisMin->setToolTip("Right y-axis minimum value");
   connect(y2AxisMin, &QDoubleSpinBox::valueChanged, this,
           &RectangularPlotWidget::updateY2Axis);
   axisLayout->addWidget(y2AxisMin, 2, 1);
@@ -706,6 +713,7 @@ QGridLayout *RectangularPlotWidget::setupAxisSettings() {
   y2AxisMax->setValue(180);
   y2AxisMax->setDecimals(1);
   y2AxisMax->setSingleStep(10);
+  y2AxisMax->setToolTip("Right y-axis maximum value");
   connect(y2AxisMax, &QDoubleSpinBox::valueChanged, this,
           &RectangularPlotWidget::updateY2Axis);
 
@@ -716,6 +724,7 @@ QGridLayout *RectangularPlotWidget::setupAxisSettings() {
   y2AxisDiv->setMaximum(180);
   y2AxisDiv->setValue(45);
   y2AxisDiv->setSingleStep(5);
+  y2AxisDiv->setToolTip("Right y-axis step");
   connect(y2AxisDiv, &QDoubleSpinBox::valueChanged, this,
           &RectangularPlotWidget::updateY2Axis);
   axisLayout->addWidget(y2AxisDiv, 2, 3);

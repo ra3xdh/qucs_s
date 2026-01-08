@@ -366,6 +366,7 @@ QGridLayout *PolarPlotWidget::setupAxisSettings() {
   fMinSpinBox = new QDoubleSpinBox;
   fMinSpinBox->setRange(0, 1e12);
   fMinSpinBox->setSingleStep(10);
+  fMinSpinBox->setToolTip("Minimum frequency");
   connect(fMinSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
           this, &PolarPlotWidget::onFMinChanged);
   axisLayout->addWidget(fMinSpinBox, 0, 1);
@@ -373,6 +374,7 @@ QGridLayout *PolarPlotWidget::setupAxisSettings() {
   fMaxSpinBox = new QDoubleSpinBox;
   fMaxSpinBox->setRange(0, 1e12);
   fMaxSpinBox->setSingleStep(10);
+  fMaxSpinBox->setToolTip("Maximum frequency");
   connect(fMaxSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
           this, &PolarPlotWidget::onFMaxChanged);
   axisLayout->addWidget(fMaxSpinBox, 0, 2);
@@ -395,6 +397,7 @@ QGridLayout *PolarPlotWidget::setupAxisSettings() {
   rAxisMin->setValue(0.0);
   rAxisMin->setDecimals(2);
   rAxisMin->setSingleStep(0.1);
+  rAxisMin->setToolTip("Minimum radius");
   connect(rAxisMin, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
           &PolarPlotWidget::updateRAxis);
   axisLayout->addWidget(rAxisMin, 1, 1);
@@ -405,6 +408,7 @@ QGridLayout *PolarPlotWidget::setupAxisSettings() {
   rAxisMax->setValue(1.0);
   rAxisMax->setDecimals(2);
   rAxisMax->setSingleStep(0.1);
+  rAxisMax->setToolTip("Maximum radius");
   connect(rAxisMax, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
           &PolarPlotWidget::updateRAxis);
   axisLayout->addWidget(rAxisMax, 1, 2);
@@ -415,6 +419,7 @@ QGridLayout *PolarPlotWidget::setupAxisSettings() {
   rAxisDiv->setValue(0.2);
   rAxisDiv->setDecimals(2);
   rAxisDiv->setSingleStep(0.1);
+  rAxisDiv->setToolTip("Radius step");
   connect(rAxisDiv, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
           &PolarPlotWidget::updateRAxis);
   axisLayout->addWidget(rAxisDiv, 1, 3);
