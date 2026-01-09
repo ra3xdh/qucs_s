@@ -431,7 +431,7 @@ jobs:
 
     - name: Deploy Qt6 dependencies
       run: |
-        deploy_tool="windeployqt-qt6.exe"
+        deploy_tool="windeployqt.exe"
         bin_dir="build/qucs-suite/bin"
         options="--svg --no-translations --no-system-d3d-compiler --no-network"
 
