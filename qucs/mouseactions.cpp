@@ -1450,16 +1450,20 @@ void MouseActions::MReleaseMoving(Schematic *Doc, QMouseEvent* event)
     QucsMain->insLabel->blockSignals(false);
     QucsMain->setMarker->blockSignals(false);
 
-    // if we used drag 'n' drop, we might already be in select mode
-    // -> Manually re-enter select mode
-    if (QucsMain->activeAction == QucsMain->select) {
+    QAction* action = QucsMain->activeAction;
+    if (action == nullptr || action == QucsMain->select) {
+        // if we used drag 'n' drop, we might already be in select mode
+        // -> Manually re-enter select mode
         QucsMain->MousePressAction = &MouseActions::MPressSelect;
         QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
         QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
-        return;
+    } else {
+        // If we're in keyboard based movement, cleanup and go back to select mode by slotting
+        action->blockSignals(true);
+        action->setChecked(false);
+        action->blockSignals(false);
+        QucsMain->slotEscape();
     }
-    // If we're in keyboard based movement, go back to select mode by slotting
-    QucsMain->slotEscape();
 }
 // -----------------------------------------------------------
 // Is called after move-free (move with disconnection) operation
@@ -1478,12 +1482,13 @@ void MouseActions::MReleaseMoveFree(Schematic *Doc, QMouseEvent *Event)
 
     // Reset everything and go back to select mode
     QucsMain->MouseMoveAction = nullptr;
-    QucsMain->MousePressAction = nullptr;
-    QucsMain->MouseReleaseAction = nullptr;
-    QucsMain->MouseDoubleClickAction = nullptr;
 
-    // Go back to select mode
-    // NOTE: This turns off @activeAction
+    // cleanup current action if any
+    if (QucsMain->activeAction != nullptr) {
+        QucsMain->activeAction->blockSignals(true);
+        QucsMain->activeAction->setChecked(false);
+        QucsMain->activeAction->blockSignals(false);
+    }
     QucsMain->slotEscape();
 }
 
