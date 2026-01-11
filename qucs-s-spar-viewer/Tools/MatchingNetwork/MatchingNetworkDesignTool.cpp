@@ -63,9 +63,16 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent)
           &MatchingNetworkParametersWidget::parametersChanged, this,
           &MatchingNetworkDesignTool::UpdateDesignParameters);
 
+  // Use this while Qt < 6.7
+  connect(TwoPortCheckBox,
+          &QCheckBox::stateChanged,
+          this,
+          &MatchingNetworkDesignTool::AdjustOneTwoPortMatchingWidgetsVisibility);
+  /*
+   * Use this when all the builds are Qt > 6.7
   connect(
       TwoPortCheckBox, &QCheckBox::checkStateChanged, this,
-      &MatchingNetworkDesignTool::AdjustOneTwoPortMatchingWidgetsVisibility);
+      &MatchingNetworkDesignTool::AdjustOneTwoPortMatchingWidgetsVisibility);*/
 
   connect(f_match_Spinbox, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
           this, &MatchingNetworkDesignTool::UpdateDesignParameters);

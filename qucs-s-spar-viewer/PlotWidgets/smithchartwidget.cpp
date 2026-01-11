@@ -154,12 +154,26 @@ SmithChartWidget::SmithChartWidget(QWidget *parent)
   mainLayout->addLayout(bottomLayout);
 
   // Connect the signals
-  connect(m_Z0ComboBox, &QComboBox::currentIndexChanged, this,
+
+  // This work in Qt 6.2. Remove when moving to a later Qt version in all builds
+  connect(m_ShowAdmittanceChartCheckBox,
+          &QCheckBox::stateChanged,
+          this,
+          &SmithChartWidget::onShowAdmittanceChartChanged);
+
+  connect(m_ShowConstantCurvesCheckBox,
+          &QCheckBox::stateChanged,
+          this,
+          &SmithChartWidget::onShowConstantCurvesChanged);
+
+  /*
+   * Replace the previous connects when using Qt > 6.7 in all builds
+   * connect(m_Z0ComboBox, &QComboBox::currentIndexChanged, this,
           &SmithChartWidget::onZ0Changed);
   connect(m_ShowAdmittanceChartCheckBox, &QCheckBox::checkStateChanged, this,
           &SmithChartWidget::onShowAdmittanceChartChanged);
   connect(m_ShowConstantCurvesCheckBox, &QCheckBox::checkStateChanged, this,
-          &SmithChartWidget::onShowConstantCurvesChanged);
+          &SmithChartWidget::onShowConstantCurvesChanged);*/
 
   setLayout(mainLayout);
 }
