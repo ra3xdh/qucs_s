@@ -4,7 +4,7 @@
 /// @date Jan 3, 2026
 /// @copyright Copyright (C) 2026 Andrés Martínez Mera
 /// @license GPL-3.0-or-later
-///
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -27,17 +27,6 @@
 #include <QVBoxLayout>
 #include <QValidator>
 
-///
-/// @brief Constructor - Main window
-///
-/// Sets up the complete user interface including:
-/// - Central widget and window properties
-/// - Menu bar
-/// - Display widgets (charts)
-/// - Right panel with docks
-/// - File watcher system
-/// - Default colors and settings
-///
 Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer() {
   QWidget *centralWidget = new QWidget(this);
   setCentralWidget(centralWidget);
@@ -86,24 +75,12 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer() {
   loadRecentFiles();    // Load "Recent Files" list
 }
 
-///
-/// @brief Destructor - Cleanup resources
-///
-/// Saves recent files list and cleans up allocated resources.
-///
 Qucs_S_SPAR_Viewer::~Qucs_S_SPAR_Viewer() {
   QSettings settings;
   settings.setValue("recentFiles", QVariant::fromValue(recentFiles));
   delete smithChart;
 }
 
-///
-/// @brief Create the application menu bar
-///
-/// Creates and configures:
-/// - File menu (Open, Save, Save As, Recent Files, Quit)
-/// - Help menu (Help, About, About Qt)
-/// Connects all menu actions to their respective slots
 void Qucs_S_SPAR_Viewer::CreateMenuBar() {
   QMenu *fileMenu = new QMenu(tr("&File"));
   QAction *fileQuit = new QAction(tr("&Quit"), this);
@@ -159,17 +136,6 @@ void Qucs_S_SPAR_Viewer::CreateMenuBar() {
   menuBar()->addMenu(helpMenu);
 }
 
-///
-/// @brief Create the right panel with all management docks
-///
-/// Sets up the right side panel containing:
-/// - File management dock
-/// - Trace management dock
-/// - Marker management dock
-/// - Limit management dock
-/// - Tools dock
-/// - Notes dock
-///
 void Qucs_S_SPAR_Viewer::CreateRightPanel() {
   // Create left panel widgets
   setFileManagementDock();
@@ -226,15 +192,6 @@ void Qucs_S_SPAR_Viewer::CreateRightPanel() {
               Qt::Horizontal);
 }
 
-///
-/// @brief Setup the file management dock widget
-///
-/// Creates the file list interface with:
-/// - Scrollable file list area
-/// - Add file button
-/// - Delete all files button
-/// - Individual file entries with remove buttons
-///
 void Qucs_S_SPAR_Viewer::setFileManagementDock() {
 
   dockFiles = new QDockWidget("S-parameter files", this);
@@ -297,23 +254,6 @@ void Qucs_S_SPAR_Viewer::setFileManagementDock() {
   dockFiles->setWidget(FilesGroup);
 }
 
-///
-/// @brief Setup the trace management dock widget
-///
-/// Creates the trace management interface with:
-/// - Dataset selection combo box
-/// - Trace parameter selection
-/// - Display mode selection
-/// - Tabs for grouping the traces depending on the display mode:
-///   - Magnitude/Phase
-///   - Smith Chart
-///   - Polar
-///   - Port Impedance
-///   - Stability
-///   - VSWR
-///   - Group Delay
-/// - Trace property controls (color, width, style)
-///
 void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
 
   dockTracesList = new QDockWidget("Traces List", this);
@@ -341,22 +281,6 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
 
   DatasetsGrid->addWidget(QCombobox_traces, 1, 1);
 
-  Button_add_trace = new QPushButton("Add trace");
-  Button_add_trace->setStyleSheet("QPushButton {background-color: green;\
-                                  border-style: outset;\
-                                  border-width: 2px;\
-                                  border-radius: 10px;\
-                                  border-color: beige;\
-                                  font: bold 14px;\
-                                  color: white;\
-                                  min-width: 10em;\
-                                  padding: 6px;\
-                              }");
-
-  connect(Button_add_trace, &QPushButton::clicked, this,
-          static_cast<void (Qucs_S_SPAR_Viewer::*)()>(
-              &Qucs_S_SPAR_Viewer::addTrace));
-
   QCombobox_display_mode = new QComboBox();
   QCombobox_display_mode->addItem("dB");
   QCombobox_display_mode->addItem("Phase");
@@ -368,7 +292,39 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
   QCombobox_display_mode->setObjectName("DisplayTypeCombo");
   DatasetsGrid->addWidget(QCombobox_display_mode, 1, 2);
 
+  Button_add_trace = new QPushButton("Add trace");
+  Button_add_trace->setStyleSheet("QPushButton {background-color: green;\
+                                  border-style: outset;\
+                                  border-width: 2px;\
+                                  border-radius: 5px;\
+                                  border-color: beige;\
+                                  font: bold 14px;\
+                                  color: white;\
+                                  min-width: 5em;\
+                                  padding: 6px;\
+                              }");
+
+  connect(Button_add_trace, &QPushButton::clicked, this,
+          static_cast<void (Qucs_S_SPAR_Viewer::*)()>(
+              &Qucs_S_SPAR_Viewer::addTrace));
   DatasetsGrid->addWidget(Button_add_trace, 1, 3);
+
+  // Remove all traces, markers and limits
+  Button_Remove_all = new QPushButton("Remove all");
+  Button_Remove_all->setStyleSheet("QPushButton {background-color: red;\
+                                  border-style: outset;\
+                                  border-width: 2px;\
+                                  border-radius: 5px;\
+                                  border-color: beige;\
+                                  font: bold 14px;\
+                                  color: white;\
+                                  min-width: 3em;\
+                                  padding: 6px;\
+                              }");
+  connect(Button_Remove_all, &QPushButton::clicked, this,
+          static_cast<void (Qucs_S_SPAR_Viewer::*)()>(
+              &Qucs_S_SPAR_Viewer::removeAll));
+  DatasetsGrid->addWidget(Button_Remove_all, 1, 4);
 
   QCombobox_datasets = new QComboBox();
   DatasetsGrid->addWidget(QCombobox_datasets, 1, 0);
@@ -531,14 +487,6 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
   dockTracesList->setWidget(TracesGroup);
 }
 
-///
-/// @brief Setup the marker management dock widget
-///
-/// - Add marker button
-/// - Remove all markers button
-/// - Scrollable marker list with frequency controls
-/// - Tabbed marker tables for each display type
-///
 void Qucs_S_SPAR_Viewer::setMarkerManagementDock() {
   // Markers dock
   dockMarkers = new QDockWidget("Markers", this);
@@ -637,14 +585,6 @@ void Qucs_S_SPAR_Viewer::setMarkerManagementDock() {
   dockMarkers->setWidget(MarkersGroup);
 }
 
-///
-/// @brief Setup the limit management dock widget
-///
-/// - Add limit button
-/// - Remove all limits button
-/// - Limit offset control
-/// - Scrollable limit list with frequency and value controls
-///
 void Qucs_S_SPAR_Viewer::setLimitManagementDock() {
   // Limits dock
   dockLimits = new QDockWidget("Limits", this);
@@ -732,20 +672,6 @@ void Qucs_S_SPAR_Viewer::setLimitManagementDock() {
   dockLimits->setWidget(LimitsGroup);
 }
 
-///
-/// @brief Create all display widgets
-///
-/// Initializes all chart widgets:
-/// - Magnitude/Phase rectangular plot
-/// - Smith chart
-/// - Polar plot
-/// - Port impedance plot
-/// - Stability plot
-/// - VSWR plot
-/// - Group delay plot
-///
-/// Configures chart properties and tabifies them in the left dock area.
-///
 void Qucs_S_SPAR_Viewer::CreateDisplayWidgets() {
   // Magnitude chart settings
   Magnitude_PhaseChart = new RectangularPlotWidget(this);
@@ -858,15 +784,6 @@ void Qucs_S_SPAR_Viewer::CreateDisplayWidgets() {
   tabifyDockWidget(dockVSWRChart, dockGroupDelayChart);
 }
 
-///
-/// @brief Setup scrollable areas for trace layouts
-///
-/// Converts grid layouts into scrollable areas for each trace type tab.
-///
-/// @param layout Reference to grid layout to make scrollable
-/// @param parentTab Parent tab widget
-/// @param objectName Object name for the scroll area
-///
 void Qucs_S_SPAR_Viewer::setupScrollAreaForLayout(QGridLayout *&layout,
                                                   QWidget *parentTab,
                                                   const QString &objectName) {
@@ -929,18 +846,6 @@ void Qucs_S_SPAR_Viewer::setupScrollAreaForLayout(QGridLayout *&layout,
   }
 }
 
-/// @brief Setup all scrollable layouts for trace tabs
-///
-/// Calls setupScrollAreaForLayout for each trace type:
-/// - Magnitude/Phase
-/// - Smith
-/// - Polar
-/// - Port Impedance
-/// - Stability
-/// - VSWR
-/// - Group Delay
-/// @see setupScrollAreaForLayout
-///
 void Qucs_S_SPAR_Viewer::setupScrollableLayout() {
   // Create scroll areas for both layouts
   setupScrollAreaForLayout(magnitudePhaseLayout, magnitudePhaseTab,

@@ -16,7 +16,7 @@ void Qucs_S_SPAR_Viewer::removeTrace() {
   QWidget *scroll = button->parentWidget()->parentWidget()->parentWidget();
   QString scrollname = scroll->objectName();
 
-  DisplayMode mode;
+  DisplayMode mode = DisplayMode::Magnitude_dB; // Display mode (Default: Magnitude_dB)
   if (!scrollname.compare(QString("magnitudePhaseScrollArea"))) {
     // Check if the trace is magnitude or phase
     if (ID.endsWith("_dB")) {
@@ -235,7 +235,7 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo &traceInfo,
     break;
   }
 
-  // Create UI widgets for the trace (mostly unchanged from original code)
+  // Create UI widgets for the trace. Widgets are hold in traceMap
   // Label
   QLabel *new_trace_label = new QLabel(trace_name);
   new_trace_label->setObjectName(QStringLiteral("Trace_Name_") + trace_name);
@@ -556,8 +556,47 @@ void Qucs_S_SPAR_Viewer::addTrace(const TraceInfo &traceInfo,
   }
 }
 
-// Returns the total number of traces
-int Qucs_S_SPAR_Viewer::getNumberOfTraces() { return traceMap.keys().size(); }
+// Removes all traces, markers and limits
+void Qucs_S_SPAR_Viewer::removeAll() {
+
+  // 1) Remove limits
+  removeAllLimits();
+
+  // 2) Remove markers
+  removeAllMarkers();
+
+  // 3) Remove traces
+  removeAllTraces();
+}
+
+// Remove all traces
+void Qucs_S_SPAR_Viewer::removeAllTraces(){
+  for (auto modeIt = traceMap.begin(); modeIt != traceMap.end(); ++modeIt) {
+    DisplayMode mode = modeIt.key();
+    QMap<QString, TraceProperties> &traces = modeIt.value();
+
+    // Create a list of trace names to remove (to avoid iterator invalidation)
+    QStringList traceNames = traces.keys();
+
+    // Remove each trace
+    for (const QString &traceName : std::as_const(traceNames)) {
+      TraceProperties &props = traces[traceName];
+      removeTraceByProps(mode, traceName, props);
+    }
+  }
+
+  // Clear the trace map completely
+  traceMap.clear();
+
+  // Update all chart widgets
+  Magnitude_PhaseChart->update();
+  smithChart->update();
+  polarChart->update();
+  impedanceChart->update();
+  stabilityChart->update();
+  VSWRChart->update();
+  GroupDelayChart->update();
+}
 
 // This is the handler that is triggered when the user hits the button to change
 // the color of a given trace
@@ -679,7 +718,7 @@ void Qucs_S_SPAR_Viewer::changeTraceLineStyle() {
   ID.remove("Trace_LineStyle_"); // Remove the preffix
 
   // New trace line style
-  enum Qt::PenStyle PenStyle;
+  enum Qt::PenStyle PenStyle = Qt::SolidLine; // Default = solid line
   switch (combo->currentIndex()) {
   case 0: // Solid
     PenStyle = Qt::SolidLine;

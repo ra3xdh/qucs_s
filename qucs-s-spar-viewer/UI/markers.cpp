@@ -57,7 +57,6 @@ void Qucs_S_SPAR_Viewer::removeAllMarkers() {
     QString marker_to_remove = QString("Mkr%1").arg(n_markers - i);
     removeMarker(marker_to_remove);
   }
-  traceMap.clear();
 }
 
 void Qucs_S_SPAR_Viewer::updateMarkerNames() {
@@ -192,7 +191,7 @@ void Qucs_S_SPAR_Viewer::updateMarkerTable() {
 
   // Update markers
   QStringList marker_list = markerMap.keys();
-  for (const QString &str : marker_list) {
+  for (const QString &str : std::as_const(marker_list)) {
     double marker_freq = getMarkerFreq(str);
     smithChart->updateMarkerFrequency(
         str, marker_freq); // Update Smith Chart widget markers
