@@ -34,6 +34,7 @@
 #include "settings.h"
 #include "misc.h"
 #include "fillfromspicedialog.h"
+#include "selfromlibdialog.h"
 
 #include <cmath>
 
@@ -480,7 +481,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       connect(spiceButton, &QPushButton::released, this, &ComponentDialog::slotFillFromSpice);
 
       QPushButton* selectModelButton = new QPushButton(tr("Select model from Library"), this);
-      connect(spiceButton, &QPushButton::released, this, &ComponentDialog::slotSelectModel);
+      connect(selectModelButton, &QPushButton::released, this, &ComponentDialog::slotSelectModel);
 
       spiceButtonLayout->addWidget(spiceButton);
       spiceButtonLayout->addWidget(selectModelButton);
@@ -1092,5 +1093,7 @@ void ComponentDialog::slotFillFromSpice()
 
 void ComponentDialog::slotSelectModel()
 {
-
+  SelFromLibDialog *dlg = new SelFromLibDialog(component);
+  dlg->exec();
+  delete dlg;
 }
