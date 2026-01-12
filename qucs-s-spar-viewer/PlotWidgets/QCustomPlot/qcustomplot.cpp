@@ -33,7 +33,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPVector2D
-  \brief Represents two doubles as a mathematical 2D vector
+  @brief Represents two doubles as a mathematical 2D vector
 
   This class acts as a replacement for QVector2D with the advantage of double
   precision instead of single, and some convenience methods tailored for the
@@ -266,7 +266,7 @@ QCPVector2D& QCPVector2D::operator-=(const QCPVector2D& vector) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPPainter
-  \brief QPainter subclass used internally
+  @brief QPainter subclass used internally
 
   This QPainter subclass is used to provide some extended functionality e.g. for
   tweaking position consistency between antialiased and non-antialiased
@@ -487,7 +487,7 @@ void QCPPainter::makeNonCosmetic() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPAbstractPaintBuffer
-  \brief The abstract base class for paint buffers, which define the rendering
+  @brief The abstract base class for paint buffers, which define the rendering
   backend
 
   This abstract base class defines the basic interface that a paint buffer needs
@@ -650,7 +650,7 @@ void QCPAbstractPaintBuffer::setDevicePixelRatio(double ratio) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPPaintBufferPixmap
-  \brief A paint buffer based on QPixmap, using software raster rendering
+  @brief A paint buffer based on QPixmap, using software raster rendering
 
   This paint buffer is the default and fall-back paint buffer which uses
   software rendering and QPixmap as internal buffer. It is used if \ref
@@ -716,7 +716,7 @@ void QCPPaintBufferPixmap::reallocateBuffer() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPPaintBufferGlPbuffer
-  \brief A paint buffer based on OpenGL pixel buffers, using hardware
+  @brief A paint buffer based on OpenGL pixel buffers, using hardware
   accelerated rendering
 
   This paint buffer is one of the OpenGL paint buffers which facilitate hardware
@@ -810,7 +810,7 @@ void QCPPaintBufferGlPbuffer::reallocateBuffer() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPPaintBufferGlFbo
-  \brief A paint buffer based on OpenGL frame buffers objects, using hardware
+  @brief A paint buffer based on OpenGL frame buffers objects, using hardware
   accelerated rendering
 
   This paint buffer is one of the OpenGL paint buffers which facilitate hardware
@@ -972,7 +972,7 @@ void QCPPaintBufferGlFbo::reallocateBuffer() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPLayer
-  \brief A layer that may contain objects, to control the rendering order
+  @brief A layer that may contain objects, to control the rendering order
 
   The Layering system of QCustomPlot is the mechanism to control the rendering
   order of the elements inside the plot.
@@ -1270,7 +1270,7 @@ void QCPLayer::removeChild(QCPLayerable* layerable) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPLayerable
-  \brief Base class for all drawable objects
+  @brief Base class for all drawable objects
 
   This is the abstract base class most visible objects derive from, e.g.
   plottables, axes, grid etc.
@@ -1878,7 +1878,7 @@ void QCPLayerable::wheelEvent(QWheelEvent* event) {
 //////////////////// QCPRange
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /*! \class QCPRange
-  \brief Represents the range an axis is encompassing.
+  @brief Represents the range an axis is encompassing.
 
   contains a \a lower and \a upper double value and provides convenience input,
   output and modification functions.
@@ -2200,7 +2200,7 @@ bool QCPRange::validRange(const QCPRange& range) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPDataRange
-  \brief Describes a data range given by begin and end index
+  @brief Describes a data range given by begin and end index
 
   QCPDataRange holds two integers describing the begin (\ref setBegin) and end
   (\ref setEnd) index of a contiguous set of data points. The \a end index
@@ -2386,7 +2386,7 @@ bool QCPDataRange::contains(const QCPDataRange& other) const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPDataSelection
-  \brief Describes a data set by holding multiple QCPDataRange instances
+  @brief Describes a data set by holding multiple QCPDataRange instances
 
   QCPDataSelection manages multiple instances of QCPDataRange in order to
   represent any (possibly disjoint) set of data selection.
@@ -2830,7 +2830,7 @@ QCPDataSelection::inverse(const QCPDataRange& outerRange) const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPSelectionRect
-  \brief Provides rect/rubber-band data selection and range zoom interaction
+  @brief Provides rect/rubber-band data selection and range zoom interaction
 
   QCPSelectionRect is used by QCustomPlot when the \ref
   QCustomPlot::setSelectionRectMode is not \ref QCP::srmNone. When the user
@@ -3052,7 +3052,7 @@ void QCPSelectionRect::draw(QCPPainter* painter) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPMarginGroup
-  \brief A margin group allows synchronization of margin sides if working with
+  @brief A margin group allows synchronization of margin sides if working with
   multiple layout elements.
 
   QCPMarginGroup allows you to tie a margin side of two or more layout elements
@@ -3210,7 +3210,7 @@ void QCPMarginGroup::removeChild(QCP::MarginSide side,
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPLayoutElement
-  \brief The abstract base class for all objects that form \ref thelayoutsystem
+  @brief The abstract base class for all objects that form \ref thelayoutsystem
   "the layout system".
 
   This is an abstract base class. As such, it can't be instantiated directly,
@@ -3689,7 +3689,7 @@ void QCPLayoutElement::layoutChanged() {}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPLayout
-  \brief The abstract base class for layouts
+  @brief The abstract base class for layouts
 
   This is an abstract base class for layout elements whose main purpose is to
   define the position and size of other child layout elements. In most cases,
@@ -4217,7 +4217,7 @@ QSize QCPLayout::getFinalMaximumOuterSize(const QCPLayoutElement* el) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPLayoutGrid
-  \brief A layout that arranges child elements in a grid
+  @brief A layout that arranges child elements in a grid
 
   Elements are laid out in a grid with configurable stretch factors (\ref
   setColumnStretchFactor, \ref setRowStretchFactor) and spacing (\ref
@@ -5019,7 +5019,7 @@ void QCPLayoutGrid::getMaximumRowColSizes(QVector<int>* maxColWidths,
 //////////////////// QCPLayoutInset
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /*! \class QCPLayoutInset
-  \brief A layout that places child elements aligned to the border or
+  @brief A layout that places child elements aligned to the border or
   arbitrarily positioned
 
   Elements are placed either aligned to the border or at arbitrary position in
@@ -5347,7 +5347,7 @@ void QCPLayoutInset::addElement(QCPLayoutElement* element, const QRectF& rect) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPLineEnding
-  \brief Handles the different ending decorations for line-like items
+  @brief Handles the different ending decorations for line-like items
 
   \image html QCPLineEnding.png "The various ending styles currently supported"
 
@@ -5628,7 +5628,7 @@ void QCPLineEnding::draw(QCPPainter* painter, const QCPVector2D& pos,
 /*! \class QCPLabelPainterPrivate
 
   \internal
-  \brief (Private)
+  @brief (Private)
 
   This is a private class and not part of the public QCustomPlot interface.
 
@@ -6346,7 +6346,7 @@ void QCPLabelPainterPrivate::analyzeFontMetrics() {
 //////////////////// QCPAxisTicker
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /*! \class QCPAxisTicker
-  \brief The base class tick generator used by QCPAxis to create tick positions
+  @brief The base class tick generator used by QCPAxis to create tick positions
   and tick labels
 
   Each QCPAxis has an internal QCPAxisTicker (or a subclass) in order to
@@ -6843,7 +6843,7 @@ double QCPAxisTicker::cleanMantissa(double input) const {
 //////////////////// QCPAxisTickerDateTime
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /*! \class QCPAxisTickerDateTime
-  \brief Specialized axis ticker for calendar dates and times as axis ticks
+  @brief Specialized axis ticker for calendar dates and times as axis ticks
 
   \image html axisticker-datetime.png
 
@@ -7296,7 +7296,7 @@ double QCPAxisTickerDateTime::dateTimeToKey(const QDate& date,
 //////////////////// QCPAxisTickerTime
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /*! \class QCPAxisTickerTime
-  \brief Specialized axis ticker for time spans in units of milliseconds to days
+  @brief Specialized axis ticker for time spans in units of milliseconds to days
 
   \image html axisticker-time.png
 
@@ -7603,7 +7603,7 @@ void QCPAxisTickerTime::replaceUnit(QString& text,
 //////////////////// QCPAxisTickerFixed
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /*! \class QCPAxisTickerFixed
-  \brief Specialized axis ticker with a fixed tick step
+  @brief Specialized axis ticker with a fixed tick step
 
   \image html axisticker-fixed.png
 
@@ -7713,7 +7713,7 @@ double QCPAxisTickerFixed::getTickStep(const QCPRange& range) {
 //////////////////// QCPAxisTickerText
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /*! \class QCPAxisTickerText
-  \brief Specialized axis ticker which allows arbitrary labels at specified
+  @brief Specialized axis ticker which allows arbitrary labels at specified
   coordinates
 
   \image html axisticker-text.png
@@ -7942,7 +7942,7 @@ QVector<double> QCPAxisTickerText::createTickVector(double tickStep,
 //////////////////// QCPAxisTickerPi
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /*! \class QCPAxisTickerPi
-  \brief Specialized axis ticker to display ticks in units of an arbitrary
+  @brief Specialized axis ticker to display ticks in units of an arbitrary
   constant, for example pi
 
   \image html axisticker-pi.png
@@ -8247,7 +8247,7 @@ QString QCPAxisTickerPi::unicodeSubscript(int number) const {
 //////////////////// QCPAxisTickerLog
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /*! \class QCPAxisTickerLog
-  \brief Specialized axis ticker suited for logarithmic axes
+  @brief Specialized axis ticker suited for logarithmic axes
 
   \image html axisticker-log.png
 
@@ -8409,7 +8409,7 @@ QVector<double> QCPAxisTickerLog::createTickVector(double tickStep,
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPGrid
-  \brief Responsible for drawing the grid of a QCPAxis.
+  @brief Responsible for drawing the grid of a QCPAxis.
 
   This class is tightly bound to QCPAxis. Every axis owns a grid instance and
   uses it to draw the grid lines, sub grid lines and zero-line. You can interact
@@ -8641,7 +8641,7 @@ void QCPGrid::drawSubGridLines(QCPPainter* painter) const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPAxis
-  \brief Manages a single axis inside a QCustomPlot.
+  @brief Manages a single axis inside a QCustomPlot.
 
   Usually doesn't need to be instantiated externally. Access %QCustomPlot's
   default four axes via QCustomPlot::xAxis (bottom), QCustomPlot::yAxis (left),
@@ -10502,7 +10502,7 @@ QCP::Interaction QCPAxis::selectionCategory() const {
 /*! \class QCPAxisPainterPrivate
 
   \internal
-  \brief (Private)
+  @brief (Private)
 
   This is a private class and not part of the public QCustomPlot interface.
 
@@ -11367,7 +11367,7 @@ void QCPAxisPainterPrivate::getMaxTickLabelSize(const QFont& font,
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPScatterStyle
-  \brief Represents the visual appearance of scatter points
+  @brief Represents the visual appearance of scatter points
 
   This class holds information about shape, color and size of scatter points. In
   plottables like QCPGraph it is used to store how scatter points shall be
@@ -11810,7 +11810,7 @@ void QCPScatterStyle::drawShape(QCPPainter* painter, double x, double y) const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPSelectionDecorator
-  \brief Controls how a plottable's data selection is drawn
+  @brief Controls how a plottable's data selection is drawn
 
   Each \ref QCPAbstractPlottable instance has one \ref QCPSelectionDecorator
   (accessible via \ref QCPAbstractPlottable::selectionDecorator) and uses it
@@ -11989,7 +11989,7 @@ bool QCPSelectionDecorator::registerWithPlottable(
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPAbstractPlottable
-  \brief The abstract base class for all data representing objects in a plot.
+  @brief The abstract base class for all data representing objects in a plot.
 
   It defines a very basic interface like name, pen, brush, visibility etc. Since
   this class is abstract, it can't be instantiated. Use one of the subclasses or
@@ -12836,7 +12836,7 @@ void QCPAbstractPlottable::deselectEvent(bool* selectionStateChanged) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPItemAnchor
-  \brief An anchor of an item to which positions can be attached to.
+  @brief An anchor of an item to which positions can be attached to.
 
   An item (QCPAbstractItem) may have one or more anchors. Unlike
   QCPItemPosition, an anchor doesn't control anything on its item, but provides
@@ -12987,7 +12987,7 @@ void QCPItemAnchor::removeChildY(QCPItemPosition* pos) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPItemPosition
-  \brief Manages the position of an item.
+  @brief Manages the position of an item.
 
   Every item has at least one public QCPItemPosition member pointer which
   provides ways to position the item on the QCustomPlot surface. Some items have
@@ -13659,7 +13659,7 @@ void QCPItemPosition::setPixelPosition(const QPointF& pixelPosition) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPAbstractItem
-  \brief The abstract base class for all items in a plot.
+  @brief The abstract base class for all items in a plot.
 
   In QCustomPlot, items are supplemental graphical elements that are neither
   plottables (QCPAbstractPlottable) nor axes (QCPAxis). While plottables are
@@ -14201,7 +14201,7 @@ QCP::Interaction QCPAbstractItem::selectionCategory() const {
 
 /*! \class QCustomPlot
 
-  \brief The central class of the library. This is the QWidget which displays
+  @brief The central class of the library. This is the QWidget which displays
   the plot and interacts with the user.
 
   For tutorials on how to use QCustomPlot, see the website\n
@@ -17689,7 +17689,7 @@ void QCustomPlot::toPainter(QCPPainter* painter, int width, int height) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPColorGradient
-  \brief Defines a color gradient for use with e.g. \ref QCPColorMap
+  @brief Defines a color gradient for use with e.g. \ref QCPColorMap
 
   This class describes a color gradient which can be used to encode data with
   color. For example, QCPColorMap and QCPColorScale have \ref
@@ -18366,7 +18366,7 @@ void QCPColorGradient::updateColorBuffer() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPSelectionDecoratorBracket
-  \brief A selection decorator which draws brackets around each selected data
+  @brief A selection decorator which draws brackets around each selected data
   segment
 
   Additionally to the regular highlighting of selected segments via color, fill
@@ -18661,7 +18661,7 @@ QPointF QCPSelectionDecoratorBracket::getPixelCoordinates(
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPAxisRect
-  \brief Holds multiple axes and arranges them in a rectangular shape.
+  @brief Holds multiple axes and arranges them in a rectangular shape.
 
   This class represents an axis rect, a rectangular area that is bounded on all
   sides with an arbitrary number of axes.
@@ -20028,7 +20028,7 @@ void QCPAxisRect::wheelEvent(QWheelEvent* event) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPAbstractLegendItem
-  \brief The abstract base class for all entries in a QCPLegend.
+  @brief The abstract base class for all entries in a QCPLegend.
 
   It defines a very basic interface for entries in a QCPLegend. For representing
   plottables in the legend, the subclass \ref QCPPlottableLegendItem is more
@@ -20208,7 +20208,7 @@ void QCPAbstractLegendItem::deselectEvent(bool* selectionStateChanged) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPPlottableLegendItem
-  \brief A legend item representing a plottable with an icon and the plottable
+  @brief A legend item representing a plottable with an icon and the plottable
   name.
 
   This is the standard legend item for plottables. It displays an icon of the
@@ -20349,7 +20349,7 @@ QSize QCPPlottableLegendItem::minimumOuterSizeHint() const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPLegend
-  \brief Manages a legend inside a QCustomPlot.
+  @brief Manages a legend inside a QCustomPlot.
 
   A legend is a small box somewhere in the plot which lists plottables with
   their name and icon.
@@ -20978,7 +20978,7 @@ void QCPLegend::parentPlotInitialized(QCustomPlot* parentPlot) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPTextElement
-  \brief A layout element displaying a text
+  @brief A layout element displaying a text
 
   The text may be specified with \ref setText, the formatting can be controlled
   with \ref setFont, \ref setTextColor, and \ref setTextFlags.
@@ -21361,7 +21361,7 @@ QColor QCPTextElement::mainTextColor() const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPColorScale
-  \brief A color scale for use with color coding data such as QCPColorMap
+  @brief A color scale for use with color coding data such as QCPColorMap
 
   This layout element can be placed on the plot to correlate a color gradient
   with data values. It is usually used in combination with one or multiple \ref
@@ -21880,7 +21880,7 @@ void QCPColorScale::wheelEvent(QWheelEvent* event) {
 /*! \class QCPColorScaleAxisRectPrivate
 
   \internal
-  \brief An axis rect subclass for use in a QCPColorScale
+  @brief An axis rect subclass for use in a QCPColorScale
 
   This is a private class and not part of the public QCustomPlot interface.
 
@@ -22083,7 +22083,7 @@ void QCPColorScaleAxisRectPrivate::axisSelectableChanged(
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPGraphData
-  \brief Holds the data of one single data point for QCPGraph.
+  @brief Holds the data of one single data point for QCPGraph.
 
   The stored data is:
   \li \a key: coordinate on the key axis of this data point (this is the \a
@@ -22168,7 +22168,7 @@ QCPGraphData::QCPGraphData(double key, double value) : key(key), value(value) {}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPGraph
-  \brief A plottable representing a graph in a plot.
+  @brief A plottable representing a graph in a plot.
 
   \image html QCPGraph.png
 
@@ -24205,7 +24205,7 @@ int QCPGraph::findIndexBelowY(const QVector<QPointF>* data, double y) const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPCurveData
-  \brief Holds the data of one single data point for QCPCurve.
+  @brief Holds the data of one single data point for QCPCurve.
 
   The stored data is:
   \li \a t: the free ordering parameter of this curve point, like in the
@@ -24293,7 +24293,7 @@ QCPCurveData::QCPCurveData(double t, double key, double value)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPCurve
-  \brief A plottable representing a parametric curve in a plot.
+  @brief A plottable representing a parametric curve in a plot.
 
   \image html QCPCurve.png
 
@@ -26171,7 +26171,7 @@ double QCPCurve::pointDistance(
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPBarsGroup
-  \brief Groups multiple QCPBars together so they appear side by side
+  @brief Groups multiple QCPBars together so they appear side by side
 
   \image html QCPBarsGroup.png
 
@@ -26494,7 +26494,7 @@ double QCPBarsGroup::getPixelSpacing(const QCPBars* bars, double keyCoord) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPBarsData
-  \brief Holds the data of one single data point (one bar) for QCPBars.
+  @brief Holds the data of one single data point (one bar) for QCPBars.
 
   The stored data is:
   \li \a key: coordinate on the key axis of this bar (this is the \a mainKey and
@@ -26579,7 +26579,7 @@ QCPBarsData::QCPBarsData(double key, double value) : key(key), value(value) {}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPBars
-  \brief A plottable representing a bar chart in a plot.
+  @brief A plottable representing a bar chart in a plot.
 
   \image html QCPBars.png
 
@@ -27432,7 +27432,7 @@ void QCPBars::connectBars(QCPBars* lower, QCPBars* upper) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPStatisticalBoxData
-  \brief Holds the data of one single data point for QCPStatisticalBox.
+  @brief Holds the data of one single data point for QCPStatisticalBox.
 
   The stored data is:
 
@@ -27549,7 +27549,7 @@ QCPStatisticalBoxData::QCPStatisticalBoxData(
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPStatisticalBox
-  \brief A plottable representing a single statistical box in a plot.
+  @brief A plottable representing a single statistical box in a plot.
 
   \image html QCPStatisticalBox.png
 
@@ -28167,7 +28167,7 @@ QVector<QLineF> QCPStatisticalBox::getWhiskerBarLines(
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPColorMapData
-  \brief Holds the two-dimensional data of a QCPColorMap plottable.
+  @brief Holds the two-dimensional data of a QCPColorMap plottable.
 
   This class is a data storage for \ref QCPColorMap. It holds a two-dimensional
   array, which \ref QCPColorMap then displays as a 2D image in the plot, where
@@ -28731,7 +28731,7 @@ bool QCPColorMapData::createAlpha(bool initializeOpaque) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPColorMap
-  \brief A plottable representing a two-dimensional color map in a plot.
+  @brief A plottable representing a two-dimensional color map in a plot.
 
   \image html QCPColorMap.png
 
@@ -29468,7 +29468,7 @@ void QCPColorMap::drawLegendIcon(QCPPainter* painter,
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPFinancialData
-  \brief Holds the data of one single data point for QCPFinancial.
+  @brief Holds the data of one single data point for QCPFinancial.
 
   The stored data is:
   \li \a key: coordinate on the key axis of this data point (this is the \a
@@ -29558,7 +29558,7 @@ QCPFinancialData::QCPFinancialData(double key, double open, double high,
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPFinancial
-  \brief A plottable representing a financial stock chart
+  @brief A plottable representing a financial stock chart
 
   \image html QCPFinancial.png
 
@@ -30581,7 +30581,7 @@ QRectF QCPFinancial::selectionHitBox(
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPErrorBarsData
-  \brief Holds the data of one single error bar for QCPErrorBars.
+  @brief Holds the data of one single error bar for QCPErrorBars.
 
   The stored data is:
   \li \a errorMinus: how much the error bar extends towards negative coordinates
@@ -30619,7 +30619,7 @@ QCPErrorBarsData::QCPErrorBarsData(double errorMinus, double errorPlus)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPErrorBars
-  \brief A plottable that adds a set of error bars to other plottables.
+  @brief A plottable that adds a set of error bars to other plottables.
 
   \image html QCPErrorBars.png
 
@@ -31628,7 +31628,7 @@ bool QCPErrorBars::rectIntersectsLine(const QRectF& pixelRect,
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPItemStraightLine
-  \brief A straight line that spans infinitely in both directions
+  @brief A straight line that spans infinitely in both directions
 
   \image html QCPItemStraightLine.png "Straight line example. Blue dotted
   circles are anchors, solid blue discs are positions."
@@ -31816,7 +31816,7 @@ QPen QCPItemStraightLine::mainPen() const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPItemLine
-  \brief A line from one point to another
+  @brief A line from one point to another
 
   \image html QCPItemLine.png "Line example. Blue dotted circles are anchors,
   solid blue discs are positions."
@@ -32053,7 +32053,7 @@ QPen QCPItemLine::mainPen() const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPItemCurve
-  \brief A curved line from one point to another
+  @brief A curved line from one point to another
 
   \image html QCPItemCurve.png "Curve example. Blue dotted circles are anchors,
   solid blue discs are positions."
@@ -32229,7 +32229,7 @@ QPen QCPItemCurve::mainPen() const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPItemRect
-  \brief A rectangle
+  @brief A rectangle
 
   \image html QCPItemRect.png "Rectangle example. Blue dotted circles are
   anchors, solid blue discs are positions."
@@ -32387,7 +32387,7 @@ QBrush QCPItemRect::mainBrush() const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPItemText
-  \brief A text label
+  @brief A text label
 
   \image html QCPItemText.png "Text example. Blue dotted circles are anchors,
   solid blue discs are positions."
@@ -32745,7 +32745,7 @@ QBrush QCPItemText::mainBrush() const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPItemEllipse
-  \brief An ellipse
+  @brief An ellipse
 
   \image html QCPItemEllipse.png "Ellipse example. Blue dotted circles are
   anchors, solid blue discs are positions."
@@ -32939,7 +32939,7 @@ QBrush QCPItemEllipse::mainBrush() const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPItemPixmap
-  \brief An arbitrary pixmap
+  @brief An arbitrary pixmap
 
   \image html QCPItemPixmap.png "Pixmap example. Blue dotted circles are
   anchors, solid blue discs are positions."
@@ -33213,7 +33213,7 @@ QPen QCPItemPixmap::mainPen() const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPItemTracer
-  \brief Item that sticks to QCPGraph data points
+  @brief Item that sticks to QCPGraph data points
 
   \image html QCPItemTracer.png "Tracer example. Blue dotted circles are
   anchors, solid blue discs are positions."
@@ -33596,7 +33596,7 @@ QBrush QCPItemTracer::mainBrush() const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPItemBracket
-  \brief A bracket for referencing/highlighting certain parts in the plot.
+  @brief A bracket for referencing/highlighting certain parts in the plot.
 
   \image html QCPItemBracket.png "Bracket example. Blue dotted circles are
   anchors, solid blue discs are positions."
@@ -33857,7 +33857,7 @@ QPen QCPItemBracket::mainPen() const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPPolarAxisRadial
-  \brief The radial axis inside a radial plot
+  @brief The radial axis inside a radial plot
 
   \warning In this QCustomPlot version, polar plots are a tech preview. Expect
   documentation and functionality to be incomplete, as well as changing public
@@ -35340,7 +35340,7 @@ QCP::Interaction QCPPolarAxisRadial::selectionCategory() const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPPolarAxisAngular
-  \brief The main container for polar plots, representing the angular axis as a
+  @brief The main container for polar plots, representing the angular axis as a
   circle
 
   \warning In this QCustomPlot version, polar plots are a tech preview. Expect
@@ -37047,7 +37047,7 @@ bool QCPPolarAxisAngular::registerPolarGraph(QCPPolarGraph* graph) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPPolarGrid
-  \brief The grid in both angular and radial dimensions for polar plots
+  @brief The grid in both angular and radial dimensions for polar plots
 
   \warning In this QCustomPlot version, polar plots are a tech preview. Expect
   documentation and functionality to be incomplete, as well as changing public
@@ -37240,7 +37240,7 @@ void QCPPolarGrid::drawAngularGrid(QCPPainter* painter, const QPointF& center,
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPPolarLegendItem
-  \brief A legend item for polar plots
+  @brief A legend item for polar plots
 
   \warning In this QCustomPlot version, polar plots are a tech preview. Expect
   documentation and functionality to be incomplete, as well as changing public
@@ -37323,7 +37323,7 @@ QFont QCPPolarLegendItem::getFont() const {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*! \class QCPPolarGraph
-  \brief A radial graph used to display data in polar plots
+  @brief A radial graph used to display data in polar plots
 
   \warning In this QCustomPlot version, polar plots are a tech preview. Expect
   documentation and functionality to be incomplete, as well as changing public

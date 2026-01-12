@@ -1,14 +1,9 @@
-/****************************************************************************
-**     Qucs Attenuator Synthesis
-**     main.cpp
-**
-**
-**
-**
-**
-**
-**
-*****************************************************************************/
+/// @file main.cpp
+/// @brief Main file
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 3, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -30,10 +25,18 @@
 
 #include "UI/qucs-s-spar-viewer.h"
 
+/// Global structure holding application settings
 struct tQucsSettings QucsSettings;
 
-// #########################################################################
-// Loads the settings file and stores the settings.
+/// @brief Loads application settings from the configuration file
+///
+/// Reads settings from the QSettings storage using the organization name "qucs"
+/// and application name "qucs_s". Loads window position (x, y coordinates),
+/// font settings, and language preferences into the global QucsSettings
+/// structure.
+///
+/// @return true if settings were loaded successfully, false otherwise
+/// @see saveApplSettings(Qucs_S_SPAR_Viewer*)
 bool loadSettings() {
   QSettings settings("qucs", "qucs_s");
   settings.beginGroup("QucsSparViewer");
@@ -54,9 +57,15 @@ bool loadSettings() {
   return true;
 }
 
-// #########################################################################
-// Saves the settings in the settings file.
-bool saveApplSettings(Qucs_S_SPAR_Viewer* qucs) {
+/// @brief Saves application settings to the configuration file
+///
+/// Persists the current window position to QSettings storage for restoration
+/// in future application sessions.
+///
+/// @param qucs Pointer to the main application window
+/// @return true if settings were saved successfully, false otherwise
+/// @see loadSettings()
+bool saveApplSettings(Qucs_S_SPAR_Viewer *qucs) {
   QSettings settings("qucs", "qucs_s");
   settings.beginGroup("QucsSparViewer");
   settings.setValue("x", qucs->x());
@@ -65,7 +74,19 @@ bool saveApplSettings(Qucs_S_SPAR_Viewer* qucs) {
   return true;
 }
 
-int main(int argc, char** argv) {
+/// @brief Main entry point for the Qucs-S S-Parameter Viewer
+///
+/// Initializes the Qt application, loads settings, configures localization,
+/// creates the main window, and optionally opens a file or directory specified
+/// as a command-line argument.
+///
+///
+/// @param argc Number of command-line arguments
+/// @param argv Array of command-line argument strings
+///              argv[1] (optional): Path to a file or directory to open
+///
+/// @return Application exit code (0 for success)
+int main(int argc, char **argv) {
   QApplication a(argc, argv);
 
   // apply default settings
@@ -73,10 +94,10 @@ int main(int argc, char** argv) {
   QucsSettings.y = 100;
 
   // is application relocated?
-  char* var = getenv("QUCSDIR");
+  char *var = getenv("QUCSDIR");
   QDir QucsDir;
   if (var != NULL) {
-    QucsDir            = QDir(var);
+    QucsDir = QDir(var);
     QString QucsDirStr = QucsDir.canonicalPath();
     QucsSettings.LangDir =
         QDir::toNativeSeparators(QucsDirStr + "/share/" QUCS_NAME "/lang/");
@@ -102,7 +123,7 @@ int main(int argc, char** argv) {
       tor.load(QStringLiteral("qucs_") + lang, QucsSettings.LangDir));
   a.installTranslator(&tor);
 
-  Qucs_S_SPAR_Viewer* qucs = new Qucs_S_SPAR_Viewer();
+  Qucs_S_SPAR_Viewer *qucs = new Qucs_S_SPAR_Viewer();
 
   if (argc > 1) { // File or directory path to watch
     QString path = QString(argv[1]);
@@ -125,7 +146,7 @@ int main(int argc, char** argv) {
   qucs->move(QucsSettings.x, QucsSettings.y); // position before "show" !!!
   qucs->show();
 
-  QScreen* primaryScreen = QGuiApplication::screens().constFirst();
+  QScreen *primaryScreen = QGuiApplication::screens().constFirst();
 
   qucs->resize(primaryScreen->availableGeometry().size() * 0.9);
   qucs->setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter,

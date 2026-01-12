@@ -1,38 +1,43 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file TeeAttenuator.cpp
+/// @brief Tee attenuator synthesis (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 5, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef TEEATTENUATOR_H
 #define TEEATTENUATOR_H
 
 #include "AttenuatorBase.h"
 
+/// @class TeeAttenuator
+/// @brief Tee attenuator synthesis
+/// Reference: RF design guide. Systems, circuits, and equations. Peter Vizmuller. Artech House, 1995
 class TeeAttenuator : public AttenuatorBase {
     public:
-        TeeAttenuator();
-        virtual ~TeeAttenuator();
-        TeeAttenuator(AttenuatorDesignParameters);
+    /// @brief Class constructor
+    TeeAttenuator() {}
 
-        void synthesize() override;
+    /// @brief Class constructor from specifications
+    TeeAttenuator(AttenuatorDesignParameters AS) : AttenuatorBase(AS) {}
+
+    /// @brief Class destructor
+    virtual ~TeeAttenuator() {}
+
+    /// @brief Class constructor with parameters
+    /// @param AS Design specifications
+    void synthesize() override;
 
     private:
-        double R1, R2, R3;
+    double R1; ///< 1st series resistor
+    double R2; ///< Shunt resistor
+    double R3; ///< 2nd series resistor
 
-        void calculateParams() override;
-        void buildNetwork() override;
+    /// @brief Calculate R1, R2 and R3
+    void calculateParams() override;
+
+    /// @brief Build schematic with components, nodes, and wires
+    void buildNetwork() override;
 };
 
 #endif // TEEATTENUATOR_H

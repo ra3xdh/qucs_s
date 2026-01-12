@@ -1,23 +1,12 @@
-/*
- *  Copyright (C) 2019, 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file general.cpp
+/// @brief Utility functions needed across the whole project
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 4, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "general.h"
 
-// Rounds a double number using the minimum number of decimal places
 QString RoundVariablePrecision(double val) {
   int precision = 0; // By default, it takes 2 decimal places
   int sign = 1;
@@ -43,9 +32,9 @@ QString num2str(std::complex<double> Z, Units CompType) {
   }
 
   if (Z.imag() < 0) {
-    return QString("%1 -j %2").arg(Real).arg(num2str(abs(Z.imag()), CompType));
+    return QString("%1 -j %2").arg(Real, num2str(abs(Z.imag()), CompType));
   } else {
-    return QString("%1 +j %2").arg(Real).arg(num2str(Z.imag(), CompType));
+    return QString("%1 +j %2").arg(Real, num2str(Z.imag(), CompType));
   }
 }
 
@@ -239,8 +228,6 @@ std::complex<double> Str2Complex(QString num) {
   return std::complex<double>(realStr.toDouble(), imagStr.toDouble());
 }
 
-// This function creates a string for the transmission line length and
-// automatically changes the unit length if the value lies outside [1,999.99]
 QString ConvertLengthFromM(QString units, double len) {
   int index;
 
@@ -373,7 +360,6 @@ void convert_MA_RI_to_dB(double *S_1, double *S_2, double *S_3, double *S_4,
   *S_4 = S_im;
 }
 
-// Gets the frequency scale unit from a String lke kHz, MHz, GHz
 double getFreqScale(QString frequency_unit) {
   double freq_scale = 1;
   if (frequency_unit == "kHz") {
@@ -428,8 +414,6 @@ double getFreqFromText(QString freq) {
   return -1;
 }
 
-// Find the closest x-axis value in a series given a x value (not necesarily in
-// the grid)
 QPointF findClosestPoint(const QList<double> &xValues,
                          const QList<double> &yValues, double targetX) {
   if (xValues.isEmpty() || yValues.isEmpty() ||
@@ -454,7 +438,6 @@ QPointF findClosestPoint(const QList<double> &xValues,
   return closestPoint;
 }
 
-// Gets the scale factor from a string like nF, nH, mm, etc.
 double getScaleFactor(QString scale) {
   if (scale.isEmpty())
     return 1.0;

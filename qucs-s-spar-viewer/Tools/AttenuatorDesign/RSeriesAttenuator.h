@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file RSeriesAttenuator.h
+/// @brief Series resistor (unmatched) attenuator synthesis (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 6, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef RSERIESATTENUATOR_H
 #define RSERIESATTENUATOR_H
@@ -23,19 +13,33 @@
 #include "AttenuatorBase.h"
 #include <QPen>
 
+/// @class RSeriesAttenuator
+/// @brief Series resistor (unmatched) attenuator synthesis
 class RSeriesAttenuator : public AttenuatorBase {
     public:
-        RSeriesAttenuator();
-        virtual ~RSeriesAttenuator();
-        RSeriesAttenuator(AttenuatorDesignParameters);
+      /// @brief Class constructor
+      RSeriesAttenuator() {}
 
-        void synthesize() override;
+      /// @brief Class constructor with parameters
+      /// @param AS Design specifications
+      RSeriesAttenuator(AttenuatorDesignParameters AS) : AttenuatorBase(AS) {}
+
+      /// @brief Class destructor
+      virtual ~RSeriesAttenuator() {}
+
+      /// @brief Calculate component values and build schematic
+      void synthesize() override;
 
     private:
-        double R1, Zin, Zout;
+      double R1;    ///< Resistor value
+      double Zin;   ///< Input impedance [Ohm]
+      double Zout;  ///< Output impedance [Ohm]
 
-        void calculateParams() override;
-        void buildNetwork() override;
+      /// @brief Calculate R1, Zin and Zout
+      void calculateParams() override;
+
+      /// @brief Build schematic with components, nodes, and wires
+      void buildNetwork() override;
 };
 
 #endif // RSERIESATTENUATOR_H

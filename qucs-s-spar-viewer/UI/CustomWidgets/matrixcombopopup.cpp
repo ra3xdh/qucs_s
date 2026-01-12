@@ -1,78 +1,16 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file matrixcombopopup.cpp
+/// @brief Custom popup displaying S-parameters in matrix layout with other
+/// parameters below (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 3, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "matrixcombopopup.h"
-#include <QApplication>
-#include <QEvent>
-#include <QFrame>
-#include <QGraphicsDropShadowEffect>
-#include <QHoverEvent>
-#include <QScreen>
-#include <QScrollArea>
-#include <QStyle>
-#include <QStyleOptionComboBox>
-#include <cmath> // for sqrt
 
-// Custom button class with hover effect
-class HoverButton : public QPushButton {
-public:
-  HoverButton(const QString& text, QWidget* parent = nullptr)
-      : QPushButton(text, parent) {
-    setFlat(true);
-    setMouseTracking(true);
-
-    // Create initial style
-    setStyleSheet("QPushButton {"
-                  "   padding: 5px;"
-                  "   border: none;"
-                  "   background-color: transparent;"
-                  "   text-align: left;"
-                  "}"
-                  "QPushButton:hover {"
-                  "   background-color: rgba(0, 0, 0, 10%);"
-                  "   border-radius: 3px;"
-                  "}");
-
-    // Create shadow effect (hidden by default)
-    shadowEffect = new QGraphicsDropShadowEffect(this);
-    shadowEffect->setBlurRadius(10);
-    shadowEffect->setColor(QColor(0, 0, 0, 80));
-    shadowEffect->setOffset(0, 0);
-    shadowEffect->setEnabled(false);
-    setGraphicsEffect(shadowEffect);
-  }
-
-protected:
-  bool event(QEvent* event) override {
-    if (event->type() == QEvent::HoverEnter) {
-      shadowEffect->setEnabled(true);
-    } else if (event->type() == QEvent::HoverLeave) {
-      shadowEffect->setEnabled(false);
-    }
-    return QPushButton::event(event);
-  }
-
-private:
-  QGraphicsDropShadowEffect* shadowEffect;
-};
-
-MatrixComboPopup::MatrixComboPopup(const QStringList& sParams,
-                                   const QStringList& otherParams,
-                                   QComboBox* parent)
+MatrixComboPopup::MatrixComboPopup(const QStringList &sParams,
+                                   const QStringList &otherParams,
+                                   QComboBox *parent)
     : QFrame(parent), parentCombo(parent) {
   // Style as a popup menu
   setFrameStyle(QFrame::Panel | QFrame::Plain);
@@ -83,7 +21,7 @@ MatrixComboPopup::MatrixComboPopup(const QStringList& sParams,
                  Qt::NoDropShadowWindowHint);
 
   // Apply a shadow to the whole popup
-  QGraphicsDropShadowEffect* popupShadow = new QGraphicsDropShadowEffect(this);
+  QGraphicsDropShadowEffect *popupShadow = new QGraphicsDropShadowEffect(this);
   popupShadow->setBlurRadius(15);
   popupShadow->setColor(QColor(0, 0, 0, 80));
   popupShadow->setOffset(0, 2);
@@ -93,12 +31,12 @@ MatrixComboPopup::MatrixComboPopup(const QStringList& sParams,
   setStyleSheet("background-color: white;");
 
   // Main layout
-  QVBoxLayout* mainLayout = new QVBoxLayout(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout(this);
   mainLayout->setContentsMargins(4, 4, 4, 4);
   mainLayout->setSpacing(2);
 
   // Create matrix layout for S-parameters
-  QGridLayout* matrixLayout = new QGridLayout();
+  QGridLayout *matrixLayout = new QGridLayout();
   matrixLayout->setSpacing(2);
 
   // Calculate the size of the matrix (assuming it's square)
@@ -111,7 +49,7 @@ MatrixComboPopup::MatrixComboPopup(const QStringList& sParams,
   int paramIndex = 0;
   for (int i = 0; i < matrixSize && paramIndex < sParams.size(); i++) {
     for (int j = 0; j < matrixSize && paramIndex < sParams.size(); j++) {
-      HoverButton* button = new HoverButton(sParams[paramIndex], this);
+      HoverButton *button = new HoverButton(sParams[paramIndex], this);
       button->setProperty("paramName", sParams[paramIndex]);
       connect(button, &QPushButton::clicked, this,
               &MatrixComboPopup::selectItem);
@@ -123,14 +61,14 @@ MatrixComboPopup::MatrixComboPopup(const QStringList& sParams,
   mainLayout->addLayout(matrixLayout);
 
   // Add separator
-  QFrame* separator = new QFrame(this);
+  QFrame *separator = new QFrame(this);
   separator->setFrameShape(QFrame::HLine);
   separator->setFrameShadow(QFrame::Sunken);
   mainLayout->addWidget(separator);
 
   // Add other parameters as a list
-  for (const QString& param : otherParams) {
-    HoverButton* button = new HoverButton(param, this);
+  for (const QString &param : otherParams) {
+    HoverButton *button = new HoverButton(param, this);
     button->setProperty("paramName", param);
     connect(button, &QPushButton::clicked, this, &MatrixComboPopup::selectItem);
     mainLayout->addWidget(button);
@@ -140,7 +78,7 @@ MatrixComboPopup::MatrixComboPopup(const QStringList& sParams,
   qApp->installEventFilter(this);
 }
 
-void MatrixComboPopup::showBelow(QWidget* widget) {
+void MatrixComboPopup::showBelow(QWidget *widget) {
   // Set the width to match the parent widget
   setMinimumWidth(widget->width());
   adjustSize();
@@ -150,8 +88,8 @@ void MatrixComboPopup::showBelow(QWidget* widget) {
 
   // Ensure the popup is fully visible on screen
   QRect screenGeometry = QApplication::primaryScreen()->availableGeometry();
-  int popupHeight      = height();
-  int popupWidth       = width();
+  int popupHeight = height();
+  int popupWidth = width();
 
   // If popup would go below screen, show it above the widget instead
   if (pos.y() + popupHeight > screenGeometry.bottom()) {
@@ -169,10 +107,10 @@ void MatrixComboPopup::showBelow(QWidget* widget) {
 }
 
 void MatrixComboPopup::selectItem() {
-  QPushButton* button = qobject_cast<QPushButton*>(sender());
+  QPushButton *button = qobject_cast<QPushButton *>(sender());
   if (button && parentCombo) {
     QString text = button->property("paramName").toString();
-    int index    = parentCombo->findText(text);
+    int index = parentCombo->findText(text);
     if (index >= 0) {
       parentCombo->setCurrentIndex(index);
     }
@@ -181,12 +119,12 @@ void MatrixComboPopup::selectItem() {
 }
 
 // Constructor
-MatrixComboBox::MatrixComboBox(QWidget* parent)
+MatrixComboBox::MatrixComboBox(QWidget *parent)
     : QComboBox(parent), popupVisible(false), popup(nullptr) {}
 
-void MatrixComboBox::setParameters(const QStringList& sParams,
-                                   const QStringList& otherParams) {
-  this->sParams     = sParams;
+void MatrixComboBox::setParameters(const QStringList &sParams,
+                                   const QStringList &otherParams) {
+  this->sParams = sParams;
   this->otherParams = otherParams;
 
   // Add all items to the standard combo box
@@ -208,7 +146,7 @@ void MatrixComboBox::showPopup() {
 
   // When popup is closed
   connect(popup, &QWidget::destroyed, [this]() {
-    popup        = nullptr;
+    popup = nullptr;
     popupVisible = false;
     update();
   });
@@ -226,7 +164,7 @@ void MatrixComboBox::hidePopup() {
   update();
 }
 
-void MatrixComboBox::paintEvent(QPaintEvent* event) {
+void MatrixComboBox::paintEvent(QPaintEvent *event) {
   QStyleOptionComboBox opt;
   initStyleOption(&opt);
 

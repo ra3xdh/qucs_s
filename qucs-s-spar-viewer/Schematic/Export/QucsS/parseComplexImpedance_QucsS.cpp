@@ -1,3 +1,10 @@
+/// @file parseComplexImpedance_QucsS.cpp
+/// @brief Converts a complex impedance component to Qucs-S RFEDD format
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 4, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
+
 #include "./../QucsS/QucsSExporter.h"
 
 QString QucsSExporter::parseComplexImpedance_QucsS(ComponentInfo Comp,

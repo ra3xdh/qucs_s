@@ -1,38 +1,22 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file TeeAttenuator.cpp
+/// @brief Tee attenuator synthesis (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 5, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "TeeAttenuator.h"
 
 // Reference: RF design guide. Systems, circuits, and equations. Peter
 // Vizmuller. Artech House, 1995
 
-TeeAttenuator::TeeAttenuator() {}
-
-TeeAttenuator::TeeAttenuator(AttenuatorDesignParameters AS)
-    : AttenuatorBase(AS) {}
-
-TeeAttenuator::~TeeAttenuator() {}
-
 void TeeAttenuator::calculateParams() {
   // Design equations
   double L = pow(10, .1 * Specification.Attenuation);
-  R2 = (2 * sqrt(Specification.Zin * Specification.Zout * L)) / (L - 1);
-  R1 = Specification.Zin * ((L + 1) / (L - 1)) - R2;
-  R3 = Specification.Zout * ((L + 1) / (L - 1)) - R2;
+  R2 = (2 * sqrt(Specification.Zin * Specification.Zout * L)) /
+       (L - 1);                                       // Shunt resistor
+  R1 = Specification.Zin * ((L + 1) / (L - 1)) - R2;  // 1st series resistor
+  R3 = Specification.Zout * ((L + 1) / (L - 1)) - R2; // 2nd series resistor
 
   // Power dissipation
   Pdiss["R1"] = Specification.Pin * R1 / Specification.Zin;

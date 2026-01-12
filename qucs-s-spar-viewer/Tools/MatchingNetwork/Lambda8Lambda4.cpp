@@ -1,29 +1,11 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file Lambda8Lambda4.cpp
+/// @brief Lambda/8 + Lambda/4 matching network synthesis (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 6, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "Lambda8Lambda4.h"
-
-Lambda8Lambda4::Lambda8Lambda4() {}
-Lambda8Lambda4::~Lambda8Lambda4() {}
-Lambda8Lambda4::Lambda8Lambda4(MatchingNetworkDesignParameters AS,
-                               double freq) {
-  Specs = AS;
-  f_match = freq;
-}
 
 void Lambda8Lambda4::synthesize() {
   // Calculate matching impedances
@@ -61,7 +43,7 @@ void Lambda8Lambda4::buildMatchingNetwork_IdealTL(double Zm, double Zmm,
   // First transmission line: Zm, length λ/4
   TL1.setParams(
       QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-      TransmissionLine, -90, x_pos, 0);
+      TransmissionLine, 90, x_pos, 0);
   TL1.val["Z0"] = num2str(Zm, Resistance);
   TL1.val["Length"] = ConvertLengthFromM("mm", l4);
   Schematic.appendComponent(TL1);
@@ -71,7 +53,7 @@ void Lambda8Lambda4::buildMatchingNetwork_IdealTL(double Zm, double Zmm,
     x_pos += 50;
     TL2.setParams(
         QString("TLIN%1").arg(++Schematic.NumberComponents[TransmissionLine]),
-        TransmissionLine, -90, x_pos, 0);
+        TransmissionLine, 90, x_pos, 0);
     TL2.val["Z0"] = num2str(Zmm, Resistance);
     TL2.val["Length"] = ConvertLengthFromM("mm", l8);
     Schematic.appendComponent(TL2);
@@ -92,12 +74,12 @@ void Lambda8Lambda4::buildMatchingNetwork_IdealTL(double Zm, double Zmm,
   Schematic.appendComponent(GND_ZL);
 
   // Wiring
-  Schematic.appendWire(TermSpar1.ID, 0, TL1.ID, 1);
+  Schematic.appendWire(TermSpar1.ID, 0, TL1.ID, 0);
   if (XL != 0) {
-    Schematic.appendWire(TL1.ID, 0, TL2.ID, 1);
-    Schematic.appendWire(Zload.ID, 1, TL2.ID, 0);
+    Schematic.appendWire(TL1.ID, 1, TL2.ID, 0);
+    Schematic.appendWire(Zload.ID, 1, TL2.ID, 1);
   } else {
-    Schematic.appendWire(Zload.ID, 1, TL1.ID, 0);
+    Schematic.appendWire(Zload.ID, 1, TL1.ID, 1);
   }
   Schematic.appendWire(Zload.ID, 0, GND_ZL.ID, 0);
 }

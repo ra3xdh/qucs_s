@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file Bagley.h
+/// @brief Bagley power combiner/divider network (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 7, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef BAGLEY_H
 #define BAGLEY_H
@@ -24,46 +14,65 @@
 #include "../TransmissionLineSynthesis/Microstrip.h"
 #include <QPen>
 
+/// @class Bagley
+/// @brief Bagley power combiner/divider network
+///
+/// Implements the Bagley topology for N-way power combining/dividing.
+/// Supports ideal transmission lines and microstrip implementations.
+///
 class Bagley : public Network {
-public:
-  Bagley();
-  virtual ~Bagley();
-  Bagley(PowerCombinerParams);
-  void synthesize();
+  public:
+    /// @brief Default constructor
+    Bagley() {}
 
-private:
-  PowerCombinerParams Specification;
-  
-  double lambda4, lambda2, Zbranch;
-  
-  void calculateParams();
-  void buildBagley_IdealTL();
-  void buildBagley_Microstrip();
+    /// @brief Constructor with power combiner parameters
+    /// @param params Power combiner specification parameters
+    Bagley(PowerCombinerParams PS) { Specification = PS; }
 
+    /// @brief Class destructor
+    virtual ~Bagley() {}
 
-private:
+    /// @brief Synthesize the Bagley network
+    void synthesize();
 
-  // Components' locations
+  private:
+    /// @brief Power combiner specifications
+    PowerCombinerParams Specification;
 
-  // This function sets the component's location before the schematic is built
-  void setComponentsLocation();
+    double lambda4;  ///< Quarter wavelength at design frequency
+    double lambda2;  ///< Half wavelength at design frequency
+    double Zbranch;  ///< Branch line characteristic impedance
 
-  // Private variables for components location
-  int x_spacing, y_spacing; // General components spacing
+    /// @brief Calculate electrical parameters
+    void calculateParams();
 
-  // Ports
-  QPoint Port_in;
-  QPoint Port_1st_out;
+    /// @brief Build Bagley network using ideal transmission lines
+    void buildBagley_IdealTL();
 
-  // 1st output node
-  int y_out; // y-axis coordinate of the output lines
-  QPoint N_1st_out;
+    /// @brief Build Bagley network using microstrip transmission lines
+    void buildBagley_Microstrip();
 
-  // Transmission lines
-  QPoint left_TL;
-  QPoint right_TL;
+    /// @brief Set component locations for schematic layout
+    ///
+    /// Calculates positions for all components before building
+    /// the schematic based on number of outputs
+    void setComponentsLocation();
 
+    /// Component spacing parameters
+    int x_spacing;  ///< Horizontal spacing between components
+    int y_spacing;  ///< Vertical spacing between components
 
+    /// Port locations
+    QPoint Port_in;      ///< Input port position
+    QPoint Port_1st_out; ///< First output port position
+
+    /// Output node parameters
+    int y_out;          ///< Y-coordinate of output line
+    QPoint N_1st_out;   ///< First output node position
+
+    /// Transmission line positions
+    QPoint left_TL;   ///< Left vertical transmission line position
+    QPoint right_TL;  ///< Right vertical transmission line position
 };
 
 #endif // BAGLEY_H

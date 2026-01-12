@@ -1,26 +1,10 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
-/**
- * @file DirectCoupledFilterAdjustResonatorValuesWindow.cpp
- * @brief Window to define the values of the resonator components
- * @author Andrés Martínez Mera
- * @date 2025
- */
+/// @file DirectCoupledFilterAdjustResonatorValuesWindow.cpp
+/// @brief Window to define the values of the resonator components in
+/// direct-coupled filters
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 5, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "../FilterDesignTool.h"
 
@@ -189,16 +173,15 @@ void FilterDesignTool::openResonatorValuesDialog() {
     ResonatorSpinbox->setValue(resonatorValues[i]);
 
     // Connect value change to trigger design update
-    connect(ResonatorSpinbox,
-            QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+    connect(ResonatorSpinbox, &QDoubleSpinBox::valueChanged, this,
             [this, i](double value) {
               resonatorValues[i] = value;
               UpdateDesignParameters();
             });
 
     // Connect scale change to trigger design update
-    connect(scaleCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, [this, i, scaleCombo]() {
+    connect(scaleCombo, &QComboBox::currentIndexChanged, this,
+            [this, i, scaleCombo]() {
               resonatorScaleValues[i] = scaleCombo->currentText();
               UpdateDesignParameters();
             });

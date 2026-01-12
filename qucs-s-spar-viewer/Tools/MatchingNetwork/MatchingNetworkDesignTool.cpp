@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file MatchingNetworkDesignTool.cpp
+/// @brief GUI for the matching network synthesis tool (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 6, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "MatchingNetworkDesignTool.h"
 
@@ -65,16 +55,30 @@ MatchingNetworkDesignTool::MatchingNetworkDesignTool(QWidget *parent)
   MatchingNetworkDesignLayout->addWidget(traceNameLineEdit, 5, 1);
 
   // Connect signals from the input matching network setup widget
-  connect(InputMatchingSetupWidget, SIGNAL(parametersChanged()), this,
-          SLOT(UpdateDesignParameters()));
-  connect(OutputMatchingSetupWidget, SIGNAL(parametersChanged()), this,
-          SLOT(UpdateDesignParameters()));
-  connect(TwoPortCheckBox, SIGNAL(stateChanged(int)), this,
-          SLOT(AdjustOneTwoPortMatchingWidgetsVisibility()));
-  connect(f_match_Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(f_match_Scale_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
+  connect(InputMatchingSetupWidget,
+          &MatchingNetworkParametersWidget::parametersChanged, this,
+          &MatchingNetworkDesignTool::UpdateDesignParameters);
+
+  connect(OutputMatchingSetupWidget,
+          &MatchingNetworkParametersWidget::parametersChanged, this,
+          &MatchingNetworkDesignTool::UpdateDesignParameters);
+
+  // Use this while Qt < 6.7
+  connect(TwoPortCheckBox,
+          &QCheckBox::stateChanged,
+          this,
+          &MatchingNetworkDesignTool::AdjustOneTwoPortMatchingWidgetsVisibility);
+  /*
+   * Use this when all the builds are Qt > 6.7
+  connect(
+      TwoPortCheckBox, &QCheckBox::checkStateChanged, this,
+      &MatchingNetworkDesignTool::AdjustOneTwoPortMatchingWidgetsVisibility);*/
+
+  connect(f_match_Spinbox, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+          this, &MatchingNetworkDesignTool::UpdateDesignParameters);
+
+  connect(f_match_Scale_Combo, &QComboBox::currentIndexChanged, this,
+          &MatchingNetworkDesignTool::UpdateDesignParameters);
 
   connect(LoadSpecWidget, &LoadSpecificationWidget::impedanceChanged, this,
           &MatchingNetworkDesignTool::UpdateDesignParameters);

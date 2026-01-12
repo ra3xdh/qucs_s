@@ -1,19 +1,10 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file Microstrip.h
+/// @brief Synthesize microstrip lines (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 7, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-laterng with this program.  If not, see
+/// <https://www.gnu.org/licenses/>.
 
 #include "Microstrip.h"
 
@@ -23,12 +14,12 @@ MicrostripClass::SynthesisResults::SynthesisResults()
 }
 
 // Main implementation of microstrip calculation
-void MicrostripClass::calcMicrostrip(double width, double freq, double& er_eff,
-                                     double& zl) {
-  double h      = Substrate.height;
-  double t      = Substrate.MetalThickness;
-  double er     = Substrate.er;
-  double Wh     = width / h;
+void MicrostripClass::calcMicrostrip(double width, double freq, double &er_eff,
+                                     double &zl) {
+  double h = Substrate.height;
+  double t = Substrate.MetalThickness;
+  double er = Substrate.er;
+  double Wh = width / h;
   double t_norm = t / h;
 
   // Quasi-static models by Hammerstad
@@ -41,8 +32,8 @@ void MicrostripClass::calcMicrostrip(double width, double freq, double& er_eff,
   }
 
   // Relative effective permittivity
-  double a_val       = Wh * Wh;
-  double b_val       = a_val * a_val;
+  double a_val = Wh * Wh;
+  double b_val = a_val * a_val;
   double er_eff_term = -0.564 * pow((er - 0.9) / (er + 3.0), 0.053);
   er_eff_term *= 1.0 + log((b_val + a_val / 2704.0) / (b_val + 0.432)) / 49.0 +
                  log(1.0 + a_val * Wh / 5929.741) / 18.7;
@@ -76,8 +67,8 @@ void MicrostripClass::calcMicrostrip(double width, double freq, double& er_eff,
   double er_freq = er - (er - er_eff) / (1.0 + a_val);
 
   // Characteristic impedance with dispersion
-  a_val     = -0.03891 * pow(er, 1.4);
-  b_val     = -0.267 * pow(Wh, 7.0);
+  a_val = -0.03891 * pow(er, 1.4);
+  b_val = -0.267 * pow(Wh, 7.0);
   double R7 = 1.206 - 0.3144 * exp(a_val) * (1.0 - exp(b_val));
 
   a_val = 0.016 + pow(0.0514 * er, 4.524);
@@ -86,7 +77,7 @@ void MicrostripClass::calcMicrostrip(double width, double freq, double& er_eff,
       5.086 * a_val * b_val / (0.3838 + 0.386 * a_val) / (1.0 + 1.2992 * b_val);
   b_val = -22.2 * pow(Wh, 1.92);
   a_val *= exp(b_val);
-  b_val     = pow(er - 1.0, 6.0);
+  b_val = pow(er - 1.0, 6.0);
   double R9 = a_val * b_val / (1.0 + 10.0 * b_val);
 
   a_val = 4.766 * exp(-3.228 * pow(Wh, 0.641)); // R3
@@ -114,7 +105,7 @@ void MicrostripClass::calcMicrostrip(double width, double freq, double& er_eff,
 bool MicrostripClass::synthesizeMicrostrip(double Z0, double length,
                                            double freq) {
   Results.iterations = 0;
-  double width       = 1.0; // start with 1mm
+  double width = 1.0; // start with 1mm
   double er_eff;
   double Z0_current, Z0_result;
 
@@ -123,9 +114,9 @@ bool MicrostripClass::synthesizeMicrostrip(double Z0, double length,
     calcMicrostrip(width, freq, er_eff, Z0_current);
 
     if (fabs(Z0 - Z0_current) < MAX_ERROR) {
-      Results.width  = width;
+      Results.width = width;
       Results.er_eff = er_eff;
-      Results.zl     = Z0_current;
+      Results.zl = Z0_current;
       Results.length = length / sqrt(er_eff);
       return true;
     }
@@ -148,7 +139,7 @@ bool MicrostripClass::synthesizeMicrostrip(double Z0, double length,
   } while (Results.iterations < 150);
 
   // If we get here, convergence failed
-  Results.width  = -1.0;
+  Results.width = -1.0;
   Results.er_eff = -1.0;
   Results.length = -1;
   return false;
@@ -177,8 +168,8 @@ double MicrostripClass::getMicrostripOpen(double Wh, double er, double er_eff) {
 bool MicrostripClass::synthesizeCoupledMicrostrip(double zl_even, double zl_odd,
                                                   double length, double freq) {
   Results.iterations = 0;
-  double er          = Substrate.er;
-  double h           = Substrate.height;
+  double er = Substrate.er;
+  double h = Substrate.height;
 
   // Wheeler formula for single microstrip synthesis (even mode)
   double a = exp(zl_even * sqrt(er + 1.0) / 84.8) - 1.0;
@@ -191,9 +182,9 @@ bool MicrostripClass::synthesizeCoupledMicrostrip(double zl_even, double zl_odd,
       8.0 * sqrt(a * ((7.0 + 4.0 / er) / 11.0) + ((1.0 + 1.0 / er) / 0.81)) / a;
 
   // First rough estimation
-  double ce    = cosh(0.5 * PI * Wh_even);
-  double co    = cosh(0.5 * PI * Wh_odd);
-  double gap   = (2.0 / PI) * acosh((ce + co - 2.0) / (co - ce)) * h;
+  double ce = cosh(0.5 * PI * Wh_even);
+  double co = cosh(0.5 * PI * Wh_odd);
+  double gap = (2.0 / PI) * acosh((ce + co - 2.0) / (co - ce)) * h;
   double width = acosh((ce * co - 1.0) / (co - ce)) / PI - gap / 2.0;
   width *= h;
 
@@ -209,13 +200,13 @@ bool MicrostripClass::synthesizeCoupledMicrostrip(double zl_even, double zl_odd,
     if (fabs(zl_even - zl_even_current) < MAX_ERROR &&
         fabs(zl_odd - zl_odd_current) < MAX_ERROR) {
       Results.width = width;
-      Results.gap   = gap;
+      Results.gap = gap;
 
       // Calculate average effective permittivity
       Results.er_eff = 0.5 * (er_eff_e + er_eff_o);
 
       Results.zl_even = zl_even_current;
-      Results.zl_odd  = zl_odd_current;
+      Results.zl_odd = zl_odd_current;
 
       // Physical length of the coupled lines
       // For coupled lines, we use the average of even and odd mode effective
@@ -271,8 +262,8 @@ bool MicrostripClass::synthesizeCoupledMicrostrip(double zl_even, double zl_odd,
   } while (Results.iterations < 200);
 
   // If we get here, convergence failed
-  Results.width  = -1.0;
-  Results.gap    = -1.0;
+  Results.width = -1.0;
+  Results.gap = -1.0;
   Results.er_eff = -1.0;
   Results.length = -1.0;
   return false;
@@ -280,14 +271,14 @@ bool MicrostripClass::synthesizeCoupledMicrostrip(double zl_even, double zl_odd,
 
 // Coupled microstrip analysis implementation
 void MicrostripClass::calcCoupledMicrostrip(double ms_width, double g,
-                                            double freq, double& zl_e,
-                                            double& zl_o, double& er_eff_e,
-                                            double& er_eff_o) {
+                                            double freq, double &zl_e,
+                                            double &zl_o, double &er_eff_e,
+                                            double &er_eff_o) {
   double Wh_o, a, b, c, d;
   double Wh_e = ms_width;
-  double h    = Substrate.height;
-  double t    = Substrate.MetalThickness;
-  double er   = Substrate.er;
+  double h = Substrate.height;
+  double t = Substrate.MetalThickness;
+  double er = Substrate.er;
 
   // Width correction due to metal thickness
   a = 1.0;
@@ -316,15 +307,15 @@ void MicrostripClass::calcCoupledMicrostrip(double ms_width, double g,
 
   // Static zero-thickness relative permittivity by Hammerstad and Jensen
   double er_e, er_o;
-  a    = Wh_e * Wh_e;
-  b    = a * a;
+  a = Wh_e * Wh_e;
+  b = a * a;
   er_e = -0.564 * pow((er - 0.9) / (er + 3.0), 0.053);
   er_e *= 1.0 + log((b + a / 2704.0) / (b + 0.432)) / 49.0 +
           log(1.0 + a * Wh_e / 5929.741) / 18.7;
   er_e = (er + 1.0) / 2.0 + (er - 1.0) / 2.0 * pow(1.0 + 10.0 / Wh_e, er_e);
 
-  a    = Wh_o * Wh_o;
-  b    = a * a;
+  a = Wh_o * Wh_o;
+  b = a * a;
   er_o = -0.564 * pow((er - 0.9) / (er + 3.0), 0.053);
   er_o *= 1.0 + log((b + a / 2704.0) / (b + 0.432)) / 49.0 +
           log(1.0 + a * Wh_o / 5929.741) / 18.7;
@@ -332,8 +323,8 @@ void MicrostripClass::calcCoupledMicrostrip(double ms_width, double g,
 
   // Static effective permittivity of even mode
   er_eff_e = 0.5 * (er + 1.0);
-  b        = Wh_e * (20.0 + g * g) / (10.0 + g * g) + g * exp(-g);
-  a        = -0.564 * pow((er - 0.9) / (er + 3.0), 0.053);
+  b = Wh_e * (20.0 + g * g) / (10.0 + g * g) + g * exp(-g);
+  a = -0.564 * pow((er - 0.9) / (er + 3.0), 0.053);
   a *= 1.0 + log(b * b * (b * b + 3.698e-4) / (b * b * b * b + 0.432)) / 49.0 +
        log(1.0 + pow(b / 18.1, 3.0)) / 18.7;
   er_eff_e += 0.5 * (er - 1.0) * pow(1.0 + 10.0 / b, a);
@@ -342,7 +333,7 @@ void MicrostripClass::calcCoupledMicrostrip(double ms_width, double g,
   b = 0.747 * er / (0.15 + er);
   b -= (b - 0.207) * exp(-0.414 * Wh_o);
   b *= pow(g, 0.593 + 0.694 * exp(-0.562 * Wh_o));
-  a        = 0.7287 * (er_o - 0.5 * (er + 1.0)) * (1.0 - exp(-0.179 * Wh_o));
+  a = 0.7287 * (er_o - 0.5 * (er + 1.0)) * (1.0 - exp(-0.179 * Wh_o));
   er_eff_o = er_o + (0.5 * (er + 1.0) + a - er_o) * exp(-b);
 
   // Static zero-thickness characteristic impedance by Hammerstad and Jensen
@@ -391,8 +382,8 @@ void MicrostripClass::calcCoupledMicrostrip(double ms_width, double g,
                 exp(-1.347 * pow(g, 0.595) - 0.17 * pow(g, 2.5)); // P7
   a = pow((a + 0.1844 * b) * fn, 1.5763);                         // Fe
   a *= 0.27488 + (0.6315 + 0.525 / pow(1.0 + 0.0157 * fn, 20.0)) * Wh_e -
-       0.065683 * exp(-8.7513 * Wh_e);             // P1
-  c        = 0.33622 * (1.0 - exp(-0.03442 * er)); // P2
+       0.065683 * exp(-8.7513 * Wh_e);      // P1
+  c = 0.33622 * (1.0 - exp(-0.03442 * er)); // P2
   er_eff_e = er - (er - er_eff_e) / (1.0 + a * c);
 
   // Dispersive relative permittivity of odd mode
@@ -481,7 +472,7 @@ void MicrostripClass::calcCoupledMicrostrip(double ms_width, double g,
 
 // Dispersion helper function implementation
 double MicrostripClass::dispersionKirschning(double er, double Wh, double freq,
-                                             double& er_eff, double& zl) {
+                                             double &er_eff, double &zl) {
   double a, b;
 
   // Relative effective permittivity
@@ -494,8 +485,8 @@ double MicrostripClass::dispersionKirschning(double er, double Wh, double freq,
   double er_freq = er - (er - er_eff) / (1.0 + a);
 
   // Characteristic impedance
-  a         = -0.03891 * pow(er, 1.4);
-  b         = -0.267 * pow(Wh, 7.0);
+  a = -0.03891 * pow(er, 1.4);
+  b = -0.267 * pow(Wh, 7.0);
   double R7 = 1.206 - 0.3144 * exp(a) * (1.0 - exp(b));
 
   a = 0.016 + pow(0.0514 * er, 4.524);
@@ -503,7 +494,7 @@ double MicrostripClass::dispersionKirschning(double er, double Wh, double freq,
   a = 5.086 * a * b / (0.3838 + 0.386 * a) / (1.0 + 1.2992 * b);
   b = -22.2 * pow(Wh, 1.92);
   a *= exp(b);
-  b         = pow(er - 1.0, 6.0);
+  b = pow(er - 1.0, 6.0);
   double R9 = a * b / (1.0 + 10.0 * b);
 
   a = 4.766 * exp(-3.228 * pow(Wh, 0.641));
@@ -528,7 +519,7 @@ double MicrostripClass::dispersionKirschning(double er, double Wh, double freq,
 }
 
 // Results printing implementation
-void MicrostripClass::printResults(const std::string& title) {
+void MicrostripClass::printResults(const std::string &title) {
   std::cout << "=== " << title << " ===" << std::endl;
   std::cout << "Width: " << Results.width << " mm" << std::endl;
   if (Results.gap > 0) {

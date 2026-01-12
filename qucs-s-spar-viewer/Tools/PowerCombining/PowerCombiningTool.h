@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file PowerCombiningTool.h
+/// @brief Widget for power combining network design and synthesis (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 7, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef POWERCOMBININGTOOL_H
 #define POWERCOMBININGTOOL_H
@@ -59,11 +49,19 @@
 #define TREE 11
 
 
-
+/// @class BagleyValidator
+/// @brief Validator for Bagley topology ensuring odd number of outputs
 class BagleyValidator : public QValidator {
   Q_OBJECT
 public:
-  BagleyValidator(QObject* parent = 0) : QValidator(parent){};
+  /// @brief Constructor
+  /// @param parent Parent object
+  BagleyValidator(QObject* parent = 0) : QValidator(parent){}
+
+  /// @brief Validate input to ensure odd numbers only
+  /// @param input Input string to validate
+  /// @param pos Current cursor position
+  /// @return Validation state (Acceptable or Invalid)
   virtual State validate(QString& input, int& /*pos*/) const {
     if (input.isEmpty()) {
       return Acceptable;
@@ -79,16 +77,31 @@ public:
   }
 };
 
+/// @class PowerCombiningTool
+/// @brief Widget for power combining network design and synthesis
 class PowerCombiningTool : public QWidget {
   Q_OBJECT
 public:
+  /// @brief Class constructor
+  /// @param parent Parent widget
   PowerCombiningTool(QWidget* parent = nullptr);
+
+  /// @brief Class destructor
   ~PowerCombiningTool();
-  void design();
-  SchematicContent getSchematic();
+
+  /// @brief Trigger design update
+  void design() { UpdateDesignParameters(); }
+
+  /// @brief Get current schematic content
+  /// @return Schematic content structure
+  SchematicContent getSchematic() { return SchContent; }
 
 private slots:
+  /// @brief Update design parameters from UI controls
   void UpdateDesignParameters();
+
+  /// @brief Handle topology combo box changes
+  /// @param index New topology index
   void on_TopoCombo_currentIndexChanged(int);
 
 private:
@@ -101,11 +114,15 @@ private:
   QComboBox* BranchesCombo;
   QLabel* number_Output_Label;
   QComboBox *TopoCombo, *FreqScaleCombo, *UnitsCombo;
+
+  /// @brief Get frequency scaling factor
+  /// @return Scale multiplier (1, 1e3, 1e6, or 1e9)
   double getScaleFreq();
   QString netlist;
 
+  /// @brief Power combiner specifications
   PowerCombinerParams Specs;
-  SchematicContent SchContent; // Schematic representation
+  SchematicContent SchContent; /// < Schematic representation
 
   // Transmission line implementation
   QLabel* TL_Implementation_Label;
@@ -118,26 +135,56 @@ private:
   QLabel* traceNameLabel;
   QLineEdit* traceNameLineEdit;
 
+  /// @brief Synthesize network based on current parameters
   void synthesize();
 
-  // Functions for changing the default settings based on the topology
+  /// @brief Configure UI for Wilkinson topology
   void setSettings_Wilkinson();
+
+  /// @brief Configure UI for multistage Wilkinson topology
   void setSettings_MultistageWilkinson();
+
+  /// @brief Configure UI for T-junction topology
   void setSettings_T_Junction();
+
+  /// @brief Configure UI for branchline topology
   void setSettings_Branchline();
+
+  /// @brief Configure UI for double box branchline topology
   void setSettings_DoubleBoxBranchline();
+
+  /// @brief Configure UI for Bagley topology
   void setSettings_Bagley();
+
+  /// @brief Configure UI for Gysel topology
   void setSettings_Gysel();
+
+  /// @brief Configure UI for Lim-Eom topology
   void setSettings_LimEom();
+
+  /// @brief Configure UI for 3-way Wilkinson with improved isolation
   void setSettings_Wilkinson_3_Way_Improved_Isolation();
+
+  /// @brief Configure UI for recombinant 3-way Wilkinson topology
   void setSettings_Recombinant_3_Way_Wilkinson();
+
+  /// @brief Configure UI for travelling wave topology
   void setSettings_Travelling_Wave();
+
+  /// @brief Configure UI for tree topology
   void setSettings_Tree();
+
+  /// @brief Reset UI to default settings
   void setDefaultSettings();
 
 
 signals:
+  /// @brief Signal emitted when schematic needs update
+  /// @param content Updated schematic content
   void updateSchematic(SchematicContent);
+
+  /// @brief Signal emitted when simulation needs update
+  /// @param content Updated schematic content
   void updateSimulation(SchematicContent);
 };
 

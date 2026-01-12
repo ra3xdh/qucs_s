@@ -1,30 +1,18 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file readTouchstone.cpp
+/// @brief Touchstone data reader
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 4, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "general.h"
 
-// Given a string path to a file, it reads the Touchstone data into the main
-// dataset
-QMap<QString, QList<double>> readTouchstoneFile(const QString& filePath) {
+QMap<QString, QList<double>> readTouchstoneFile(const QString &filePath) {
   QMap<QString, QList<double>>
       file_data; // Data structure to store the file data
   QString frequency_unit, parameter, format;
-  double freq_scale = 1;  // Hz
-  double Z0         = 50; // System impedance. Typically 50 Ohm
+  double freq_scale = 1; // Hz
+  double Z0 = 50;        // System impedance. Typically 50 Ohm
   QStringList values;
 
   // Get the filename for extracting number of ports
@@ -34,7 +22,7 @@ QMap<QString, QList<double>> readTouchstoneFile(const QString& filePath) {
   QString suffix = QFileInfo(filename).suffix();
   QRegularExpression regex("(?i)[sp]");
   QStringList numberParts = suffix.split(regex);
-  int number_of_ports     = numberParts[1].toInt();
+  int number_of_ports = numberParts[1].toInt();
   file_data["n_ports"].append(number_of_ports);
 
   // 1) Open the file
@@ -48,7 +36,7 @@ QMap<QString, QList<double>> readTouchstoneFile(const QString& filePath) {
   QTextStream in(&file);
   while (!in.atEnd()) {
     QString line = in.readLine();
-    line         = line.simplified();
+    line = line.simplified();
 
     if (line.isEmpty()) {
       continue;
@@ -68,9 +56,9 @@ QMap<QString, QList<double>> readTouchstoneFile(const QString& filePath) {
     // Check for the option line
     if (line.at(0) == '#') {
       QStringList info = line.split(" ");
-      frequency_unit   = info.at(1); // Specifies the unit of frequency.
-                                     // Legal values are Hz, kHz, MHz, and GHz.
-                                     // The default value is GHz.
+      frequency_unit = info.at(1); // Specifies the unit of frequency.
+                                   // Legal values are Hz, kHz, MHz, and GHz.
+                                   // The default value is GHz.
 
       frequency_unit = frequency_unit.toLower();
 
@@ -129,10 +117,10 @@ QMap<QString, QList<double>> readTouchstoneFile(const QString& filePath) {
         // Check if the next values are in the new line
         if ((index >= values.length()) &&
             (data_counter < number_of_ports * number_of_ports)) {
-          line   = in.readLine();
-          line   = line.simplified();
+          line = in.readLine();
+          line = line.simplified();
           values = line.split(' ');
-          index  = 0; // Reset index (it's a new line)
+          index = 0; // Reset index (it's a new line)
         }
       }
     }

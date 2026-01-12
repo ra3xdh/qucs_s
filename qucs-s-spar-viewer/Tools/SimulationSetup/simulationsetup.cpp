@@ -1,19 +1,10 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file simulationsetup.cpp
+/// @brief UI component to set the simulation settings (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 7, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-laterng with this program.  If not, see
+/// <https://www.gnu.org/licenses/>.
 
 #include "simulationsetup.h"
 
@@ -33,38 +24,49 @@ SimulationSetup::SimulationSetup(QWidget *parent) : QWidget(parent) {
   this->setLayout(mainLayout);
 
   // Connect all widgets to trigger simulation updates
-  connect(fstartSpinBox, SIGNAL(valueChanged(double)), this, SLOT(update()));
-  connect(fstartScaleComboBox, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(update()));
-  connect(fstopSpinBox, SIGNAL(valueChanged(double)), this, SLOT(update()));
-  connect(fstopScaleComboBox, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(update()));
-  connect(npointsSpinBox, SIGNAL(valueChanged(int)), this, SLOT(update()));
+  connect(fstartSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+          this, [this]() { update(); });
 
-  connect(transmissionLineComboBox, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(onTransmissionLineTypeChanged()));
-  connect(substrateThicknessSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(update()));
-  connect(substratePermittivitySpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(update()));
-  connect(substrateLossTangentSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(update()));
-  connect(conductorThicknessSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(update()));
-  connect(conductorConductivitySpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(update()));
-  connect(groundPlaneThicknessSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(update()));
+  connect(fstartScaleComboBox, &QComboBox::currentIndexChanged, this,
+          [this]() { updateFrequencySweep(); });
+
+  connect(fstopSpinBox, &QDoubleSpinBox::valueChanged, this,
+          [this]() { updateFrequencySweep(); });
+
+  connect(fstopScaleComboBox, &QComboBox::currentIndexChanged, this,
+          [this]() { updateFrequencySweep(); });
+
+  connect(npointsSpinBox, &QSpinBox::valueChanged, this,
+          [this]() { updateFrequencySweep(); });
+
+  connect(transmissionLineComboBox, &QComboBox::currentIndexChanged, this,
+          [this]() { onTransmissionLineTypeChanged(); });
+
+  connect(substrateThicknessSpinBox, &QDoubleSpinBox::valueChanged, this,
+          [this]() { updateSubstrateDefinition(); });
+
+  connect(substratePermittivitySpinBox, &QDoubleSpinBox::valueChanged, this,
+          [this]() { updateSubstrateDefinition(); });
+
+  connect(substrateLossTangentSpinBox, &QDoubleSpinBox::valueChanged, this,
+          [this]() { updateSubstrateDefinition(); });
+
+  connect(conductorThicknessSpinBox, &QDoubleSpinBox::valueChanged, this,
+          [this]() { updateSubstrateDefinition(); });
+
+  connect(conductorConductivitySpinBox, &QDoubleSpinBox::valueChanged, this,
+          [this]() { updateSubstrateDefinition(); });
+
+  connect(groundPlaneThicknessSpinBox, &QDoubleSpinBox::valueChanged, this,
+          [this]() { updateSubstrateDefinition(); });
 }
-
-SimulationSetup::~SimulationSetup() {}
 
 QWidget *SimulationSetup::createFrequencySweepTab() {
   QWidget *frequencyWidget = new QWidget();
   QGridLayout *frequencyLayout = new QGridLayout();
 
   // Start frequency
-  QLabel *fstartLabel = new QLabel("Start freq");
+  QLabel *fstartLabel = new QLabel("<b>Start freq<\b>");
   fstartSpinBox = new QDoubleSpinBox();
   fstartSpinBox->setMinimum(0);
   fstartSpinBox->setMaximum(1e7);
@@ -82,7 +84,7 @@ QWidget *SimulationSetup::createFrequencySweepTab() {
   frequencyLayout->addWidget(fstartScaleComboBox, 0, 2);
 
   // Stop frequency
-  QLabel *fstopLabel = new QLabel("Stop freq");
+  QLabel *fstopLabel = new QLabel("<b>Stop freq<\b>");
   fstopSpinBox = new QDoubleSpinBox();
   fstopSpinBox->setMinimum(0);
   fstopSpinBox->setMaximum(1e7);
@@ -100,7 +102,7 @@ QWidget *SimulationSetup::createFrequencySweepTab() {
   frequencyLayout->addWidget(fstopScaleComboBox, 1, 2);
 
   // Number of points
-  QLabel *npointsLabel = new QLabel("Number of points");
+  QLabel *npointsLabel = new QLabel("<b>Number of points<\b>");
   npointsSpinBox = new QSpinBox();
   npointsSpinBox->setMinimum(10);
   npointsSpinBox->setMaximum(1e6);
@@ -225,18 +227,37 @@ QWidget *SimulationSetup::createSubstratePropertiesTab() {
 
   // Connect widgets to the signal to update the substrate definition in the
   // tools
-  connect(substrateThicknessSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(updateSubstrateDefinition()));
-  connect(substratePermittivitySpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(updateSubstrateDefinition()));
-  connect(substrateLossTangentSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(updateSubstrateDefinition()));
-  connect(conductorThicknessSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(updateSubstrateDefinition()));
-  connect(conductorConductivitySpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(updateSubstrateDefinition()));
-  connect(groundPlaneThicknessSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(updateSubstrateDefinition()));
+  // SimulationSetup – Qt 6 style connections (no lambdas)
+
+  connect(substrateThicknessSpinBox,
+          QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          static_cast<void (SimulationSetup::*)()>(
+              &SimulationSetup::updateSubstrateDefinition));
+
+  connect(substratePermittivitySpinBox,
+          QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          static_cast<void (SimulationSetup::*)()>(
+              &SimulationSetup::updateSubstrateDefinition));
+
+  connect(substrateLossTangentSpinBox,
+          QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          static_cast<void (SimulationSetup::*)()>(
+              &SimulationSetup::updateSubstrateDefinition));
+
+  connect(conductorThicknessSpinBox,
+          QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          static_cast<void (SimulationSetup::*)()>(
+              &SimulationSetup::updateSubstrateDefinition));
+
+  connect(conductorConductivitySpinBox,
+          QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          static_cast<void (SimulationSetup::*)()>(
+              &SimulationSetup::updateSubstrateDefinition));
+
+  connect(groundPlaneThicknessSpinBox,
+          QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+          static_cast<void (SimulationSetup::*)()>(
+              &SimulationSetup::updateSubstrateDefinition));
 
   // Initial image update
   updateImageDisplay();
@@ -281,7 +302,7 @@ double SimulationSetup::getFstart() {
 QString SimulationSetup::getFstart_as_Text() {
   double freq = fstartSpinBox->value();
   QString unit = fstartScaleComboBox->currentText();
-  QString text = QString("%1 %2").arg(freq).arg(unit);
+  QString text = QString("%1 %2").arg(QString::number(freq), unit);
   return text;
 }
 
@@ -296,40 +317,14 @@ double SimulationSetup::getFstop() {
 QString SimulationSetup::getFstop_as_Text() {
   double freq = fstopSpinBox->value();
   QString unit = fstopScaleComboBox->currentText();
-  QString text = QString("%1 %2").arg(freq).arg(unit);
+  QString text = QString("%1 %2").arg(QString::number(freq), unit);
   return text;
 }
-
-int SimulationSetup::getNpoints() { return npointsSpinBox->value(); }
 
 TransmissionLineType SimulationSetup::getTransmissionLineType() {
   return transmissionLineComboBox->currentIndex() == 0
              ? TransmissionLineType::MLIN
              : TransmissionLineType::SLIN;
-}
-
-double SimulationSetup::getSubstrateThickness() {
-  return substrateThicknessSpinBox->value(); // in mm
-}
-
-double SimulationSetup::getSubstratePermittivity() {
-  return substratePermittivitySpinBox->value();
-}
-
-double SimulationSetup::getSubstrateLossTangent() {
-  return substrateLossTangentSpinBox->value();
-}
-
-double SimulationSetup::getConductorThickness() {
-  return conductorThicknessSpinBox->value(); // in μm
-}
-
-double SimulationSetup::getConductorConductivity() {
-  return conductorConductivitySpinBox->value(); // in S/m
-}
-
-double SimulationSetup::getGroundPlaneThickness() {
-  return groundPlaneThicknessSpinBox->value(); // in μm
 }
 
 void SimulationSetup::updateSubstrateDefinition() {
@@ -360,7 +355,5 @@ void SimulationSetup::onTransmissionLineTypeChanged() {
   updateImageDisplay();
 
   // Trigger simulation update
-  update();
+  emit updateSimulation();
 }
-
-MS_Substrate SimulationSetup::get_MS_Substrate() { return MS_Subs; }

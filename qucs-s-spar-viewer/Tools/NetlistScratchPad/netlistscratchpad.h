@@ -1,24 +1,14 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file netlistscratchpad.h
+/// @brief Widget for editing netlists (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 6, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef NETLISTSCRATCHPAD_H
 #define NETLISTSCRATCHPAD_H
 
-#include "../../CustomWidgets/codeeditor.h"
+#include "../../UI/CustomWidgets/codeeditor.h"
 #include "../../Misc/general.h"
 #include "../../Schematic/Network.h"
 #include <QGridLayout>
@@ -26,24 +16,43 @@
 #include <QLineEdit>
 #include <QWidget>
 
+/// @brief Widget for editing netlists
 class NetlistScratchPad : public QWidget {
   Q_OBJECT
-public:
-  NetlistScratchPad(QWidget* parent = nullptr);
-  ~NetlistScratchPad();
-  QString getText();
-  void setText(QString);
+  public:
+    /// Class constructor
+    /// @param parent Parent widget
+    NetlistScratchPad(QWidget* parent = nullptr);
 
-private:
-  CodeEditor* Netlist_Editor_Widget;
-  QLabel* traceNameLabel;
-  QLineEdit* traceNameLineEdit;
+    /// @brief Class destructor
+    ~NetlistScratchPad() {}
 
-private slots:
-  void update();
+    /// Get the current netlist text
+    /// @return Netlist text as QString
+    QString getText() {
+      return Netlist_Editor_Widget->getText();
+    }
 
-signals:
-  void updateSimulation(SchematicContent);
+    /// Set the netlist text
+    /// @param netlist New netlist text to display
+    void setText(QString netlist) {
+      Netlist_Editor_Widget->clear();
+      Netlist_Editor_Widget->insertPlainText(netlist);
+    }
+
+  private:
+    CodeEditor* Netlist_Editor_Widget; ///< Text editor widget
+    QLabel* traceNameLabel;            ///< Label with the trace name widget
+    QLineEdit* traceNameLineEdit;      ///< Widget for entering the name of the trace which identify the simulation results for the netlist
+
+  private slots:
+    /// Update the simulation when netlist changes
+    void update();
+
+  signals:
+    /// Signal emitted when simulation needs to be updated
+    /// @param content Schematic content with updated netlist
+    void updateSimulation(SchematicContent);
 };
 
 #endif // NETLISTSCRATCHPAD_h

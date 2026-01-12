@@ -1,23 +1,13 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file LoadSpecificationWidget.cpp
+/// @brief Widget for entering the load impedance data (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 6, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "LoadSpecificationWidget.h"
 
-LoadSpecificationWidget::LoadSpecificationWidget(QWidget* parent)
+LoadSpecificationWidget::LoadSpecificationWidget(QWidget *parent)
     : QGroupBox(parent), m_twoPortMode(false), m_updatingValues(false),
       m_isCollapsed(false), m_Z0(50.0) {
   setupUI();
@@ -29,26 +19,30 @@ LoadSpecificationWidget::LoadSpecificationWidget(QWidget* parent)
   Z0_Port2 = 50; // Default value for the reference impedance of port 2
 
   // Connect signals
-  connect(m_impedanceReal, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
-          this, &LoadSpecificationWidget::onImpedanceChanged);
-  connect(m_impedanceImag, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
-          this, &LoadSpecificationWidget::onImpedanceChanged);
-  connect(m_reflectionReal,
-          QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+  connect(m_impedanceReal, &QDoubleSpinBox::valueChanged, this,
+          &LoadSpecificationWidget::onImpedanceChanged);
+
+  connect(m_impedanceImag, &QDoubleSpinBox::valueChanged, this,
+          &LoadSpecificationWidget::onImpedanceChanged);
+
+  connect(m_reflectionReal, &QDoubleSpinBox::valueChanged, this,
           &LoadSpecificationWidget::onReflectionCoefficientChanged);
-  connect(m_reflectionImag,
-          QOverload<double>::of(&QDoubleSpinBox::valueChanged), this,
+
+  connect(m_reflectionImag, &QDoubleSpinBox::valueChanged, this,
           &LoadSpecificationWidget::onReflectionCoefficientChanged);
-  connect(m_formatCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
-          this, &LoadSpecificationWidget::onFormatChanged);
+
+  connect(m_formatCombo, &QComboBox::currentIndexChanged, this,
+          &LoadSpecificationWidget::onFormatChanged);
+
   connect(m_inputMethodGroup, &QButtonGroup::buttonClicked, this,
           &LoadSpecificationWidget::onInputMethodChanged);
+
   connect(m_browseButton, &QPushButton::clicked, this,
           &LoadSpecificationWidget::onBrowseFile);
-  connect(m_toggleButton, SIGNAL(clicked(bool)), this,
-          SLOT(onToggleCollapse()));
 
-  // Initialize display
+  connect(m_toggleButton, &QPushButton::clicked, this,
+          [this]() { onToggleCollapse(); });
+
   onImpedanceChanged();
 
   // Collapsed by default. The height of this widget affects all the tabs. It's
@@ -56,15 +50,13 @@ LoadSpecificationWidget::LoadSpecificationWidget(QWidget* parent)
   setCollapsed(true);
 }
 
-LoadSpecificationWidget::~LoadSpecificationWidget() {}
-
 void LoadSpecificationWidget::setupUI() {
   // Create main layout for the group box
-  QVBoxLayout* groupLayout = new QVBoxLayout(this);
+  QVBoxLayout *groupLayout = new QVBoxLayout(this);
 
   // Create header with title and collapse button
-  QWidget* headerWidget     = new QWidget();
-  QHBoxLayout* headerLayout = new QHBoxLayout(headerWidget);
+  QWidget *headerWidget = new QWidget();
+  QHBoxLayout *headerLayout = new QHBoxLayout(headerWidget);
   headerLayout->setContentsMargins(0, 0, 0, 0);
 
   // Collapse/expand button
@@ -79,11 +71,11 @@ void LoadSpecificationWidget::setupUI() {
 
   // Create content widget that will be hidden/shown
   m_contentWidget = new QWidget();
-  m_mainLayout    = new QGridLayout(m_contentWidget);
+  m_mainLayout = new QGridLayout(m_contentWidget);
 
   // Input method selection
   m_manualInputRadio = new QRadioButton("Manual input");
-  m_fileInputRadio   = new QRadioButton("File input");
+  m_fileInputRadio = new QRadioButton("File input");
   m_inputMethodGroup = new QButtonGroup(this);
   m_inputMethodGroup->addButton(m_manualInputRadio, 0);
   m_inputMethodGroup->addButton(m_fileInputRadio, 1);
@@ -121,13 +113,13 @@ void LoadSpecificationWidget::setupUI() {
 void LoadSpecificationWidget::setupOnePortUI() {
   // Impedance widgets
   m_impedanceLabel = new QLabel("ZL:");
-  m_impedanceReal  = new QDoubleSpinBox();
+  m_impedanceReal = new QDoubleSpinBox();
   m_impedanceReal->setRange(-10000, 10000);
   m_impedanceReal->setDecimals(1);
   m_impedanceReal->setSingleStep(0.1);
 
   m_impedanceSeparator = new QLabel("+j");
-  m_impedanceImag      = new QDoubleSpinBox();
+  m_impedanceImag = new QDoubleSpinBox();
   m_impedanceImag->setRange(-10000, 10000);
   m_impedanceImag->setDecimals(1);
   m_impedanceImag->setSingleStep(0.1);
@@ -142,13 +134,13 @@ void LoadSpecificationWidget::setupOnePortUI() {
 
   // Reflection coefficient widgets
   m_reflectionLabel = new QLabel("ΓL:");
-  m_reflectionReal  = new QDoubleSpinBox();
+  m_reflectionReal = new QDoubleSpinBox();
   m_reflectionReal->setRange(-2.0, 2.0);
   m_reflectionReal->setDecimals(6);
   m_reflectionReal->setSingleStep(0.001);
 
   m_reflectionSeparator = new QLabel("+j");
-  m_reflectionImag      = new QDoubleSpinBox();
+  m_reflectionImag = new QDoubleSpinBox();
   m_reflectionImag->setRange(-2.0, 2.0);
   m_reflectionImag->setDecimals(6);
   m_reflectionImag->setSingleStep(0.001);
@@ -165,13 +157,13 @@ void LoadSpecificationWidget::setupTwoPortUI() {
 
   // S11 parameter
   m_s11Label = new QLabel("S11:");
-  m_s11Real  = new QDoubleSpinBox();
+  m_s11Real = new QDoubleSpinBox();
   m_s11Real->setRange(-10.0, 10.0);
   m_s11Real->setDecimals(3);
   m_s11Real->setSingleStep(0.1);
   m_s11Real->setValue(0.5);
   m_s11Separator = new QLabel("+j");
-  m_s11Imag      = new QDoubleSpinBox();
+  m_s11Imag = new QDoubleSpinBox();
   m_s11Imag->setRange(-10.0, 10.0);
   m_s11Imag->setDecimals(3);
   m_s11Imag->setSingleStep(0.1);
@@ -184,13 +176,13 @@ void LoadSpecificationWidget::setupTwoPortUI() {
 
   // S12 parameter
   m_s12Label = new QLabel("S12:");
-  m_s12Real  = new QDoubleSpinBox();
+  m_s12Real = new QDoubleSpinBox();
   m_s12Real->setRange(-10.0, 10.0);
   m_s12Real->setDecimals(3);
   m_s12Real->setSingleStep(0.1);
   m_s12Real->setValue(0);
   m_s12Separator = new QLabel("+j");
-  m_s12Imag      = new QDoubleSpinBox();
+  m_s12Imag = new QDoubleSpinBox();
   m_s12Imag->setRange(-100.0, 100.0);
   m_s12Imag->setDecimals(3);
   m_s12Imag->setSingleStep(0.1);
@@ -203,13 +195,13 @@ void LoadSpecificationWidget::setupTwoPortUI() {
 
   // S21 parameter
   m_s21Label = new QLabel("S21:");
-  m_s21Real  = new QDoubleSpinBox();
+  m_s21Real = new QDoubleSpinBox();
   m_s21Real->setRange(-10.0, 10.0);
   m_s21Real->setDecimals(3);
   m_s21Real->setSingleStep(0.1);
   m_s21Real->setValue(0.5);
   m_s21Separator = new QLabel("+j");
-  m_s21Imag      = new QDoubleSpinBox();
+  m_s21Imag = new QDoubleSpinBox();
   m_s21Imag->setRange(-100.0, 100.0);
   m_s21Imag->setDecimals(3);
   m_s21Imag->setSingleStep(0.1);
@@ -222,13 +214,13 @@ void LoadSpecificationWidget::setupTwoPortUI() {
 
   // S22 parameter
   m_s22Label = new QLabel("S22:");
-  m_s22Real  = new QDoubleSpinBox();
+  m_s22Real = new QDoubleSpinBox();
   m_s22Real->setRange(-10.0, 10.0);
   m_s22Real->setDecimals(3);
   m_s22Real->setSingleStep(0.1);
   m_s22Real->setValue(0.5);
   m_s22Separator = new QLabel("+j");
-  m_s22Imag      = new QDoubleSpinBox();
+  m_s22Imag = new QDoubleSpinBox();
   m_s22Imag->setRange(-10.0, 10.0);
   m_s22Imag->setDecimals(3);
   m_s22Imag->setSingleStep(0.1);
@@ -274,8 +266,8 @@ LoadSpecificationWidget::getLoadImpedance_At_Fmatch() const {
 }
 
 QList<std::complex<double>> LoadSpecificationWidget::getZLdata() {
-  const QList<double>& ZL_re = loadData["ZL_re"];
-  const QList<double>& ZL_im = loadData["ZL_im"];
+  const QList<double> &ZL_re = loadData["ZL_re"];
+  const QList<double> &ZL_im = loadData["ZL_im"];
   QList<std::complex<double>> ZL_data;
   int n = std::min(ZL_re.size(), ZL_im.size());
   for (int i = 0; i < n; ++i) {
@@ -294,12 +286,12 @@ LoadSpecificationWidget::getTwoPortMatchingImpedances() const {
   const std::complex<double> S12 = getS12();
   const std::complex<double> S21 = getS21();
   const std::complex<double> S22 = getS22();
-  constexpr double Z0            = 50.0;
+  constexpr double Z0 = 50.0;
 
   std::complex<double> delta = S11 * S22 - S12 * S21;
 
-  double abs_S11   = std::abs(S11);
-  double abs_S22   = std::abs(S22);
+  double abs_S11 = std::abs(S11);
+  double abs_S22 = std::abs(S22);
   double abs_delta = std::abs(delta);
 
   double B1 =
@@ -393,7 +385,7 @@ std::complex<double> LoadSpecificationWidget::getS22() const {
 }
 
 void LoadSpecificationWidget::setLoadImpedance(
-    const std::complex<double>& impedance) {
+    const std::complex<double> &impedance) {
   m_updatingValues = true;
 
   if (m_formatCombo->currentIndex() == 0) { // Real/Imaginary
@@ -411,7 +403,7 @@ void LoadSpecificationWidget::setLoadImpedance(
 }
 
 void LoadSpecificationWidget::setReflectionCoefficient(
-    const std::complex<double>& gamma) {
+    const std::complex<double> &gamma) {
   m_updatingValues = true;
 
   if (m_formatCombo->currentIndex() == 0) { // Real/Imaginary
@@ -537,7 +529,7 @@ void LoadSpecificationWidget::onBrowseFile() {
     // present it on the UI
 
     // 1) Find the closest frequency to that the user specified
-    const QList<double>& frequencies = loadData.value("frequency");
+    const QList<double> &frequencies = loadData.value("frequency");
 
     // 2) Find the index of the closest frequency
     int closestIdx = -1;
@@ -545,7 +537,7 @@ void LoadSpecificationWidget::onBrowseFile() {
     for (int i = 0; i < frequencies.size(); ++i) {
       double diff = qAbs(frequencies[i] - f_match);
       if (diff < minDiff) {
-        minDiff    = diff;
+        minDiff = diff;
         closestIdx = i;
       }
     }
@@ -575,7 +567,7 @@ void LoadSpecificationWidget::onBrowseFile() {
 
     QMap<QString, double> result;
     if (closestIdx != -1) {
-      for (const QString& key : keysToRetrieve) {
+      for (const QString &key : keysToRetrieve) {
         if (loadData.contains(key) && loadData.value(key).size() > closestIdx) {
           result[key] = loadData.value(key)[closestIdx];
         }
@@ -645,7 +637,7 @@ void LoadSpecificationWidget::onBrowseFile() {
       m_reflectionImag->setValue(S11.imag());
 
       // Set impedance widgets
-      double Z0               = loadData["Z0"].at(0);
+      double Z0 = loadData["Z0"].at(0);
       std::complex<double> ZL = Z0 * (1.0 + S11) / (1.0 - S11);
       m_impedanceReal->setValue(ZL.real());
       m_impedanceImag->setValue(ZL.imag());
@@ -686,7 +678,7 @@ void LoadSpecificationWidget::updateReflectionCoefficient() {
 
   m_updatingValues = true;
 
-  std::complex<double> ZL    = getLoadImpedance_At_Fmatch();
+  std::complex<double> ZL = getLoadImpedance_At_Fmatch();
   std::complex<double> gamma = (ZL - m_Z0) / (ZL + m_Z0);
 
   if (m_formatCombo->currentIndex() == 0) { // Real/Imaginary
@@ -710,7 +702,7 @@ void LoadSpecificationWidget::updateImpedance() {
   m_updatingValues = true;
 
   std::complex<double> gamma = getReflectionCoefficient();
-  std::complex<double> ZL    = m_Z0 * (1.0 + gamma) / (1.0 - gamma);
+  std::complex<double> ZL = m_Z0 * (1.0 + gamma) / (1.0 - gamma);
 
   if (m_formatCombo->currentIndex() == 0) { // Real/Imaginary
     m_impedanceReal->setValue(ZL.real());
@@ -812,23 +804,10 @@ void LoadSpecificationWidget::setCollapsed(bool collapsed) {
   emit collapsedStateChanged(collapsed);
 }
 
-void LoadSpecificationWidget::mousePressEvent(QMouseEvent* event) {
+void LoadSpecificationWidget::mousePressEvent(QMouseEvent *event) {
   // Check if click is in the title area (first 25 pixels from top)
   if (event->position().y() <= 25) {
     onToggleCollapse();
   }
   QGroupBox::mousePressEvent(event);
-}
-
-void LoadSpecificationWidget::onToggleCollapse() {
-  setCollapsed(!m_isCollapsed);
-}
-
-std::array<std::complex<double>, 4>
-LoadSpecificationWidget::getSParameters() const {
-  return {getS11(), getS12(), getS21(), getS22()};
-}
-
-QString LoadSpecificationWidget::getSparFilePath() {
-  return spar_file_path;
 }

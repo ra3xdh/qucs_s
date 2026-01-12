@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file MultisectionQuarterWave.h
+/// @brief Quarterwave multisection transformer matching (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 6, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef MULTISECTIONQUARTERWAVE_H
 #define MULTISECTIONQUARTERWAVE_H
@@ -22,27 +12,57 @@
 #include "../../Schematic/component.h"
 #include "../TransmissionLineSynthesis/Microstrip.h"
 
+/// @class MultisectionQuarterWave
+/// @brief Quarterwave multisection transformer matching
 class MultisectionQuarterWave : public Network {
+  public:
+    /// @brief Class constructor
+    MultisectionQuarterWave() {}
 
-public:
-  MultisectionQuarterWave();
-  virtual ~MultisectionQuarterWave();
+    /// @brief Class constructor with parameters
+    /// @param AS Design specifications
+    /// @param freq Matching frequency
+    MultisectionQuarterWave(
+        MatchingNetworkDesignParameters AS, double freq) {
+      Specs = AS;
+      f_match = freq;
+    }
 
-  MultisectionQuarterWave(MatchingNetworkDesignParameters, double);
-  void synthesize();
+    /// @brief Class destructor
+    virtual ~MultisectionQuarterWave() {}
 
-private:
-  struct MatchingNetworkDesignParameters Specs;
+    /// @brief Calculate component values and build schematic
+    void synthesize();
 
-  // Helper functions
-  int BinomialCoeff(int n, int k);
-  void designBinomial(std::vector<double>& Zs);
-  void designChebyshev(std::vector<double>& Zs);
+  private:
+    /// @brief Matching network specifications
+    struct MatchingNetworkDesignParameters Specs;
 
-  void synthesizeIdealTL(const std::vector<double>& Zi, double lambda4);
-  void synthesizeMicrostripTL(const std::vector<double>& Zi, double lambda4);
+    /// @brief Calculate binomial coefficient
+    /// @param n Total number
+    /// @param k Selection number
+    /// @return Binomial coefficient C(n,k)
+    int BinomialCoeff(int n, int k);
 
-  double f_match;
+    /// @brief Design transformer with binomial weighting
+    /// @param Zs Output vector of section impedances
+    void designBinomial(std::vector<double>& Zs);
+
+    /// @brief Design transformer with Chebyshev weighting
+    /// @param Zs Output vector of section impedances
+    void designChebyshev(std::vector<double>& Zs);
+
+    /// @brief Synthesize using ideal transmission lines
+    /// @param Zi Vector of section impedances
+    /// @param lambda4 Quarter wavelength in meters
+    void synthesizeIdealTL(const std::vector<double>& Zi, double lambda4);
+
+    /// @brief Synthesize using microstrip transmission lines
+    /// @param Zi Vector of section impedances
+    /// @param lambda4 Quarter wavelength in meters
+    void synthesizeMicrostripTL(const std::vector<double>& Zi, double lambda4);
+
+    double f_match; ///< Matching frequency [Hz]
 };
 
 #endif // MULTISECTIONQUARTERWAVE_H

@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file QW_ShuntAttenuator.h
+/// @brief Quarter wavelength first-shunt attenuator synthesis (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 5, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef QW_SHUNTATTENUATOR_H
 #define QW_SHUNTATTENUATOR_H
@@ -24,23 +14,45 @@
 #include "AttenuatorBase.h"
 #include <QPen>
 
+/// @class QW_ShuntAttenuator
+/// @brief Quarter wavelength first-shunt attenuator synthesis
+/// Reference: The PIN diode circuit designer's handbook. W.E. Doherty, Jr., R.D. Joos, Microsemi Corp., 1998
 class QW_ShuntAttenuator : public AttenuatorBase {
     public:
-        QW_ShuntAttenuator();
-        virtual ~QW_ShuntAttenuator();
-        QW_ShuntAttenuator(AttenuatorDesignParameters);
+      /// @brief Class constructor
+      QW_ShuntAttenuator() {}
 
-        void synthesize() override;
+      /// @brief Class constructor with parameters
+      /// @param AS Design specifications
+      QW_ShuntAttenuator(AttenuatorDesignParameters AS) : AttenuatorBase(AS) {}
+
+      /// @brief Class destructor
+      virtual ~QW_ShuntAttenuator() {}
+
+      /// @brief Calculate component values and build schematic
+      void synthesize() override;
 
     private:
-        double R, l4, Zout;
-        double w0;
+      double R;    ///< Resistor
+      double l4;   ///< Quarte wavelength [m]
+      double Zout; ///< Output impedance [Ohm]
+      double w0;   ///< Radial central frequency = 2*pi*f0 [rad/s]
 
-        void calculateParams() override;
-        void buildNetwork() override;
-        void buildQW_Shunt_Lumped();
-        void buildQW_Shunt_IdealTL();
-        void buildQW_Shunt_Microstrip();
+      /// @brief Calculate R, l4 and Zout values and power dissipation
+      void calculateParams() override;
+
+      /// @brief Build schematic with components, nodes, and wires
+      /// @details Calls different synthesis functions depending on the transmission line implementation
+      void buildNetwork() override;
+
+      /// @brief Build schematic (lumped version) with components, nodes, and wires
+      void buildQW_Shunt_Lumped();
+
+      /// @brief Build schematic (ideal transmission line version) with components, nodes, and wires
+      void buildQW_Shunt_IdealTL();
+
+      /// @brief Build schematic (microstrip transmission line version) with components, nodes, and wires
+      void buildQW_Shunt_Microstrip();
 };
 
 #endif // QW_SHUNTATTENUATOR_H

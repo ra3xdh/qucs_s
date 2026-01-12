@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file qucs-s-spar-viewer.cpp
+/// @brief Main application class for S-parameter viewer (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 3, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -85,24 +75,32 @@ Qucs_S_SPAR_Viewer::Qucs_S_SPAR_Viewer() {
   loadRecentFiles();    // Load "Recent Files" list
 }
 
+Qucs_S_SPAR_Viewer::~Qucs_S_SPAR_Viewer() {
+  QSettings settings;
+  settings.setValue("recentFiles", QVariant::fromValue(recentFiles));
+  delete smithChart;
+}
+
 void Qucs_S_SPAR_Viewer::CreateMenuBar() {
   QMenu *fileMenu = new QMenu(tr("&File"));
-
   QAction *fileQuit = new QAction(tr("&Quit"), this);
   fileQuit->setShortcut(QKeySequence::Quit);
-  connect(fileQuit, SIGNAL(triggered(bool)), SLOT(slotQuit()));
+  connect(fileQuit, &QAction::triggered, this, &Qucs_S_SPAR_Viewer::slotQuit);
 
   QAction *fileOpenSession = new QAction(tr("&Open session file"), this);
   fileOpenSession->setShortcut(QKeySequence::Open);
-  connect(fileOpenSession, SIGNAL(triggered(bool)), SLOT(slotLoadSession()));
+  connect(fileOpenSession, &QAction::triggered, this,
+          &Qucs_S_SPAR_Viewer::slotLoadSession);
 
   QAction *fileSaveAsSession = new QAction(tr("&Save session as ..."), this);
   fileSaveAsSession->setShortcut(QKeySequence::SaveAs);
-  connect(fileSaveAsSession, SIGNAL(triggered(bool)), SLOT(slotSaveAs()));
+  connect(fileSaveAsSession, &QAction::triggered, this,
+          &Qucs_S_SPAR_Viewer::slotSaveAs);
 
   QAction *fileSaveSession = new QAction(tr("&Save session"), this);
   fileSaveSession->setShortcut(QKeySequence::Save);
-  connect(fileSaveSession, SIGNAL(triggered(bool)), SLOT(slotSave()));
+  connect(fileSaveSession, &QAction::triggered, this,
+          &Qucs_S_SPAR_Viewer::slotSave);
 
   recentFilesMenu = fileMenu->addMenu("Recent Files");
   connect(recentFilesMenu, &QMenu::aboutToShow, this,
@@ -118,29 +116,25 @@ void Qucs_S_SPAR_Viewer::CreateMenuBar() {
   QAction *helpHelp = new QAction(tr("&Help"), this);
   helpHelp->setShortcut(Qt::Key_F1);
   helpMenu->addAction(helpHelp);
-  connect(helpHelp, SIGNAL(triggered(bool)), SLOT(slotHelpIntro()));
+  connect(helpHelp, &QAction::triggered, this,
+          &Qucs_S_SPAR_Viewer::slotHelpIntro);
 
   QAction *helpAbout = new QAction(tr("&About"), this);
   helpMenu->addAction(helpAbout);
-  connect(helpAbout, SIGNAL(triggered(bool)), SLOT(slotHelpAbout()));
+  connect(helpAbout, &QAction::triggered, this,
+          &Qucs_S_SPAR_Viewer::slotHelpAbout);
 
   helpMenu->addSeparator();
 
   QAction *helpAboutQt = new QAction(tr("About Qt..."), this);
   helpMenu->addAction(helpAboutQt);
-  connect(helpAboutQt, SIGNAL(triggered(bool)), SLOT(slotHelpAboutQt()));
+  connect(helpAboutQt, &QAction::triggered, this,
+          &Qucs_S_SPAR_Viewer::slotHelpAboutQt);
 
   menuBar()->addMenu(fileMenu);
   menuBar()->addSeparator();
   menuBar()->addMenu(helpMenu);
 }
-
-// This function populates the left panel with the following widgets:
-// - Files manager
-// - Traces manager
-// - Markers maanger
-// - Limits manager
-// - Notebook
 
 void Qucs_S_SPAR_Viewer::CreateRightPanel() {
   // Create left panel widgets
@@ -228,7 +222,8 @@ void Qucs_S_SPAR_Viewer::setFileManagementDock() {
   QString tooltip_message = QString(
       "Add single data file (.dat, .snp). You can also drag and drop it.");
   Button_Add_File->setToolTip(tooltip_message);
-  connect(Button_Add_File, SIGNAL(clicked()), SLOT(addFile()));
+  connect(Button_Add_File, &QPushButton::clicked, this,
+          [this]() { addFile(); });
 
   Delete_All_Files = new QPushButton("Delete all", this);
   Delete_All_Files->setStyleSheet("QPushButton {background-color: red;\
@@ -243,7 +238,8 @@ void Qucs_S_SPAR_Viewer::setFileManagementDock() {
                               }");
   tooltip_message = QString("Remove all data files.");
   Button_Add_File->setToolTip(tooltip_message);
-  connect(Delete_All_Files, SIGNAL(clicked()), SLOT(removeAllFiles()));
+  connect(Button_Add_File, &QPushButton::clicked, this,
+          &Qucs_S_SPAR_Viewer::removeAllFiles);
 
   hLayout_Files_Buttons->addWidget(Button_Add_File);
   hLayout_Files_Buttons->addWidget(Delete_All_Files);
@@ -280,23 +276,10 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
   DatasetsGrid->addWidget(displayTypeLabel, 0, 2, Qt::AlignCenter);
 
   QCombobox_traces = new MatrixComboBox();
-  connect(QCombobox_traces, SIGNAL(currentIndexChanged(int)),
-          SLOT(updateDisplayType()));
-  DatasetsGrid->addWidget(QCombobox_traces, 1, 1);
+  connect(QCombobox_traces, &QComboBox::currentIndexChanged, this,
+          [this]() { updateDisplayType(); });
 
-  Button_add_trace = new QPushButton("Add trace");
-  Button_add_trace->setStyleSheet("QPushButton {background-color: green;\
-                                  border-style: outset;\
-                                  border-width: 2px;\
-                                  border-radius: 10px;\
-                                  border-color: beige;\
-                                  font: bold 14px;\
-                                  color: white;\
-                                  min-width: 10em;\
-                                  padding: 6px;\
-                              }");
-  connect(Button_add_trace, SIGNAL(clicked()),
-          SLOT(addTrace())); // Connect button with the handler
+  DatasetsGrid->addWidget(QCombobox_traces, 1, 1);
 
   QCombobox_display_mode = new QComboBox();
   QCombobox_display_mode->addItem("dB");
@@ -309,27 +292,58 @@ void Qucs_S_SPAR_Viewer::setTraceManagementDock() {
   QCombobox_display_mode->setObjectName("DisplayTypeCombo");
   DatasetsGrid->addWidget(QCombobox_display_mode, 1, 2);
 
+  Button_add_trace = new QPushButton("Add trace");
+  Button_add_trace->setStyleSheet("QPushButton {background-color: green;\
+                                  border-style: outset;\
+                                  border-width: 2px;\
+                                  border-radius: 5px;\
+                                  border-color: beige;\
+                                  font: bold 14px;\
+                                  color: white;\
+                                  min-width: 5em;\
+                                  padding: 6px;\
+                              }");
+
+  connect(Button_add_trace, &QPushButton::clicked, this,
+          static_cast<void (Qucs_S_SPAR_Viewer::*)()>(
+              &Qucs_S_SPAR_Viewer::addTrace));
   DatasetsGrid->addWidget(Button_add_trace, 1, 3);
+
+  // Remove all traces, markers and limits
+  Button_Remove_all = new QPushButton("Remove all");
+  Button_Remove_all->setStyleSheet("QPushButton {background-color: red;\
+                                  border-style: outset;\
+                                  border-width: 2px;\
+                                  border-radius: 5px;\
+                                  border-color: beige;\
+                                  font: bold 14px;\
+                                  color: white;\
+                                  min-width: 3em;\
+                                  padding: 6px;\
+                              }");
+  connect(Button_Remove_all, &QPushButton::clicked, this,
+          static_cast<void (Qucs_S_SPAR_Viewer::*)()>(
+              &Qucs_S_SPAR_Viewer::removeAll));
+  DatasetsGrid->addWidget(Button_Remove_all, 1, 4);
 
   QCombobox_datasets = new QComboBox();
   DatasetsGrid->addWidget(QCombobox_datasets, 1, 0);
-  connect(QCombobox_datasets, SIGNAL(currentIndexChanged(int)),
-          SLOT(updateTracesCombo())); // Each time the dataset is changed it is
-                                      // needed to update the traces combo. This
-                                      // is needed when the user has data with
-                                      // different number of ports.
-  traceTabs = new QTabWidget(this);   // Ensure 'this' is the parent
-  connect(traceTabs, SIGNAL(currentChanged(int)), this,
-          SLOT(raiseWidgetsOnTabSelection(int)));
+
+  connect(QCombobox_datasets, &QComboBox::currentIndexChanged,
+
+          this, &Qucs_S_SPAR_Viewer::updateTracesCombo);
+  traceTabs = new QTabWidget(this); // Ensure 'this' is the parent
+  connect(traceTabs, &QTabWidget::currentChanged, this,
+          &Qucs_S_SPAR_Viewer::raiseWidgetsOnTabSelection);
 
   // Create tabs for Magnitude/Phase and Smith Chart
-  magnitudePhaseTab = new QWidget(traceTabs); // Parent is traceTabs
-  smithTab = new QWidget(traceTabs);          // Parent is traceTabs
-  polarTab = new QWidget(traceTabs);          // Parent is traceTabs
-  portImpedanceTab = new QWidget(traceTabs);  // Parent is traceTabs
-  stabilityTab = new QWidget(traceTabs);      // Parent is traceTabs
-  VSWRTab = new QWidget(traceTabs);           // Parent is traceTabs
-  GroupDelayTab = new QWidget(traceTabs);     // Parent is traceTabs
+  magnitudePhaseTab = new QWidget(traceTabs);
+  smithTab = new QWidget(traceTabs);
+  polarTab = new QWidget(traceTabs);
+  portImpedanceTab = new QWidget(traceTabs);
+  stabilityTab = new QWidget(traceTabs);
+  VSWRTab = new QWidget(traceTabs);
+  GroupDelayTab = new QWidget(traceTabs);
 
   // Add tabs to the tab widget
   traceTabs->addTab(magnitudePhaseTab, "Magnitude/Phase");
@@ -499,8 +513,11 @@ void Qucs_S_SPAR_Viewer::setMarkerManagementDock() {
                                   min-width: 10em;\
                                   padding: 6px;\
                               }");
-  connect(Button_add_marker, SIGNAL(clicked()),
-          SLOT(addMarker())); // Connect button with the handler
+  connect(Button_add_marker,
+          &QPushButton::clicked, // clicked(bool) – the bool will be ignored
+          this, [this]() {
+            addMarker();
+          }); // calls the overload with default arguments
   MarkersGrid->addWidget(Button_add_marker, 0, 0);
 
   Button_Remove_All_Markers = new QPushButton("Remove all");
@@ -514,8 +531,9 @@ void Qucs_S_SPAR_Viewer::setMarkerManagementDock() {
                                   min-width: 10em;\
                                   padding: 6px;\
                               }");
-  connect(Button_Remove_All_Markers, SIGNAL(clicked()),
-          SLOT(removeAllMarkers())); // Connect button with the handler
+  connect(Button_Remove_All_Markers,
+          &QPushButton::clicked, // emits clicked(bool), the bool is ignored
+          this, &Qucs_S_SPAR_Viewer::removeAllMarkers);
   MarkersGrid->addWidget(Button_Remove_All_Markers, 0, 1);
 
   // Marker management
@@ -538,8 +556,8 @@ void Qucs_S_SPAR_Viewer::setMarkerManagementDock() {
 
   // Create tab widget to hold the two marker tables
   QTabWidget *tabWidgetMarkers = new QTabWidget();
-  connect(tabWidgetMarkers, SIGNAL(currentChanged(int)), this,
-          SLOT(raiseWidgetsOnTabSelection(int)));
+  connect(tabWidgetMarkers, &QTabWidget::currentChanged, this,
+          &Qucs_S_SPAR_Viewer::raiseWidgetsOnTabSelection);
 
   // Create the two tables for different marker types
   tableMarkers_Magnitude_Phase = new QTableWidget(1, 1, this);
@@ -591,8 +609,12 @@ void Qucs_S_SPAR_Viewer::setLimitManagementDock() {
                                   min-width: 10em;\
                                   padding: 6px;\
                               }");
-  connect(Button_add_Limit, SIGNAL(clicked()),
-          SLOT(addLimit())); // Connect button with the handler
+  // Default arguments do NOT matter for Qt signal/slot matching.
+  // It's needed to match using a lambda function with the default arguments
+  // The name of the bool is ommited to avoid a warning
+  connect(Button_add_Limit, &QAbstractButton::clicked, this,
+          [this](bool) { addLimit(-1, "", -1, "", -1, -1, true); });
+
   LimitsGrid->addWidget(Button_add_Limit, 0, 0);
 
   Button_Remove_All_Limits = new QPushButton("Remove all");
@@ -606,8 +628,9 @@ void Qucs_S_SPAR_Viewer::setLimitManagementDock() {
                                   min-width: 10em;\
                                   padding: 6px;\
                               }");
-  connect(Button_Remove_All_Limits, SIGNAL(clicked()),
-          SLOT(removeAllLimits())); // Connect button with the handler
+  connect(Button_Remove_All_Limits, &QPushButton::clicked, this,
+          &Qucs_S_SPAR_Viewer::removeAllLimits);
+
   LimitsGrid->addWidget(Button_Remove_All_Limits, 0, 1);
 
   QGroupBox *LimitSettings = new QGroupBox("Settings");
@@ -618,7 +641,9 @@ void Qucs_S_SPAR_Viewer::setLimitManagementDock() {
   Limits_Offset->setSingleStep(0.1);
   Limits_Offset->setMaximum(1e4);
   Limits_Offset->setMinimum(-1e4);
-  connect(Limits_Offset, SIGNAL(valueChanged(double)), SLOT(updateLimits()));
+  connect(Limits_Offset, &QDoubleSpinBox::valueChanged, this,
+          &Qucs_S_SPAR_Viewer::updateLimits);
+
   LimitsSettingLayout->addWidget(LimitsOffsetLabel, 0, 0);
   LimitsSettingLayout->addWidget(Limits_Offset, 0, 1);
 
@@ -648,7 +673,7 @@ void Qucs_S_SPAR_Viewer::setLimitManagementDock() {
 }
 
 void Qucs_S_SPAR_Viewer::CreateDisplayWidgets() {
-  // Chart settings
+  // Magnitude chart settings
   Magnitude_PhaseChart = new RectangularPlotWidget(this);
   dockChart = new QDockWidget("Magnitude / Phase", this);
   dockChart->setWidget(Magnitude_PhaseChart);
@@ -836,12 +861,6 @@ void Qucs_S_SPAR_Viewer::setupScrollableLayout() {
                            "GroupDelayScrollArea");
 }
 
-Qucs_S_SPAR_Viewer::~Qucs_S_SPAR_Viewer() {
-  QSettings settings;
-  settings.setValue("recentFiles", QVariant::fromValue(recentFiles));
-  delete smithChart;
-}
-
 void Qucs_S_SPAR_Viewer::slotHelpIntro() {
   QMessageBox msgBox(this);
   msgBox.setWindowTitle(tr("Help"));
@@ -865,36 +884,51 @@ void Qucs_S_SPAR_Viewer::slotHelpIntro() {
 
   msgBox.exec();
 }
+
 void Qucs_S_SPAR_Viewer::slotHelpAboutQt() {
   QMessageBox::aboutQt(this, tr("About Qt"));
 }
+
 void Qucs_S_SPAR_Viewer::slotHelpAbout() {
-  QMessageBox::about(
-      this, tr("About..."),
-      "Qucs-S S-parameter Viewer & RF Circuit Synthesis Tool "
-      "Version " PACKAGE_VERSION +
-          tr("\nCopyright (C) 2025 by") +
-          " Andrés Martínez Mera"
-          "\n"
-          "\nThis program is free software: you can redistribute it and/or "
-          "modify"
-          "\nit under the terms of the GNU General Public License as published "
-          "by"
-          "\nthe Free Software Foundation, either version 3 of the License, or"
-          "\n(at your option) any later version."
-          "\n"
-          "\nThis program is distributed in the hope that it will be useful,"
-          "\nbut WITHOUT ANY WARRANTY; without even the implied warranty of"
-          "\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
-          "\nSee the GNU General Public License for more details."
-          "\nYou should have received a copy of the GNU General Public License"
-          "\nalong with this program. If not, see "
-          "<https://www.gnu.org/licenses/>.\n\n");
+  // Build the HTML body
+  const QString html = R"(
+        <h2>Qucs‑S S‑parameter Viewer &amp; RF Circuit Synthesis Tool</h2>
+        <p><b>Version </b> )" +
+                       QString(PACKAGE_VERSION) + R"(</p>
+
+        <p>&copy; 2026 Andrés Martínez Mera</p>
+
+        <p>
+            This program is free software: you can redistribute it and/or modify
+            it under the terms of the <a href="https://www.gnu.org/licenses/gpl-3.0.html">
+            GNU General Public License</a> as published by the Free Software
+            Foundation, either version 3 of the License, or (at your option) any later version.
+        </p>
+
+        <p>
+            This program is distributed in the hope that will be useful,
+            but <b>WITHOUT ANY WARRANTY</b>; without even the implied warranty of
+            <i>merchantability</i> or <i>fitness for a particular purpose</i>.
+        </p>
+
+        <p>
+            You should have received a copy of the GNU GPL along with this program.
+            If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.
+        </p>
+
+        <hr/>
+
+        <p>This application uses <a href="https://www.qcustomplot.com/"
+                                    style="color:#0066CC;">QCustomPlot</a> –
+           a Qt C++ widget for plotting and data visualization.</p>
+        <p>QCustomPlot is authored by <b>Emanuel Eichhammer</b> and is
+           released under the GPL license.</p>
+    )";
+
+  // Show the message box – it automatically interprets the string as rich‑text
+  QMessageBox::about(this, tr("About…"), html);
 }
 
-void Qucs_S_SPAR_Viewer::slotQuit() { qApp->quit(); }
-
-// Helper function to extract S-parameter indices from S[i,j] format
 QString Qucs_S_SPAR_Viewer::extractSParamIndices(const QString &sparam) {
   QRegularExpression re("S\\[(\\d+),(\\d+)\\]");
   QRegularExpressionMatch match = re.match(sparam);
@@ -908,8 +942,6 @@ QString Qucs_S_SPAR_Viewer::extractSParamIndices(const QString &sparam) {
   return "";
 }
 
-// Once a file is loaded, this function adds to the display the default traces
-// based in its nature
 void Qucs_S_SPAR_Viewer::applyDefaultVisualizations(
     const QStringList &fileNames) {
   if (fileNames.length() == 1) {
@@ -1039,7 +1071,6 @@ void Qucs_S_SPAR_Viewer::applyDefaultVisualizations(
   dockTracesList->raise();
 }
 
-// Adds optional traces depending on the number of ports of the device
 void Qucs_S_SPAR_Viewer::addOptionalTraces(
     QMap<QString, QList<double>> &file_data) {
   QStringList optional_traces;
@@ -1073,7 +1104,6 @@ void Qucs_S_SPAR_Viewer::addOptionalTraces(
   }
 }
 
-// This function creates the label and the button in the file list
 void Qucs_S_SPAR_Viewer::CreateFileWidgets(QString filename, int position) {
 
   if (position == 0) {
@@ -1106,12 +1136,10 @@ void Qucs_S_SPAR_Viewer::CreateFileWidgets(QString filename, int position) {
   List_RemoveButton.append(RemoveButton);
   this->FilesGrid->addWidget(List_RemoveButton.last(), position, 1, 1, 1);
 
-  connect(RemoveButton, SIGNAL(clicked()),
-          SLOT(removeFile())); // Connect button with the handler to remove the
-                               // entry.
+  connect(RemoveButton, &QToolButton::clicked, this,
+          [this]() { removeFile(); });
 }
 
-// Given the name of a dataset, this function removes all traces related to it
 void Qucs_S_SPAR_Viewer::removeTracesByDataset(
     const QString &dataset_to_remove) {
   // Iterate through the outer QMap (display modes)
@@ -1186,8 +1214,6 @@ void Qucs_S_SPAR_Viewer::removeAndCollapseRow(QGridLayout *targetLayout,
   }
 }
 
-// This function is used for setting the available traces depending on the
-// selected dataset
 void Qucs_S_SPAR_Viewer::updateTracesCombo() {
   QCombobox_traces->clear();
   QStringList sParams;
@@ -1202,7 +1228,8 @@ void Qucs_S_SPAR_Viewer::updateTracesCombo() {
 
   for (int i = 1; i <= n_ports; i++) {
     for (int j = 1; j <= n_ports; j++) {
-      sParams.append(QStringLiteral("S%1%2").arg(i).arg(j)); // Magnitude (dB)
+      sParams.append(QStringLiteral("S%1%2").arg(
+          QString::number(i), QString::number(j))); // Magnitude (dB)
     }
   }
 
@@ -1234,8 +1261,6 @@ void Qucs_S_SPAR_Viewer::updateTracesCombo() {
   QCombobox_traces->setParameters(sParams, otherParams);
 }
 
-// This function adjust the display types available depending on the trace
-// selected
 void Qucs_S_SPAR_Viewer::updateDisplayType() {
   QString trace_selected = QCombobox_traces->currentText();
   QCombobox_display_mode->clear();
@@ -1259,7 +1284,6 @@ void Qucs_S_SPAR_Viewer::updateDisplayType() {
   QCombobox_display_mode->addItems(display_mode);
 }
 
-// Given a trace, it gives the minimum and the maximum values at both axis.
 void Qucs_S_SPAR_Viewer::getMinMaxValues(QString filename, QString tracename,
                                          qreal &minX, qreal &maxX, qreal &minY,
                                          qreal &maxY) {
@@ -1300,7 +1324,7 @@ void Qucs_S_SPAR_Viewer::dropEvent(QDropEvent *event) {
   QList<QUrl> urls = event->mimeData()->urls();
   QStringList fileList;
 
-  for (const QUrl &url : qAsConst(urls)) {
+  for (const QUrl &url : std::as_const(urls)) {
     if (url.isLocalFile()) {
       fileList << url.toLocalFile();
     }
@@ -1375,8 +1399,6 @@ void Qucs_S_SPAR_Viewer::updateGridLayout(QGridLayout *layout) {
   }
 }
 
-// This function is called when the user requests a trace which can be
-// calculated from the S-parameters
 void Qucs_S_SPAR_Viewer::calculate_Sparameter_trace(QString file,
                                                     QString metric) {
 
@@ -1393,7 +1415,7 @@ void Qucs_S_SPAR_Viewer::calculate_Sparameter_trace(QString file,
     QString port_in = metric.at(1);
     QString port_out = metric.at(2);
 
-    QString trace_phase = QString("S%1%2_ang").arg(port_in).arg(port_out);
+    QString trace_phase = QString("S%1%2_ang").arg(port_in, port_out);
 
     QList<double> Sij_ang = datasets[file][trace_phase];
     QList<double> freq = datasets[file]["frequency"];
@@ -1449,8 +1471,7 @@ void Qucs_S_SPAR_Viewer::calculate_Sparameter_trace(QString file,
       groupDelay.append(val);
     }
 
-    QString trace_name_GD =
-        QString("S%1%2_Group Delay").arg(port_in).arg(port_out);
+    QString trace_name_GD = QString("S%1%2_Group Delay").arg(port_in, port_out);
     datasets[file][trace_name_GD].append(groupDelay);
     return;
   }
@@ -1571,7 +1592,6 @@ void Qucs_S_SPAR_Viewer::calculate_Sparameter_trace(QString file,
   }
 }
 
-// Setup file watcher to monitor S-parameter files
 void Qucs_S_SPAR_Viewer::setupFileWatcher() {
   // Clear existing paths
   if (!fileWatcher->files().isEmpty()) {
@@ -1591,7 +1611,6 @@ void Qucs_S_SPAR_Viewer::setupFileWatcher() {
   }
 }
 
-// Handle file changed events
 void Qucs_S_SPAR_Viewer::fileChanged(const QString &path) {
   // Don't process the same file within a short time window
   static QMap<QString, QDateTime> lastProcessedTimes;
@@ -1690,7 +1709,6 @@ void Qucs_S_SPAR_Viewer::fileChanged(const QString &path) {
   });
 }
 
-// Handle directory changed events
 void Qucs_S_SPAR_Viewer::directoryChanged(const QString &path) {
   qDebug() << "Directory changed:" << path;
   QDir dir(path);
@@ -1786,8 +1804,6 @@ void Qucs_S_SPAR_Viewer::directoryChanged(const QString &path) {
   }
 }
 
-// This function is called when a file in the dataset has changes. It updates
-// the traces in the display widgets
 void Qucs_S_SPAR_Viewer::updateAllPlots(const QString &datasetName) {
   // Refresh all traces on each chart
   updateTracesInWidget(Magnitude_PhaseChart, datasetName);
@@ -2003,8 +2019,6 @@ void Qucs_S_SPAR_Viewer::addPathToWatcher(const QString &path) {
   }
 }
 
-// This function is triggered when a trace-type tab is clicked in the trace
-// management tab
 void Qucs_S_SPAR_Viewer::raiseWidgetsOnTabSelection(int index) {
   switch (index) {
   case 0:
@@ -2050,7 +2064,6 @@ void Qucs_S_SPAR_Viewer::raiseWidgetsOnTabSelection(int index) {
   }
 }
 
-// Triggers synthesis when a tool is selected
 void Qucs_S_SPAR_Viewer::callTools(bool visible) {
   if (visible) {
     // Dock is now visible - trigger your function

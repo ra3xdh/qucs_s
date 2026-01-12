@@ -1,30 +1,24 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file paintMicrostripVia.cpp
+/// @brief Microstrip via painting method
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 3, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "./../../component.h"
 
-void Component::paintMicrostripVia(QPainter* painter) {
+///
+/// @brief Microstrip via painting method
+/// \param painter Painter object
+///
+void Component::paintMicrostripVia(QPainter *painter) {
   if (Rotation != 0) {
     painter->rotate(Rotation);
   }
 
   // Define dimensions - similar to GND symbol but with orange rectangle
-  int rectWidth       = 8;  // Width of the vertical orange rectangle
-  int rectHeight      = 10; // Height of the vertical orange rectangle
+  int rectWidth = 8;        // Width of the vertical orange rectangle
+  int rectHeight = 10;      // Height of the vertical orange rectangle
   int groundLineWidth = 20; // Width of the ground line at bottom
 
   // Draw vertical rectangle filled with orange (represents the via)

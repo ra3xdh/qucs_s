@@ -1,42 +1,29 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file MatchingNetworkParametersWidget.cpp
+/// @brief GUI selecting the matching network topology parameters
+/// (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 6, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "MatchingNetworkParametersWidget.h"
 
 MatchingNetworkParametersWidget::MatchingNetworkParametersWidget(
-    QWidget* parent)
+    QWidget *parent)
     : QGroupBox(parent), m_isCollapsed(false) {
   setupUI();
   connectSignals();
 }
 
-MatchingNetworkParametersWidget::~MatchingNetworkParametersWidget() {
-  // Qt handles deletion of child widgets automatically
-}
-
 void MatchingNetworkParametersWidget::setupUI() {
 
   // Create main layout for the group box
-  QVBoxLayout* groupLayout = new QVBoxLayout(this);
+  QVBoxLayout *groupLayout = new QVBoxLayout(this);
   groupLayout->setSpacing(0);
 
   // Create header with title and collapse button
-  QWidget* headerWidget     = new QWidget();
-  QHBoxLayout* headerLayout = new QHBoxLayout(headerWidget);
+  QWidget *headerWidget = new QWidget();
+  QHBoxLayout *headerLayout = new QHBoxLayout(headerWidget);
   headerLayout->setContentsMargins(0, 0, 0, 0);
 
   // Collapse/expand button
@@ -52,7 +39,7 @@ void MatchingNetworkParametersWidget::setupUI() {
 
   // Create content widget that will be hidden/shown
   m_contentWidget = new QWidget();
-  mainLayout      = new QGridLayout(m_contentWidget);
+  mainLayout = new QGridLayout(m_contentWidget);
 
   int layout_row =
       0; // Row index. This is useful to add a new line on the layout without
@@ -65,9 +52,8 @@ void MatchingNetworkParametersWidget::setupUI() {
   matching_methods.append(tr("L-section"));
   matching_methods.append(tr("Single stub"));
   matching_methods.append(tr("Double stub"));
-  matching_methods.append(QString("%1 %2/4")
-                              .arg(tr("Multisection "))
-                              .arg(QString(QChar(0xBB, 0x03))));
+  matching_methods.append(
+      QString("%1 %2/4").arg(tr("Multisection "), QString(QChar(0xBB, 0x03))));
   matching_methods.append(tr("Cascaded L-sections"));
   matching_methods.append(QString("%1/8 + %1/4 line").arg(QChar(0xBB, 0x03)));
   Topology_Combo->addItems(matching_methods);
@@ -75,10 +61,10 @@ void MatchingNetworkParametersWidget::setupUI() {
   mainLayout->addWidget(Topology_Combo, layout_row, 1);
 
   // Solution number widget
-  SolutionWidget              = new QWidget();
-  QHBoxLayout* SolutionLayout = new QHBoxLayout();
-  Solution1_RB                = new QRadioButton("Solution 1");
-  Solution2_RB                = new QRadioButton("Solution 2");
+  SolutionWidget = new QWidget();
+  QHBoxLayout *SolutionLayout = new QHBoxLayout();
+  Solution1_RB = new QRadioButton("Solution 1");
+  Solution2_RB = new QRadioButton("Solution 2");
   Solution1_RB->setChecked(true);
   SolutionLayout->addWidget(Solution1_RB);
   SolutionLayout->addWidget(Solution2_RB);
@@ -107,19 +93,19 @@ void MatchingNetworkParametersWidget::setupUI() {
 
   // Weighting settings
   layout_row++;
-  Weighting_GroupBox           = new QGroupBox(tr("Weighting"));
-  QGridLayout* WeightingLayout = new QGridLayout();
+  Weighting_GroupBox = new QGroupBox(tr("Weighting"));
+  QGridLayout *WeightingLayout = new QGridLayout();
 
   // Weighting method combobox
-  QLabel* WeightingMethodLabel = new QLabel(tr("Method"));
-  Weighting_Combo              = new QComboBox();
+  QLabel *WeightingMethodLabel = new QLabel(tr("Method"));
+  Weighting_Combo = new QComboBox();
   Weighting_Combo->addItem(tr("Binomial"));
   Weighting_Combo->addItem(tr("Chebyshev"));
   WeightingLayout->addWidget(WeightingMethodLabel, 0, 0);
   WeightingLayout->addWidget(Weighting_Combo, 0, 1);
 
   // Ripple parameter
-  Ripple_Label   = new QLabel(tr("Ripple"));
+  Ripple_Label = new QLabel(tr("Ripple"));
   Ripple_SpinBox = new QDoubleSpinBox();
   Ripple_SpinBox->setRange(0.001, 1.0);
   Ripple_SpinBox->setSingleStep(0.01);
@@ -136,7 +122,7 @@ void MatchingNetworkParametersWidget::setupUI() {
 
   // Number of sections
   layout_row++;
-  Sections_Label   = new QLabel(tr("Sections"));
+  Sections_Label = new QLabel(tr("Sections"));
   Sections_SpinBox = new QSpinBox();
   Sections_SpinBox->setRange(2, 10);
   Sections_SpinBox->setValue(3);
@@ -145,7 +131,7 @@ void MatchingNetworkParametersWidget::setupUI() {
 
   // Input impedance
   layout_row++;
-  Zin_Label   = new QLabel("Z0");
+  Zin_Label = new QLabel("Z0");
   ZinRSpinBox = new QDoubleSpinBox();
   ZinRSpinBox->setMinimum(0.5);
   ZinRSpinBox->setMaximum(10000);
@@ -174,30 +160,39 @@ void MatchingNetworkParametersWidget::setupUI() {
 }
 
 void MatchingNetworkParametersWidget::connectSignals() {
-  connect(Topology_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(onTopologyChanged(int)));
-  connect(Topology_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SIGNAL(topologyChanged(int)));
-  connect(TL_Implementation_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(onParameterChanged()));
-  connect(StubTermination_ComboBox, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(onParameterChanged()));
-  connect(ZinRSpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(onParameterChanged()));
-  connect(Solution1_RB, SIGNAL(clicked(bool)), this,
-          SLOT(onParameterChanged()));
-  connect(Solution2_RB, SIGNAL(clicked(bool)), this,
-          SLOT(onParameterChanged()));
-  connect(Weighting_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(adjustChebyshevRippleVisibility()));
-  connect(Ripple_SpinBox, SIGNAL(valueChanged(double)), this,
-          SLOT(onParameterChanged()));
-  connect(Sections_SpinBox, SIGNAL(valueChanged(int)), this,
-          SLOT(onParameterChanged()));
-  connect(m_toggleButton, SIGNAL(clicked(bool)), this,
-          SLOT(onToggleCollapse()));
-}
+  connect(Topology_Combo, &QComboBox::currentIndexChanged, this,
+          &MatchingNetworkParametersWidget::onTopologyChanged);
 
+  connect(Topology_Combo, &QComboBox::currentIndexChanged, this,
+          &MatchingNetworkParametersWidget::topologyChanged);
+
+  connect(TL_Implementation_Combo, &QComboBox::currentIndexChanged, this,
+          &MatchingNetworkParametersWidget::onParameterChanged);
+
+  connect(StubTermination_ComboBox, &QComboBox::currentIndexChanged, this,
+          &MatchingNetworkParametersWidget::onParameterChanged);
+
+  connect(ZinRSpinBox, &QDoubleSpinBox::valueChanged, this,
+          &MatchingNetworkParametersWidget::onParameterChanged);
+
+  connect(Solution1_RB, &QRadioButton::clicked, this,
+          [this]() { onParameterChanged(); });
+
+  connect(Solution2_RB, &QRadioButton::clicked, this,
+          [this]() { onParameterChanged(); });
+
+  connect(Weighting_Combo, &QComboBox::currentIndexChanged, this,
+          &MatchingNetworkParametersWidget::adjustChebyshevRippleVisibility);
+
+  connect(Ripple_SpinBox, &QDoubleSpinBox::valueChanged, this,
+          &MatchingNetworkParametersWidget::onParameterChanged);
+
+  connect(Sections_SpinBox, &QSpinBox::valueChanged, this,
+          &MatchingNetworkParametersWidget::onParameterChanged);
+
+  connect(m_toggleButton, &QPushButton::clicked, this,
+          [this]() { onToggleCollapse(); });
+}
 void MatchingNetworkParametersWidget::onTopologyChanged(int index) {
   switch (index) {
   case 0: // L-section
@@ -335,7 +330,7 @@ MatchingNetworkDesignParameters
 MatchingNetworkParametersWidget::getDesignParameters() const {
   MatchingNetworkDesignParameters specs;
 
-  specs.Z0       = ZinRSpinBox->value();
+  specs.Z0 = ZinRSpinBox->value();
   specs.Topology = Topology_Combo->currentIndex();
 
   if (Solution1_RB->isChecked()) {
@@ -409,18 +404,10 @@ void MatchingNetworkParametersWidget::setCollapsed(bool collapsed) {
   emit collapsedStateChanged(collapsed);
 }
 
-void MatchingNetworkParametersWidget::mousePressEvent(QMouseEvent* event) {
+void MatchingNetworkParametersWidget::mousePressEvent(QMouseEvent *event) {
   // Check if click is in the title area (first 25 pixels from top)
   if (event->position().y() <= 25) {
     onToggleCollapse();
   }
   QGroupBox::mousePressEvent(event);
-}
-
-void MatchingNetworkParametersWidget::onToggleCollapse() {
-  setCollapsed(!m_isCollapsed);
-}
-
-void MatchingNetworkParametersWidget::setTitle(QString title) {
-  titleLabel->setText(title);
 }

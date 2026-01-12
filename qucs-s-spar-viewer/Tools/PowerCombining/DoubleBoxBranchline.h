@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file DoubleBoxBranchline.h
+/// @brief Double-box branch-line power combiner/divider network (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 7, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef DOUBLE_BOX_BRANCHLINE_H
 #define DOUBLE_BOX_BRANCHLINE_H
@@ -24,43 +14,76 @@
 #include "../TransmissionLineSynthesis/Microstrip.h"
 #include <QPen>
 
+/// @class DoubleBoxBranchline
+/// @brief Double-box branch-line power combiner/divider network
 class DoubleBoxBranchline : public Network {
-public:
-  DoubleBoxBranchline();
-  virtual ~DoubleBoxBranchline();
-  DoubleBoxBranchline(PowerCombinerParams);
-  void synthesize();
+  public:
+    /// @brief Class constructor
+    DoubleBoxBranchline() {}
 
-private:
-  PowerCombinerParams Specification;
-  
-  double lambda4, ZA, ZB, ZD;
-  
-  void calculateParams();
-  void buildDoubleBoxBranchline_IdealTL();
-  void buildDoubleBoxBranchline_Microstrip();
+    /// @brief Constructor with power combiner parameters
+    /// @param params Power combiner specification parameters
+    DoubleBoxBranchline(PowerCombinerParams PS) {
+      Specification = PS;
+    }
 
-private:
+    /// @brief Class destructor
+    virtual ~DoubleBoxBranchline() {}
 
-  // This function sets the component's location before the schematic is built
-  void setComponentsLocation();
+    /// @brief Synthesize the double-box branchline network
+    void synthesize();
 
-  // Private variables for components location
-  int x_spacing, y_spacing; // General components spacing
+  private:
+    /// @brief Power combiner specifications
+    PowerCombinerParams Specification;
 
-    // Ports
-  QPoint Port_in;
-  QPoint Port_out1, Port_out2;
+    double lambda4; ///< Quarter wavelength length
+    double ZA;
+    double ZB;
+    double ZD;
 
-  // Isolation resistor
-  QPoint Riso_pos;
-  QPoint GND_Riso_pos;
+    /// @brief Calculate electrical parameters
+    void calculateParams();
 
-  // Transmission lines
-  QPoint TL1_pos, TL2_pos, TL3_pos, TL4_pos, TL5_pos, TL6_pos, TL7_pos;
+    /// @brief Set component locations for schematic layout
+    void setComponentsLocation();
 
-  // Nodes
-  QPoint N1_pos, N2_pos, N3_pos, N4_pos, N5_pos, N6_pos;
+    /// @brief Build double-box Branchline network using ideal transmission lines
+    void buildDoubleBoxBranchline_IdealTL();
+
+    /// @brief Build double-box Branchline network using microstrip transmission lines
+    void buildDoubleBoxBranchline_Microstrip();
+
+    /// Component spacing parameters
+    int x_spacing;  ///< Horizontal spacing between components
+    int y_spacing;  ///< Vertical spacing between components
+
+    /// Ports
+    QPoint Port_in;   ///< Input port position
+    QPoint Port_out1; ///< Output port 1 position
+    QPoint Port_out2; ///< Output port 2 position
+
+    /// Isolation resistor
+    QPoint Riso_pos;  ///< Position of the isolation resistor
+    QPoint GND_Riso_pos;  ///< Position of the isolation resistor's GND
+
+    /// Transmission line positions
+    QPoint TL1_pos;
+    QPoint TL2_pos;
+    QPoint TL3_pos;
+    QPoint TL4_pos;
+    QPoint TL5_pos;
+    QPoint TL6_pos;
+    QPoint TL7_pos;
+
+    /// Node positions
+    QPoint N1_pos;
+    QPoint N2_pos;
+    QPoint N3_pos;
+    QPoint N4_pos;
+    QPoint N5_pos;
+    QPoint N6_pos;
+
 };
 
 #endif // DOUBLE_BOX_BRANCHLINE_H

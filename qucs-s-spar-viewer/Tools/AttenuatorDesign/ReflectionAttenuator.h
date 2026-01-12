@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file ReflectionAttenuator.h
+/// @brief Reflection attenuator synthesis (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 5, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef REFLECTIONATTENUATOR_H
 #define REFLECTIONATTENUATOR_H
@@ -23,19 +13,32 @@
 #include "AttenuatorBase.h"
 #include <QPen>
 
+/// @class ReflectionAttenuator
+/// @brief Reflection attenuator synthesis
+/// Reference: The PIN diode circuit designer's handbook. W.E. Doherty, Jr., R.D. Joos, Microsemi Corp., 1998
 class ReflectionAttenuator : public AttenuatorBase {
     public:
-        ReflectionAttenuator();
-        virtual ~ReflectionAttenuator();
-        ReflectionAttenuator(AttenuatorDesignParameters);
+      /// @brief Class constructor
+      ReflectionAttenuator() {}
 
-        void synthesize() override;
+      /// @brief Class constructor with parameters
+      /// @param AS Design specifications
+      ReflectionAttenuator(AttenuatorDesignParameters AS) : AttenuatorBase(AS) {}
+
+      /// @brief Class destructor
+      virtual ~ReflectionAttenuator() {}
+
+      /// @brief Calculate component values and build schematic
+      void synthesize() override;
 
     private:
-        double Ri;
+      double Ri; ///< Shunt resistors
 
-        void calculateParams() override;
-        void buildNetwork() override;
+      /// @brief Calculate Ri depending on attenuation
+      void calculateParams() override;
+
+      /// @brief Build schematic with components, nodes, and wires
+      void buildNetwork() override;
 };
 
 #endif // REFLECTIONATTENUATOR_H

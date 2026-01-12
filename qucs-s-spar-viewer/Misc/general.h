@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2019, 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file general.h
+/// @brief Utility functions needed across the whole project
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 4, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef GENERAL_H
 #define GENERAL_H
@@ -38,27 +28,83 @@ static constexpr double one_over_pi = 1.0 / M_PI;
 static constexpr double euler       = M_E;
 static constexpr double ln2         = 0.693147180559945;
 
+/// @brief Unit types for engineering values
 enum Units { Capacitance, Inductance, Length, Resistance, Degrees, NoUnits };
 
+/// @brief Rounds double to minimum decimal places needed
+/// @param val Value to round
+/// @return Formatted string
 QString RoundVariablePrecision(double);
+
+/// @brief Converts complex number to string with units
+/// @param Z Complex value
+/// @param CompType Unit type
+/// @return Formatted string
 QString num2str(std::complex<double> Z, Units CompType);
+
+/// @brief Converts double to string with engineering notation and units
+/// @param Num Value to convert
+/// @param CompType Unit type
+/// @return Formatted string
 QString num2str(double, Units);
+
+/// @brief Converts double to string with engineering notation
+/// @param Num Value to convert
+/// @return Formatted string
 QString num2str(double);
+
+/// @brief Parses string to complex number
+/// @param num String representation (e.g., "50+j25", "j50", "50")
+/// @return Complex number
 std::complex<double> Str2Complex(QString);
+
+/// @brief Converts length in meters to appropriate unit with auto-scaling
+/// @param units Current unit (mm, mil, um, nm, inch, ft, m)
+/// @param len Length in meters
+/// @return Formatted string with auto-scaled unit
 QString ConvertLengthFromM(QString, double);
+
+/// @brief Converts S-parameter from MA/RI/DB format to dB, angle, real, and imaginary
+/// @param[in,out] S_1 Magnitude (MA), Real (RI), or dB (DB) → dB output
+/// @param[in,out] S_2 Angle (MA/DB) or Imaginary (RI) → angle output
+/// @param[out] S_3 Real part output
+/// @param[out] S_4 Imaginary part output
+/// @param format Input format: "MA", "RI", or "DB"
 void convert_MA_RI_to_dB(double* S_1, double* S_2, double* S_3, double* S_4,
                          QString format);
+
+/// @brief Gets frequency scale factor from unit string
+/// @param frequency_unit Unit string (Hz, kHz, MHz, GHz)
+/// @return Scale factor relative to Hz
 double getFreqScale(QString frequency_unit);
+
+/// @brief Gets scale factor from SI prefix
+/// @param scale Prefix string (Y, Z, E, P, T, G, M, k, m, u, n, p, f, a, z, y)
+/// @return Scale factor
 double getScaleFactor(QString scale);
-void getMinMaxValues(QString filename, QString tracename, qreal& minX,
-                     qreal& maxX, qreal& minY, qreal& maxY);
+
+/// @brief Finds index of closest value in list
+/// @param list List to search
+/// @param value Target value
+/// @return Index of closest element
 int findClosestIndex(const QList<double>& list, double value);
-double getFreqScale(QString frequency_unit);
-int findClosestIndex(const QList<double>& list, double value);
+
+/// @brief Parses frequency string to Hz
+/// @param freq Frequency string (e.g., "2.4 GHz", "100MHz")
+/// @return Frequency in Hz, or -1 if invalid
 double getFreqFromText(QString freq);
+
+/// @brief Finds closest point in x-y data series
+/// @param xValues X-axis values
+/// @param yValues Y-axis values
+/// @param targetX Target x value
+/// @return Closest point as QPointF
 QPointF findClosestPoint(const QList<double>& xValues,
                          const QList<double>& yValues, double targetX);
 
+/// @brief Reads Touchstone file and extracts S-parameter data
+/// @param filePath Path to the Touchstone file (.sNp)
+/// @return Map of variable names to data arrays
 QMap<QString, QList<double>> readTouchstoneFile(const QString& filePath);
 
 #endif // GENERAL_H

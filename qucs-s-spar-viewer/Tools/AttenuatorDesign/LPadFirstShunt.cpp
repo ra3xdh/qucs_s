@@ -1,31 +1,11 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file LPadFirstShunt.cpp
+/// @brief L-pad (first shunt) 1-port matched attenuator (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 5, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
-#include "L_pad_1st_shunt.h"
-
-// Reference: Based on design equations from attenuatorfunc.cpp L_PAD_1ST_SHUNT
-// case
-
-LPadFirstShunt::LPadFirstShunt() {}
-
-LPadFirstShunt::LPadFirstShunt(AttenuatorDesignParameters AS)
-    : AttenuatorBase(AS) {}
-
-LPadFirstShunt::~LPadFirstShunt() {}
+#include "LPadFirstShunt.h"
 
 void LPadFirstShunt::calculateParams() {
   // Design equations

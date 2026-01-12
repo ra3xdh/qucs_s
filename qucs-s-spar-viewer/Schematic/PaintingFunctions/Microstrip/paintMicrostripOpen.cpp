@@ -17,12 +17,16 @@
 
 #include "./../../component.h"
 
-void Component::paintMicrostripOpen(QPainter* painter) {
+///
+/// @brief Microstrip open painting method
+/// \param painter Painter object
+///
+void Component::paintMicrostripOpen(QPainter *painter) {
   if (Rotation != 0) {
     painter->rotate(Rotation);
   }
 
-  int w      = 15; // Microstrip width (similar to line)
+  int w = 15;      // Microstrip width (similar to line)
   int length = 22; // Shortened section for open
 
   // Fill rectangle for the microstrip segment
@@ -41,10 +45,10 @@ void Component::paintMicrostripOpen(QPainter* painter) {
                     QPoint(w / 2, length - 14)); // bottom edge
 
   // Draw 4 parallel thin diagonal lines at the open end
-  int edgeY       = length - 14;
+  int edgeY = length - 14;
   int lineSpacing = 5;
-  int lineLen     = 4;
-  int baseOffset  = -7;
+  int lineLen = 4;
+  int baseOffset = -7;
 
   painter->setPen(QPen(Qt::black, 1));
   painter->drawLine(

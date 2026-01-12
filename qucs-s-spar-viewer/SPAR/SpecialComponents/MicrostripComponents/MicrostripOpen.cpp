@@ -1,33 +1,22 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *  Based on msopen.cpp from Qucs - Copyright (C) 2004, 2008 Stefan Jahn,
- * Michael Margraf
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file MicrostripOpen.cpp
+/// @brief Implementation of function for the S-parameter analysis of the
+/// microstrip open line
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 3, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "./../../SParameterCalculator.h"
 
 void SParameterCalculator::addMicrostripOpenToAdmittance(
-    vector<vector<Complex>>& Y, const Component_SPAR& comp) {
+    vector<vector<Complex>> &Y, const Component_SPAR &comp) {
   // Extract microstrip open end parameters
   int node1 = comp.nodes[0];
 
-  double W  = comp.value.value("W");       // Width in meters
-  double h  = comp.value.value("h");       // Substrate height in meters
-  double er = comp.value.value("er");      // Relative permittivity
-  double t  = comp.value.value("th", 0.0); // Conductor thickness (optional)
+  double W = comp.value.value("W");       // Width in meters
+  double h = comp.value.value("h");       // Substrate height in meters
+  double er = comp.value.value("er");     // Relative permittivity
+  double t = comp.value.value("th", 0.0); // Conductor thickness (optional)
 
   // Get model type (default: Kirschning)
   string Model = "Kirschning"; // Default model
@@ -48,9 +37,9 @@ void SParameterCalculator::addMicrostripOpenToAdmittance(
 
 Complex SParameterCalculator::calcMicrostripOpenY(double W, double h, double er,
                                                   double t, double frequency,
-                                                  const string& Model,
-                                                  const string& SModel,
-                                                  const string& DModel) {
+                                                  const string &Model,
+                                                  const string &SModel,
+                                                  const string &DModel) {
   double omega = 2.0 * M_PI * frequency;
   Complex y;
 
@@ -85,9 +74,9 @@ Complex SParameterCalculator::calcMicrostripOpenY(double W, double h, double er,
     r2 = (1.024 * tanh(2.025 * W_h)) * ZlEffFreq;
 
     // Admittance: Y = j*omega*c1 + 1/(r2 + j*(omega*l2 - 1/(omega*c2)))
-    Complex y_c1       = Complex(0.0, omega * c1);
+    Complex y_c1 = Complex(0.0, omega * c1);
     Complex z_parallel = Complex(r2, omega * l2 - 1.0 / (omega * c2));
-    y                  = y_c1 + Complex(1.0, 0.0) / z_parallel;
+    y = y_c1 + Complex(1.0, 0.0) / z_parallel;
   } else {
     // Kirschning or Hammerstad model - simple capacitive end effect
     double c =
@@ -100,7 +89,7 @@ Complex SParameterCalculator::calcMicrostripOpenY(double W, double h, double er,
 
 double SParameterCalculator::calcMicrostripOpenCend(
     double W, double h, double er, double t, double frequency,
-    const string& Model, const string& SModel, const string& DModel) {
+    const string &Model, const string &SModel, const string &DModel) {
   // Calculate line parameters
   double ZlEff, ErEff, WEff, ZlEffFreq, ErEffFreq;
   analyseQuasiStatic(W, h, t, er, SModel, ZlEff, ErEff, WEff);
@@ -108,7 +97,7 @@ double SParameterCalculator::calcMicrostripOpenCend(
                     ErEffFreq);
 
   double W_h = W / h;
-  double dl  = 0.0;
+  double dl = 0.0;
 
   // Kirschning, Jansen and Koster model
   if (Model == "Kirschning") {
@@ -124,7 +113,7 @@ double SParameterCalculator::calcMicrostripOpenCend(
                     atan(0.067 * pow(W_h, 1.456)) +
                 1.0;
     double Q5 = 1.0 - 0.218 * exp(-7.5 * W_h);
-    dl        = Q1 * Q3 * Q5 / Q4;
+    dl = Q1 * Q3 * Q5 / Q4;
   }
   // Hammerstad model
   else if (Model == "Hammerstad") {

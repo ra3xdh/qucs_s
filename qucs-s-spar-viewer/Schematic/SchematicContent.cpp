@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file SchematicContent.cpp
+/// @brief Container for schematic circuit data (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 3, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "SchematicContent.h"
 
@@ -36,8 +26,6 @@ SchematicContent::SchematicContent() {
   NumberComponents[SPAR_Block] = 0;
   NumberWires = 0;
 }
-
-SchematicContent::~SchematicContent() {}
 
 void SchematicContent::assignNetToWiresConnectedToNode(QString NodeID,
                                                        QString net) {
@@ -173,10 +161,8 @@ QString SchematicContent::getSParameterNetlist() {
         int node2 = netToNodeMap.value(connections[1], 0);
         QString value = Comps[i].val.contains("R") ? Comps[i].val["R"] : "50";
         componentLine = QString("%1 %2 %3 %4\n")
-                            .arg(Comps[i].ID)
-                            .arg(node1)
-                            .arg(node2)
-                            .arg(value);
+                            .arg(Comps[i].ID, QString::number(node1),
+                                 QString::number(node2), value);
       }
       break;
 
@@ -187,10 +173,8 @@ QString SchematicContent::getSParameterNetlist() {
         QString value =
             Comps[i].val.contains("C") ? Comps[i].val["C"] : "1e-12";
         componentLine = QString("%1 %2 %3 %4\n")
-                            .arg(Comps[i].ID)
-                            .arg(node1)
-                            .arg(node2)
-                            .arg(value);
+                            .arg(Comps[i].ID, QString::number(node1),
+                                 QString::number(node2), value);
       }
       break;
 
@@ -200,10 +184,8 @@ QString SchematicContent::getSParameterNetlist() {
         int node2 = netToNodeMap.value(connections[1], 0);
         QString value = Comps[i].val.contains("L") ? Comps[i].val["L"] : "1e-9";
         componentLine = QString("%1 %2 %3 %4\n")
-                            .arg(Comps[i].ID)
-                            .arg(node1)
-                            .arg(node2)
-                            .arg(value);
+                            .arg(Comps[i].ID, QString::number(node1),
+                                 QString::number(node2), value);
       }
       break;
 
@@ -216,10 +198,8 @@ QString SchematicContent::getSParameterNetlist() {
         value = value.remove(whitespaceRegex); // Remove blank spaces
 
         componentLine = QString("%1 %2 %3 %4\n")
-                            .arg(Comps[i].ID)
-                            .arg(node1)
-                            .arg(node2)
-                            .arg(value);
+                            .arg(Comps[i].ID, QString::number(node1),
+                                 QString::number(node2), value);
       }
       break;
 
@@ -235,7 +215,7 @@ QString SchematicContent::getSParameterNetlist() {
           portID = "P" + portID.mid(1);
         }
         componentLine =
-            QString("%1 %2 %3\n").arg(portID).arg(node).arg(impedance);
+            QString("%1 %2 %3\n").arg(portID, QString::number(node), impedance);
       }
       break;
 
@@ -252,11 +232,8 @@ QString SchematicContent::getSParameterNetlist() {
 
         QString TL_ID = Comps[i].ID;
         componentLine = QString("%1 %2 %3 %4 %5\n")
-                            .arg(TL_ID)
-                            .arg(node1)
-                            .arg(node2)
-                            .arg(Z0)
-                            .arg(Length);
+                            .arg(TL_ID, QString::number(node1),
+                                 QString::number(node2), Z0, Length);
       }
       break;
 
@@ -274,17 +251,10 @@ QString SchematicContent::getSParameterNetlist() {
         QString tand = Comps[i].val["tand"];
 
         QString MLIN_ID = Comps[i].ID;
-        componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8 %9 %10\n")
-                            .arg(MLIN_ID)
-                            .arg(node1)
-                            .arg(node2)
-                            .arg(Width)
-                            .arg(Length)
-                            .arg(er)
-                            .arg(h)
-                            .arg(cond)
-                            .arg(th)
-                            .arg(tand);
+        componentLine =
+            QString("%1 %2 %3 %4 %5 %6 %7 %8 %9 %10\n")
+                .arg(MLIN_ID, QString::number(node1), QString::number(node2),
+                     Width, Length, er, h, cond, th, tand);
       }
 
       break;
@@ -327,20 +297,11 @@ QString SchematicContent::getSParameterNetlist() {
         QString tand = Comps[i].val["tand"];
 
         QString MLIN_ID = Comps[i].ID;
-        componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8 %9 %10 %11 %12 %13\n")
-                            .arg(MLIN_ID)
-                            .arg(node1)
-                            .arg(node2)
-                            .arg(node3)
-                            .arg(node4)
-                            .arg(W)
-                            .arg(L)
-                            .arg(S)
-                            .arg(er)
-                            .arg(h)
-                            .arg(cond)
-                            .arg(th)
-                            .arg(tand);
+        componentLine =
+            QString("%1 %2 %3 %4 %5 %6 %7 %8 %9 %10 %11 %12 %13\n")
+                .arg(MLIN_ID, QString::number(node1), QString::number(node2),
+                     QString::number(node3), QString::number(node4), W, L, S,
+                     er, h, cond, th, tand);
       }
 
       break;
@@ -358,14 +319,8 @@ QString SchematicContent::getSParameterNetlist() {
 
         QString MLIN_ID = Comps[i].ID;
         componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8\n")
-                            .arg(MLIN_ID)
-                            .arg(node1)
-                            .arg(Width)
-                            .arg(er)
-                            .arg(h)
-                            .arg(cond)
-                            .arg(th)
-                            .arg(tand);
+                            .arg(MLIN_ID, QString::number(node1), Width, er, h,
+                                 cond, th, tand);
       }
 
       break;
@@ -384,17 +339,10 @@ QString SchematicContent::getSParameterNetlist() {
         QString tand = Comps[i].val["tand"];
 
         QString MLIN_ID = Comps[i].ID;
-        componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8 %9 %10\n")
-                            .arg(MLIN_ID)
-                            .arg(node1)
-                            .arg(node2)
-                            .arg(W1)
-                            .arg(W2)
-                            .arg(er)
-                            .arg(h)
-                            .arg(cond)
-                            .arg(th)
-                            .arg(tand);
+        componentLine =
+            QString("%1 %2 %3 %4 %5 %6 %7 %8 %9 %10\n")
+                .arg(MLIN_ID, QString::number(node1), QString::number(node2),
+                     W1, W2, er, h, cond, th, tand);
       }
 
       break;
@@ -413,15 +361,8 @@ QString SchematicContent::getSParameterNetlist() {
 
         QString MLIN_ID = Comps[i].ID;
         componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8 %9\n")
-                            .arg(MLIN_ID)
-                            .arg(node1)
-                            .arg(D)
-                            .arg(N)
-                            .arg(er)
-                            .arg(h)
-                            .arg(cond)
-                            .arg(th)
-                            .arg(tand);
+                            .arg(MLIN_ID, QString::number(node1), D, N, er, h,
+                                 cond, th, tand);
       }
 
       break;
@@ -451,17 +392,8 @@ QString SchematicContent::getSParameterNetlist() {
 
           componentLine =
               QString("%1 %2 %3 (%4,%5) (%6,%7); (%8,%9) (%10,%11)\n")
-                  .arg(SPAR_ID)
-                  .arg(node1)
-                  .arg(node2)
-                  .arg(S11r)
-                  .arg(S11i)
-                  .arg(S12r)
-                  .arg(S12i)
-                  .arg(S21r)
-                  .arg(S21i)
-                  .arg(S22r)
-                  .arg(S22i);
+                  .arg(SPAR_ID, QString::number(node1), QString::number(node2),
+                       S11r, S11i, S12r, S12i, S21r, S21i, S22r, S22i);
         } else {
           // S-parameter file
           componentLine = QString("%1 %2 %3 %4\n")
@@ -481,39 +413,29 @@ QString SchematicContent::getSParameterNetlist() {
         nodeCounter++;
         node1 = nodeCounter;
       }
-
       int node2 = netToNodeMap.value(connections[1], -1);
       if (node2 == -1) {
         nodeCounter++;
         node2 = nodeCounter;
       }
-
       int node3 = netToNodeMap.value(connections[2], -1);
       if (node3 == -1) {
         nodeCounter++;
         node3 = nodeCounter;
       }
-
       int node4 = netToNodeMap.value(connections[3], -1);
       if (node4 == -1) {
         nodeCounter++;
         node4 = nodeCounter;
       }
-
       QString Z0 = Comps[i].val["Z0"];       // Reference impedance
       QString k = Comps[i].val["k"];         // Coupling factor
       QString Phase = Comps[i].val["phase"]; // Coupler phase shift
-
       QString COUP_ID = Comps[i].ID;
       componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8\n")
-                          .arg(COUP_ID)
-                          .arg(node1)
-                          .arg(node2)
-                          .arg(node4)
-                          .arg(node3)
-                          .arg(k)
-                          .arg(Phase)
-                          .arg(Z0);
+                          .arg(COUP_ID, QString::number(node1),
+                               QString::number(node2), QString::number(node4),
+                               QString::number(node3), k, Phase, Z0);
 
       break;
     }
@@ -550,14 +472,9 @@ QString SchematicContent::getSParameterNetlist() {
 
       QString CLIN_ID = Comps[i].ID;
       componentLine = QString("%1 %2 %3 %4 %5 %6 %7 %8\n")
-                          .arg(CLIN_ID)
-                          .arg(node1)
-                          .arg(node2)
-                          .arg(node4)
-                          .arg(node3)
-                          .arg(Z0e)
-                          .arg(Z0o)
-                          .arg(Length);
+                          .arg(CLIN_ID, QString::number(node1),
+                               QString::number(node2), QString::number(node4),
+                               QString::number(node3), Z0e, Z0o, Length);
     } break;
 
     default:
@@ -574,17 +491,13 @@ QString SchematicContent::getSParameterNetlist() {
   return netlist;
 }
 
-void SchematicContent::setNetlist(QString netlist) { this->netlist = netlist; }
-
-void SchematicContent::appendComponent(struct ComponentInfo C) {
-  Comps.append(C);
-}
 void SchematicContent::appendWire(WireInfo WI) {
   // Set wire ID
   QString ID = QString("W%1").arg(++NumberWires);
   WI.setID(ID);
   Wires.append(WI);
 }
+
 void SchematicContent::appendWire(QString O, int ON, QString D, int DN) {
   WireInfo WI(O, ON, D, DN);
   // Set wire ID
@@ -592,6 +505,7 @@ void SchematicContent::appendWire(QString O, int ON, QString D, int DN) {
   WI.setID(ID);
   Wires.append(WI);
 }
+
 void SchematicContent::appendWire(QString O, int ON, QString D, int DN,
                                   QColor c) {
   WireInfo WI(O, ON, D, DN);
@@ -602,41 +516,6 @@ void SchematicContent::appendWire(QString O, int ON, QString D, int DN,
   Wires.append(WI);
 }
 
-void SchematicContent::appendNode(struct NodeInfo N) { Nodes.append(N); }
-
-QList<ComponentInfo> SchematicContent::getComponents() { return Comps; }
-void SchematicContent::setComponents(QList<ComponentInfo> C) { Comps = C; }
-
-QList<struct WireInfo> SchematicContent::getWires() { return Wires; }
-
-QList<struct NodeInfo> SchematicContent::getNodes() { return Nodes; }
-void SchematicContent::setNodes(QList<NodeInfo> N) { Nodes = N; }
-
-QList<QGraphicsTextItem *> SchematicContent::getTexts() { return Texts; }
-
-double SchematicContent::getZin() { return Comps[0].val["Z"].toDouble(); }
-double SchematicContent::getZout() {
-  return Comps[Comps.size() - 1].val["Z"].toDouble();
-}
-
-QString SchematicContent::getZinString() { return Comps[0].val["Z"]; }
-QString SchematicContent::getZoutString() {
-  return Comps[Comps.size() - 1].val["Z"];
-}
-
-void SchematicContent::appendText(QGraphicsTextItem *text) {
-  Texts.append(text);
-}
-
-// Set frequency options (for exporting)
-void SchematicContent::setFrequencySweep(QString f1, QString f2, int N) {
-  f_start = f1;
-  f_stop = f2;
-  n_points = N;
-}
-
-// Given a component type, this function gives the total number of components in
-// the circuit
 int SchematicContent::getComponentCounter(ComponentType Comp) {
   // If NumberComponents map is empty, build it from Comps list
   if (NumberComponents.isEmpty() && !Comps.isEmpty()) {
@@ -644,7 +523,7 @@ int SchematicContent::getComponentCounter(ComponentType Comp) {
     NumberComponents.clear();
 
     // Count each component type in Comps
-    for (const ComponentInfo &comp : qAsConst(Comps)) {
+    for (const ComponentInfo &comp : std::as_const(Comps)) {
       NumberComponents[comp.Type]++;
     }
   }
@@ -654,7 +533,6 @@ int SchematicContent::getComponentCounter(ComponentType Comp) {
   return NumberComponents.value(Comp, 0);
 }
 
-// This function manages the schematic export process
 QString SchematicContent::exportSchematic(QString environment,
                                           QString backend) {
 

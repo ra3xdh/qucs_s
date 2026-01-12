@@ -1,24 +1,15 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file output.cpp
+/// @brief Implementation of the Touchstone export code and output data via
+/// terminal console
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 3, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "SParameterCalculator.h"
 
-void SParameterCalculator::exportTouchstone(const QString& filename,
-                                            const vector<vector<Complex>>& S) {
+void SParameterCalculator::exportTouchstone(const QString &filename,
+                                            const vector<vector<Complex>> &S) {
   QFile file(filename);
   if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
     cerr << "Error: Cannot create output file " << filename.toStdString()
@@ -38,7 +29,7 @@ void SParameterCalculator::exportTouchstone(const QString& filename,
 
   for (size_t i = 0; i < S.size(); i++) {
     for (size_t j = 0; j < S[i].size(); j++) {
-      double mag   = abs(S[i][j]);
+      double mag = abs(S[i][j]);
       double phase = arg(S[i][j]) * 180.0 / M_PI;
       out << " " << mag << " " << phase;
     }
@@ -51,7 +42,7 @@ void SParameterCalculator::exportTouchstone(const QString& filename,
 }
 
 void SParameterCalculator::exportSweepTouchstone(
-    const QString& filename) const {
+    const QString &filename) const {
   QFile file(filename);
   if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
     cerr << "Error: Cannot create output file " << filename.toStdString()
@@ -69,15 +60,15 @@ void SParameterCalculator::exportSweepTouchstone(
   double step = (n_points == 1) ? 0 : (f_stop - f_start) / (n_points - 1);
 
   for (int i = 0; i < n_points; ++i) {
-    double freq    = f_start + i * step;
+    double freq = f_start + i * step;
     double freqGHz = freq / 1e9;
-    const auto& S  = sweepResults[i];
+    const auto &S = sweepResults[i];
 
     out << freqGHz;
 
-    for (const auto& rowVec : S) {
-      for (const auto& value : rowVec) {
-        double mag   = abs(value);
+    for (const auto &rowVec : S) {
+      for (const auto &value : rowVec) {
+        double mag = abs(value);
         double phase = arg(value) * 180.0 / M_PI;
         out << " " << mag << " " << phase;
       }
@@ -90,7 +81,7 @@ void SParameterCalculator::exportSweepTouchstone(
   cout << "Frequency sweep exported to " << filename.toStdString() << endl;
 }
 
-void SParameterCalculator::printSParameters(const vector<vector<Complex>>& S) {
+void SParameterCalculator::printSParameters(const vector<vector<Complex>> &S) {
   int numPorts = S.size();
 
   cout << "S-Parameters at frequency " << frequency / 1e9 << " GHz:" << endl;
@@ -98,7 +89,7 @@ void SParameterCalculator::printSParameters(const vector<vector<Complex>>& S) {
 
   for (int i = 0; i < numPorts; i++) {
     for (int j = 0; j < numPorts; j++) {
-      double mag   = abs(S[i][j]);
+      double mag = abs(S[i][j]);
       double phase = arg(S[i][j]) * 180.0 / M_PI;
       double magDB = 20 * log10(mag);
 
@@ -112,9 +103,9 @@ void SParameterCalculator::printSParameterSweep() const {
   double step = (n_points == 1) ? 0 : (f_stop - f_start) / (n_points - 1);
 
   for (int i = 0; i < n_points; ++i) {
-    double freq   = f_start + i * step;
-    const auto& S = sweepResults[i];
-    int numPorts  = S.size();
+    double freq = f_start + i * step;
+    const auto &S = sweepResults[i];
+    int numPorts = S.size();
 
     std::cout << "S-Parameters at frequency " << freq / 1e9 << " GHz (" << freq
               << " Hz):\n";
@@ -122,7 +113,7 @@ void SParameterCalculator::printSParameterSweep() const {
 
     for (int i = 0; i < numPorts; ++i) {
       for (int j = 0; j < numPorts; ++j) {
-        double mag   = abs(S[i][j]);
+        double mag = abs(S[i][j]);
         double phase = arg(S[i][j]) * 180.0 / M_PI;
         double magDB = 20 * log10(mag);
         std::cout << "S(" << i + 1 << "," << j + 1 << "): " << mag << " ∠"

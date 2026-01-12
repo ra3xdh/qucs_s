@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file dataset_management.cpp
+/// @brief Implementation of the functions related to the data management
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 3, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "qucs-s-spar-viewer.h"
 
@@ -25,7 +15,7 @@ void Qucs_S_SPAR_Viewer::removeAllFiles() {
   }
 
   // Remove each file by ID
-  for (const QString& ID : fileIDs) {
+  for (const QString &ID : fileIDs) {
     removeFile(ID);
   }
 
@@ -45,7 +35,7 @@ void Qucs_S_SPAR_Viewer::removeFile(QString ID) {
 
   for (int i = 0; i < List_RemoveButton.size(); i++) {
     if (List_RemoveButton.at(i)->objectName() == ID) {
-      row_to_remove     = i;
+      row_to_remove = i;
       dataset_to_remove = List_FileNames.at(i)->text();
       delete List_RemoveButton.takeAt(i); // Use takeAt() instead of at()
       delete List_FileNames.takeAt(i);    // Removes AND returns the pointer
@@ -70,17 +60,13 @@ void Qucs_S_SPAR_Viewer::removeFile(QString ID) {
   updateTracesCombo();
 }
 
-// This function is called whenever a s-par file is intended to be removed from
-// the map of datasets
 void Qucs_S_SPAR_Viewer::removeFile() {
-  QToolButton* button = qobject_cast<QToolButton*>(sender());
-  QString ID          = button->objectName();
+  QToolButton *button = qobject_cast<QToolButton *>(sender());
+  QString ID = button->objectName();
   removeFile(ID);
 }
 
-// Wrapper of void "Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames)". It is
-// needed to open a Touchstone file from command line
-void Qucs_S_SPAR_Viewer::addFile(const QFileInfo& fileInfo) {
+void Qucs_S_SPAR_Viewer::addFile(const QFileInfo &fileInfo) {
   if (fileInfo.exists()) {
     QStringList fileNames;
     fileNames.append(fileInfo.absoluteFilePath());
@@ -143,7 +129,7 @@ void Qucs_S_SPAR_Viewer::addFiles(QStringList fileNames) {
 
   // Read files
   int widget_counter = existing_files;
-  int n_files        = fileNames.length(); // Number of files to be added
+  int n_files = fileNames.length(); // Number of files to be added
   QStringList files_filtered; // Some of the files included may be discarded for
                               // not having s-parameter data. This list contain
                               // only the files to be added

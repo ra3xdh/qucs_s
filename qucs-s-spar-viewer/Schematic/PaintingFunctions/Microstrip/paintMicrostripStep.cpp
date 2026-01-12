@@ -17,14 +17,18 @@
 
 #include "./../../component.h"
 
-void Component::paintMicrostripStep(QPainter* painter) {
+///
+/// @brief Microstrip step painting method
+/// \param painter Painter object
+///
+void Component::paintMicrostripStep(QPainter *painter) {
   if (Rotation != 0) {
     painter->rotate(Rotation);
   }
 
   // Define widths for the two sections (now horizontal orientation)
-  int w1   = 24; // Width of first (wider) section
-  int w2   = 12; // Width of second (narrower) section
+  int w1 = 24;   // Width of first (wider) section
+  int w2 = 12;   // Width of second (narrower) section
   int len1 = 14; // Length of first section
   int len2 = 16; // Length of second section
 

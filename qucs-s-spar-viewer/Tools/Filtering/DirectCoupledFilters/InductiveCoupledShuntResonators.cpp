@@ -1,47 +1,11 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
-/**
- * @file InductiveCoupledShuntResonators.cpp
- * @brief Synthesis of inductive-coupled shunt resonators filters
- * @author Andrés Martínez Mera
- * @date 2025
- */
+/// @file InductiveCoupledShuntResonators.cpp
+/// @brief Synthesis of inductive-coupled shunt resonators BPF
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 4, 2026
+/// @copyright Copyright (C) 2019-2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "DirectCoupledFilters.h"
-
-///
-/// \internal
-///
-/// About the synthesis process:
-/// 1) Given the resonator's capacitance as design parameter, the
-/// inductance is calculated to tune the resonator at the center frequency.
-///
-/// 2) Then, the coupling parameters, Jxy, are calculated from the response's
-/// lowpass prototype. After that, the series coupling inductors are
-/// synthesized (this depends on these Jxy values obtained and the admittance of
-/// the terminations).
-///
-/// 3) Finally, the value of the inductors in the resonators is adjusted
-/// depending on the excess inductances from the inverters.
-///
-/// Reference: [1] "Microwave Filters, Impedance-Matching Networks, and
-/// Coupling Structures", George L. Matthaei, L. Young, E. M. Jones, Artech
-/// House pg. 482
 
 void DirectCoupledFilters::Synthesize_Inductive_Coupled_Shunt_Resonators() {
   ComponentInfo Lseries, Cshunt, Ground, Lshunt;

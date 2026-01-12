@@ -60,3 +60,9 @@ __pycache__
 .cache/
 /qt/
 build-qucs-s-spar-viewer-Desktop-Debug/
+
+qucs-s-spar-viewer/html/
+
+qucs-s-spar-viewer/latex/
+
+*.bak

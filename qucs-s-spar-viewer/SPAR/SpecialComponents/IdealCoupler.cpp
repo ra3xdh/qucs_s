@@ -1,19 +1,10 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file IdealCoupler.cpp
+/// @brief Implementation of function for the S-parameter analysis of the ideal
+/// coupler
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 3, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "./../SParameterCalculator.h"
 
@@ -26,7 +17,7 @@ SParameterCalculator::calculateIdealCouplerYMatrix(double k, double phase_deg,
   double t = sqrt(1.0 - k * k); // Transmission coefficient
 
   // Convert phase from degrees to radians and create complex phase factor
-  double phase_rad     = phase_deg * M_PI / 180.0;
+  double phase_rad = phase_deg * M_PI / 180.0;
   Complex phase_factor = Complex(cos(phase_rad), sin(phase_rad));
 
   double G0 = 1.0 / Z0; // Characteristic conductance
@@ -54,9 +45,9 @@ SParameterCalculator::calculateIdealCouplerYMatrix(double k, double phase_deg,
   S[3][2] = Complex(t, 0); // S34 = t (through)
 
   // Convert S-parameters to Y-parameters using: Y = G0 * (I - S) * inv(I + S)
-  vector<vector<Complex>> I         = createMatrix(4, 4);
+  vector<vector<Complex>> I = createMatrix(4, 4);
   vector<vector<Complex>> I_minus_S = createMatrix(4, 4);
-  vector<vector<Complex>> I_plus_S  = createMatrix(4, 4);
+  vector<vector<Complex>> I_plus_S = createMatrix(4, 4);
 
   // Identity matrix
   for (int i = 0; i < 4; i++) {
@@ -67,7 +58,7 @@ SParameterCalculator::calculateIdealCouplerYMatrix(double k, double phase_deg,
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       I_minus_S[i][j] = I[i][j] - S[i][j];
-      I_plus_S[i][j]  = I[i][j] + S[i][j];
+      I_plus_S[i][j] = I[i][j] + S[i][j];
     }
   }
 
@@ -87,7 +78,7 @@ SParameterCalculator::calculateIdealCouplerYMatrix(double k, double phase_deg,
         Y[i][j] = G0 * sum;
       }
     }
-  } catch (const exception& e) {
+  } catch (const exception &e) {
     cerr << "Error calculating coupler Y-matrix: " << e.what() << endl;
     // Return zero matrix on error
     return createMatrix(4, 4);
@@ -97,15 +88,15 @@ SParameterCalculator::calculateIdealCouplerYMatrix(double k, double phase_deg,
 }
 
 void SParameterCalculator::addIdealCouplerToAdmittance(
-    vector<vector<Complex>>& Y, const Component_SPAR& comp) {
+    vector<vector<Complex>> &Y, const Component_SPAR &comp) {
   if (comp.nodes.size() != 4) {
     cerr << "Error: Ideal coupler must have exactly 4 nodes" << endl;
     return;
   }
 
-  double k         = comp.value["k"];         // Linear coupling coefficient
+  double k = comp.value["k"];                 // Linear coupling coefficient
   double phase_deg = comp.value["phase_deg"]; // Phase shift in degrees
-  double Z0        = comp.value["Z0"];        // Characteristic impedance
+  double Z0 = comp.value["Z0"];               // Characteristic impedance
 
   // Calculate the 4x4 Y-matrix for the ideal coupler
   vector<vector<Complex>> couplerY =

@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file Recombinant3WayWilkinson.cpp
+/// @brief Recombinant 3-way Wilkinson-type power combiner/divider network (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 7, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef RECOMBINANT3WAYWILKINSON_H
 #define RECOMBINANT3WAYWILKINSON_H
@@ -24,49 +14,62 @@
 #include "../TransmissionLineSynthesis/Microstrip.h"
 #include <QPen>
 
-/*
- * References:
- * [1] "Power combiners, impedance transformers and directional couplers: part
- * II". Andrei Grebennikov. High Frequency Electronics. 2008
- * [2] "A recombinant in-phase power divider", IEEE Trans. Microwave Theory
- * Tech., vol. MTT-39, Aug. 1991, pp. 1438-1440
- */
-
+/// @class Recombinant3WayWilkinson
+/// @brief Recombinant 3-way Wilkinson-type power combiner/divider network
+/// References:
+/// [1] "Power combiners, impedance transformers and directional couplers: part
+/// II". Andrei Grebennikov. High Frequency Electronics. 2008
+/// [2] "A recombinant in-phase power divider", IEEE Trans. Microwave Theory
+/// Tech., vol. MTT-39, Aug. 1991, pp. 1438-1440
 class Recombinant3WayWilkinson : public Network {
-public:
-  Recombinant3WayWilkinson();
-  virtual ~Recombinant3WayWilkinson();
-  Recombinant3WayWilkinson(PowerCombinerParams);
-  void synthesize();
+  public:
+    /// @brief Class constructor
+    Recombinant3WayWilkinson() {}
 
-private:
-  PowerCombinerParams Specification;
-  
-  double lambda4;
-  double Z1, Z2, Z3, Z4, Z5, Z6, R1, R2;
-  
-  void calculateParams();
-  void buildRecombinant3Way_IdealTL();
-  void buildRecombinant3Way_Microstrip();
+    /// @brief Constructor with power combiner parameters
+    /// @param params Power combiner specification parameters
+    Recombinant3WayWilkinson(PowerCombinerParams PS) {Specification = PS;}
 
-private:
-  // This function sets the component's location before the schematic is built
-  void setComponentsLocation();
+    /// @brief Class destructor
+    virtual ~Recombinant3WayWilkinson() {}
 
-  // General components spacing
-  int x_spacing, y_spacing;
+    /// @brief Synthesize the network
+    void synthesize();
 
-  // Ports
-  QVector<QPoint> Ports_pos;
+  private:
+    /// @brief Power combiner specifications
+    PowerCombinerParams Specification;
 
-  // Isolation resistors
-  QVector<QPoint> Riso_pos;
+    double lambda4; ///< Quarter wavelength
+    double Z1, Z2, Z3, Z4, Z5, Z6, R1, R2;
 
-  // Transmission lines
-  QVector<QPoint> TL_pos;
+    /// @brief Calculate electrical parameters
+    void calculateParams();
 
-  // Nodes
-  QVector<QPoint> N_pos;
+    /// @brief Build network using ideal transmission lines
+    void buildRecombinant3Way_IdealTL();
+
+    /// @brief Build network using microstrip transmission lines
+    void buildRecombinant3Way_Microstrip();
+
+    /// @brief Set component locations for schematic layout
+    void setComponentsLocation();
+
+    /// Component spacing parameters
+    int x_spacing;  ///< Horizontal spacing between components
+    int y_spacing;  ///< Vertical spacing between components
+
+    /// Ports
+    QVector<QPoint> Ports_pos;
+
+    /// Isolation resistors
+    QVector<QPoint> Riso_pos;
+
+    /// Transmission lines
+    QVector<QPoint> TL_pos;
+
+    /// Nodes
+    QVector<QPoint> N_pos;
 };
 
 #endif // RECOMBINANT3WAYWILKINSON_H

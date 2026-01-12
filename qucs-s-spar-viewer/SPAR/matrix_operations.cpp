@@ -1,28 +1,14 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file matrix_operations.cpp
+/// @brief Implementation of functions for matrix operations
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 3, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "SParameterCalculator.h"
 
-vector<vector<Complex>> SParameterCalculator::createMatrix(int rows, int cols) {
-  return vector<vector<Complex>>(rows, vector<Complex>(cols, Complex(0, 0)));
-}
-
 vector<vector<Complex>>
-SParameterCalculator::invertMatrix(const vector<vector<Complex>>& matrix) {
+SParameterCalculator::invertMatrix(const vector<vector<Complex>> &matrix) {
   int n = matrix.size();
   vector<vector<Complex>> augmented(n, vector<Complex>(2 * n, Complex(0, 0)));
 

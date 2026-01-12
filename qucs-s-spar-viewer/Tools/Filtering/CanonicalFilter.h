@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file CanonicalFilter.h
+/// @brief Synthesis of canonical filters (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 4, 2026
+/// @copyright Copyright (C) 2019-2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef CANONICALFILTER_H
 #define CANONICALFILTER_H
@@ -23,26 +13,56 @@
 #include "../TransmissionLineSynthesis/Microstrip.h"
 #include "LowpassPrototypeCoeffs.h"
 
+/// @class CanonicalFilter
+/// @brief Synthesizes classical ladder filter topologies from normalized prototypes
+///
+/// Converts lowpass prototypes (g-parameters) to complete filter implementations:
+/// - Lowpass: Direct synthesis with frequency/impedance scaling
+/// - Highpass: Lowpass-to-highpass transformation (L↔C)
+/// - Bandpass: Series/parallel resonator transformations
+/// - Bandstop: Dual resonator transformations
+///
+/// Supports lumped (LC) and semi-lumped (transmission line) realizations
 class CanonicalFilter : public Network {
 public:
-  CanonicalFilter();
-  virtual ~CanonicalFilter();
-  CanonicalFilter(FilterSpecifications);
+  /// @brief Default constructor
+  CanonicalFilter() {}
+
+  /// @brief Destructor
+  virtual ~CanonicalFilter() {}
+
+  /// @brief Constructor with filter specifications
+  /// @param specs Filter parameters (order, type, frequency, ripple, etc.)
+  CanonicalFilter(FilterSpecifications FS) {Specification = FS;}
+
+  /// @brief Performs complete filter synthesis from specifications
   void synthesize();
-  void setSemilumpedMode(bool);
+
+  /// @brief Enables semi-lumped implementation mode
+  /// @param mode true to use transmission line stubs for inductors/capacitors
+  void setSemilumpedMode(bool mode) { this->semilumped = mode; }
 
 private:
-  struct FilterSpecifications Specification;
-  bool semilumped = false; // Activate semilumped implementation mode
-
-  std::deque<double> gi;
+  struct FilterSpecifications Specification; ///< Design parameters
+  bool semilumped = false; ///< Enable transmission line stub replacement
+  std::deque<double> gi; ///< Normalized lowpass prototype element values
 
   //***********  Schematic synthesis ********************
-  void SynthesizeLPF();           // Lowpass
-  void SynthesizeSemilumpedLPF(); // Semilumped Lowpass implementation
-  void SynthesizeHPF();           // Highpass
-  void SynthesizeBPF();           // Bandpass
-  void SynthesizeBSF();           // Bandstop
+
+  /// @brief Synthesizes lowpass filter schematic
+  void SynthesizeLPF();
+
+  /// @brief Synthesizes semi-lumped lowpass filter (TLINs replace L/C)
+  void SynthesizeSemilumpedLPF();
+
+  /// @brief Synthesizes highpass filter schematic
+  void SynthesizeHPF();
+
+  /// @brief Synthesizes bandpass filter schematic
+  void SynthesizeBPF();
+
+  /// @brief Synthesizes bandstop filter schematic
+  void SynthesizeBSF();
 };
 
 #endif // CANONICALFILTER_H

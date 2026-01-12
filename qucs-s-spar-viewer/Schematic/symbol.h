@@ -28,21 +28,75 @@ QT_BEGIN_NAMESPACE
 class QGraphicsSceneMouseEvent;
 QT_END_NAMESPACE
 
+///
+/// @brief Abstract base class for schematic symbols
+///
 class Symbol : public QGraphicsObject {
 public:
-  Symbol(){};
 
+  ///
+  /// @brief Class constructor
+  ///
+  Symbol(){}
+
+  ///
+  /// @brief Add wire connection to symbol
+  /// @note No implementation provided as this is an abstract base class.
+  /// The implementation will be overriden in the classes inheriting Symbol
+  ///
   virtual void addWire(Wire* Wire)    = 0;
+
+  ///
+  /// @brief Get symbol bounding rectangle
+  /// @note No implementation provided as this is an abstract base class.
+  /// The implementation will be overriden in the classes inheriting Symbol
+  ///
   virtual QRectF boundingRect() const = 0;
+
+  ///
+  /// @brief Get symbol selection shape
+  /// @note No implementation provided as this is an abstract base class.
+  /// The implementation will be overriden in the classes inheriting Symbol
+  ///
   virtual QPainterPath shape() const  = 0;
+
+  ///
+  /// @brief Paint symbol on scene
+  /// @note No implementation provided as this is an abstract base class.
+  /// The implementation will be overriden in the classes inheriting Symbol
+  ///
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
                      QWidget* widget) = 0;
+
+  ///
+  /// @brief Get port location in symbol coordinates
+  /// @note No implementation provided as this is an abstract base class.
+  /// The implementation will be overriden in the classes inheriting Symbol
+  ///
   virtual QPoint getPortLocation(int) = 0;
 
 protected:
+
+  ///
+  /// @brief Handle item change events
+  /// @note No implementation provided as this is an abstract base class.
+  /// The implementation will be overriden in the classes inheriting Symbol
+  ///
   virtual QVariant itemChange(GraphicsItemChange change,
                               const QVariant& value)              = 0;
+
+  ///
+  /// @brief Handle mouse press events
+  /// @note No implementation provided as this is an abstract base class.
+  /// The implementation will be overriden in the classes inheriting Symbol
+  ///
   virtual void mousePressEvent(QGraphicsSceneMouseEvent* event)   = 0;
+
+  ///
+  /// @brief Handle mouse release events
+  /// @note No implementation provided as this is an abstract base class.
+  /// The implementation will be overriden in the classes inheriting Symbol
+  ///
   virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) = 0;
 };
 

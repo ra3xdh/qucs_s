@@ -1,87 +1,33 @@
-/****************************************************************************
-**
-** Copyright (C) 2015 The Qt Company Ltd.
-** Contact: http://www.qt.io/licensing/
-**
-** This file is part of the examples of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:BSD$
-** You may use this file under the terms of the BSD license as follows:
-**
-** "Redistribution and use in source and binary forms, with or without
-** modification, are permitted provided that the following conditions are
-** met:
-**   * Redistributions of source code must retain the above copyright
-**     notice, this list of conditions and the following disclaimer.
-**   * Redistributions in binary form must reproduce the above copyright
-**     notice, this list of conditions and the following disclaimer in
-**     the documentation and/or other materials provided with the
-**     distribution.
-**   * Neither the name of The Qt Company Ltd nor the names of its
-**     contributors may be used to endorse or promote products derived
-**     from this software without specific prior written permission.
-**
-**
-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
+/// @file graphwidget.cpp
+/// @brief Schematic editor graphics widget (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 3, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "graphwidget.h"
 
-//! [0]
-GraphWidget::GraphWidget(QWidget* parent) : QGraphicsView(parent), timerId(0) {
-  QGraphicsScene* scene = new QGraphicsScene(this);
+GraphWidget::GraphWidget(QWidget *parent) : QGraphicsView(parent), timerId(0) {
+  QGraphicsScene *scene = new QGraphicsScene(this);
   scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-  // scene->setSceneRect(-200, -200, 600, 300);
   setScene(scene);
   setCacheMode(CacheBackground);
   setViewportUpdateMode(BoundingRectViewportUpdate);
   setRenderHint(QPainter::Antialiasing);
   setTransformationAnchor(AnchorUnderMouse);
   setDragMode(QGraphicsView::ScrollHandDrag);
-  // scale(qreal(0.8), qreal(0.8));
   setWindowTitle(tr("Schematic"));
 }
 
-void GraphWidget::itemMoved() {
-  if (!timerId) {
-    timerId = startTimer(1000 / 25);
-  }
-}
-
-void GraphWidget::ComponentSelectionHandler(struct ComponentInfo CI) {
-  emit this->SendComponentSelectionToMainFunction(CI);
-}
-
-void GraphWidget::keyPressEvent(QKeyEvent* /*event*/) {}
-//! [3]
-
-//! [4]
-void GraphWidget::timerEvent(QTimerEvent* event) {
+void GraphWidget::timerEvent(QTimerEvent *event) {
   Q_UNUSED(event);
 
-  QList<Symbol*> nodes;
-  foreach (QGraphicsItem* item, scene()->items()) {
-    if (Symbol* node = qgraphicsitem_cast<Symbol*>(item)) {
+  QList<Symbol *> nodes;
+  foreach (QGraphicsItem *item, scene()->items()) {
+    if (Symbol *node = qgraphicsitem_cast<Symbol *>(item)) {
       nodes << node;
     }
   }
-}
-
-void GraphWidget::wheelEvent(QWheelEvent* event) {
-  scaleView(pow((double)2, -event->angleDelta().y() / 240.0));
 }
 
 void GraphWidget::scaleView(qreal scaleFactor) {
@@ -89,42 +35,32 @@ void GraphWidget::scaleView(qreal scaleFactor) {
                      .scale(scaleFactor, scaleFactor)
                      .mapRect(QRectF(0, 0, 1, 1))
                      .width();
-  if (factor < 0.07 || factor > 100) {
+  if ((factor < 0.07) || (factor > 100)) {
     return;
   }
 
   scale(scaleFactor, scaleFactor);
 }
-//! [7]
 
 void GraphWidget::shuffle() {
-  foreach (QGraphicsItem* item, scene()->items()) {
-    if (qgraphicsitem_cast<Node*>(item)) {
+  foreach (QGraphicsItem *item, scene()->items()) {
+    if (qgraphicsitem_cast<Node *>(item)) {
       item->setPos(-150 + QRandomGenerator::global()->bounded(300),
                    -150 + QRandomGenerator::global()->bounded(300));
     }
   }
 }
 
-void GraphWidget::zoomIn() {
-  scaleView(qreal(1.2));
-}
-
-void GraphWidget::zoomOut() {
-  scaleView(1 / qreal(1.2));
-}
-
-// This function sets the properties of the components such as position, type
-// and value
 void GraphWidget::setComponents(QList<ComponentInfo> cmps) {
   this->Components.clear();
   for (int i = 0; i < cmps.length(); i++) {
     struct ComponentInfo CI = cmps.at(i);
-    Component* comp         = new Component(this, CI);
+    Component *comp = new Component(this, CI);
     Components.push_back(comp);
     scene()->addItem(comp);
-    connect(comp, SIGNAL(DoubleClicked(struct ComponentInfo)), this,
-            SLOT(ComponentSelectionHandler(struct ComponentInfo)));
+    connect(comp, &Component::DoubleClicked, this,
+            &GraphWidget::ComponentSelectionHandler);
+
     //  qDebug() << "Component added to the scene: " << CI.ID << " at (" <<
     //  CI.Coordinates.at(0) << ", " << CI.Coordinates.at(1) << ")";
   }
@@ -139,69 +75,83 @@ void GraphWidget::ModifyComponent(ComponentInfo CI) {
   }
 }
 
-// This function sets the position and the connection properties of the wires
-void GraphWidget::setWires(QList<WireInfo> wrs) {
-  this->Wires.clear();
-  int origin, destination;
-  bool OriginIsNode, DestIsNode;
+void GraphWidget::setWires(const QList<WireInfo> &wrs) {
+  // Remove any previously stored wires
+  Wires.clear();
 
-  for (int i = 0; i < wrs.length(); i++) {
-    //************ Find origin ****************
-    // is Node or Component?
-    OriginIsNode = wrs.at(i).OriginID.at(0) == 'N';
-    for (int index = 0;
-         index < (OriginIsNode) ? Nodes.size() : Components.size(); index++) {
-      if (OriginIsNode) {
-        if (!Nodes.at(index)->getID().compare(wrs.at(i).OriginID)) {
-          origin = index;
-          break;
-        }
-      } else {
-        if (!Components.at(index)->getID().compare(wrs.at(i).OriginID)) {
-          origin = index;
-          break;
-        }
-      }
+  /*
+   * Helper lambda:
+   * Searches a container of Node* or Component* for an element
+   * whose ID matches the given string.
+   *    * @return index of the element if found, -1 otherwise
+   */
+  auto findIndexById = [](const auto &container, const QString &id) -> int {
+    for (std::size_t i = 0; i < container.size(); ++i) {
+      if (container.at(i)->getID() == id)
+        return i;
     }
-    // Find destination index
-    // is Node or Component?
-    DestIsNode = wrs.at(i).DestinationID.at(0) == 'N';
-    for (int index = 0; index < (DestIsNode) ? Nodes.size() : Components.size();
-         index++) {
+    return -1;
+  };
 
-      if (DestIsNode) {
-        if (!Nodes.at(index)->getID().compare(wrs.at(i).DestinationID)) {
-          destination = index;
-          break;
-        }
-      } else {
-        if (!Components.at(index)->getID().compare(wrs.at(i).DestinationID)) {
-          destination = index;
-          break;
-        }
-      }
+  // Iterate over all wire descriptions
+  for (const WireInfo &info : wrs) {
+
+    // Determine whether each endpoint refers to a Node or a Component
+    // Convention: IDs starting with 'N' represent Nodes
+    const bool originIsNode = info.OriginID.startsWith('N');
+    const bool destIsNode = info.DestinationID.startsWith('N');
+
+    // Locate origin index in the appropriate container
+    const int originIndex = originIsNode
+                                ? findIndexById(Nodes, info.OriginID)
+                                : findIndexById(Components, info.OriginID);
+
+    // Locate destination index in the appropriate container
+    const int destIndex = destIsNode
+                              ? findIndexById(Nodes, info.DestinationID)
+                              : findIndexById(Components, info.DestinationID);
+
+    // If either endpoint cannot be resolved, skip this wire
+    // and avoid using invalid indices
+    if (originIndex < 0 || destIndex < 0) {
+      qWarning() << "Wire skipped: invalid endpoint"
+                 << "origin =" << info.OriginID
+                 << "destination =" << info.DestinationID;
+      continue;
     }
 
-    Wire* w = new Wire();
-    w->setColor(wrs.at(i).WireColor);
-    OriginIsNode ? w->setSource(Nodes.at(origin), wrs.at(i).PortOrigin)
-                 : w->setSource(Components.at(origin), wrs.at(i).PortOrigin);
-    DestIsNode
-        ? w->setDestination(Nodes.at(destination), wrs.at(i).PortDestination)
-        : w->setDestination(Components.at(destination),
-                            wrs.at(i).PortDestination);
+    // Create and configure the wire graphics item
+    Wire *w = new Wire();
+    w->setColor(info.WireColor);
+
+    // Set the wire source endpoint (node or component)
+    if (originIsNode) {
+      w->setSource(Nodes.at(originIndex), info.PortOrigin);
+    } else {
+      w->setSource(Components.at(originIndex), info.PortOrigin);
+    }
+
+    // Set the wire destination endpoint (node or component)
+    if (destIsNode) {
+      w->setDestination(Nodes.at(destIndex), info.PortDestination);
+    } else {
+      w->setDestination(Components.at(destIndex), info.PortDestination);
+    }
+
+    // Store and display the wire
     Wires.push_back(w);
     scene()->addItem(w);
+
+    // Paint
     w->paintWire();
   }
 }
 
-// This functions sets the position of the wiring nodes
 void GraphWidget::setNodes(QList<NodeInfo> nds) {
   this->Nodes.clear();
   for (int i = 0; i < nds.length(); i++) {
     struct NodeInfo NI = nds.at(i);
-    Node* nd           = new Node(this, NI);
+    Node *nd = new Node(this, NI);
     Nodes.push_back(nd);
     scene()->addItem(nd);
     //  qDebug() << "Node added to the scene: " << NI.ID;
@@ -215,7 +165,6 @@ void GraphWidget::setSchematic(SchematicContent SchContent) {
   this->setTexts(SchContent.getTexts());
 }
 
-// Clear the scene
 void GraphWidget::clear() {
   while (!Components.empty()) {
     delete Components.front(), Components.pop_front(); // Remove components
@@ -231,10 +180,10 @@ void GraphWidget::clear() {
   }
 }
 
-void GraphWidget::setTexts(QList<QGraphicsTextItem*> texts) {
+void GraphWidget::setTexts(QList<QGraphicsTextItem *> texts) {
   this->Texts.clear();
   for (int i = 0; i < texts.length(); i++) {
-    QGraphicsTextItem* TI = texts.at(i);
+    QGraphicsTextItem *TI = texts.at(i);
     Texts.push_back(TI);
     scene()->addItem(TI);
   }

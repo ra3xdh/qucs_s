@@ -1,19 +1,10 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file PowerCombiningTool.cpp
+/// @brief Widget for power combining network design and synthesis
+/// (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 7, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "PowerCombiningTool.h"
 
@@ -181,30 +172,38 @@ PowerCombiningTool::PowerCombiningTool(QWidget *parent) : QWidget(parent) {
 
   // Make connection between widgets and handler functions to update the design
   // in real time
-  connect(TL_Implementation_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(BranchesCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(RefImpSpinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(FreqSpinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(FreqScaleCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(K1Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(K2Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(K2Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(NStagesSpinbox, SIGNAL(valueChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(AlphaSpinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(UnitsCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(TopoCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(on_TopoCombo_currentIndexChanged(int)));
+  connect(TL_Implementation_Combo, &QComboBox::currentIndexChanged, this,
+          [this](int) { UpdateDesignParameters(); });
+
+  connect(BranchesCombo, &QComboBox::currentIndexChanged, this,
+          [this](int) { UpdateDesignParameters(); });
+
+  connect(RefImpSpinbox, &QDoubleSpinBox::valueChanged, this,
+          [this](double) { UpdateDesignParameters(); });
+
+  connect(FreqSpinbox, &QDoubleSpinBox::valueChanged, this,
+          [this](double) { UpdateDesignParameters(); });
+
+  connect(FreqScaleCombo, &QComboBox::currentIndexChanged, this,
+          [this](int) { UpdateDesignParameters(); });
+
+  connect(K1Spinbox, &QDoubleSpinBox::valueChanged, this,
+          [this](double) { UpdateDesignParameters(); });
+
+  connect(K2Spinbox, &QDoubleSpinBox::valueChanged, this,
+          [this](double) { UpdateDesignParameters(); });
+
+  connect(NStagesSpinbox, &QSpinBox::valueChanged, this,
+          [this](int) { UpdateDesignParameters(); });
+
+  connect(AlphaSpinbox, &QDoubleSpinBox::valueChanged, this,
+          [this](double) { UpdateDesignParameters(); });
+
+  connect(UnitsCombo, &QComboBox::currentIndexChanged, this,
+          [this](int) { UpdateDesignParameters(); });
+
+  connect(TopoCombo, &QComboBox::currentIndexChanged, this,
+          &PowerCombiningTool::on_TopoCombo_currentIndexChanged);
 
   Bagley_Validator = new BagleyValidator(this);
 }
@@ -800,8 +799,3 @@ void PowerCombiningTool::setDefaultSettings() {
   BranchesCombo->setValidator(NULL);
   BranchesCombo->blockSignals(false);
 }
-
-// The purpose of this function is to trigger a design from the main application
-void PowerCombiningTool::design() { UpdateDesignParameters(); }
-
-SchematicContent PowerCombiningTool::getSchematic() { return SchContent; }

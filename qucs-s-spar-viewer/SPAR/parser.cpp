@@ -1,24 +1,11 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file parser.cpp
+/// @brief Implementation of the netlist parsing functions
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 3, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "SParameterCalculator.h"
-
-// Being the netlist save in currentNetlist, this function reads the netlist
-// line by line and add each component
 
 bool SParameterCalculator::parseNetlist() {
   if (currentNetlist.isEmpty()) {
@@ -32,7 +19,7 @@ bool SParameterCalculator::parseNetlist() {
   // Split netlist into lines
   QStringList lines = currentNetlist.split('\n', Qt::SkipEmptyParts);
 
-  for (const QString& line : qAsConst(lines)) {
+  for (const QString &line : std::as_const(lines)) {
     QString trimmedLine = line.trimmed();
 
     // Skip comments and empty lines
@@ -62,25 +49,25 @@ bool SParameterCalculator::parseNetlist() {
 
     if (type == QString("R") && parts.size() >= 4) {
       // Resistor: R1 node1 node2 value
-      int node1  = parts[1].toInt();
-      int node2  = parts[2].toInt();
-      double R   = parseScaledValue(parts[3]);
+      int node1 = parts[1].toInt();
+      int node2 = parts[2].toInt();
+      double R = parseScaledValue(parts[3]);
       value["R"] = R;
       addComponent(ComponentType_SPAR::RESISTOR, name.toStdString(),
                    {node1, node2}, value);
     } else if (type == QString("C") && parts.size() >= 4) {
       // Capacitor: C1 node1 node2 value
-      int node1  = parts[1].toInt();
-      int node2  = parts[2].toInt();
-      double C   = parseScaledValue(parts[3]);
+      int node1 = parts[1].toInt();
+      int node2 = parts[2].toInt();
+      double C = parseScaledValue(parts[3]);
       value["C"] = C;
       addComponent(ComponentType_SPAR::CAPACITOR, name.toStdString(),
                    {node1, node2}, value);
     } else if (type == QString("L") && parts.size() >= 4) {
       // Inductor: L1 node1 node2 value
-      int node1  = parts[1].toInt();
-      int node2  = parts[2].toInt();
-      double L   = parseScaledValue(parts[3]);
+      int node1 = parts[1].toInt();
+      int node2 = parts[2].toInt();
+      double L = parseScaledValue(parts[3]);
       value["L"] = L;
       addComponent(ComponentType_SPAR::INDUCTOR, name.toStdString(),
                    {node1, node2}, value);
@@ -90,8 +77,8 @@ bool SParameterCalculator::parseNetlist() {
              << line.toStdString() << endl;
         continue;
       }
-      int node1    = parts[1].toInt();
-      int node2    = parts[2].toInt();
+      int node1 = parts[1].toInt();
+      int node2 = parts[2].toInt();
       QString zStr = parts[3];
 
       // Parse format "R±jX"
@@ -128,11 +115,11 @@ bool SParameterCalculator::parseNetlist() {
                 (type == QString("SSTUB"))) &&
                parts.size() >= 5) {
       // Transmission Line: TLIN node1 node2 impedance length
-      int node1       = parts[1].toInt();
-      int node2       = parts[2].toInt();
-      double Z0       = parseScaledValue(parts[3]);
-      double Length   = parseScaledValue(parts[4], QString("Length"));
-      value["Z0"]     = Z0;
+      int node1 = parts[1].toInt();
+      int node2 = parts[2].toInt();
+      double Z0 = parseScaledValue(parts[3]);
+      double Length = parseScaledValue(parts[4], QString("Length"));
+      value["Z0"] = Z0;
       value["Length"] = Length; // Store the properly parsed length
 
       if (node1 > numNodes) {
@@ -160,23 +147,23 @@ bool SParameterCalculator::parseNetlist() {
       int node1 = parts[1].toInt();
       int node2 = parts[2].toInt();
 
-      double Width  = parseScaledValue(parts[3], QString("Length"));
+      double Width = parseScaledValue(parts[3], QString("Length"));
       double Length = parseScaledValue(parts[4], QString("Length"));
-      double er     = parseScaledValue(
+      double er = parseScaledValue(
           parts[5]); // Dielectric permittivity of the substrate
-      double h    = parseScaledValue(parts[6]); // substrate height
+      double h = parseScaledValue(parts[6]);    // substrate height
       double cond = parseScaledValue(parts[7]); // Metal conductivity
-      double th   = parseScaledValue(parts[8]); // Metal thickness
+      double th = parseScaledValue(parts[8]);   // Metal thickness
       double tand = parseScaledValue(
           parts[9]); // Dissipation factor of the substrate material
 
-      value["Width"]  = Width;
+      value["Width"] = Width;
       value["Length"] = Length;
-      value["er"]     = er;
-      value["h"]      = h;
-      value["cond"]   = cond;
-      value["th"]     = th;
-      value["tand"]   = tand;
+      value["er"] = er;
+      value["h"] = h;
+      value["cond"] = cond;
+      value["th"] = th;
+      value["tand"] = tand;
 
       addComponent(ComponentType_SPAR::MICROSTRIP_LINE, name.toStdString(),
                    {node1, node2}, value);
@@ -189,24 +176,24 @@ bool SParameterCalculator::parseNetlist() {
       int node3 = parts[3].toInt();
       int node4 = parts[4].toInt();
 
-      double W  = parseScaledValue(parts[5], QString("Length"));
-      double L  = parseScaledValue(parts[6], QString("Length"));
-      double S  = parseScaledValue(parts[7], QString("Length"));
+      double W = parseScaledValue(parts[5], QString("Length"));
+      double L = parseScaledValue(parts[6], QString("Length"));
+      double S = parseScaledValue(parts[7], QString("Length"));
       double er = parseScaledValue(
           parts[8]); // Dielectric permittivity of the substrate
-      double h    = parseScaledValue(parts[9]);  // substrate height
+      double h = parseScaledValue(parts[9]);     // substrate height
       double cond = parseScaledValue(parts[10]); // Metal conductivity
-      double th   = parseScaledValue(parts[11]); // Metal thickness
+      double th = parseScaledValue(parts[11]);   // Metal thickness
       double tand = parseScaledValue(
           parts[12]); // Dissipation factor of the substrate material
 
-      value["W"]    = W;
-      value["L"]    = L;
-      value["S"]    = S;
-      value["er"]   = er;
-      value["h"]    = h;
+      value["W"] = W;
+      value["L"] = L;
+      value["S"] = S;
+      value["er"] = er;
+      value["h"] = h;
       value["cond"] = cond;
-      value["th"]   = th;
+      value["th"] = th;
       value["tand"] = tand;
 
       addComponent(ComponentType_SPAR::MICROSTRIP_COUPLED_LINES,
@@ -221,18 +208,18 @@ bool SParameterCalculator::parseNetlist() {
       double W2 = parseScaledValue(parts[4], QString("Length"));
       double er = parseScaledValue(
           parts[5]); // Dielectric permittivity of the substrate
-      double h    = parseScaledValue(parts[6]); // substrate height
+      double h = parseScaledValue(parts[6]);    // substrate height
       double cond = parseScaledValue(parts[7]); // Metal conductivity
-      double th   = parseScaledValue(parts[8]); // Metal thickness
+      double th = parseScaledValue(parts[8]);   // Metal thickness
       double tand = parseScaledValue(
           parts[9]); // Dissipation factor of the substrate material
 
-      value["W1"]   = W1;
-      value["W2"]   = W2;
-      value["er"]   = er;
-      value["h"]    = h;
+      value["W1"] = W1;
+      value["W2"] = W2;
+      value["er"] = er;
+      value["h"] = h;
       value["cond"] = cond;
-      value["th"]   = th;
+      value["th"] = th;
       value["tand"] = tand;
 
       addComponent(ComponentType_SPAR::MICROSTRIP_STEP, name.toStdString(),
@@ -243,20 +230,20 @@ bool SParameterCalculator::parseNetlist() {
       // width er h cond th tand
       int node1 = parts[1].toInt();
 
-      double W  = parseScaledValue(parts[2], QString("Length"));
+      double W = parseScaledValue(parts[2], QString("Length"));
       double er = parseScaledValue(
           parts[3]); // Dielectric permittivity of the substrate
-      double h    = parseScaledValue(parts[4]); // substrate height
+      double h = parseScaledValue(parts[4]);    // substrate height
       double cond = parseScaledValue(parts[4]); // Metal conductivity
-      double th   = parseScaledValue(parts[6]); // Metal thickness
+      double th = parseScaledValue(parts[6]);   // Metal thickness
       double tand = parseScaledValue(
           parts[7]); // Dissipation factor of the substrate material
 
-      value["W"]    = W;
-      value["er"]   = er;
-      value["h"]    = h;
+      value["W"] = W;
+      value["er"] = er;
+      value["h"] = h;
       value["cond"] = cond;
-      value["th"]   = th;
+      value["th"] = th;
       value["tand"] = tand;
 
       addComponent(ComponentType_SPAR::MICROSTRIP_OPEN, name.toStdString(),
@@ -266,22 +253,22 @@ bool SParameterCalculator::parseNetlist() {
       // Microstrip Transmission Line model: MSVIA node1 diameter er h cond th
       // tand
       int node1 = parts[1].toInt();
-      double D  = parseScaledValue(parts[2], QString("Length")); // Via diameter
-      int N     = parts[3].toInt(); // Number of vias in parallel
+      double D = parseScaledValue(parts[2], QString("Length")); // Via diameter
+      int N = parts[3].toInt(); // Number of vias in parallel
       double er = parseScaledValue(
           parts[4]); // Dielectric permittivity of the substrate
-      double h    = parseScaledValue(parts[5]); // substrate height
+      double h = parseScaledValue(parts[5]);    // substrate height
       double cond = parseScaledValue(parts[6]); // Metal conductivity
-      double th   = parseScaledValue(parts[7]); // Metal thickness
+      double th = parseScaledValue(parts[7]);   // Metal thickness
       double tand = parseScaledValue(
           parts[8]); // Dissipation factor of the substrate material
 
-      value["D"]    = D;
-      value["N"]    = N;
-      value["er"]   = er;
-      value["h"]    = h;
+      value["D"] = D;
+      value["N"] = N;
+      value["er"] = er;
+      value["h"] = h;
       value["cond"] = cond;
-      value["th"]   = th;
+      value["th"] = th;
       value["tand"] = tand;
 
       addComponent(ComponentType_SPAR::MICROSTRIP_VIA, name.toStdString(),
@@ -289,16 +276,16 @@ bool SParameterCalculator::parseNetlist() {
 
     } else if ((type == QString("CLIN")) && (parts.size() >= 7)) {
       // Coupled Line: CLIN1 node1 node2 node3 node4 Z0e Z0o length
-      int node1     = parts[1].toInt();
-      int node2     = parts[2].toInt();
-      int node3     = parts[3].toInt();
-      int node4     = parts[4].toInt();
-      double Z0e    = parseScaledValue(parts[5]);
-      double Z0o    = parseScaledValue(parts[6]);
+      int node1 = parts[1].toInt();
+      int node2 = parts[2].toInt();
+      int node3 = parts[3].toInt();
+      int node4 = parts[4].toInt();
+      double Z0e = parseScaledValue(parts[5]);
+      double Z0o = parseScaledValue(parts[6]);
       double Length = parseScaledValue(parts[7], QString("Length"));
 
-      value["Z0e"]    = Z0e;
-      value["Z0o"]    = Z0o;
+      value["Z0e"] = Z0e;
+      value["Z0o"] = Z0o;
       value["Length"] = Length; // Store the properly parsed length
 
       // Rest remains the same...
@@ -320,14 +307,14 @@ bool SParameterCalculator::parseNetlist() {
       double coupling_coeff =
           parseScaledValue(parts[5]); // Linear coupling coefficient k
       double phase_deg = parseScaledValue(parts[6]); // Phase shift in degrees
-      double Z0        = 50.0;                       // Default impedance
+      double Z0 = 50.0;                              // Default impedance
       if (parts.size() >= 8) {
         Z0 = parseScaledValue(parts[7]);
       }
 
-      value["k"]         = coupling_coeff; // Store as linear coefficient
-      value["phase_deg"] = phase_deg;      // Store phase in degrees
-      value["Z0"]        = Z0;
+      value["k"] = coupling_coeff;    // Store as linear coefficient
+      value["phase_deg"] = phase_deg; // Store phase in degrees
+      value["Z0"] = Z0;
 
       // Update numNodes
       for (int node : {node1, node2, node3, node4}) {
@@ -339,7 +326,7 @@ bool SParameterCalculator::parseNetlist() {
                    {node1, node2, node3, node4}, value);
     } else if (type == QString("P") && parts.size() >= 2) {
       // Port: P1 node [impedance]
-      int node         = parts[1].toInt();
+      int node = parts[1].toInt();
       double impedance = 50.0; // Default impedance
       if (parts.size() >= 3) {
         impedance = parseScaledValue(parts[2]);

@@ -1,30 +1,12 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file Wilkinson3way_ImprovedIsolation.cpp
+/// @brief 3-way Wilkinson with improved isolation network (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 7, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-laterng with this program.  If not, see
+/// <https://www.gnu.org/licenses/>.
 
 #include "Wilkinson3way_ImprovedIsolation.h"
-
-Wilkinson3Way_ImprovedIsolation::Wilkinson3Way_ImprovedIsolation() {}
-
-Wilkinson3Way_ImprovedIsolation::Wilkinson3Way_ImprovedIsolation(
-    PowerCombinerParams PS) {
-  Specification = PS;
-}
-
-Wilkinson3Way_ImprovedIsolation::~Wilkinson3Way_ImprovedIsolation() {}
 
 void Wilkinson3Way_ImprovedIsolation::calculateParams() {
   Z1 = 2.28 * Specification.Z0;

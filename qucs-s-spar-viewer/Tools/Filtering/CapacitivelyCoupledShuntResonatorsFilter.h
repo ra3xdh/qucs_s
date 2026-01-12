@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file CapacitivelyCoupledShuntResonatorsFilter.h
+/// @brief Synthesis of capacitive-coupled shunt resonantors bandpass filters (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 5, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef CAPACITIVELYCOUPLEDSHUNTRESONATORS_H
 #define CAPACITIVELYCOUPLEDSHUNTRESONATORS_H
@@ -23,17 +13,43 @@
 #include "../TransmissionLineSynthesis/Microstrip.h"
 #include "LowpassPrototypeCoeffs.h"
 
+
+/// @class CapacitivelyCoupledShuntResonatorsFilter
+/// @brief Implements an end-coupled resonator bandpass filter.
+/// This class synthesizes bandpass filters using end-coupled resonator topology,
+/// where resonators are coupled through series capacitors at their ends.
+/// Reference: Microwave Engineering. David M. Pozar. 4th Edition.
+/// 2012. John Wiley and Sons.Page 443-448.
+/// @note Supports:
+///   - Ideal transmission lines
+///   - Microstrip transmission lines
 class CapacitivelyCoupledShuntResonatorsFilter : public Network {
 public:
-  CapacitivelyCoupledShuntResonatorsFilter();
-  virtual ~CapacitivelyCoupledShuntResonatorsFilter();
-  CapacitivelyCoupledShuntResonatorsFilter(FilterSpecifications);
+  /// @brief Default constructor.
+  CapacitivelyCoupledShuntResonatorsFilter() {}
+
+  /// @brief Virtual destructor.
+  virtual ~CapacitivelyCoupledShuntResonatorsFilter() {}
+
+  /// @brief Constructor with filter specifications.
+  /// @param FS Filter specifications including order, bandwidth, center frequency,
+  ///           impedance, and transmission line implementation type.
+  CapacitivelyCoupledShuntResonatorsFilter(FilterSpecifications FS) {Specification = FS;}
+
+  /// @brief Synthesizes the filter based on the provided specifications.
   void synthesize();
 
 private:
+
+  /// @brief Filter specifications structure containing all design parameters.
   struct FilterSpecifications Specification;
 
+  /// @brief Builds the filter using ideal coupled transmission lines.
+  /// @param gi Lowpass prototype element values (g-parameters).
   void buildFilter_IdealTL(const std::deque<double>& gi);
+
+  /// @brief Builds the filter using microstrip coupled transmission lines.
+  /// @param gi Lowpass prototype element values (g-parameters).
   void buildFilter_Microstrip(const std::deque<double>& gi);
 };
 

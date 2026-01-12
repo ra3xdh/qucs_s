@@ -22,21 +22,36 @@
 
 class SchematicContent;
 
+///
+/// Abstract base class for exporting schematics
+///
 class SchematicExporter {
 public:
-    virtual ~SchematicExporter() = default;
-    virtual QString exportSchematic() = 0;
+  ///
+  /// @brief Class destructor
+  ///
+  virtual ~SchematicExporter() = default;
+
+  ///
+  /// @brief Export function
+  /// \note The implementation will be provided in the classes inheriting this base class
+  ///
+  virtual QString exportSchematic() = 0;
 
 protected:
     // Scaling factor wrt the tool's schematic viewer
-    int scale_x;
-    int scale_y;
+    int scale_x; ///< x-axis scale factor
+    int scale_y; ///< y-axis scale factor
 
     // Offset, introduced for parsing some components
-    int x_offset;
-    int y_offset;
+    int x_offset; ///< x-axis offset
+    int y_offset; ///< y-axis offset
 
-    // Map relating each component ID with a list which contains the position of all its pins
+    ///
+    /// @brief Maps component identifiers to their pin position lists
+    /// @details Each component ID (QString) maps to a QList of QPoint objects
+    ///          representing the coordinates of all pins for that component.
+    ///
     QMap<QString, QList<QPoint>> ComponentPinMap;
 };
 

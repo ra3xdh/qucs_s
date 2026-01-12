@@ -1,19 +1,9 @@
-/*
- *  Copyright (C) 2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file Lim_Eom.h
+/// @brief Lim-Eom power combiner/divider network (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 7, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #ifndef LIM_EOM_H
 #define LIM_EOM_H
@@ -24,50 +14,67 @@
 #include "../TransmissionLineSynthesis/Microstrip.h"
 #include <QPen>
 
-/*
- * References:
- * [1] "Power combiners, impedance transformers and directional couplers: part
- * II". Andrei Grebennikov. High Frequency Electronics. 2008
- * [2] "A New 3-Way Power Divider with Various Output Power Ratios," J.-S. Lim
- * and S.-Y. Eom, 1996 IEEE MTT-S Int. Microwave Symp. Dig., pp. 785-788."
- */
-
+/// @class Lim_Eom
+/// @brief Lim-Eom power combiner/divider network
+/// References:
+/// [1] "Power combiners, impedance transformers and directional couplers: part II".
+/// Andrei Grebennikov. High Frequency Electronics. 2008
+/// [2] "A New 3-Way Power Divider with Various Output Power Ratios," J.-S. Lim
+/// and S.-Y. Eom, 1996 IEEE MTT-S Int. Microwave Symp. Dig., pp. 785-788."
 class Lim_Eom : public Network {
-public:
-  Lim_Eom();
-  virtual ~Lim_Eom();
-  Lim_Eom(PowerCombinerParams);
-  void synthesize();
+  public:
+    /// @brief Default constructor
+    Lim_Eom() {}
 
-private:
-  PowerCombinerParams Specification;
-  
-  double lambda4;
-  double Z1, Z2, Z3, Z4, Z5;
-  
-  void calculateParams();
-  void buildLimEom_IdealTL();
-  void buildLimEom_Microstrip();
+    /// @brief Constructor with power combiner parameters
+    /// @param params Power combiner specification parameters
+    Lim_Eom(PowerCombinerParams PS) { Specification = PS; }
 
-private:
-  // This function sets the component's location before the schematic is built
-  void setComponentsLocation();
+    /// @brief Class destructor
+    virtual ~Lim_Eom() {}
 
-         // Private variables for components location
-  int x_spacing, y_spacing; // General components spacing
+    /// @brief Synthesize the Bagley network
+    void synthesize();
 
-         // Ports
-  QVector<QPoint> Ports_pos;
+  private:
+    /// @brief Power combiner specifications
+    PowerCombinerParams Specification;
 
-         // Isolation resistor
-  QVector<QPoint> Riso_pos;
-  QVector<QPoint> GND_Riso_pos;
+    double lambda4;  ///< Quarter wavelength at design frequency
+    double Z1;
+    double Z2;
+    double Z3;
+    double Z4;
+    double Z5;
 
-         // Transmission lines
-  QVector<QPoint> TL_pos;
+    /// @brief Calculate electrical parameters
+    void calculateParams();
 
-         // Nodes
-  QVector<QPoint> N_pos;
+    /// @brief Build Lim-Eom network using ideal transmission lines
+    void buildLimEom_IdealTL();
+
+    /// @brief Build Lim-Eom network using microstrip transmission lines
+    void buildLimEom_Microstrip();
+
+    /// @brief Set component locations for schematic layout
+    void setComponentsLocation();
+
+    /// Component spacing parameters
+    int x_spacing;  ///< Horizontal spacing between components
+    int y_spacing;  ///< Vertical spacing between components
+
+    /// Port locations
+    QVector<QPoint> Ports_pos;
+
+    /// Isolation resistor
+    QVector<QPoint> Riso_pos;
+    QVector<QPoint> GND_Riso_pos;
+
+    /// Transmission line positions
+    QVector<QPoint> TL_pos;
+
+    /// Nodes positions
+    QVector<QPoint> N_pos;
 };
 
 #endif // LIM_EOM_H

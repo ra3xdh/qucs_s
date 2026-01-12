@@ -1,3 +1,10 @@
+/// @file parseResistor_QucsS.cpp
+/// @brief Converts a resistor component to Qucs-S format
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 4, 2026
+/// @copyright Copyright (C) 2026 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
+
 #include "./../QucsS/QucsSExporter.h"
 
 QString QucsSExporter::parseResistor_QucsS(ComponentInfo Comp) {

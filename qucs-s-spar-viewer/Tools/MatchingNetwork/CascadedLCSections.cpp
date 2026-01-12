@@ -1,34 +1,11 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file CascadedLCSections.cpp
+/// @brief Cascaded L-section matching network synthesis (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 6, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "CascadedLCSections.h"
-
-CascadedLCSections::CascadedLCSections() {
-  NumberOfSections = 3; // Default number of sections
-}
-
-CascadedLCSections::CascadedLCSections(MatchingNetworkDesignParameters AS,
-                                       double freq) {
-  Specs            = AS;
-  NumberOfSections = 3; // Default, should be configurable
-  f_match          = freq;
-}
-
-CascadedLCSections::~CascadedLCSections() {}
 
 // Reference: Inder J. Bahl. "Fundamentals of RF and microwave transistor
 // amplifiers". John Wiley and Sons. 2009. Pages 169 - 170
@@ -44,7 +21,6 @@ void CascadedLCSections::synthesize() {
 }
 
 void CascadedLCSections::CreateHighpassSolution() {
-
   // Port 1
   ComponentInfo TermSpar1(
       QString("T%1").arg(++Schematic.NumberComponents[Term]), Term, 0, 0, 0);
@@ -55,7 +31,7 @@ void CascadedLCSections::CreateHighpassSolution() {
   double Z0 = Specs.Z0;
   double RL = Specs.ZL.real();
   double RS = Z0;
-  double w  = 2 * M_PI * f_match;
+  double w = 2 * M_PI * f_match;
 
   // Check if load has resistive part
   if (RL == 0) {
@@ -84,7 +60,7 @@ void CascadedLCSections::CreateHighpassSolution() {
   ComponentInfo Lshunt, Cseries, gnd;
   NodeInfo node;
 
-  int x_pos     = 50; // Starting x position
+  int x_pos = 50;     // Starting x position
   int x_spacing = 80; // Spacing between sections
 
   QString previous_node;
@@ -218,7 +194,7 @@ void CascadedLCSections::CreateLowpassSolution() {
   double Z0 = Specs.Z0;
   double RL = Specs.ZL.real();
   double RS = Z0;
-  double w  = 2 * M_PI * f_match;
+  double w = 2 * M_PI * f_match;
 
   // Check if load has resistive part
   if (RL == 0) {
@@ -247,7 +223,7 @@ void CascadedLCSections::CreateLowpassSolution() {
   ComponentInfo Cshunt, Lseries, gnd;
   NodeInfo node;
 
-  int x_pos     = 50; // Starting x position
+  int x_pos = 50;     // Starting x position
   int x_spacing = 80; // Spacing between sections
 
   QString previous_node;

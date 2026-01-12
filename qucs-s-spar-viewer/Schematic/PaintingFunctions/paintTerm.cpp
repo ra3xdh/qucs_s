@@ -17,7 +17,11 @@
 
 #include "./../component.h"
 
-void Component::paintTerm(QPainter* painter) {
+///
+/// @brief Port terminal painting method
+/// \param painter Painter object
+///
+void Component::paintTerm(QPainter *painter) {
   if (Rotation != 0) {
     painter->rotate(Rotation);
   }

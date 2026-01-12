@@ -4,7 +4,7 @@ cmake_policy(VERSION 3.10)
 
 SET(QUCS_NAME "qucs-s")
 
-# use top VERSION file
+#use top VERSION file
 file (STRINGS ${PROJECT_SOURCE_DIR}/../VERSION QUCS_VERSION)
 
 if(DEFINED CI_VERSION)
@@ -24,7 +24,7 @@ set(PROJECT_DOMAIN_SECOND "org")
 add_compile_definitions(HAVE_CONFIG_H)
 SET(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# configure the header config.h
+#configure the header config.h
 CONFIGURE_FILE (
     "${PROJECT_SOURCE_DIR}/../config.h.cmake"
     "${PROJECT_BINARY_DIR}/config.h"
@@ -103,14 +103,6 @@ file(GLOB QCUSTOMPLOT_HEADER
      PlotWidgets/QCustomPlot/qcustomplot.h
 )
 
-file(GLOB CUSTOM_WIDGETS_SOURCES
-     CustomWidgets/*.cpp
-)
-
-file(GLOB CUSTOM_WIDGETS_HEADERS
-     CustomWidgets/*.h
-)
-
 file(GLOB SCHEMATIC_SOURCES
      Schematic/*.cpp
      Schematic/Export/*.cpp
@@ -149,10 +141,12 @@ file(GLOB SPAR_SPECIAL_COMPONENTS
 
 file(GLOB UI_SOURCES
      UI/*.cpp
+     UI/CustomWidgets/*.cpp
 )
 
 file(GLOB UI_HEADERS
      UI/*.h
+     UI/CustomWidgets/*.h
 )
 
 ## TOOLS

@@ -1,19 +1,10 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file Wilkinson2Way.h
+/// @brief Wilkinson power combiner/divider network (definition)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 7, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-laterng with this program.  If not, see
+/// <https://www.gnu.org/licenses/>.
 
 #ifndef WILKINSON2WAY_H
 #define WILKINSON2WAY_H
@@ -24,45 +15,61 @@
 #include "../TransmissionLineSynthesis/Microstrip.h"
 #include <QPen>
 
+/// @class Wilkinson2Way
+/// @brief Wilkinson power combiner/divider network
 class Wilkinson2Way : public Network {
     public:
-        Wilkinson2Way();
-        virtual ~Wilkinson2Way();
-        Wilkinson2Way(PowerCombinerParams);
-        void synthesize();
+      /// @brief Class constructor
+      Wilkinson2Way() {}
+
+      /// @brief Constructor with power combiner parameters
+      /// @param params Power combiner specification parameters
+      Wilkinson2Way(PowerCombinerParams PS) { Specification = PS; }
+
+      /// @brief Class destructor
+      virtual ~Wilkinson2Way() {}
+
+      /// @brief Synthesize the Wilkinson network
+      void synthesize();
 
     private:
-        PowerCombinerParams Specification;
+      /// @brief Power combiner specifications
+      PowerCombinerParams Specification;
 
-        double Z2, Z3, R, R2, R3;
+      double Z2, Z3, R, R2, R3;
 
-        void calculateParams();
-        void buildWilkinson_LumpedLC();
-        void buildWilkinson_IdealTL();
-        void buildWilkinson_Microstrip();
+      /// @brief Calculate electrical parameters
+      void calculateParams();
 
-    private:
+      /// @brief Set component locations for schematic layout
+      void setComponentsLocation();
 
-        // This function sets the component's location before the schematic is built
-        void setComponentsLocation();
+      /// @brief Build Wilkinson using lumped element transmission lines
+      void buildWilkinson_LumpedLC();
 
-        // Private variables for components location
-        int x_spacing, y_spacing; // General components spacing
+      /// @brief Build Wilkinson network using ideal transmission lines
+      void buildWilkinson_IdealTL();
 
-        // Ports
-        QPoint Port_in;
-        QPoint Port_out1, Port_out2;
+      /// @brief Build Wilkinson network using microstrip transmission lines
+      void buildWilkinson_Microstrip();
 
-        // Isolation resistor
-        QPoint Riso_pos;
-        QPoint GND_Riso_pos;
+      /// Component spacing parameters
+      int x_spacing;  ///< Horizontal spacing between components
+      int y_spacing;  ///< Vertical spacing between components
 
-        // Transmission lines
-        QPoint TL1_pos, TL2_pos, TL3_pos, TL4_pos, TL5_pos;
+      /// Ports
+      QPoint Port_in;
+      QPoint Port_out1, Port_out2;
 
-        // Nodes
-        QPoint N1_pos, N2_pos, N3_pos, N4_pos, N5_pos;
+      /// Isolation resistor
+      QPoint Riso_pos;
+      QPoint GND_Riso_pos;
 
+      /// Transmission lines
+      QPoint TL1_pos, TL2_pos, TL3_pos, TL4_pos, TL5_pos;
+
+      /// Nodes
+      QPoint N1_pos, N2_pos, N3_pos, N4_pos, N5_pos;
 };
 
 #endif // WILKINSON2WAY_H

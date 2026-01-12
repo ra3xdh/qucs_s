@@ -1,19 +1,10 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file FilterDesignTool.cpp
+/// @brief GUI and control logic for RF filter design and synthesis
+/// (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 4, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "FilterDesignTool.h"
 
@@ -86,8 +77,8 @@ FilterDesignTool::FilterDesignTool(QWidget *parent) : QWidget(parent) {
   ResonatorValuesButton_DC
       ->hide(); // Initially hidden. Direct coupled filters only
   FilterDesignLayout->addWidget(ResonatorValuesButton_DC, layout_row, 2);
-  connect(ResonatorValuesButton_DC, SIGNAL(clicked()), this,
-          SLOT(openResonatorValuesDialog()));
+  connect(ResonatorValuesButton_DC, &QPushButton::clicked, this,
+          &FilterDesignTool::openResonatorValuesDialog);
 
   //************ Filter class ****************
   layout_row++;
@@ -267,46 +258,62 @@ FilterDesignTool::FilterDesignTool(QWidget *parent) : QWidget(parent) {
 
   // Connection functions for updating the network requirements and simulate in
   // real time
-  connect(FilterImplementationCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(ImplementationComboChanged(int)));
-  connect(TopologyCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(TL_Implementation_Combo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(FilterResponseTypeCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(ResposeComboChanged()));
-  connect(EllipticType, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(EllipticTypeChanged()));
-  connect(FilterClassCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(OrderSpinBox, SIGNAL(valueChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(FCSpinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(FC_ScaleCombobox, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(BWSpinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(BW_ScaleCombobox, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(SourceImpedanceLineEdit, SIGNAL(textChanged(QString)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(RippleSpinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(StopbandAttSpinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(EllipticType, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(DC_CouplingTypeCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(setAdjustableResonatorVariables_DirectCoupled()));
-  connect(MinimumZ_Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(MaximumZ_Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(SemiLumpedImplementationCombo, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(UpdateDesignParameters()));
-  connect(ImpedanceRatio_Spinbox, SIGNAL(valueChanged(double)), this,
-          SLOT(UpdateDesignParameters()));
+  connect(FilterImplementationCombo, &QComboBox::currentIndexChanged, this,
+          &FilterDesignTool::ImplementationComboChanged);
+
+  connect(TopologyCombo, &QComboBox::currentIndexChanged, this,
+          &FilterDesignTool::UpdateDesignParameters);
+
+  connect(TL_Implementation_Combo, &QComboBox::currentIndexChanged, this,
+          &FilterDesignTool::UpdateDesignParameters);
+
+  connect(FilterResponseTypeCombo, &QComboBox::currentIndexChanged, this,
+          &FilterDesignTool::ResposeComboChanged);
+
+  connect(EllipticType, &QComboBox::currentIndexChanged, this,
+          &FilterDesignTool::EllipticTypeChanged);
+
+  connect(FilterClassCombo, &QComboBox::currentIndexChanged, this,
+          &FilterDesignTool::UpdateDesignParameters);
+
+  connect(OrderSpinBox, &QSpinBox::valueChanged, this,
+          &FilterDesignTool::UpdateDesignParameters);
+
+  connect(FCSpinbox, &QDoubleSpinBox::valueChanged, this,
+          &FilterDesignTool::UpdateDesignParameters);
+
+  connect(FC_ScaleCombobox, &QComboBox::currentIndexChanged, this,
+          &FilterDesignTool::UpdateDesignParameters);
+
+  connect(BWSpinbox, &QDoubleSpinBox::valueChanged, this,
+          &FilterDesignTool::UpdateDesignParameters);
+
+  connect(BW_ScaleCombobox, &QComboBox::currentIndexChanged, this,
+          &FilterDesignTool::UpdateDesignParameters);
+
+  connect(SourceImpedanceLineEdit, &QLineEdit::textChanged, this,
+          &FilterDesignTool::UpdateDesignParameters);
+
+  connect(RippleSpinbox, &QDoubleSpinBox::valueChanged, this,
+          &FilterDesignTool::UpdateDesignParameters);
+
+  connect(StopbandAttSpinbox, &QDoubleSpinBox::valueChanged, this,
+          &FilterDesignTool::UpdateDesignParameters);
+
+  connect(DC_CouplingTypeCombo, &QComboBox::currentIndexChanged, this,
+          &FilterDesignTool::setAdjustableResonatorVariables_DirectCoupled);
+
+  connect(MinimumZ_Spinbox, &QDoubleSpinBox::valueChanged, this,
+          &FilterDesignTool::UpdateDesignParameters);
+
+  connect(MaximumZ_Spinbox, &QDoubleSpinBox::valueChanged, this,
+          &FilterDesignTool::UpdateDesignParameters);
+
+  connect(SemiLumpedImplementationCombo, &QComboBox::currentIndexChanged, this,
+          &FilterDesignTool::UpdateDesignParameters);
+
+  connect(ImpedanceRatio_Spinbox, &QDoubleSpinBox::valueChanged, this,
+          &FilterDesignTool::UpdateDesignParameters);
 
   ImplementationComboChanged(LC_LADDER);
 }
@@ -1224,9 +1231,6 @@ double FilterDesignTool::getScale(QString scale) {
   return units.value(view, 1.0);
 }
 
-// The purpose of this function is to trigger a design from the main application
-void FilterDesignTool::design() { UpdateDesignParameters(); }
-
 // This function updates the input combos according to the filter implementation
 void FilterDesignTool::ImplementationComboChanged(int index) {
 
@@ -1299,10 +1303,6 @@ void FilterDesignTool::ImplementationComboChanged(int index) {
     break;
   }
   UpdateDesignParameters();
-}
-
-void FilterDesignTool::set_MS_Subs(MS_Substrate SUBSTRATE) {
-  MS_Subs = SUBSTRATE;
 }
 
 // Some BPF topology cannot handle an arbitrary relative bandwith. This function

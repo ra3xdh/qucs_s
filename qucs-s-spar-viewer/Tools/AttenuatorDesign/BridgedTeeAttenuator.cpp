@@ -1,32 +1,14 @@
-/*
- *  Copyright (C) 2019-2025 Andrés Martínez Mera - andresmmera@protonmail.com
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+/// @file BridgedTeeAttenuator.cpp
+/// @brief Bridged-Tee attenuator (implementation)
+/// @author Andrés Martínez Mera - andresmmera@protonmail.com
+/// @date Jan 5, 2026
+/// @copyright Copyright (C) 2019-2025 Andrés Martínez Mera
+/// @license GPL-3.0-or-later
 
 #include "BridgedTeeAttenuator.h"
 
 // Reference: RF design guide. Systems, circuits, and equations. Peter
 // Vizmuller. Artech House, 1995
-
-BridgedTeeAttenuator::BridgedTeeAttenuator() {}
-
-BridgedTeeAttenuator::BridgedTeeAttenuator(AttenuatorDesignParameters AS)
-    : AttenuatorBase(AS) {}
-
-BridgedTeeAttenuator::~BridgedTeeAttenuator() {}
-
 void BridgedTeeAttenuator::calculateParams() {
   // Design equations
   // Note: Bridged-T uses 0.05*Attenuation (not 0.1 like Pi/Tee)
