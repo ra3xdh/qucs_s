@@ -1094,6 +1094,9 @@ void ComponentDialog::slotFillFromSpice()
 void ComponentDialog::slotSelectModel()
 {
   SelFromLibDialog *dlg = new SelFromLibDialog(component);
-  dlg->exec();
+  int r = dlg->exec();
+  if (r == QDialog::Accepted) {
+    updatePropertyTable(component);
+  }
   delete dlg;
 }

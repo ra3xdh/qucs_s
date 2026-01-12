@@ -10,6 +10,7 @@ class QPushButton;
 class QListWidget;
 class Component;
 class QPlainTextEdit;
+class ComponentLibrary;
 
 class SelFromLibDialog : public QDialog {
   Q_OBJECT
@@ -21,11 +22,23 @@ private:
   QListWidget *lstComps;
   QPushButton *btnOK, *btnApply, *btnCancel;
   QPlainTextEdit *edtDescr;
+  QString LibModel;
+
+  QList<ComponentLibrary *> parsedLibs;
+
+  void fillLibComboBox();
+  void selectLibraryAndComp();
+  void checkAndParseLibrary(const QString &libdir, bool relpath);
+
+  void fillCompProperties();
 
 public:  
   SelFromLibDialog(Component *c);
+
 public slots:
 
+  void slotShowComponents();
+  void slotShowDescription();
   void slotOK();
   void slotApply();
 
