@@ -11,6 +11,7 @@ class QListWidget;
 class Component;
 class QPlainTextEdit;
 class ComponentLibrary;
+class SymbolWidget;
 
 class SelFromLibDialog : public QDialog {
   Q_OBJECT
@@ -25,6 +26,8 @@ private:
   QString LibModel;
 
   QList<ComponentLibrary *> parsedLibs;
+
+  SymbolWidget *Symbol;
 
   void fillLibComboBox();
   void selectLibraryAndComp();

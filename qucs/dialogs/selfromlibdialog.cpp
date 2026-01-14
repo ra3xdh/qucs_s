@@ -11,6 +11,7 @@
 
 #include "component.h"
 #include "qucslib_common.h"
+#include "symbolwidget.h"
 
 #include "selfromlibdialog.h"
 
@@ -33,13 +34,21 @@ SelFromLibDialog::SelFromLibDialog(Component *c)
   btnCancel = new QPushButton(tr("Cancel"));
   connect(btnCancel,SIGNAL(clicked(bool)),this,SLOT(reject()));
 
+  Symbol = new SymbolWidget;
+  Symbol->disableDragNDrop();
+  Symbol->setPaintText("");
+
   QVBoxLayout *top = new QVBoxLayout;
   top->addWidget(lblLib);
   top->addWidget(cbxLib);
   top->addWidget(lblComp);
   top->addWidget(lstComps);
   top->addWidget(lblDescr);
-  top->addWidget(edtDescr);
+
+  QHBoxLayout *hl2 = new QHBoxLayout;
+  hl2->addWidget(edtDescr);
+  hl2->addWidget(Symbol);
+  top->addLayout(hl2);
 
   QHBoxLayout *hl1 = new QHBoxLayout;
   hl1->addWidget(btnOK);
@@ -141,7 +150,13 @@ void SelFromLibDialog::slotShowComponents()
     if (lib->name == libname) {
       lstComps->clear();
       for (const auto &c: lib->components) {
-        lstComps->addItem(c.name);
+        QString m = c.modelString;
+        m.remove(0,1);
+        m.chop(1);
+        m = m.section(" ",0,0);
+        if (m == comp->Model) {
+          lstComps->addItem(c.name);
+        }
       }
       break;
     }
@@ -163,6 +178,8 @@ void SelFromLibDialog::slotShowDescription()
           QString def = c.definition;
           getSection("Description", def, desc);
           edtDescr->setPlainText(desc);
+          Symbol->ModelString = c.modelString;
+          Symbol->setSymbol(def,"","");
           LibModel = c.modelString;
           LibModel.remove(0,1);
           LibModel.chop(1);
