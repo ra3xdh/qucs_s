@@ -383,6 +383,18 @@ int SymbolWidget::createStandardSymbol(const QString& Lib_, const QString& Comp_
 
     x1 = -45; y1 = -40;
     x2 =   4; y2 =  30;
+  } else if (Comp == "CORE") {
+    Lines.append(new qucs::Line(-30, -15,  30,    -15,QPen(Qt::darkRed,3)));      // L2
+    Lines.append(new qucs::Line( 30, -15,  30,     15,QPen(Qt::darkRed,3)));      // L3
+    Lines.append(new qucs::Line( 30,  15, -30,     15,QPen(Qt::darkRed,3)));      // L4
+    Lines.append(new qucs::Line(-30,  15, -30,    -15,QPen(Qt::darkRed,3)));  // L5
+
+    Lines.append(new qucs::Line(-25,   -5,  25,   -5,QPen(Qt::black,3)));      // L7
+    Lines.append(new qucs::Line(-25,    0,  25,    0,QPen(Qt::black,3)));      // L8
+    Lines.append(new qucs::Line(-25,    5,  25,    5,QPen(Qt::black,3)));      // L9
+    PortNo = 0;
+    x1 = -45; y1 = -30;
+    x2 =  45; y2 =  30;
   } else {
     // Warn in case a default component symbol is not
     // mapped or implemented.
