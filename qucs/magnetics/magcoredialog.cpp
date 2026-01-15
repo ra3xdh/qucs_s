@@ -1,4 +1,5 @@
 #include "magcoredialog.h"
+#include "selfromlibdialog.h"
 
 #include <QtWidgets>
 #include <QSvgWidget>
@@ -88,6 +89,9 @@ MagCoreDialog::MagCoreDialog(Component *pc, Schematic *sch) : QDialog(sch) {
     cbHBProbes->setChecked(false);
   }
   vl1->addWidget(cbHBProbes,16,0,1,3);
+  btnSelFromLib =  new QPushButton(tr("Select model from library"));
+  connect(btnSelFromLib,SIGNAL(clicked(bool)),this,SLOT(slotSelFromLibrary()));
+  vl1->addWidget(btnSelFromLib,17,0,1,3);
   //vl1->addStretch();
   gpbParams->setLayout(vl1);
 
@@ -481,4 +485,18 @@ bool MagCoreDialog::calcUCore()
   edtArea->setText(QString::number(Area));
 
   return true;
+}
+
+void MagCoreDialog::slotSelFromLibrary()
+{
+  SelFromLibDialog *dlg = new SelFromLibDialog(comp);
+  int r = dlg->exec();
+  if (r == QDialog::Accepted) {
+    edtA->setText(comp->getProperty("A")->Value);
+    edtK->setText(comp->getProperty("K")->Value);
+    edtC->setText(comp->getProperty("C")->Value);
+    edtMs->setText(comp->getProperty("Ms")->Value);
+    edtAlpha->setText(comp->getProperty("alpha")->Value);
+  }
+  delete dlg;
 }
