@@ -62,20 +62,21 @@ QMap<QString, QList<double>> readTouchstoneFile(const QString &filePath) {
 
       frequency_unit = frequency_unit.toLower();
 
+      // Default is already set to "hz"
       if (frequency_unit == "khz") {
         freq_scale = 1e3;
-      } else {
-        if (frequency_unit == "mhz") {
+      }
+      else if (frequency_unit == "mhz") {
           freq_scale = 1e6;
-        } else {
-          if (frequency_unit == "ghz") {
+      }
+      else if (frequency_unit == "ghz") {
             freq_scale = 1e9;
-          }
-        }
       }
 
+      // parameter: {S,Y,Z,H,G}
       parameter = info.at(2); // specifies what kind of network parameter data
                               // is contained in the file
+      // format: {DB, MA, RI} for dB-angle, magnitude-angle, and real-imaginary
       format = info.at(
           3); // Specifies the format of the network parameter data pairs
       Z0 = info.at(5).toDouble();
@@ -90,7 +91,9 @@ QMap<QString, QList<double>> readTouchstoneFile(const QString &filePath) {
 
     file_data["frequency"].append(values[0].toDouble() * freq_scale); // in Hz
 
-    double S_1, S_2, S_3, S_4;
+    // S_in1_becomes_dB and S_in2_becomes_angle are s-param args, e.g. mag angle
+    // They become dB and angle
+    double S_in1_becomes_dB, S_in2_becomes_angle, S_re, S_im;
     QString s1, s2, s3, s4;
     int index = 1, data_counter = 0;
 
@@ -102,15 +105,15 @@ QMap<QString, QList<double>> readTouchstoneFile(const QString &filePath) {
         s3 = s1.mid(0, s1.length() - 2).append("re");
         s4 = s1.mid(0, s1.length() - 2).append("im");
 
-        S_1 = values[index].toDouble();
-        S_2 = values[index + 1].toDouble();
+        S_in1_becomes_dB = values[index].toDouble();
+        S_in2_becomes_angle = values[index + 1].toDouble();
 
-        convert_MA_RI_to_dB(&S_1, &S_2, &S_3, &S_4, format);
+        convert_MA_RI_to_dB(S_in1_becomes_dB, S_in2_becomes_angle, S_re, S_im, format);
 
-        file_data[s1].append(S_1); // dB
-        file_data[s2].append(S_2); // ang
-        file_data[s3].append(S_3); // re
-        file_data[s4].append(S_4); // im
+        file_data[s1].append(S_in1_becomes_dB); // dB
+        file_data[s2].append(S_in2_becomes_angle); // ang
+        file_data[s3].append(S_re); // re
+        file_data[s4].append(S_im); // im
         index += 2;
         data_counter++;
 
