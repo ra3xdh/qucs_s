@@ -69,8 +69,8 @@ QString ConvertLengthFromM(QString, double);
 /// @param[in,out] S_2 Angle (MA/DB) or Imaginary (RI) → angle output
 /// @param[out] S_3 Real part output
 /// @param[out] S_4 Imaginary part output
-/// @param format Input format: "MA", "RI", or "DB"
-void convert_MA_RI_to_dB(double* S_1, double* S_2, double* S_3, double* S_4,
+/// @param format Input format: "MA", "RI", or "DB" (case insensitive)
+void convert_MA_RI_to_dB(double& S_1, double& S_2, double& S_3, double& S_4,
                          QString format);
 
 /// @brief Gets frequency scale factor from unit string

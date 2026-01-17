@@ -331,33 +331,37 @@ QString ConvertLengthFromM(QString units, double len) {
   return QString("");
 }
 
-void convert_MA_RI_to_dB(double *S_1, double *S_2, double *S_3, double *S_4,
+void convert_MA_RI_to_dB(double& S_1, double& S_2, double& S_3, double& S_4,
                          QString format) {
-  double S_dB = *S_1, S_ang = *S_2;
-  double S_re = *S_3, S_im = *S_4;
-  if (format == "MA") {
-    S_dB = 20 * log10(*S_1);
-    S_ang = *S_2;
-    S_re = *S_1 * std::cos(*S_2 * M_PI / 180);
-    S_im = *S_1 * std::sin(*S_2 * M_PI / 180);
-  } else {
-    if (format == "RI") {
-      S_dB = 20 * log10(sqrt((*S_1) * (*S_1) + (*S_2) * (*S_2)));
-      S_ang = atan2(*S_2, *S_1) * 180 / M_PI;
-      S_re = *S_1;
-      S_im = *S_2;
-    } else {
-      // DB format
-      double r = std::pow(10, *S_1 / 20.0);
-      double theta = *S_2 * M_PI / 180.0;
-      S_re = r * std::cos(theta);
-      S_im = r * std::sin(theta);
-    }
+  double S_dB = S_1;
+  double S_ang = S_2;
+  double S_re;// = S_3;
+  double S_im;// = S_4;
+  format = format.toLower();
+  if (format == "ma") {
+    S_dB = 20 * log10(S_1);
+    S_ang = S_2;
+    S_re = S_1 * std::cos(S_2 * M_PI / 180);
+    S_im = S_1 * std::sin(S_2 * M_PI / 180);
+  } else if (format == "ri") {
+      S_dB = 20 * log10(sqrt((S_1) * (S_1) + (S_2) * (S_2)));
+      S_ang = atan2(S_2, S_1) * 180 / M_PI;
+      S_re = S_1;
+      S_im = S_2;
+  } else if (format == "db"){
+    double r = std::pow(10, S_1 / 20.0);
+    double theta = S_2 * M_PI / 180.0;
+    S_re = r * std::cos(theta);
+    S_im = r * std::sin(theta);
   }
-  *S_1 = S_dB;
-  *S_2 = S_ang;
-  *S_3 = S_re;
-  *S_4 = S_im;
+  else {
+    // throw error
+    throw std::invalid_argument("Unexpected format is not ma, ri, or db");
+  }
+  S_1 = S_dB;
+  S_2 = S_ang;
+  S_3 = S_re;
+  S_4 = S_im;
 }
 
 double getFreqScale(QString frequency_unit) {
