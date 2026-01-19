@@ -34,6 +34,7 @@
 #include "settings.h"
 #include "misc.h"
 #include "fillfromspicedialog.h"
+#include "selfromlibdialog.h"
 
 #include <cmath>
 
@@ -478,7 +479,12 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       propertyTableLayout->addLayout(spiceButtonLayout);
       QPushButton* spiceButton = new QPushButton(tr("Populate parameters from SPICE file..."), this);
       connect(spiceButton, &QPushButton::released, this, &ComponentDialog::slotFillFromSpice);
+
+      QPushButton* selectModelButton = new QPushButton(tr("Select model from Library"), this);
+      connect(selectModelButton, &QPushButton::released, this, &ComponentDialog::slotSelectModel);
+
       spiceButtonLayout->addWidget(spiceButton);
+      spiceButtonLayout->addWidget(selectModelButton);
       spiceButtonLayout->addStretch();
     }
 
@@ -1081,5 +1087,16 @@ void ComponentDialog::slotFillFromSpice()
   for (auto property : tempComponent.Props)
     delete property; 
 
+  delete dlg;
+}
+
+
+void ComponentDialog::slotSelectModel()
+{
+  SelFromLibDialog *dlg = new SelFromLibDialog(component);
+  int r = dlg->exec();
+  if (r == QDialog::Accepted) {
+    updatePropertyTable(component);
+  }
   delete dlg;
 }

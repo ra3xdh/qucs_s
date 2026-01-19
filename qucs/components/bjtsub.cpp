@@ -121,6 +121,10 @@ Basic_BJT::Basic_BJT()
 	QObject::tr("default area for bipolar transistor")));
   Props.append(new Property("UseGlobTemp", "yes", false,
                             QObject::tr("Use global SPICE temperature")+" [yes,no]"));
+  Props.append(new Property("LibName", "Generic", false,
+                            QObject::tr("Library name")));
+  Props.append(new Property("CompName", "Generic", false,
+                            QObject::tr("Component name in library")));
 
   Name  = "T";
 }
@@ -214,7 +218,7 @@ QString BJTsub::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
     }
 
     QStringList spice_incompat,spice_tr;
-    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"Kb"<<"Ab"<<"Fb"<<"UseGlobTemp"; // spice-incompatible parameters
+    spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"Kb"<<"Ab"<<"Fb"<<"UseGlobTemp"<<"LibName"<<"CompName"; // spice-incompatible parameters
     spice_tr.clear(); // parameters that need convertion of names
 
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);

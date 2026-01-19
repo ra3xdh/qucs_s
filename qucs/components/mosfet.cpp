@@ -154,7 +154,7 @@ QString MOSFET::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
 
     QStringList spice_incompat,spice_tr;
     spice_incompat<<"Type"<<"Temp"<<"L"<<"W"<<"Ad"<<"As"<<"Pd"<<"Ps"
-                 <<"Rg"<<"N"<<"Tt"<<"Nrd"<<"Nrs"<<"Ffe"<<"UseGlobTemp";
+                 <<"Rg"<<"N"<<"Tt"<<"Nrd"<<"Nrs"<<"Ffe"<<"UseGlobTemp"<<"LibName"<<"CompName";
                               // spice-incompatible parameters
     if (dialect == spicecompat::SPICEXyce) {
         spice_tr<<"Vt0"<<"VtO"; // parameters that need conversion of names

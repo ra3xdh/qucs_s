@@ -74,6 +74,10 @@ JFET::JFET() {
                               QObject::tr("default area for JFET")));
     Props.append(new Property("UseGlobTemp", "yes", false,
                               QObject::tr("Use global SPICE temperature")+" [yes,no]"));
+    Props.append(new Property("LibName", "Generic", false,
+                              QObject::tr("Library name")));
+    Props.append(new Property("CompName", "Generic", false,
+                              QObject::tr("Component name in library")));
 
     createSymbol();
     tx = x2 + 4;
@@ -110,11 +114,12 @@ QString JFET::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat::
     QStringList spice_incompat,spice_tr;
     if (dialect == spicecompat::SPICEXyce) {
         spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"
-                     <<"Isr"<<"Nr"<<"M"<<"Xti"<<"Betatce"<<"Vt0tc"<<"UseGLobTemp";
+                     <<"Isr"<<"Nr"<<"M"<<"Xti"<<"Betatce"<<"Vt0tc"<<"UseGLobTemp"<<"LibName"<<"CompName";
                                   // spice-incompatible parameters
         spice_tr<<"Vt0"<<"VtO"; // parameters that need conversion of names
     } else {
-        spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"<<"Isr"<<"Nr"<<"M"<<"Xti"<<"Betatce"<<"UseGlobTemp";
+        spice_incompat<<"Type"<<"Area"<<"Temp"<<"Ffe"<<"N"<<"Isr"<<"Nr"<<"M"<<"Xti"<<"Betatce"
+                     <<"UseGlobTemp"<<"LibName"<<"CompName";
                                   // spice-incompatible parameters
         spice_tr<<"Vt0tc"<<"Tcv"; // parameters that need conversion of names
     }

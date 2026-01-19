@@ -27,6 +27,7 @@ private:
   QLabel *lblD1, *lblD2, *lblD3, *lblD4, *lblD5, *lblD6;
   QComboBox *cbxCoreType;
   QPushButton *btnOK, *btnApply, *btnCancel;
+  QPushButton *btnSelFromLib;
   QCheckBox *cbShowA, *cbShowK, *cbShowC, *cbShowAlpha, *cbShowMs,
       *cbShowArea, *cbShowPath, *cbShowGap;
 
@@ -47,6 +48,7 @@ private:
 private slots:
   void slotSetCoreImage();
   void slotCalcPathArea();
+  void slotSelFromLibrary();
 
 public:
   explicit MagCoreDialog(Component *pc, Schematic *sch);

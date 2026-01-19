@@ -84,6 +84,10 @@ Diode::Diode()
 	QObject::tr("schematic symbol")+" [normal, US, Schottky, Zener, Varactor]"));
   Props.append(new Property("UseGlobTemp", "yes", false,
         QObject::tr("Use global SPICE temperature")+" [yes,no]"));
+  Props.append(new Property("LibName", "Generic", false,
+                            QObject::tr("Library name")));
+  Props.append(new Property("CompName", "Generic", false,
+                            QObject::tr("Component name in library")));
 
   createSymbol();
   tx = x1+4;
@@ -116,10 +120,12 @@ QString Diode::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat:
     if (dialect == spicecompat::SPICEXyce) {
         spice_tr<<"Tbv"<<"Tbv1"<<"Trs"<<"Trs1"; // parameters that need conversion of names
         spice_incompat<<"Ttt1"<<"Ttt2"<<"Tm1"<<"Tm2"<<"Cp"<<"Isr"
-                     <<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"<<"UseGlobTemp"; // spice-incompatible parameters
+                     <<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"
+                     <<"UseGlobTemp"<<"LibName"<<"CompName"; // spice-incompatible parameters
     } else {
         spice_tr<<"Tbv"<<"Tcv";
-        spice_incompat<<"Cp"<<"Isr"<<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"<<"UseGlobTemp";
+        spice_incompat<<"Cp"<<"Isr"<<"Nr"<<"Ffe"<<"Temp"<<"Area"<<"Symbol"
+                       <<"UseGlobTemp"<<"LibName"<<"CompName";
     }
 
     QString par_str;

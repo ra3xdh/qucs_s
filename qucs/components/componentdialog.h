@@ -62,6 +62,7 @@ private slots:
   // void slotEditFile();
 
   void slotFillFromSpice();
+  void slotSelectModel();
 
 private:
   QIntValidator* intVal;

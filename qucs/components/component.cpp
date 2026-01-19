@@ -696,7 +696,7 @@ QString Component::netlist() {
 
     // output all properties
     QStringList no_sim_props;
-    no_sim_props<<"Symbol"<<"UseGlobTemp";
+    no_sim_props<<"Symbol"<<"UseGlobTemp"<<"LibName"<<"CompName";
     for (const auto &p2 : Props) {
       if (!no_sim_props.contains(p2->Name)) {
         s += " " + p2->Name + "=\"" + p2->Value + "\"";
