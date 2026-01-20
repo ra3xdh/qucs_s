@@ -43,6 +43,8 @@ void Qucs_S_SPAR_Viewer::removeMarker(const QString &markerName) {
     smithChart->removeMarker(markerName);
     polarChart->removeMarker(markerName);
     impedanceChart->removeMarker(markerName);
+    stabilityChart->removeMarker(markerName);
+    VSWRChart->removeMarker(markerName);
     GroupDelayChart->removeMarker(markerName);
 
     updateMarkerTable();
