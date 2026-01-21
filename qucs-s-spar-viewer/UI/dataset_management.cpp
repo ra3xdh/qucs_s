@@ -37,8 +37,16 @@ void Qucs_S_SPAR_Viewer::removeFile(QString ID) {
     if (List_RemoveButton.at(i)->objectName() == ID) {
       row_to_remove = i;
       dataset_to_remove = List_FileNames.at(i)->text();
+
+      // Remove widgets
       delete List_RemoveButton.takeAt(i); // Use takeAt() instead of at()
       delete List_FileNames.takeAt(i);    // Removes AND returns the pointer
+
+      // Remove data from dataset
+      datasets.remove(dataset_to_remove);
+
+      // Remove dataset from dataset-selection combobox (so that the user can no longer see it)
+      QCombobox_datasets->removeItem(QCombobox_datasets->findText(dataset_to_remove));
       break;
     }
   }

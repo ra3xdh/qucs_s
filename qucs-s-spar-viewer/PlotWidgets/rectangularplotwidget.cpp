@@ -736,12 +736,12 @@ QGridLayout *RectangularPlotWidget::setupAxisSettings() {
   QLabel *markerOptionsLabel = new QLabel("<b>Marker Options</b>");
   axisLayout->addWidget(markerOptionsLabel, 3, 0);
 
-  showValuesCheckbox = new QCheckBox("Show Data Values");
+  showValuesCheckbox = new QCheckBox("Show Data");
   showValuesCheckbox->setChecked(true); // Default to showing values
   connect(showValuesCheckbox, &QCheckBox::toggled, this,
           &RectangularPlotWidget::toggleShowValues);
 
-  axisLayout->addWidget(showValuesCheckbox, 3, 1, 1, 2); // Span 2 columns
+  axisLayout->addWidget(showValuesCheckbox, 3, 1, 1, 1); // Span 2 columns
 
   // Lock Axis Settings checkbox
   lockAxisCheckbox = new QCheckBox("Lock Axis Settings");
@@ -749,7 +749,17 @@ QGridLayout *RectangularPlotWidget::setupAxisSettings() {
   connect(lockAxisCheckbox, &QCheckBox::toggled, this,
           &RectangularPlotWidget::toggleLockAxisSettings);
 
-  axisLayout->addWidget(lockAxisCheckbox, 3, 3, 1, 2); // Span 2 columns
+  axisLayout->addWidget(lockAxisCheckbox, 3, 2, 1, 2); // Span 2 columns
+
+  // Lock Pan checkbox
+  lockPanCheckbox = new QCheckBox("Lock Pan");
+  lockPanCheckbox->setChecked(true); // Default to locked
+  toggleLockPan(true);               // Set locked
+  lockPanCheckbox->setToolTip("Prevent panning the plot");
+  connect(lockPanCheckbox, &QCheckBox::toggled, this,
+          &RectangularPlotWidget::toggleLockPan);
+
+  axisLayout->addWidget(lockPanCheckbox, 3, 4, 1, 1); // Span 1 columns
 
   return axisLayout;
 }
@@ -969,6 +979,7 @@ RectangularPlotWidget::AxisSettings RectangularPlotWidget::getSettings() const {
 
   settings.showValues = showValuesCheckbox->isChecked();
   settings.lockAxis = lockAxisCheckbox->isChecked();
+  settings.lockPan = lockPanCheckbox->isChecked();
 
   return settings;
 }
@@ -992,6 +1003,7 @@ void RectangularPlotWidget::setSettings(const AxisSettings &settings) {
 
   showValuesCheckbox->setChecked(settings.showValues);
   lockAxisCheckbox->setChecked(settings.lockAxis);
+  lockPanCheckbox->setChecked(settings.lockPan);
 
   // Update axes to reflect new settings
   updateXAxis();
@@ -1077,5 +1089,17 @@ void RectangularPlotWidget::onY2AxisRangeChanged(const QCPRange &range) {
     y2AxisMin->blockSignals(false);
     y2AxisMax->blockSignals(false);
     y2AxisDiv->blockSignals(false);
+  }
+}
+
+
+void RectangularPlotWidget::toggleLockPan(bool locked) {
+  if (locked) {
+    // Remove pan interaction but keep zoom
+    plotWidget->setInteractions(QCP::iRangeZoom | QCP::iSelectPlottables);
+  } else {
+    // Restore pan interaction
+    plotWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
+                                QCP::iSelectPlottables);
   }
 }

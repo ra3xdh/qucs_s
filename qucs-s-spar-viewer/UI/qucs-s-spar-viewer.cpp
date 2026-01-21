@@ -237,8 +237,8 @@ void Qucs_S_SPAR_Viewer::setFileManagementDock() {
                                   padding: 6px;\
                               }");
   tooltip_message = QString("Remove all data files.");
-  Button_Add_File->setToolTip(tooltip_message);
-  connect(Button_Add_File, &QPushButton::clicked, this,
+  Delete_All_Files->setToolTip(tooltip_message);
+  connect(Delete_All_Files, &QPushButton::clicked, this,
           &Qucs_S_SPAR_Viewer::removeAllFiles);
 
   hLayout_Files_Buttons->addWidget(Button_Add_File);
