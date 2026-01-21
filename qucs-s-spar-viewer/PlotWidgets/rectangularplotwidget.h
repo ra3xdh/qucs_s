@@ -82,6 +82,7 @@ public:
     double y2AxisDiv;     ///< Right Y-axis tick interval
     bool showValues;      ///< Show marker intersection values
     bool lockAxis;        ///< Lock axis settings to prevent auto-adjustment
+    bool lockPan;         ///< Lock pan mode to prevent dragging
   };
 
   /// @brief Class constructor
@@ -329,6 +330,10 @@ private slots:
   /// \param locked. If true, freeze the axis autoadjust. If false, let the widget to set the axis limits automatically
   void toggleLockAxisSettings(bool locked);
 
+  /// @brief Lock / unlock the pan action in the graph
+  /// @param locked. If true, it locks the pan action. If false, the pan action is allowed on the graph
+  void toggleLockPan(bool locked);
+
 private slots:
   /// @brief Handle x-axis range changes from user interaction (panning and zooming)
   void onXAxisRangeChanged(const QCPRange& range);
@@ -363,6 +368,8 @@ private:
 
   QCheckBox* lockAxisCheckbox;       ///< Checkbox for axis lock toggle
   bool axisSettingsLocked;           ///< Flag for axis lock state
+
+  QCheckBox* lockPanCheckbox;       ///< Checkbox for pan lock toggle
 
   QStringList frequencyUnits;        ///< Available frequency units
   double fMin;                       ///< Global minimum frequency in Hz
