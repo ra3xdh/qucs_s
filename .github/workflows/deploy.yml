@@ -321,8 +321,7 @@ jobs:
         $qucs_bin_dir = "${{github.workspace}}\build\qucs-suite\bin"
         $executables = @(
           "qucs-s.exe", "qucs-sactivefilter.exe", "qucs-sattenuator.exe",
-          "qucs-sfilter.exe", "qucs-spowercombining.exe", "qucs-strans.exe",
-          "qucs-sspar-viewer.exe"
+          "qucs-sfilter.exe", "qucs-spowercombining.exe", "qucs-strans.exe"
         )
 
         $executables | ForEach-Object { windeployqt "$qucs_bin_dir\$_"  --no-translations --no-opengl-sw --no-system-d3d-compiler --no-network --no-compiler-runtime }
