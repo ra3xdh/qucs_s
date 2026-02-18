@@ -31,6 +31,8 @@ Neon.lib
 MOSFETs.lib
 NMOSFETs.lib
 OpAmps.lib
+OpAmp_140.lib
+OpAmp_544.lib
 Optocoupler.lib
 PhotovoltaicRelay.lib
 PMOSFETs.lib
