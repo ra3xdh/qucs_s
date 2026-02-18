@@ -116,9 +116,8 @@ QString TR_Sim::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
     QString max_step = spicecompat::normalize_value(getProperty("MaxStep")->Value);
     if (max_step!="0") s+= max_step;
 
-    if (dialect != spicecompat::SPICEXyce) { // Xyce ignores this parameter
-        if (Props.at(18)->Value == "no") s += " UIC";
-    }
+    if (Props.at(18)->Value == "no") s += " UIC";
+
     s += "\n";
     if (dialect != spicecompat::SPICEXyce) s.remove(0,1);
     return s.toLower();
