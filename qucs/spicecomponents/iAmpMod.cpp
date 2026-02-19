@@ -105,6 +105,6 @@ QString iAmpMod::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompa
     QString Fc = spicecompat::normalize_value(Props.at(3)->Value);
     QString Td = spicecompat::normalize_value(Props.at(4)->Value);
 
-    s += QStringLiteral(" DC 0 AM(%1 %2 %3 %4 %5 ) AC 0\n").arg(Va).arg(Vo).arg(Mf).arg(Fc).arg(Td);
+    s += QStringLiteral(" AM(0 %2 %1 %3 %4 %5)\n").arg(Va).arg(Vo).arg(Mf).arg(Fc).arg(Td);
     return s;
 }
