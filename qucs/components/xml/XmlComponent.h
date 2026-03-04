@@ -279,14 +279,16 @@ public:
                 const QString& color,
                 double size,
                 double cos,
-                double sin) :
+                double sin,
+                const QString& condition) :
             a_x(x),
             a_y(y),
             a_text(text),
             a_color(color),
             a_size(size),
             a_cos(cos),
-            a_sin(sin)
+            a_sin(sin),
+            a_condition(condition)
         {}
 
         int a_x;
@@ -296,6 +298,7 @@ public:
         double a_size;
         double a_cos;
         double a_sin;
+        QString a_condition;
     };
 
     XmlComponent(

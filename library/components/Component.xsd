@@ -199,6 +199,7 @@
                             <xs:attribute type="xs:double" name="size" use="optional" default="10.0"/>
                             <xs:attribute type="xs:double" name="cos" use="optional" default="1.0"/>
                             <xs:attribute type="xs:double" name="sin" use="optional" default="0.0"/>
+                            <xs:attribute type="xs:string" name="condition" use="optional" default=""/>
                           </xs:extension>
                         </xs:simpleContent>
                       </xs:complexType>

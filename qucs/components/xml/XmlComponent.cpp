@@ -287,6 +287,11 @@ void XmlComponent::createSymbol()
 
     foreach (const Text& textDef, a_texts)
     {
+        if (!evaluateConditionInclude(textDef.a_condition))
+        {
+            continue;
+        }
+
         ::Text* text(
                 new ::Text(
                     textDef.a_x,
