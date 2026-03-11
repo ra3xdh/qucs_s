@@ -316,6 +316,101 @@ void AbstractSpiceKernel::createSubNetlist(QTextStream &stream, bool lib)
 }
 
 /*!
+ * \brief AbstractSpiceKernel::getLabelledNets gets all of the named nets in the schematic,
+ * where a named net is either a node or wire with a label.
+ * \param dialect SpiceDialect whether or not this is for Xyce/NGSpice
+ * \return QSet of named nets
+ */
+QSet<QString> AbstractSpiceKernel::getLabelledNets(spicecompat::SpiceDialect dialect)
+{
+    QSet<QString> namedNets;
+
+    // iterate over all nodes and save labels
+    for (Node *pn : a_schematic->a_DocNodes) {
+        if (pn->hasLabel()) {
+            namedNets.insert(pn->label()->Name);
+        }
+    }
+
+    // iterate over all wires and save labels
+    for (Wire *pw : a_schematic->a_DocWires) {
+        if (pw->hasLabel()) {
+            namedNets.insert(pw->label()->Name);
+        }
+    }
+
+    // iterate over all probes
+    for (Component *pc : a_schematic->a_DocComps) {
+        if (pc->isProbe) {
+            namedNets.insert(pc->getProbeVariable(dialect));
+        }
+    }
+
+    return namedNets;
+}
+
+/*!
+ * \brief AbstractSpiceKernel::getActiveLabelledNets gets all of the named nets that is connected to
+ * an active or shorted component, in the schematic, where a named net is either a node or wire with a label.
+ * \param dialect SpiceDialect whether or not this is for Xyce/NGSpice
+ * \return QSet of named active nets
+ */
+QSet<QString> AbstractSpiceKernel::getActiveLabelledNets(spicecompat::SpiceDialect dialect)
+{
+    // helper function to add all nodes and wires assosciated with a given node
+    auto insertNodeLabels = [](QSet<QString> &set, Node *pn) {
+        if (!pn) return;
+        if (pn->hasLabel()) set.insert(pn->label()->Name);
+
+        // for wires, we want to add every single node available
+        for (Wire *pw : pn->wires()) {
+            if (pw->hasLabel())         set.insert(pw->label()->Name);
+            if (pw->Port1->hasLabel())  set.insert(pw->Port1->label()->Name);
+            if (pw->Port2->hasLabel())  set.insert(pw->Port2->label()->Name);
+        }
+    };
+    QSet<QString> activeNets;
+    for (Component *pc : a_schematic->a_DocComps) {
+        // we need to add both COMP_IS_SHORTED and COMP_IS_ACTIVE
+        // since COMP_IS_SHORTED adds (valid) resistors
+        if (pc->isActive == COMP_IS_OPEN) continue;
+        // we can't measure the actual probe unless active
+        if (pc->isProbe && pc->isActive == COMP_IS_ACTIVE) {
+            activeNets.insert(pc->getProbeVariable(dialect));
+        }
+        for (Port *pp : pc->Ports) {
+            insertNodeLabels(activeNets, pp->Connection);
+        }
+    }
+
+    return activeNets;
+}
+
+/*!
+ * \brief AbstractSpiceKernel::getValidNets takes the intersection between
+ * AbstractSpiceKernel::getNamedNets and abstractSpiceKernel::getActiveNets
+ * whereas, the discarded set is then the difference.
+ * \param dialect SpiceDialect whether or not this is for Xyce/NGSpice
+ * \return QSet of named active and valid nets
+ */
+QSet<QString> AbstractSpiceKernel::getValidNets(spicecompat::SpiceDialect dialect)
+{
+    QSet<QString> allNets = getLabelledNets(dialect);
+    QSet<QString> activeNets = getActiveLabelledNets(dialect);
+    QSet<QString> discardedNets = allNets - activeNets;
+
+    // log every discarded net for easier debug
+    if (!discardedNets.empty()) {
+        qDebug() << "Netlisting: filtering" << discardedNets.size() << "net(s) attached to disabled components.";
+        for (const QString &name : discardedNets) {
+            qDebug() << "    " << name;
+        }
+    }
+    // intersection between all and activeNets
+    return allNets & activeNets;
+}
+
+/*!
  * \brief AbstractSpiceKernel::slotSimulate Executes simulator
  */
 void AbstractSpiceKernel::slotSimulate()
