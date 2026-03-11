@@ -134,6 +134,12 @@ XmlComponent::XmlComponent(
     std::for_each(properties.begin(), properties.end(), [props](Property*& prop) { props->push_back(prop); });
 #endif
 
+    // Append hidden property to persist variant identity through save/load.
+    // Empty Description ensures name-based serialization ("_xml_device_name=value"
+    // in the schematic file), which is robust against XML parameter list changes.
+    Props.append(
+        new Property("_xml_device_name", a_name, "", false, "", Property::Type::Value));
+
     createSymbol();
 
     tx = x1+4;
@@ -165,6 +171,111 @@ Component* XmlComponent::newOne()
             a_texts);
 }
 
+void XmlComponent::rebuildParameters()
+{
+    // Save current property values (except hidden _xml_device_name)
+    // to preserve user's edits across parameter list rebuild
+    QHash<QString, QString> savedValues;
+    for (Property* prop : Props) {
+        if (prop->Name != "_xml_device_name") {
+            savedValues[prop->Name] = prop->Value;
+        }
+    }
+
+    // Clear existing properties
+    Props.clear();
+
+    // Rebuild from a_parameters (the original XML definition), respecting condition="name=..."
+    std::list<Property*> properties;
+    foreach (const Parameter& param, a_parameters)
+    {
+        bool insertParam(true);
+        if (!param.a_condition.isEmpty())
+        {
+            insertParam = false;
+            const QStringList condition(param.a_condition.split("=", Qt::SkipEmptyParts));
+
+            if (condition.size() == 2 && condition[0] == "name")
+            {
+                QStringList names(condition[1].split(",", Qt::SkipEmptyParts));
+                foreach (const QString& name, names)
+                {
+                    if (name == a_name)
+                    {
+                        // Remove any previously-added parameter with same name
+                        // to allow name-specific override of default parameters
+                        properties.erase(
+                            std::remove_if(
+                                    properties.begin(),
+                                    properties.end(),
+                                    [param](Property* property) { return property->Name == param.a_name; }),
+                            properties.end());
+                        insertParam = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (insertParam)
+        {
+            QString defaultValue = param.a_equation.isEmpty() ? param.a_defaultValue : param.a_equation;
+
+            properties.push_back(
+                new Property(
+                    param.a_name,
+                    defaultValue,
+                    param.a_unit,
+                    param.a_show,
+                    QObject::tr(param.a_description.toUtf8().constData()),
+                    param.a_equation.isEmpty() ? Property::Type::Value : Property::Type::Equation));
+        }
+    }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+    Props.assign(properties.begin(), properties.end());
+#else
+    QList<Property*>* props(&Props);
+    std::for_each(properties.begin(), properties.end(), [props](Property*& prop) { props->push_back(prop); });
+#endif
+
+    // Restore saved property values to preserve user's edits after rebuild
+    for (Property* prop : Props) {
+        if (savedValues.contains(prop->Name)) {
+            prop->Value = savedValues[prop->Name];
+        }
+    }
+
+    // Re-add the hidden property with current a_name value
+    Props.append(
+        new Property("_xml_device_name", a_name, "", false, "", Property::Type::Value));
+}
+
+void XmlComponent::recreate()
+{
+    // Search for hidden variant name property
+    Property* nameProp = nullptr;
+    for (Property* prop : Props) {
+        if (prop->Name == "_xml_device_name") {
+            nameProp = prop;
+            break;
+        }
+    }
+
+    // If hidden property exists and has a different value than the current a_name,
+    // restore the variant identity and rebuild the component
+    if (nameProp && !nameProp->Value.isEmpty() && nameProp->Value != a_name) {
+        a_name = nameProp->Value;
+        a_deviceName = a_name;
+
+        // Rebuild properties with the correct variant's conditional parameters
+        rebuildParameters();
+
+        // Rebuild symbol with the correct variant-specific geometry
+        createSymbol();
+    }
+}
+
 Element* XmlComponent::getInfo(QString& Name, char* &BitmapFile, bool getNewOne)
 {
     Name = QObject::tr(a_name.toUtf8().constData());
@@ -180,6 +291,13 @@ Element* XmlComponent::getInfo(QString& Name, char* &BitmapFile, bool getNewOne)
 
 void XmlComponent::createSymbol()
 {
+    // Clear all geometry lists to avoid doubling when called again (e.g. via recreate())
+    Lines.clear();
+    Arcs.clear();
+    Rects.clear();
+    Texts.clear();
+    Ports.clear();
+
     x1 = std::numeric_limits<int>::max();
     y1 = std::numeric_limits<int>::max();
     x2 = std::numeric_limits<int>::min();

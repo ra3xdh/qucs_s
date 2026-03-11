@@ -326,6 +326,8 @@ public:
 
     Component* newOne();
     Element* getInfo(QString&, char* &, bool getNewOne);
+    void recreate() override;
+    void rebuildParameters();
 
 protected:
     virtual void createSymbol();
