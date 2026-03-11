@@ -116,10 +116,13 @@ XmlComponent::XmlComponent(
 
         if (insertParam)
         {
+            QString defaultValue = param.a_equation.isEmpty() ? param.a_defaultValue : param.a_equation;
+            defaultValue.replace("{names}", a_name);
+
             properties.push_back(
                     new Property(
                         param.a_name,
-                        param.a_equation.isEmpty() ? param.a_defaultValue : param.a_equation,
+                        defaultValue,
                         param.a_unit,
                         param.a_show,
                         QObject::tr(param.a_description.toUtf8().constData()),
@@ -220,6 +223,7 @@ void XmlComponent::rebuildParameters()
         if (insertParam)
         {
             QString defaultValue = param.a_equation.isEmpty() ? param.a_defaultValue : param.a_equation;
+            defaultValue.replace("{names}", a_name);
 
             properties.push_back(
                 new Property(
