@@ -16,6 +16,7 @@
  ***************************************************************************/
 #include "graph.h"
 #include "misc.h"
+#include "diagram.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -517,7 +518,8 @@ void Graph::drawLines(QPainter* painter) const {
   bool drawing_started = false;
   QPointF segment_start;
   QPointF segment_end;
-  QPainterPath path;
+
+  QList<QLineF> lines, *drawLines = &lines;
 
   for (const auto& point : *this) {
     // No more data points
@@ -525,11 +527,10 @@ void Graph::drawLines(QPainter* painter) const {
       break;
     }
 
+
     // Subgraph has ended, let's pretend like we're
     // drawing a graph from the beginning
     if (point.isStrokeEnd()) {
-      painter->drawPath(path);
-      path.clear();
       drawing_started = false;
       continue;
     }
@@ -543,7 +544,6 @@ void Graph::drawLines(QPainter* painter) const {
     if (!drawing_started) {
       segment_start.setX(point.getScrX());
       segment_start.setY(point.getScrY());
-      path.moveTo(segment_start);
       drawing_started = true;
       continue;
     }
@@ -555,10 +555,59 @@ void Graph::drawLines(QPainter* painter) const {
       continue;
     }
 
-    path.lineTo(segment_end);
+    lines.append(QLineF(segment_start, segment_end));
+
     segment_start = segment_end;
   }
 
+
+  // Cannot render the points greater than diagram size in pixels
+  auto max_points = std::max(parentDiagram()->boundingRect().width(),
+                             parentDiagram()->boundingRect().height());
+
+  if (lines.size() > 2*max_points) {
+    // Too many lines for display - we will try join some lines ...
+    QList<QLineF> joint_lines;
+
+    bool joining = false;  // Marks that we are joining nearest lines
+    float x, y1, y2; // Initial (x,y1) and current (x,y2) coordinates
+    size_t count = 0, final_count = lines.size()-1;
+
+    auto near = [](float x1, float x2) { return std::abs(x1-x2) < 0.25; };
+
+    for (const auto& l : lines) {
+      bool try_join = count++ < final_count; // Do not extend last line
+
+      if (try_join && !joining && near(l.x1(),l.x2())) {
+        // Start joining lines; just store the initial line coordinates
+        joining = true;
+        x = l.x1();
+        // We wanna have y1 <= y2
+        if (l.y1() < l.y2())
+          y1 = l.y1(), y2 = l.y2();
+        else
+          y1 = l.y2(), y2 = l.y1();
+        //
+      } else if (try_join && joining && near(x,l.x1()) && near(x,l.x2())) {
+        // Still on the same X value - so, extend the line
+        if (l.y1() < y1) y1 = l.y1();
+        if (l.y2() < y1) y1 = l.y2();
+        if (l.y1() > y2) y2 = l.y1();
+        if (l.y2() > y2) y2 = l.y2();
+      } else { // We stop extending now - just draw it(if any) and current line too
+        if (joining) {
+          joining = false;
+          joint_lines.append(QLineF(QPointF(x, y1), QPointF(x, y2)));
+        }
+        joint_lines.append(l);
+      }
+    }
+
+    printf("GRAPH: reduced: %d -> %d lines\n", (int)lines.size(), (int)joint_lines.size());
+    drawLines = &joint_lines; // Switch to optimized list of lines
+  }
+
+  painter->drawLines(*drawLines);
   painter->restore();
 }
 
