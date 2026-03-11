@@ -102,24 +102,22 @@ void Xyce::createNetlist(
     startNetlist(stream, spicecompat::SPICEXyce);
 
     // set variable names for named nodes and wires
-    vars.clear();
-    collectNamedNets(vars, spicecompat::SPICEXyce);
+    QSet<QString> namedNets = getNamedNets(spicecompat::SPICEXyce);
 
     if (a_DC_OP_only) {
         // Add all remaining nodes, because XYCE has no equivalent for PRINT ALL
         for(Node* pn : *a_schematic->a_Nodes) {
-            if ((!vars.contains(pn->Name))&&(pn->Name!="gnd")) {
-                vars.append(pn->Name);
-            }
+            if(pn->Name == "gnd") continue;
+            namedNets.insert(pn->Name);
         }
         // Add DC sources
         for(Component *pc : a_schematic->a_DocComps) {
-             if ((pc->Model == "S4Q_V")||(pc->Model == "Vdc")) {
-                 vars.append("I("+pc->Name+")");
+             if ((pc->Model == "S4Q_V") || (pc->Model == "Vdc")) {
+                 namedNets.insert("I("+pc->Name+")");
              }
         }
     }
-
+    vars = QStringList(namedNets.begin(), namedNets.end());
     vars.sort();
 
     //execute simulations

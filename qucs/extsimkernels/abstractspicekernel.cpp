@@ -316,40 +316,37 @@ void AbstractSpiceKernel::createSubNetlist(QTextStream &stream, bool lib)
 }
 
 /*!
- * \brief AbstractSpiceKernel::collectNamedNets gets all of the named nets in the schematic,
+ * \brief AbstractSpiceKernel::getNamedNets gets all of the named nets in the schematic,
  * where a named net is either a node or wire with a label.
- * \param vars QStringList that stores all of the named nets
  * \param dialect SpiceDialect whether or not this is for Xyce/NGSpice
+ * \return QSet of named nets
  */
-void AbstractSpiceKernel::collectNamedNets(QStringList &vars, spicecompat::SpiceDialect dialect)
+QSet<QString> AbstractSpiceKernel::getNamedNets(spicecompat::SpiceDialect dialect)
 {
+    QSet<QString> namedNets;
+
     // iterate over all nodes and save labels
     for (Node *pn : a_schematic->a_DocNodes) {
         if (pn->hasLabel()) {
-            if (!vars.contains(pn->label()->Name)) {
-                vars.append(pn->label()->Name);
-            }
+            namedNets.insert(pn->label()->Name);
         }
     }
 
     // iterate over all wires and save labels
     for (Wire *pw : a_schematic->a_DocWires) {
         if (pw->hasLabel()) {
-            if (!vars.contains(pw->label()->Name)) {
-                vars.append(pw->label()->Name);
-            }
+            namedNets.insert(pw->label()->Name);
         }
     }
 
     // iterate over all probes
     for (Component *pc : a_schematic->a_DocComps) {
         if (pc->isProbe) {
-            const QString var_pr = pc->getProbeVariable(dialect);
-            if (!vars.contains(var_pr)) {
-                vars.append(var_pr);
-            }
+            namedNets.insert(pc->getProbeVariable(dialect));
         }
     }
+
+    return namedNets;
 }
 
 /*!
