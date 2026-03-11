@@ -103,34 +103,7 @@ void Xyce::createNetlist(
 
     // set variable names for named nodes and wires
     vars.clear();
-    for(Node *pn : a_schematic->a_DocNodes) {
-      if(pn->hasLabel()) {
-          if (!vars.contains(pn->label()->Name)) {
-              vars.append(pn->label()->Name);
-          }
-      }
-    }
-    for(Wire *pw : a_schematic->a_DocWires) {
-      if(pw->hasLabel()) {
-          if (!vars.contains(pw->label()->Name)) {
-              vars.append(pw->label()->Name);
-          }
-      }
-    }
-    for(Component *pc : a_schematic->a_DocComps) {
-        if (pc->isProbe) {
-            QString var_pr = pc->getProbeVariable(spicecompat::SPICEXyce);
-            if (!vars.contains(var_pr)) {
-                vars.append(var_pr);
-            }
-        }
-        /*if (pc->isEquation) {
-            Equation *eq = (Equation *)pc;
-            QStringList vars_eq;
-            eq->getDepVars(vars_eq);
-            vars.append(vars_eq);
-        }*/
-    }
+    collectNamedNets(vars, spicecompat::SPICEXyce);
 
     if (a_DC_OP_only) {
         // Add all remaining nodes, because XYCE has no equivalent for PRINT ALL

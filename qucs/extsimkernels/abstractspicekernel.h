@@ -80,6 +80,7 @@ protected:
     virtual void startNetlist(QTextStream& stream, spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
     virtual void createNetlist(QTextStream& stream, int NumPorts,QStringList& simulations,
                                QStringList& vars, QStringList &outputs);
+    void collectNamedNets(QStringList &vars, spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
     void removeAllSimulatorOutputs();
     bool checkGround();
     bool checkSimulations();
