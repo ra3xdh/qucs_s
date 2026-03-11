@@ -343,7 +343,8 @@ void Module::registerXmlComponents(const QString& componentPath)
                         QString::fromUtf8(it->color()),
                         it->size(),
                         it->cos(),
-                        it->sin()
+                        it->sin(),
+                        QString::fromUtf8(it->condition())
                 );
 
                 texts << text;
@@ -569,6 +570,7 @@ void Module::registerXmlComponents(const QString& componentPath)
                         << ", size:" << it->size()
                         << ", cos:" << it->cos()
                         << ", sin:" << it->sin()
+                        << ", condition:" << it->condition()
                         << std::endl;
                 }
 
