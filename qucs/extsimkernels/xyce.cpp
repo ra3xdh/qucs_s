@@ -79,6 +79,75 @@ void Xyce::determineUsedSimulations(QStringList *sim_lst)
 }
 
 /*!
+ * \brief Xyce::getLabelledNets gets all of the named nets in the schematic,
+ * where a named net is either a node or wire with a label.
+ * \param[in] dialect SpiceDialect whether or not this is for Xyce/NGSpice
+ * \param[out] QSet of named nets
+ */
+QSet<QString> Xyce::getLabelledNets(spicecompat::SpiceDialect dialect/*=spicecompat::SPICEXyce*/)
+{
+    if (!a_DC_OP_only) {
+        return AbstractSpiceKernel::getLabelledNets(dialect);
+    }
+
+    // NOTE: DCOP is a special case since Xyce doesn't have a "print all"
+    // Add all remaining nodes, because XYCE has no equivalent for PRINT ALL
+    QSet<QString> namedNets;
+    for (Node* pn : *a_schematic->a_Nodes) {
+        if (pn->Name == "gnd") continue;
+        namedNets.insert(pn->Name);
+    }
+    for (Component *pc : a_schematic->a_DocComps) {
+        // Probes
+        if (pc->isProbe) {
+            namedNets.insert(pc->getProbeVariable(dialect));
+        }
+        // Add DC sources
+        if ((pc->Model == "S4Q_V") || (pc->Model == "Vdc")) {
+            namedNets.insert("I("+pc->Name+")");
+        }
+    }
+    return namedNets;
+}
+
+/*! \brief Xyce::getActiveLabelledNets gets all of the named nets that is connected to
+ * an active or shorted component, in the schematic, where a named net is either a node or wire with a label.
+ * \param[in] dialect SpiceDialect whether or not this is for Xyce/NGSpice
+ * \param[out] QSet of named active nets
+ */
+QSet<QString> Xyce::getActiveLabelledNets(spicecompat::SpiceDialect dialect/*=spicecompat::SPICEXyce*/)
+{
+
+    if (!a_DC_OP_only) {
+        return AbstractSpiceKernel::getActiveLabelledNets(dialect);
+    }
+
+    // NOTE: DCOP is a special case since Xyce doesn't have a "print all"
+    // Add all node names reachable from active (non-open) components,
+    QSet<QString>activeNets;
+    for (Component *pc : a_schematic->a_DocComps) {
+        // the probe/sources are only valid if active
+        if (pc->isActive != COMP_IS_ACTIVE) continue;
+        // Probes
+        if (pc->isProbe) {
+            activeNets.insert(pc->getProbeVariable(dialect));
+        }
+        // DC sources
+        if ((pc->Model == "S4Q_V") || (pc->Model == "Vdc")) {
+            activeNets.insert("I("+pc->Name+")");
+        }
+
+        // add every node name
+        for (Port *pp : pc->Ports) {
+            Node *pn = pp->Connection;
+            if (!pn || pn->Name == "gnd") continue;
+            activeNets.insert(pn->Name);
+        }
+    }
+    return activeNets;
+}
+
+/*!
  * \brief Xyce::createNetlist
  * \param[out] stream QTextStream that associated with spice netlist file
  * \param[in] simulations The list of simulations that need to included in netlist.
@@ -102,22 +171,8 @@ void Xyce::createNetlist(
     startNetlist(stream, spicecompat::SPICEXyce);
 
     // set variable names for named nodes and wires
-    QSet<QString> namedNets = getNamedNets(spicecompat::SPICEXyce);
-
-    if (a_DC_OP_only) {
-        // Add all remaining nodes, because XYCE has no equivalent for PRINT ALL
-        for(Node* pn : *a_schematic->a_Nodes) {
-            if(pn->Name == "gnd") continue;
-            namedNets.insert(pn->Name);
-        }
-        // Add DC sources
-        for(Component *pc : a_schematic->a_DocComps) {
-             if ((pc->Model == "S4Q_V") || (pc->Model == "Vdc")) {
-                 namedNets.insert("I("+pc->Name+")");
-             }
-        }
-    }
-    vars = QStringList(namedNets.begin(), namedNets.end());
+    QSet<QString> validNets = getValidNets(spicecompat::SPICEXyce);
+    vars = QStringList(validNets.begin(), validNets.end());
     vars.sort();
 
     //execute simulations

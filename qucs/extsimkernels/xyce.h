@@ -59,6 +59,8 @@ protected:
             QStringList& vars,
             QStringList& outputs);
 
+    QSet<QString> getLabelledNets(spicecompat::SpiceDialect dialect = spicecompat::SPICEXyce) override;
+    QSet<QString> getActiveLabelledNets(spicecompat::SpiceDialect dialect = spicecompat::SPICEXyce) override;
 protected slots:
     void slotFinished();
     void slotProcessOutput();

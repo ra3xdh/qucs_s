@@ -109,8 +109,8 @@ void Ngspice::createNetlist(
     }
 
     // set variable names for named nodes and wires
-    QSet<QString> namedNets = getNamedNets();
-    vars = QStringList(namedNets.begin(), namedNets.end());
+    QSet<QString> validNets = getValidNets();
+    vars = QStringList(validNets.begin(), validNets.end());
     vars.sort();
 
     stream << "\n.control\n\n";          //execute simulations
