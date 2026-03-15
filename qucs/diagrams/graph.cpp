@@ -459,6 +459,10 @@ void Graph::drawLines(QPainter* painter) const {
   }
   painter->setPen(pen);
 
+  if ( ! linesCalculated.isValid()
+    || ! lastLoaded.isValid()
+    || lastLoaded > linesCalculated) {//Start lines (re)calculation
+
   // How graphs are drawn
   //
   // Graph object (this) contains a set of data points,
@@ -505,6 +509,7 @@ void Graph::drawLines(QPainter* painter) const {
   //
   // With this knowledge we can now calculate thresholds for our dataset.
 
+
   constexpr double min_pixels = 1.0;  // I can be wrong here, but I believe these are pixels…
   const double x_threshold = std::abs(min_pixels / painter->transform().m11());
   const double y_threshold = std::abs(min_pixels / painter->transform().m22());
@@ -519,7 +524,7 @@ void Graph::drawLines(QPainter* painter) const {
   QPointF segment_start;
   QPointF segment_end;
 
-  QList<QLineF> lines, *drawLines = &lines;
+  lines.clear();
 
   for (const auto& point : *this) {
     // No more data points
@@ -603,11 +608,15 @@ void Graph::drawLines(QPainter* painter) const {
       }
     }
 
-    printf("GRAPH: reduced: %d -> %d lines\n", (int)lines.size(), (int)joint_lines.size());
-    drawLines = &joint_lines; // Switch to optimized list of lines
+    qDebug() << QString("GRAPH: reduced: %1 -> %2 lines\n").arg(lines.size()).arg(joint_lines.size());
+    lines = QList<QLineF>(std::begin(joint_lines), std::end(joint_lines)); // Switch to optimized list of lines
   }
 
-  painter->drawLines(*drawLines);
+  linesCalculated = QDateTime::currentDateTime();
+
+  }//finish lines calculation
+
+  painter->drawLines(lines);
   painter->restore();
 }
 
