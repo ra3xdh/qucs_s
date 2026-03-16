@@ -296,7 +296,7 @@ void Module::registerModules (void) {
       REGISTER_LUMPED_1 (S4Q_W);
   //}
 
-  REGISTER_LUMPED_1 (Relais);
+  REGISTER_LUMPED_2 (Relais, info, info_spdt);
 
   // sources
   REGISTER_SOURCE_1 (Volt_dc);
