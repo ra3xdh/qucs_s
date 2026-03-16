@@ -21,13 +21,17 @@
 #include "component.h"
 
 
-class Relais : public Component  {
+class Relais : public MultiViewComponent  {
 public:
   Relais();
  ~Relais();
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+  static Element* info_spdt(QString&, char* &, bool getNewOne=false);
   QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
+protected:
+  void createSymbol();
+  QString getSpiceLibrary();
 };
 
 #endif
