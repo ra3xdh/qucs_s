@@ -290,7 +290,7 @@ void Module::registerModules (void) {
   REGISTER_LUMPED_1 (vProbe);
 
   //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
-      REGISTER_LUMPED_1 (Switch);
+      REGISTER_LUMPED_2 (Switch, info, info_spdt);
   //} else {
       REGISTER_LUMPED_1 (S4Q_S);
       REGISTER_LUMPED_1 (S4Q_W);
