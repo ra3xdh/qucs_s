@@ -357,19 +357,41 @@ QSet<QString> AbstractSpiceKernel::getLabelledNets(spicecompat::SpiceDialect dia
  */
 QSet<QString> AbstractSpiceKernel::getActiveLabelledNets(spicecompat::SpiceDialect dialect)
 {
-    // helper function to add all nodes and wires assosciated with a given node
-    auto insertNodeLabels = [](QSet<QString> &set, Node *pn) {
-        if (!pn) return;
-        if (pn->hasLabel()) set.insert(pn->label()->Name);
+    QSet<Wire*> visitedWires;
+    QSet<QString> activeNets;
 
-        // for wires, we want to add every single node available
-        for (Wire *pw : pn->wires()) {
-            if (pw->hasLabel())         set.insert(pw->label()->Name);
-            if (pw->Port1->hasLabel())  set.insert(pw->Port1->label()->Name);
-            if (pw->Port2->hasLabel())  set.insert(pw->Port2->label()->Name);
+    // helper function to add all nodes and wires assosciated with a given node
+    // iteratively traverses all the wires that is connected to startNode
+    auto insertNodeLabels = [&visitedWires](QSet<QString> &set, Node *startNode) {
+        if (!startNode) return;
+
+        QStack<Node*> stack;
+        stack.push(startNode);
+
+        // collect label from starting node before traversal
+        if (startNode->hasLabel()) set.insert(startNode->label()->Name);
+
+        while (!stack.isEmpty()) {
+            Node *pn = stack.pop();
+
+            for (Wire *pw : pn->wires()) {
+                if (visitedWires.contains(pw)) continue;
+                visitedWires.insert(pw);
+
+                // the label is attached to the wire itself
+                if(pw->hasLabel()) set.insert(pw->label()->Name);
+
+                // Port1/Port2 on a wire might be connected to a different wire,
+                // push the far end of the wire onto the stack for further traversal
+                Node *other = (pw->Port1 == pn) ? pw->Port2 : pw->Port1;
+                if (other) {
+                    if (other->hasLabel()) set.insert(other->label()->Name);
+                    stack.push(other);
+                }
+            }
         }
     };
-    QSet<QString> activeNets;
+
     for (Component *pc : a_schematic->a_DocComps) {
         // we need to add both COMP_IS_SHORTED and COMP_IS_ACTIVE
         // since COMP_IS_SHORTED adds (valid) resistors
