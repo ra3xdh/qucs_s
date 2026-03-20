@@ -39,7 +39,9 @@ SystemCommand::SystemCommand()
   Model = "CMD";
   Name  = "CMD";
 
-  Props.append(new Property("cmd", "", false, "System command to run after simulation"));
+  Props.append(new Property("cmd", "", true, "System command to run after simulation"));
+  Props.append(new Property("console", "yes", true, "Open console window [yes, no]"));
+  Props.append(new Property("hold", "no", false, "Keep terminal open after execution [yes, no]"));
 }
 
 SystemCommand::~SystemCommand()

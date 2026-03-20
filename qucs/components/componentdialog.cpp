@@ -394,15 +394,25 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
     editorLayout->addWidget(eqnEditor, 2);
 
     // Qucsator equations can choose whether to export values.
-    if (!paramsHiddenBySim["Export"].contains(component->Model))
-    {
+    // This creates a checkbox for either
+    // 1) In case of a system command component, run the commands inside a terminal emulator
+    // or
+    // 2) In case of an equation block, export the equations to the dataset
+    if (isPlainText) {
+      QHBoxLayout* checkLayout = new QHBoxLayout;
+      cmdConsoleCheck = new QCheckBox(tr("Open console window"), this);
+      cmdHoldCheck = new QCheckBox(tr("Keep terminal open after execution"), this);
+      checkLayout->addWidget(cmdConsoleCheck);
+      checkLayout->addWidget(cmdHoldCheck);
+      checkLayout->addStretch();
+      editorLayout->addLayout(checkLayout);
+    } else if (!paramsHiddenBySim["Export"].contains(component->Model)) {
       QHBoxLayout* exportLayout = new QHBoxLayout;
       eqnExportCheck = new QCheckBox(tr("Put result in dataset"), this);
       exportLayout->addWidget(eqnExportCheck);
       exportLayout->addStretch();
       editorLayout->addLayout(exportLayout);
     }
-
     updateEqnEditor();
   }
 
@@ -734,9 +744,14 @@ void ComponentDialog::updateEqnEditor()
   // Save plain text components (e.g. systemcommand component)
   if (isPlainText)
   {
-    // Just show the raw value of the first (and only) property
-    if (!component->Props.isEmpty())
-      eqnEditor->setPlainText(component->Props.first()->Value);
+    for (auto prop : component->Props) {
+      if (prop->Name == "cmd")
+        eqnEditor->setPlainText(prop->Value);
+        if (prop->Name == "console" && cmdConsoleCheck)
+        cmdConsoleCheck->setCheckState(prop->Value == "yes" ? Qt::Checked : Qt::Unchecked);
+        if (prop->Name == "hold" && cmdHoldCheck)
+        cmdHoldCheck->setCheckState(prop->Value == "yes" ? Qt::Checked : Qt::Unchecked);
+    }
     return;
   }
 
@@ -763,9 +778,14 @@ void ComponentDialog::writeEquation()
 {
   if (isPlainText)
   {
-    // Store the entire editor content as a single raw property value
-    if (!component->Props.isEmpty())
-      component->Props.first()->Value = eqnEditor->document()->toPlainText().trimmed();
+    for (auto prop : qAsConst(component->Props)) {
+      if (prop->Name == "cmd")
+        prop->Value = eqnEditor->document()->toPlainText().trimmed();
+        if (prop->Name == "console" && cmdConsoleCheck)
+        prop->Value = cmdConsoleCheck->checkState() == Qt::Checked ? "yes" : "no";
+        if (prop->Name == "hold" && cmdHoldCheck)
+        prop->Value = cmdHoldCheck->checkState() == Qt::Checked ? "yes" : "no";
+    }
     return;
   }
 
