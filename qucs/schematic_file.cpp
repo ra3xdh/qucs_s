@@ -1540,6 +1540,8 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
 
     if(pc->isActive != COMP_IS_ACTIVE) continue;
 
+    if(pc->Model == "CMD") continue; // Skip "system command" component. It must not go to the simulation backend
+
     // check analog/digital typed components
     if(a_isAnalog) {
       if((pc->Type & isAnalogComponent) == 0) {
@@ -2334,6 +2336,7 @@ QString Schematic::createNetlist(QTextStream& stream, int NumPorts)
 
   QString s, Time;
   for(Component *pc : a_DocComps) {
+    if(pc->Model == "CMD") continue; // Skip "system command" component. It must not go to the simulation backend
     if(a_isAnalog) {
       s = pc->getNetlist();
     }

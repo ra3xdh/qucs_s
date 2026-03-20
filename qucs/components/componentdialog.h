@@ -90,6 +90,7 @@ private:
   
   // TODO: It would be better for simulations with sweeps to have a flag saying so.
   bool isEquation;
+  bool isPlainText;
   bool hasSweep;
   bool hasFile = false;
   QStringList sweepProperties;

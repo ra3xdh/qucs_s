@@ -522,6 +522,7 @@ private:
                   const QStringList & = QStringList(),
                   bool qucs_tool = false); // tool, description and args
   friend class SaveDialog;
+  void runPostSimCommands(Schematic* sch); // Post-simulation system command
 
   QString lastExportFilename;
 };

@@ -99,6 +99,7 @@
 #include "hb_sim.h"
 #include "opt_sim.h"
 #include "param_sweep.h"
+#include "systemcommand.h"
 #include "iprobe.h"
 #include "vprobe.h"
 #include "volt_noise.h"

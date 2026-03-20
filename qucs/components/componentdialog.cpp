@@ -355,6 +355,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   // Try to work out what kind of component this is.
   isEquation = QStringList({"Eqn", "NutmegEq", "SpiceIC", "SpicePar", "SpiceOptions", "SpiceFunc", "SpiceCSPar", "SpGlobPar",
                             "SpiceNodeset"}).contains(component->Model);
+  isPlainText = QStringList({"CMD"}).contains(component->Model);
   hasSweep = QStringList({".AC", ".DISTO", ".NOISE", ".SW", ".SP", ".TR"}).contains(component->Model);
   hasFile = component->Props.count() > 0 && component->Props.at(0)->Name == "File";
 
@@ -371,7 +372,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   paramsHiddenBySim["Param"] = QStringList{".AC", ".DISTO", ".SP", ".NOISE", ".TR"};
 
   // Setup the dialog according to the component kind.
-  if (isEquation)
+  if (isEquation || isPlainText)
   {
     // Create the equation editor.
     QGroupBox* editorGroup = new QGroupBox(tr("Equation Editor"));
@@ -405,7 +406,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
     updateEqnEditor();
   }
 
-  else 
+  else
   {
     if (hasSweep)
     {
@@ -730,6 +731,15 @@ void ComponentDialog::updatePropertyTable(const Component* updateComponent)
 // Updates the equation textedit with the currently stored value.
 void ComponentDialog::updateEqnEditor()
 {
+  // Save plain text components (e.g. systemcommand component)
+  if (isPlainText)
+  {
+    // Just show the raw value of the first (and only) property
+    if (!component->Props.isEmpty())
+      eqnEditor->setPlainText(component->Props.first()->Value);
+    return;
+  }
+
   QString eqnList;
 
   for (auto property : component->Props)
@@ -751,6 +761,14 @@ void ComponentDialog::updateEqnEditor()
 // Clears the current equation component and writes the context of dialog.
 void ComponentDialog::writeEquation()
 {
+  if (isPlainText)
+  {
+    // Store the entire editor content as a single raw property value
+    if (!component->Props.isEmpty())
+      component->Props.first()->Value = eqnEditor->document()->toPlainText().trimmed();
+    return;
+  }
+
   // Clear all old properties and free their memory.
   qDeleteAll(component->Props.begin(), component->Props.end());
   component->Props.clear();
@@ -797,7 +815,7 @@ void ComponentDialog::slotApplyButton()
   else
     componentNameWidget->setValue(component->Name);
 
-  if (isEquation)
+  if (isEquation || isPlainText)
     writeEquation();
 
   else

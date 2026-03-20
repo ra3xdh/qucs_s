@@ -567,6 +567,7 @@ void Module::registerModules (void) {
   REGISTER_EQUATION_1 (SpiceCSParam);
   REGISTER_EQUATION_1 (SpiceGlobalParam);
   REGISTER_EQUATION_1 (Equation);
+  REGISTER_COMP_1 (QObject::tr("equations"), SystemCommand);
 
   // external simulation
   //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {

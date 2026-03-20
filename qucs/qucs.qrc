@@ -112,5 +112,6 @@
         <file>bitmaps/svg/ucore.svg</file>
         <file>bitmaps/svg/nocore.svg</file>
         <file>bitmaps/svg/ImagePainting.svg</file>
+        <file>bitmaps/svg/systemcommand.svg</file>
     </qresource>
 </RCC>

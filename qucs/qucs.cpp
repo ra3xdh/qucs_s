@@ -2816,6 +2816,11 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
     tunerDia->SimulationEnded();
   }
 
+  // Run the CMD blocks (system commands) present on the schematic
+  if (!isTextDocument(sim->DocWidget)) {
+    runPostSimCommands((Schematic*)sim->DocWidget);
+  }
+
 }
 
 // ------------------------------------------------------------------------
@@ -3851,6 +3856,9 @@ void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
         tunerDia->SimulationEnded();
     }
     if (sch->getShowBias()>0 || QucsMain->TuningMode) SimDlg->close();
+
+    // Run post-simulation system commands
+    runPostSimCommands(sch);
 }
 
 void QucsApp::slotBuildVAModule()
@@ -3966,6 +3974,28 @@ void QucsApp::slotFileCloseAll()
   closeAllFiles();
   // create empty schematic
   slotFileNew();
+}
+
+void QucsApp::runPostSimCommands(Schematic* sch)
+{
+  if (!sch) return;
+
+  for (Component* c : sch->a_DocComps)
+  {
+    if (c->Model != "CMD") continue;
+        if (c->Props.isEmpty()) continue;
+
+    QString cmd = c->Props.first()->Value.trimmed();
+    if (cmd.isEmpty()) continue;
+
+       // QProcess::startDetached runs the command in a detached process.
+       // Use the shell so that pipes, redirects, etc. work as expected.
+#ifdef Q_OS_WIN
+    QProcess::startDetached("cmd.exe", {"/C", cmd});
+#else
+    QProcess::startDetached("/bin/sh", {"-c", cmd});
+#endif
+  }
 }
 
 QVariant QucsFileSystemModel::data( const QModelIndex& index, int role ) const
