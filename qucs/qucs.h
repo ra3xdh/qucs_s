@@ -522,7 +522,28 @@ private:
                   const QStringList & = QStringList(),
                   bool qucs_tool = false); // tool, description and args
   friend class SaveDialog;
-  void runPostSimCommands(Schematic* sch); // Post-simulation system command
+
+  /// @brief Scans the schematic for CMD components and executes their commands
+  ///        after simulation completes.
+  ///
+  ///
+  /// Multi-line commands are joined with @c && so that they run sequentially
+  /// in the same shell session. Comment lines (starting with @c #) and blank
+  /// lines are stripped before joining. The @c ~ home-directory shorthand is
+  /// expanded before the command is passed to the shell.
+  ///
+  /// On Linux, different terminal emulators are tried:
+  /// konsole, gnome-terminal, xfce4-terminal, lxterminal, xterm. Each is
+  /// launched with a clean environment (without @c LD_LIBRARY_PATH and
+  /// @c LD_PRELOAD) to avoid Qt library version conflicts between Qucs-S and
+  /// the terminal emulator.
+  ///
+  /// @param sch  Pointer to the schematic to scan. If @c nullptr, returns
+  ///             immediately without doing anything.
+  ///
+  /// @note This method is called from both @c slotAfterSimulation() and
+  ///       @c slotAfterSpiceSimulation(), covering all simulation backends.
+  void runPostSimCommands(Schematic* sch);
 
   QString lastExportFilename;
 };

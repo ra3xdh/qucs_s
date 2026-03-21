@@ -744,13 +744,16 @@ void ComponentDialog::updateEqnEditor()
   // Save plain text components (e.g. systemcommand component)
   if (isPlainText)
   {
-    for (auto prop : component->Props) {
-      if (prop->Name == "cmd")
+    for (auto prop : qAsConst(component->Props)) {
+      if (prop->Name == "cmd"){
         eqnEditor->setPlainText(prop->Value);
-        if (prop->Name == "console" && cmdConsoleCheck)
+      }
+      if (prop->Name == "console" && cmdConsoleCheck) {
         cmdConsoleCheck->setCheckState(prop->Value == "yes" ? Qt::Checked : Qt::Unchecked);
-        if (prop->Name == "hold" && cmdHoldCheck)
+      }
+      if (prop->Name == "hold" && cmdHoldCheck) {
         cmdHoldCheck->setCheckState(prop->Value == "yes" ? Qt::Checked : Qt::Unchecked);
+      }
     }
     return;
   }
@@ -778,13 +781,21 @@ void ComponentDialog::writeEquation()
 {
   if (isPlainText)
   {
+    // Currently, the only plainText component is the system-command component (CMD)
+    // Here it writes back the property.
+    // The command text is stored as-is — no parsing or transformation is applied,
+    // preserving multi-line scripts, comments, and blank lines exactly as the user typed them.
+
     for (auto prop : qAsConst(component->Props)) {
-      if (prop->Name == "cmd")
+      if (prop->Name == "cmd") {
         prop->Value = eqnEditor->document()->toPlainText().trimmed();
-        if (prop->Name == "console" && cmdConsoleCheck)
+      }
+      if (prop->Name == "console" && cmdConsoleCheck) {
         prop->Value = cmdConsoleCheck->checkState() == Qt::Checked ? "yes" : "no";
-        if (prop->Name == "hold" && cmdHoldCheck)
+      }
+      if (prop->Name == "hold" && cmdHoldCheck){
         prop->Value = cmdHoldCheck->checkState() == Qt::Checked ? "yes" : "no";
+      }
     }
     return;
   }
@@ -800,7 +811,7 @@ void ComponentDialog::writeEquation()
   QString text = eqnEditor->document()->toPlainText();
   QStringList lines = text.split('\n', Qt::SkipEmptyParts);
   
-  for (const QString& line : lines)
+  for (const QString& line : qAsConst(lines))
   {
     QStringList parts = line.split('=');
     if (parts.count() == 2)
