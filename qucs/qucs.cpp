@@ -3986,6 +3986,12 @@ void QucsApp::runPostSimCommands(Schematic* sch)
     if (c->Model != "CMD") {
       continue;
     }
+
+    // Discard if the component is disabled
+    if (c->isActive != COMP_IS_ACTIVE) {
+      continue;
+    }
+
     if (c->Props.isEmpty()) {
       continue;
     }
