@@ -4016,8 +4016,17 @@ void QucsApp::runPostSimCommands(Schematic* sch)
 
     if (console == "yes") {
       #if defined(Q_OS_WIN)
-            // Windows: open cmd.exe in a new window, run command, pause so user can read output
-            QProcess::startDetached("cmd.exe", {"/C", "start cmd.exe /K " + shellCmd});
+        // Expand %USERPROFILE% for ~ on Windows
+        QString winCmd = shellCmd;
+        winCmd.replace("~", "%USERPROFILE%");
+
+        if (console == "yes") {
+          // /K keeps the window open after execution regardless of the "hold" flag,
+          // since on Windows there is no clean way to conditionally close cmd.exe.
+          QProcess::startDetached("cmd.exe", {"/K", winCmd});
+        } else {
+          QProcess::startDetached("cmd.exe", {"/C", winCmd});
+        }
       #elif defined(Q_OS_MACOS)
             // macOS: use osascript to open Terminal.app and run the command
             QString script = QString("tell application \"Terminal\" to do script \"%1\"").arg(shellCmd);
