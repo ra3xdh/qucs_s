@@ -764,9 +764,11 @@ void ComponentDialog::writeEquation()
   
   for (const QString& line : lines)
   {
-    QStringList parts = line.split('=');
-    if (parts.count() == 2)
-      component->Props.append(new Property(parts[0].trimmed(), parts[1].trimmed(), true));
+    QString LHS = line.section('=',0,0).trimmed();
+    QString RHS = line.section('=',1).trimmed();
+    if (!LHS.isEmpty() && !RHS.isEmpty()) {
+      component->Props.append(new Property(LHS, RHS, true));
+    }
   }
 
   if (eqnExportCheck)
