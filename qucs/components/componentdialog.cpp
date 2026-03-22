@@ -390,7 +390,12 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
     QFont font("Courier", 10);   
     eqnEditor = new QTextEdit();
     eqnEditor->setFont(font);
-    new EqnHighlighter("ngspice", eqnEditor->document());
+    // Apply highlightning
+    if (isPlainText){
+      new ShellHighlighter(eqnEditor->document());
+    } else{
+      new EqnHighlighter("ngspice", eqnEditor->document());
+    }
     editorLayout->addWidget(eqnEditor, 2);
 
     // Qucsator equations can choose whether to export values.
@@ -1148,4 +1153,59 @@ void ComponentDialog::slotSelectModel()
     updatePropertyTable(component);
   }
   delete dlg;
+}
+
+
+ShellHighlighter::ShellHighlighter(QTextDocument* parent)
+    : QSyntaxHighlighter(parent)
+{
+  HighlightingRule rule;
+
+  // Keywords
+  keywordFormat.setForeground(QColor(0, 87, 174));
+  keywordFormat.setFontWeight(QFont::Bold);
+  const QString keywords[] = {
+      L("\\bif\\b"), L("\\bfi\\b"), L("\\bthen\\b"), L("\\belse\\b"), L("\\belif\\b"),
+      L("\\bfor\\b"), L("\\bdo\\b"), L("\\bdone\\b"), L("\\bwhile\\b"), L("\\buntil\\b"),
+      L("\\bcase\\b"), L("\\besac\\b"), L("\\bfunction\\b"), L("\\breturn\\b"),
+      L("\\bexport\\b"), L("\\blocal\\b"), L("\\becho\\b"), L("\\bread\\b"),
+      L("\\bcd\\b"), L("\\bls\\b"), L("\\bpwd\\b"), L("\\bset\\b"), L("\\bunset\\b"),
+      L("\\bsource\\b"), L("\\bexit\\b"), L("\\btest\\b"), L("\\bexec\\b"),
+      L("\\bin\\b"), L("\\bshift\\b"), L("\\btrap\\b"), L("\\bbreak\\b"), L("\\bcontinue\\b")
+  };
+  for (const QString& p : keywords) {
+    rule.pattern = QRegularExpression(p);
+    rule.format = keywordFormat;
+    highlightingRules.append(rule);
+  }
+
+  // Variables: $VAR, ${VAR}, $1, $@, etc.
+  varFormat.setForeground(QColor(0, 110, 40));
+  rule.pattern = QRegularExpression(L("\\$\\{?[A-Za-z_][A-Za-z0-9_]*\\}?|\\$[0-9@#\\*\\?\\$!\\-]"));
+  rule.format = varFormat;
+  highlightingRules.append(rule);
+
+  // Strings
+  stringFormat.setForeground(QColor(191, 3, 3));
+  rule.pattern = QRegularExpression(L("\"[^\"]*\"|'[^']*'"));
+  rule.format = stringFormat;
+  highlightingRules.append(rule);
+
+  // Comments
+  commentFormat.setForeground(QColor(137, 136, 135));
+  commentFormat.setFontItalic(true);
+  rule.pattern = QRegularExpression(L("#[^\n]*"));
+  rule.format = commentFormat;
+  highlightingRules.append(rule);
+}
+
+void ShellHighlighter::highlightBlock(const QString& text)
+{
+  for (const auto& rule : std::as_const(highlightingRules)) {
+    QRegularExpressionMatchIterator it = rule.pattern.globalMatch(text);
+    while (it.hasNext()) {
+      QRegularExpressionMatch match = it.next();
+      setFormat(match.capturedStart(), match.capturedLength(), rule.format);
+    }
+  }
 }

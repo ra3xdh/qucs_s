@@ -143,6 +143,32 @@ private:
   QTextCharFormat functionFormat;
 };
 
+/// @brief Syntax highlighter for shell scripts used in the CMD component.
+class ShellHighlighter : public QSyntaxHighlighter
+{
+  Q_OBJECT
+public:
+  /// @brief Constructor highlighter
+  /// @param parent The text document to apply highlighting to
+  ShellHighlighter(QTextDocument* parent);
+protected:
+  /// @brief Called automatically by Qt for each line of text that needs updating.
+  /// @param text The current line of text to highlight.
+  void highlightBlock(const QString &text) override;
+private:
+  struct HighlightingRule {
+    QRegularExpression pattern;
+    QTextCharFormat format;
+  };
+  QList<HighlightingRule> highlightingRules;
+
+  /// Highlight style for different fields
+  QTextCharFormat keywordFormat;
+  QTextCharFormat commentFormat;
+  QTextCharFormat stringFormat;
+  QTextCharFormat varFormat;
+};
+
 class SimpleEqnDialog : public QDialog
 {
 Q_OBJECT
