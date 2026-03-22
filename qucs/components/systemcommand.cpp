@@ -32,7 +32,7 @@ SystemCommand::SystemCommand()
       QColor(0,0,0), QFontInfo(f).pixelSize()));
 
   x1 = -xb-3;  y1 = -yb-5;
-  x2 =  xb; y2 =  yb+3;
+  x2 =  xb+8;  y2 =  yb+3;
 
   tx = x1+4;
   ty = y2+4;
