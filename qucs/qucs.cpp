@@ -2816,6 +2816,11 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
     tunerDia->SimulationEnded();
   }
 
+  // Run the CMD blocks (system commands) present on the schematic
+  if (!isTextDocument(sim->DocWidget)) {
+    runPostSimCommands((Schematic*)sim->DocWidget);
+  }
+
 }
 
 // ------------------------------------------------------------------------
@@ -3851,6 +3856,9 @@ void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
         tunerDia->SimulationEnded();
     }
     if (sch->getShowBias()>0 || QucsMain->TuningMode) SimDlg->close();
+
+    // Run post-simulation system commands
+    runPostSimCommands(sch);
 }
 
 void QucsApp::slotBuildVAModule()
@@ -3966,6 +3974,107 @@ void QucsApp::slotFileCloseAll()
   closeAllFiles();
   // create empty schematic
   slotFileNew();
+}
+
+void QucsApp::runPostSimCommands(Schematic* sch)
+{
+  if (!sch) {
+    return;
+  }
+  for (Component* c : sch->a_DocComps) {
+    // Process "system command" components (CMD) only
+    if (c->Model != "CMD") {
+      continue;
+    }
+
+    // Discard if the component is disabled
+    if (c->isActive != COMP_IS_ACTIVE) {
+      continue;
+    }
+
+    if (c->Props.isEmpty()) {
+      continue;
+    }
+    // Command line content
+    QString cmd     = c->Props.at(0)->Value.trimmed();
+    // Open a terminal to run the commands
+    QString console = c->Props.count() > 1 ? c->Props.at(1)->Value.trimmed() : "no";
+    // Keep the terminal open after execution
+    QString hold    = c->Props.count() > 2 ? c->Props.at(2)->Value.trimmed() : "no";
+    if (cmd.isEmpty()) {
+      continue;
+    }
+
+    // Expand ~ to the user's home directory
+    if (cmd.startsWith("~/") || cmd == "~")
+      cmd.replace(0, 1, QDir::homePath());
+
+    // Join multi-line commands into a single shell statement, skipping comments and blank lines
+    QStringList lines = cmd.split('\n', Qt::SkipEmptyParts);
+    QStringList filteredLines;
+    for (const QString& line : qAsConst(lines)) {
+      QString trimmed = line.trimmed();
+      if (trimmed.isEmpty() || trimmed.startsWith('#'))
+        continue;
+    filteredLines.append(line);
+    }
+    QString shellCmd = filteredLines.join(" && ");
+
+    if (console == "yes") {
+      #if defined(Q_OS_WIN)
+        // Expand %USERPROFILE% for ~ on Windows
+        QString winCmd = shellCmd;
+        winCmd.replace("~", "%USERPROFILE%");
+
+        if (console == "yes") {
+          // /K keeps the window open after execution regardless of the "hold" flag,
+          // since on Windows there is no clean way to conditionally close cmd.exe.
+          QProcess::startDetached("cmd.exe", {"/K", winCmd});
+        } else {
+          QProcess::startDetached("cmd.exe", {"/C", winCmd});
+        }
+      #elif defined(Q_OS_MACOS)
+            // macOS: use osascript to open Terminal.app and run the command
+            QString script = QString("tell application \"Terminal\" to do script \"%1\"").arg(shellCmd);
+            QProcess::startDetached("osascript", {"-e", script});
+      #else
+      // Linux: try common terminal emulators in order of preference
+      QStringList terms = {"konsole", "gnome-terminal", "xfce4-terminal", "lxterminal", "xterm"};
+      bool launched = false;
+      for (const QString& term : terms) {
+        QString exe = QStandardPaths::findExecutable(term);
+        if (exe.isEmpty()) {
+          continue;
+        }
+        // Launch with a clean environment. Otherwise conflicts between the Qt version of Qucs-S and the terminal emulator arise
+        QProcess process;
+        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+        env.remove("LD_LIBRARY_PATH");
+        env.remove("LD_PRELOAD");
+        process.setProcessEnvironment(env);
+        process.setProgram(exe);
+        process.setArguments(term == "gnome-terminal"
+                                 ? QStringList{"--", "/bin/bash", "-c", hold == "yes" ? shellCmd + "; exec bash" : shellCmd}
+                                 : QStringList{"-e", "/bin/bash", "-c", hold == "yes" ? shellCmd + "; exec bash" : shellCmd});
+        launched = process.startDetached();
+        if (launched) {
+          break;
+        }
+      }
+      if (!launched) {
+        QMessageBox::warning(nullptr, tr("System Command"),
+                             tr("Could not find a terminal emulator. Tried: xterm, konsole, gnome-terminal.\n"
+                                "Install one or run without console mode."));
+      }
+#endif
+    } else {
+#ifdef Q_OS_WIN
+      QProcess::startDetached("cmd.exe", {"/C", shellCmd});
+#else
+      QProcess::startDetached("/bin/bash", {"-c", shellCmd});
+#endif
+    }
+  }
 }
 
 QVariant QucsFileSystemModel::data( const QModelIndex& index, int role ) const

@@ -61,6 +61,7 @@ circline.cpp
 taperedline.cpp
 circularloop.cpp
 spiralinductor.cpp
+systemcommand.cpp
 simulation.cpp
 vdmos.cpp
 property.cpp
@@ -207,6 +208,7 @@ spicefile.h
 subcircuit.h
 subcirport.h
 substrate.h
+systemcommand.h
 switch.h
 symtrafo.h
 taperedline.h

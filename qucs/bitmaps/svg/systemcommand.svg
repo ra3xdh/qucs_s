@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="128"
+   height="128"
+   version="1.1"
+   id="svg10"
+   sodipodi:docname="systemcommand.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs14" />
+  <sodipodi:namedview
+     id="namedview12"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     showgrid="false"
+     inkscape:zoom="6.8046875"
+     inkscape:cx="37.32721"
+     inkscape:cy="61.795637"
+     inkscape:window-width="1920"
+     inkscape:window-height="1008"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg10" />
+  <path
+     d="M10 18h105v80H10z"
+     style="fill:none;fill-opacity:1;stroke:#00f;stroke-width:3;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+     id="path2" />
+  <path
+     d="m10 98 10 15h105m-10-15 10 15m0 0V33l-10-15"
+     style="fill:none;stroke:#00f;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+     id="path4" />
+  <text
+     xml:space="preserve"
+     x="25.0429"
+     y="70.04348"
+     style="font-style:normal;font-weight:400;font-size:32px;line-height:1.25;font-family:sans-serif;letter-spacing:0;word-spacing:0;fill:#000000;fill-opacity:1;stroke:none"
+     id="text8"><tspan
+       x="25.0429"
+       y="70.04348"
+       style="font-size:32px"
+       id="tspan6">CMD</tspan></text>
+</svg>
