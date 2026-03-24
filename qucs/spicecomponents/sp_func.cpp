@@ -77,7 +77,7 @@ QString SpiceFunc::getExpression(spicecompat::SpiceDialect dialect /* = spicecom
     QString s;
     s.clear();
     for (Property *pp : Props) {
-        if (QucsSettings.DefaultSimulator==spicecompat::simXyce)
+        if (dialect == spicecompat::SPICEXyce)
             s += QStringLiteral(".FUNC %1 %2\n").arg(pp->Name).arg(pp->Value);
         else s += QStringLiteral(".FUNC %1 = %2\n").arg(pp->Name).arg(pp->Value);
     }
