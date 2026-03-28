@@ -84,6 +84,10 @@ QString S4Q_Include::getSpiceLibrary()
     for (Property *pp : Props) {
         QString val = pp->Value;
         if (!val.isEmpty()) {
+            // manually expand env. vars for Xyce
+            if (QucsSettings.DefaultSimulator == spicecompat::simXyce) {
+              val = misc::expandEnvVars(val);
+            }
             val = misc::properAbsFileName(val, containingSchematic);
             switch (QucsSettings.DefaultSimulator) {
             case spicecompat::simSpiceOpus: // Spice Opus doesn't support quotes

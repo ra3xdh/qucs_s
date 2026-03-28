@@ -79,6 +79,10 @@ QString S4Q_Lib::getSpiceLibrary()
 
   QString file = getProperty("File")->Value;
   if ( !file.isEmpty() ){
+    // manually expand env. vars for Xyce
+    if (QucsSettings.DefaultSimulator == spicecompat::simXyce) {
+      file = misc::expandEnvVars(file);
+    }
     file = misc::properAbsFileName(file, containingSchematic);
     QString sec = getProperty("Section")->Value;
     s += QStringLiteral("%1 \"%2\" %3\n").arg(SpiceModel).arg(file).arg(sec);
