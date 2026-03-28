@@ -379,6 +379,38 @@ QString misc::properName(const QString& Name)
 }
 
 // #########################################################################
+// Takes a string and expands all $VAR/${VAR} environment variables
+// NOTE: This doesn't do recursive expansion.
+QString misc::expandEnvVars(const QString& input)
+{
+  QString result = input;
+  // Group 1: ${VAR} (braces), Group 2: $VAR (alphanumeric/underscore)
+  static const QRegularExpression envVarRegex(R"(\$\{([^}]+)\}|\$([A-Za-z_]\w*))");
+
+  QList<QRegularExpressionMatch> matches;
+  auto it = envVarRegex.globalMatch(result);
+  while (it.hasNext()) {
+      matches.append(it.next());
+  }
+
+  // Iterate from back of the string, to maintain valid string offsets during replacement
+  for (int i = matches.size() - 1; i >= 0; --i) {
+      const auto& match = matches.at(i);
+
+      // Check if either brace (Group 1) or alphanumeric group (Group 2) matched
+      QString varName = match.captured(1).isEmpty() ? match.captured(2) : match.captured(1);
+      QString envValue = qEnvironmentVariable(varName.toUtf8());
+
+      // Replace captured group with expanded value of environment variable (only if it exists)
+      if (!envValue.isNull()) {
+          result.replace(match.capturedStart(), match.capturedLength(), envValue);
+      }
+  }
+
+  return result;
+}
+
+// #########################################################################
 // Creates and returns delay time for VHDL entities.
 bool misc::VHDL_Delay(QString& td, const QString& Name)
 {
