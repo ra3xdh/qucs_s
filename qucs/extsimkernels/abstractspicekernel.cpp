@@ -194,7 +194,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, spicecompat::SpiceDi
         for(Component *pc : a_schematic->a_DocComps) {
             if ((pc->SpiceModel==".FUNC")||
                 (pc->SpiceModel=="INCLSCR")) {
-                s = pc->getExpression();
+                s = pc->getExpression(dialect);
                 stream<<s;
             }
         }
