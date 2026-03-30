@@ -1190,39 +1190,117 @@ void QucsSettingsDialog::slotAddPath()
 
 void QucsSettingsDialog::slotAddPathWithSubFolders()
 {
-    // open a file dialog to select the top level directory
-    QString d = QFileDialog::getExistingDirectory
+  QString d = QFileDialog::getExistingDirectory
       (this, tr("Select a directory"),
        QucsSettings.QucsWorkDir.canonicalPath(),
        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
-    QString path;
-    QFileInfo pathfinfo;
+  if(d.isEmpty()){
+    return;
+  }
 
-    if(!d.isEmpty())
-    {
-        // add the selected path
-        currentPaths.append(d);
-        // Iterate through the directories
-        QDirIterator pathIter(d, QDirIterator::Subdirectories);
-        while (pathIter.hasNext())
-        {
-            path = pathIter.next();
-            pathfinfo = pathIter.fileInfo();
+  // Collect all subdirectories first
+  QStringList newPaths;
+  newPaths.append(d);
 
-            if (pathfinfo.isDir() && !pathfinfo.isSymLink() &&
-                pathIter.fileName() != "." && pathIter.fileName() != "..")
-            {
-                QDir thispath(path);
-                currentPaths.append(thispath.canonicalPath());
-            }
-        }
-        makePathTable();
-    }
-    else
+  QDirIterator pathIter(d, QDirIterator::Subdirectories);
+  while (pathIter.hasNext())
+  {
+    QString path = pathIter.next();
+    QFileInfo pathfinfo = pathIter.fileInfo();
+
+    if (pathfinfo.isDir() && !pathfinfo.isSymLink() &&
+        pathIter.fileName() != "." && pathIter.fileName() != "..")
     {
-        // user cancelled
+      newPaths.append(QDir(path).canonicalPath());
     }
+  }
+
+  // Build confirmation dialog with a checkable, scrollable list
+  QDialog confirmDialog(this);
+  confirmDialog.setWindowTitle(tr("Add Path With Subfolders"));
+  confirmDialog.setMinimumSize(500, 400);
+
+  QVBoxLayout *layout = new QVBoxLayout(&confirmDialog);
+
+  layout->addWidget(new QLabel(
+      tr("Select the paths to add to the search list:"),
+      &confirmDialog));
+
+  // Select / deselect all checkbox
+  QCheckBox *selectAllCheck = new QCheckBox(tr("Select / Deselect all"), &confirmDialog);
+  selectAllCheck->setCheckState(Qt::Checked);
+  layout->addWidget(selectAllCheck);
+
+  // Path counter label
+  QLabel *selectionCountLabel = new QLabel(
+      tr("%1 of %1 paths selected").arg(newPaths.size()),
+      &confirmDialog);
+  layout->addWidget(selectionCountLabel);
+
+  // Scrollable list with one checkbox per path
+  QListWidget *pathList = new QListWidget(&confirmDialog);
+  for (const QString &path : newPaths)
+  {
+    QListWidgetItem *item = new QListWidgetItem(path, pathList);
+    item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+    item->setCheckState(Qt::Checked);
+  }
+  layout->addWidget(pathList);
+
+  // Keep "Select all" checkbox in sync with individual items
+  connect(selectAllCheck, &QCheckBox::checkStateChanged, [pathList](Qt::CheckState state) {
+    if (state == Qt::PartiallyChecked){
+      return;
+    }
+
+    Qt::CheckState checkState = (state == Qt::Checked) ? Qt::Checked : Qt::Unchecked;
+
+    for (int i = 0; i < pathList->count(); i++){
+      pathList->item(i)->setCheckState(checkState);
+    }
+    });
+
+  // Update "Select all" checkbox when individual items change
+  connect(pathList, &QListWidget::itemChanged, [pathList, selectAllCheck, selectionCountLabel](QListWidgetItem *) {
+    int checkedCount = 0;
+    for (int i = 0; i < pathList->count(); i++) {
+      if (pathList->item(i)->checkState() == Qt::Checked) {
+        checkedCount++;
+      }
+    }
+
+    selectionCountLabel->setText(
+        tr("%1 of %2 paths selected").arg(checkedCount).arg(pathList->count()));
+
+    // Block signals to avoid triggering stateChanged while we update it
+    QSignalBlocker blocker(selectAllCheck);
+    if (checkedCount == 0){
+      selectAllCheck->setCheckState(Qt::Unchecked);
+    } else if (checkedCount == pathList->count()){
+      selectAllCheck->setCheckState(Qt::Checked);
+    } else
+      selectAllCheck->setCheckState(Qt::PartiallyChecked);
+    });
+
+  QDialogButtonBox *buttons = new QDialogButtonBox(
+      QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+      Qt::Horizontal, &confirmDialog);
+  connect(buttons, SIGNAL(accepted()), &confirmDialog, SLOT(accept()));
+  connect(buttons, SIGNAL(rejected()), &confirmDialog, SLOT(reject()));
+  layout->addWidget(buttons);
+
+  if (confirmDialog.exec() != QDialog::Accepted)
+    return;
+
+  // Only append the checked paths
+  for (int i = 0; i < pathList->count(); i++){
+    if (pathList->item(i)->checkState() == Qt::Checked){
+      currentPaths.append(pathList->item(i)->text());
+    }
+  }
+
+  makePathTable();
 }
 
 void QucsSettingsDialog::slotRemovePath()
