@@ -78,6 +78,16 @@ private slots:
     void slotAddPath();
     void slotAddPathWithSubFolders();
     void slotRemovePath();
+
+    ///
+    /// @brief Clears all entries from the subcircuit search path list.
+    /// Prompts the user for confirmation before removing all paths from
+    /// currentPaths and rebuilding the path table. This is useful when
+    /// a large number of paths have been added unintentionally, e.g. via
+    /// slotAddPathWithSubFolders()
+    /// @see makePathTable(), ClearAllPathsButt
+    ///
+    void slotClearAllPaths();
     void slotPathSelectionChanged();
 
 public:
@@ -101,7 +111,13 @@ public:
     QPushButton *ColorComment, *ColorString, *ColorInteger,
                 *ColorReal, *ColorCharacter, *ColorDataType, *ColorAttribute,
                 *ColorDirective, *ColorTask;
-    QPushButton *RemovePathButt;
+    QPushButton *RemovePathButt;    ///< Remove a single path
+
+    ///
+    /// @brief Button to remove all paths from the search path list at once.
+    /// @details Triggers slotClearAllPaths() to remove all the search paths on a row
+    /// @see slotClearAllPaths()
+    QPushButton *ClearAllPathsButt;
     QPushButton *ShortcutButton;
 
     QVBoxLayout *all;

@@ -465,6 +465,10 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     locationsGrid->addWidget(AddPathSubFolButt, 8, 2);
     connect(AddPathSubFolButt, SIGNAL(clicked()), SLOT(slotAddPathWithSubFolders()));
 
+    QPushButton * ClearAllPathsButt = new QPushButton(tr("Clear All Paths"));
+    locationsGrid->addWidget(ClearAllPathsButt, 10, 2);
+    connect(ClearAllPathsButt, SIGNAL(clicked()), SLOT(slotClearAllPaths()));
+
     RemovePathButt = new QPushButton(tr("Remove Path"));
     // disable button if no paths in the table are selected
     RemovePathButt->setEnabled(false);
@@ -1260,4 +1264,27 @@ void QucsSettingsDialog::makePathTable()
         path->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
         pathsTableWidget->setItem(row, 0, path);
     }
+}
+
+
+void QucsSettingsDialog::slotClearAllPaths()
+{
+
+  if (currentPaths.isEmpty())
+    return;
+
+  // Dialog for user confirmation
+  int ret = QMessageBox::question(
+      this,
+      tr("Clear All Paths"),
+      tr("Are you sure you want to remove all %1 search paths?").arg(currentPaths.size()),
+      QMessageBox::Yes | QMessageBox::No,
+      QMessageBox::No);
+
+  if (ret == QMessageBox::Yes)
+  {
+    // Removes every entry from the search
+    currentPaths.clear();
+    makePathTable();
+  }
 }
