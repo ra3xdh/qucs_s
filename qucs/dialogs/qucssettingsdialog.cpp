@@ -436,8 +436,12 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     connect(RFLButt, SIGNAL(clicked()), SLOT(slotRFLayoutDirBrowse()));
 
 
+    // The widgets related to the path searh are put in a groupbox widget
+    QGroupBox *pathsGroup = new QGroupBox(tr("Subcircuit Search Paths"), locationsTab);
+    QGridLayout *pathsGrid = new QGridLayout(pathsGroup);
+
     // the pathsTableWidget displays the path list
-    pathsTableWidget = new QTableWidget(locationsTab);
+    pathsTableWidget = new QTableWidget(pathsGroup);
     pathsTableWidget->setColumnCount(1);
 
     QTableWidgetItem *pitem1 = new QTableWidgetItem();
@@ -455,25 +459,27 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     pathsTableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     connect(pathsTableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotPathTableClicked(int,int)));
     connect(pathsTableWidget, SIGNAL(itemSelectionChanged()), SLOT(slotPathSelectionChanged()));
-    locationsGrid->addWidget(pathsTableWidget,7,0,3,2);
+    pathsGrid->addWidget(pathsTableWidget, 0, 0, 3, 2);
 
     QPushButton *AddPathButt = new QPushButton(tr("Add Path"));
-    locationsGrid->addWidget(AddPathButt, 7, 2);
+    pathsGrid->addWidget(AddPathButt, 0, 2);
     connect(AddPathButt, SIGNAL(clicked()), SLOT(slotAddPath()));
 
     QPushButton *AddPathSubFolButt = new QPushButton(tr("Add Path With SubFolders"));
-    locationsGrid->addWidget(AddPathSubFolButt, 8, 2);
+    pathsGrid->addWidget(AddPathSubFolButt, 1, 2);
     connect(AddPathSubFolButt, SIGNAL(clicked()), SLOT(slotAddPathWithSubFolders()));
-
-    QPushButton * ClearAllPathsButt = new QPushButton(tr("Clear All Paths"));
-    locationsGrid->addWidget(ClearAllPathsButt, 10, 2);
-    connect(ClearAllPathsButt, SIGNAL(clicked()), SLOT(slotClearAllPaths()));
 
     RemovePathButt = new QPushButton(tr("Remove Path"));
     // disable button if no paths in the table are selected
     RemovePathButt->setEnabled(false);
-    locationsGrid->addWidget(RemovePathButt , 9, 2);
+    pathsGrid->addWidget(RemovePathButt, 2, 2);
     connect(RemovePathButt, SIGNAL(clicked()), SLOT(slotRemovePath()));
+
+    QPushButton * ClearAllPathsButt = new QPushButton(tr("Clear All Paths"));
+    pathsGrid->addWidget(ClearAllPathsButt, 3, 2);
+    connect(ClearAllPathsButt, SIGNAL(clicked()), SLOT(slotClearAllPaths()));
+
+    locationsGrid->addWidget(pathsGroup, 7, 0, 1, 3);
 
     // create a copy of the current global path list
     currentPaths = QStringList(qucsPathList);
@@ -547,7 +553,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     RFLayoutEdit->setText(QucsSettings.RFLayoutExecutable);
 
 
-    resize(300, 200);
+    resize(500, 200);
 }
 
 QucsSettingsDialog::~QucsSettingsDialog()
