@@ -77,7 +77,6 @@ private slots:
 
     void slotAddPath();
     void slotAddPathWithSubFolders();
-    void slotRemovePath();
 
     ///
     /// @brief Clears all entries from the subcircuit search path list.

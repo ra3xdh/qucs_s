@@ -480,6 +480,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     connect(AddPathSubFolButt, SIGNAL(clicked()), SLOT(slotAddPathWithSubFolders()));
 
 
+    // Button for removing all path on a row. It triggers slotClearAllPaths().
     QPushButton * ClearAllPathsButt = new QPushButton(tr("Clear All Paths"));
     pathsGrid->addWidget(ClearAllPathsButt, 2, 2);
     connect(ClearAllPathsButt, SIGNAL(clicked()), SLOT(slotClearAllPaths()));
@@ -1303,26 +1304,6 @@ void QucsSettingsDialog::slotAddPathWithSubFolders()
   }
 
   makePathTable();
-}
-
-void QucsSettingsDialog::slotRemovePath()
-{
-    //Input_Path->setText(fileTypesTableWidget->item(row,0)->text());
-    // get the selected items from the table
-    QList<QTableWidgetItem *> selectedPaths = pathsTableWidget->selectedItems();
-
-    for (QTableWidgetItem * item : std::as_const(selectedPaths))
-    {
-        QString path = item->text();
-        //removedPaths.append(path);
-        int pathind = currentPaths.indexOf(path,0);
-        if (pathind != -1)
-        {
-            currentPaths.removeAt(pathind);
-        }
-    }
-
-    makePathTable();
 }
 
 // makePathTable()
