@@ -110,11 +110,6 @@ public:
                 *ColorReal, *ColorCharacter, *ColorDataType, *ColorAttribute,
                 *ColorDirective, *ColorTask;
 
-    ///
-    /// @brief Button to remove all paths from the search path list at once.
-    /// @details Triggers slotClearAllPaths() to remove all the search paths on a row
-    /// @see slotClearAllPaths()
-    QPushButton *ClearAllPathsButt;
     QPushButton *ShortcutButton;
 
     QVBoxLayout *all;
