@@ -393,42 +393,42 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     QGroupBox *stdPathsGroup = new QGroupBox(tr("Standard Paths and External Applications"), locationsTab);
     QGridLayout *stdPathsGrid = new QGridLayout(stdPathsGroup);
 
-    stdPathsGrid->addWidget(new QLabel(tr("Qucs Home:"), locationsTab), 0, 0);
+    stdPathsGrid->addWidget(new QLabel(tr("Qucs Home:"), stdPathsGroup), 0, 0);
     homeEdit = new QLineEdit(locationsTab);
     stdPathsGrid->addWidget(homeEdit, 0, 1);
     QPushButton *HomeButt = new QPushButton(tr("Browse"));
     stdPathsGrid->addWidget(HomeButt, 0, 2);
     connect(HomeButt, SIGNAL(clicked()), SLOT(slotHomeDirBrowse()));
 
-    stdPathsGrid->addWidget(new QLabel(tr("AdmsXml Path:"), locationsTab), 1, 0);
+    stdPathsGrid->addWidget(new QLabel(tr("AdmsXml Path:"), stdPathsGroup), 1, 0);
     admsXmlEdit = new QLineEdit(locationsTab);
     stdPathsGrid->addWidget(admsXmlEdit, 1, 1);
     QPushButton *AdmsXmlButt = new QPushButton(tr("Browse"));
     stdPathsGrid->addWidget(AdmsXmlButt, 1, 2);
     connect(AdmsXmlButt, SIGNAL(clicked()), SLOT(slotAdmsXmlDirBrowse()));
 
-    stdPathsGrid->addWidget(new QLabel(tr("ASCO Path:"), locationsTab), 2, 0);
+    stdPathsGrid->addWidget(new QLabel(tr("ASCO Path:"), stdPathsGroup), 2, 0);
     ascoEdit = new QLineEdit(locationsTab);
     stdPathsGrid->addWidget(ascoEdit, 2, 1);
     QPushButton *ascoButt = new QPushButton(tr("Browse"));
     stdPathsGrid->addWidget(ascoButt, 2, 2);
     connect(ascoButt, SIGNAL(clicked()), SLOT(slotAscoDirBrowse()));
 
-    stdPathsGrid->addWidget(new QLabel(tr("Octave Path:"), locationsTab), 3, 0);
+    stdPathsGrid->addWidget(new QLabel(tr("Octave Path:"), stdPathsGroup), 3, 0);
     octaveEdit = new QLineEdit(locationsTab);
     stdPathsGrid->addWidget(octaveEdit, 3, 1);
     QPushButton *OctaveButt = new QPushButton(tr("Browse"));
     stdPathsGrid->addWidget(OctaveButt, 3, 2);
     connect(OctaveButt, SIGNAL(clicked()), SLOT(slotOctaveDirBrowse()));
 
-    stdPathsGrid->addWidget(new QLabel(tr("OpenVAF Path:"), locationsTab), 4, 0);
+    stdPathsGrid->addWidget(new QLabel(tr("OpenVAF Path:"), stdPathsGroup), 4, 0);
     OpenVAFEdit = new QLineEdit(locationsTab);
     stdPathsGrid->addWidget(OpenVAFEdit, 4, 1);
     QPushButton *OpenVAFButt = new QPushButton(tr("Browse"));
     stdPathsGrid->addWidget(OpenVAFButt, 4, 2);
     connect(OpenVAFButt, SIGNAL(clicked()), SLOT(slotOpenVAFDirBrowse()));
 
-    stdPathsGrid->addWidget(new QLabel(tr("RF Layout Path:"), locationsTab), 5, 0);
+    stdPathsGrid->addWidget(new QLabel(tr("RF Layout Path:"), stdPathsGroup), 5, 0);
     RFLayoutEdit = new QLineEdit(locationsTab);
     stdPathsGrid->addWidget(RFLayoutEdit, 5, 1);
     QPushButton *RFLButt = new QPushButton(tr("Browse"));
