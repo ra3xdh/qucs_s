@@ -441,16 +441,25 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     QGridLayout *pathsGrid = new QGridLayout(pathsGroup);
 
     // the pathsTableWidget displays the path list
+    // It includes a second column for buttons to remove entries
     pathsTableWidget = new QTableWidget(pathsGroup);
-    pathsTableWidget->setColumnCount(1);
+    pathsTableWidget->setColumnCount(2);
+    pathsTableWidget->horizontalHeader()->setStretchLastSection(false);
+    pathsTableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    pathsTableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
+    pathsTableWidget->setColumnWidth(1, 36);
+
 
     QTableWidgetItem *pitem1 = new QTableWidgetItem();
+
+    QTableWidgetItem *pitem2 = new QTableWidgetItem();
+    pathsTableWidget->setHorizontalHeaderItem(1, pitem2);
+    pitem2->setText(tr(""));
 
     pathsTableWidget->setHorizontalHeaderItem(0, pitem1);
 
     pitem1->setText(tr("Subcircuit Search Path List"));
 
-    pathsTableWidget->horizontalHeader()->setStretchLastSection(true);
     // avoid drawing header text in bold when some data is selected
     pathsTableWidget->horizontalHeader()->setSectionsClickable(false);
 
@@ -1335,21 +1344,30 @@ void QucsSettingsDialog::slotRemovePath()
 // in the locations tab
 void QucsSettingsDialog::makePathTable()
 {
-    // remove all the paths from the table if present
-    pathsTableWidget->clearContents();
-    pathsTableWidget->setRowCount(0);
+  pathsTableWidget->clearContents();
+  pathsTableWidget->setRowCount(0);
 
-    // fill listview with the list of paths
-    for (const QString& pathstr : currentPaths)
-    {
-        int row = pathsTableWidget->rowCount();
-        pathsTableWidget->setRowCount(row+1);
-        QTableWidgetItem *path = new QTableWidgetItem(pathstr);
-        path->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-        pathsTableWidget->setItem(row, 0, path);
-    }
+  for (const QString& pathstr : std::as_const(currentPaths))
+  {
+    int row = pathsTableWidget->rowCount();
+    pathsTableWidget->setRowCount(row + 1);
+
+    QTableWidgetItem *path = new QTableWidgetItem(pathstr);
+    path->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    pathsTableWidget->setItem(row, 0, path);
+
+    // Button for removing the path
+    QPushButton *removeButt = new QPushButton(tr("✕"), pathsTableWidget);
+    removeButt->setToolTip(tr("Remove this path"));
+    removeButt->setStyleSheet("color: red;");
+
+    connect(removeButt, &QPushButton::clicked, [this, pathstr]() {
+      currentPaths.removeAll(pathstr);
+      makePathTable();
+    });
+    pathsTableWidget->setCellWidget(row, 1, removeButt);
+  }
 }
-
 
 void QucsSettingsDialog::slotClearAllPaths()
 {
