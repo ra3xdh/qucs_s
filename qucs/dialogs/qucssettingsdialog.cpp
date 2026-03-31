@@ -467,7 +467,6 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     // allow multiple items to be selected
     pathsTableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     connect(pathsTableWidget, SIGNAL(cellClicked(int,int)), SLOT(slotPathTableClicked(int,int)));
-    connect(pathsTableWidget, SIGNAL(itemSelectionChanged()), SLOT(slotPathSelectionChanged()));
     pathsGrid->addWidget(pathsTableWidget, 0, 0, 3, 2);
 
     QPushButton *AddPathButt = new QPushButton(tr("Add Path"));
@@ -478,14 +477,9 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     pathsGrid->addWidget(AddPathSubFolButt, 1, 2);
     connect(AddPathSubFolButt, SIGNAL(clicked()), SLOT(slotAddPathWithSubFolders()));
 
-    RemovePathButt = new QPushButton(tr("Remove Path"));
-    // disable button if no paths in the table are selected
-    RemovePathButt->setEnabled(false);
-    pathsGrid->addWidget(RemovePathButt, 2, 2);
-    connect(RemovePathButt, SIGNAL(clicked()), SLOT(slotRemovePath()));
 
     QPushButton * ClearAllPathsButt = new QPushButton(tr("Clear All Paths"));
-    pathsGrid->addWidget(ClearAllPathsButt, 3, 2);
+    pathsGrid->addWidget(ClearAllPathsButt, 2, 2);
     connect(ClearAllPathsButt, SIGNAL(clicked()), SLOT(slotClearAllPaths()));
 
     locationsGrid->addWidget(pathsGroup, 7, 0, 1, 3);
@@ -1175,15 +1169,6 @@ void QucsSettingsDialog::slotPathTableClicked(int row, int col)
     //Input_Path->setText(fileTypesTableWidget->item(row,0)->text());
 }
 
-/* \brief enable "Remove Path" button only if something is selected
- */
-void QucsSettingsDialog::slotPathSelectionChanged()
-{
-  bool selectionIsNotEmpty = !pathsTableWidget->selectedItems().isEmpty();
-
-  RemovePathButt->setEnabled(selectionIsNotEmpty);
-}
-
 void QucsSettingsDialog::slotAddPath()
 {
   QString d = QFileDialog::getExistingDirectory
@@ -1324,7 +1309,7 @@ void QucsSettingsDialog::slotRemovePath()
     // get the selected items from the table
     QList<QTableWidgetItem *> selectedPaths = pathsTableWidget->selectedItems();
 
-    for (QTableWidgetItem * item : selectedPaths)
+    for (QTableWidgetItem * item : std::as_const(selectedPaths))
     {
         QString path = item->text();
         //removedPaths.append(path);

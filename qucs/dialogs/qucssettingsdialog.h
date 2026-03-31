@@ -88,7 +88,6 @@ private slots:
     /// @see makePathTable(), ClearAllPathsButt
     ///
     void slotClearAllPaths();
-    void slotPathSelectionChanged();
 
 public:
     QucsApp *App;
@@ -111,7 +110,6 @@ public:
     QPushButton *ColorComment, *ColorString, *ColorInteger,
                 *ColorReal, *ColorCharacter, *ColorDataType, *ColorAttribute,
                 *ColorDirective, *ColorTask;
-    QPushButton *RemovePathButt;    ///< Remove a single path
 
     ///
     /// @brief Button to remove all paths from the search path list at once.
