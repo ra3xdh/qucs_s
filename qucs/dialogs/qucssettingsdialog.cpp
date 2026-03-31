@@ -558,7 +558,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     RFLayoutEdit->setText(QucsSettings.RFLayoutExecutable);
 
 
-    resize(500, 200);
+    resize(600, 200);
 }
 
 QucsSettingsDialog::~QucsSettingsDialog()
