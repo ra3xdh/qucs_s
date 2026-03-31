@@ -1163,15 +1163,6 @@ void QucsSettingsDialog::slotRFLayoutDirBrowse()
     RFLayoutEdit->setText(d);
 }
 
-/*! \brief (seems unused at present)
- */
-void QucsSettingsDialog::slotPathTableClicked(int row, int col)
-{
-    Q_UNUSED(row);
-    Q_UNUSED(col);
-    //Input_Path->setText(fileTypesTableWidget->item(row,0)->text());
-}
-
 void QucsSettingsDialog::slotAddPath()
 {
   QString d = QFileDialog::getExistingDirectory

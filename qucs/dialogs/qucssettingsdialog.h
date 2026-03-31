@@ -66,7 +66,6 @@ private slots:
     void slotColorDirective();
     void slotColorTask();
     void slotTableClicked(int,int);
-    void slotPathTableClicked(int,int);
 
     void slotHomeDirBrowse();
     void slotAdmsXmlDirBrowse();
