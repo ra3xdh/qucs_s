@@ -389,51 +389,53 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     QWidget *locationsTab = new QWidget(t);
     QGridLayout *locationsGrid = new QGridLayout(locationsTab);
 
-    QLabel *note2 = new QLabel(
-        tr("Edit the standard paths and external applications"));
-    locationsGrid->addWidget(note2,0,0,1,2);
+    // Group box for standard paths and external tools
+    QGroupBox *stdPathsGroup = new QGroupBox(tr("Standard Paths and External Applications"), locationsTab);
+    QGridLayout *stdPathsGrid = new QGridLayout(stdPathsGroup);
 
-    locationsGrid->addWidget(new QLabel(tr("Qucs Home:"), locationsTab) ,1,0);
+    stdPathsGrid->addWidget(new QLabel(tr("Qucs Home:"), locationsTab), 0, 0);
     homeEdit = new QLineEdit(locationsTab);
-    locationsGrid->addWidget(homeEdit,1,1);
+    stdPathsGrid->addWidget(homeEdit, 0, 1);
     QPushButton *HomeButt = new QPushButton(tr("Browse"));
-    locationsGrid->addWidget(HomeButt, 1, 2);
+    stdPathsGrid->addWidget(HomeButt, 0, 2);
     connect(HomeButt, SIGNAL(clicked()), SLOT(slotHomeDirBrowse()));
 
-    locationsGrid->addWidget(new QLabel(tr("AdmsXml Path:"), locationsTab) ,2,0);
+    stdPathsGrid->addWidget(new QLabel(tr("AdmsXml Path:"), locationsTab), 1, 0);
     admsXmlEdit = new QLineEdit(locationsTab);
-    locationsGrid->addWidget(admsXmlEdit,2,1);
+    stdPathsGrid->addWidget(admsXmlEdit, 1, 1);
     QPushButton *AdmsXmlButt = new QPushButton(tr("Browse"));
-    locationsGrid->addWidget(AdmsXmlButt, 2, 2);
+    stdPathsGrid->addWidget(AdmsXmlButt, 1, 2);
     connect(AdmsXmlButt, SIGNAL(clicked()), SLOT(slotAdmsXmlDirBrowse()));
 
-    locationsGrid->addWidget(new QLabel(tr("ASCO Path:"), locationsTab) ,3,0);
+    stdPathsGrid->addWidget(new QLabel(tr("ASCO Path:"), locationsTab), 2, 0);
     ascoEdit = new QLineEdit(locationsTab);
-    locationsGrid->addWidget(ascoEdit,3,1);
+    stdPathsGrid->addWidget(ascoEdit, 2, 1);
     QPushButton *ascoButt = new QPushButton(tr("Browse"));
-    locationsGrid->addWidget(ascoButt, 3, 2);
+    stdPathsGrid->addWidget(ascoButt, 2, 2);
     connect(ascoButt, SIGNAL(clicked()), SLOT(slotAscoDirBrowse()));
 
-    locationsGrid->addWidget(new QLabel(tr("Octave Path:"), locationsTab) ,4,0);
+    stdPathsGrid->addWidget(new QLabel(tr("Octave Path:"), locationsTab), 3, 0);
     octaveEdit = new QLineEdit(locationsTab);
-    locationsGrid->addWidget(octaveEdit,4,1);
+    stdPathsGrid->addWidget(octaveEdit, 3, 1);
     QPushButton *OctaveButt = new QPushButton(tr("Browse"));
-    locationsGrid->addWidget(OctaveButt, 4, 2);
+    stdPathsGrid->addWidget(OctaveButt, 3, 2);
     connect(OctaveButt, SIGNAL(clicked()), SLOT(slotOctaveDirBrowse()));
 
-    locationsGrid->addWidget(new QLabel(tr("OpenVAF Path:"), locationsTab) ,5,0);
+    stdPathsGrid->addWidget(new QLabel(tr("OpenVAF Path:"), locationsTab), 4, 0);
     OpenVAFEdit = new QLineEdit(locationsTab);
-    locationsGrid->addWidget(OpenVAFEdit,5,1);
+    stdPathsGrid->addWidget(OpenVAFEdit, 4, 1);
     QPushButton *OpenVAFButt = new QPushButton(tr("Browse"));
-    locationsGrid->addWidget(OpenVAFButt, 5, 2);
+    stdPathsGrid->addWidget(OpenVAFButt, 4, 2);
     connect(OpenVAFButt, SIGNAL(clicked()), SLOT(slotOpenVAFDirBrowse()));
 
-    locationsGrid->addWidget(new QLabel(tr("RF Layout Path:"), locationsTab) ,6,0);
+    stdPathsGrid->addWidget(new QLabel(tr("RF Layout Path:"), locationsTab), 5, 0);
     RFLayoutEdit = new QLineEdit(locationsTab);
-    locationsGrid->addWidget(RFLayoutEdit,6,1);
+    stdPathsGrid->addWidget(RFLayoutEdit, 5, 1);
     QPushButton *RFLButt = new QPushButton(tr("Browse"));
-    locationsGrid->addWidget(RFLButt, 6, 2);
+    stdPathsGrid->addWidget(RFLButt, 5, 2);
     connect(RFLButt, SIGNAL(clicked()), SLOT(slotRFLayoutDirBrowse()));
+
+    locationsGrid->addWidget(stdPathsGroup, 0, 0, 1, 3);
 
 
     // The widgets related to the path searh are put in a groupbox widget
@@ -482,7 +484,7 @@ QucsSettingsDialog::QucsSettingsDialog(QucsApp *parent)
     pathsGrid->addWidget(ClearAllPathsButt, 2, 2);
     connect(ClearAllPathsButt, SIGNAL(clicked()), SLOT(slotClearAllPaths()));
 
-    locationsGrid->addWidget(pathsGroup, 7, 0, 1, 3);
+    locationsGrid->addWidget(pathsGroup, 2, 0, 1, 3);
 
     // create a copy of the current global path list
     currentPaths = QStringList(qucsPathList);
