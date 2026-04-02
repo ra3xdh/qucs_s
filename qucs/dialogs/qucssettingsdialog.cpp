@@ -1243,7 +1243,7 @@ void QucsSettingsDialog::slotAddPathWithSubFolders()
   layout->addWidget(pathList);
 
   // Keep "Select all" checkbox in sync with individual items
-  connect(selectAllCheck, &QCheckBox::checkStateChanged, [pathList](Qt::CheckState state) {
+  connect(selectAllCheck, &QCheckBox::stateChanged, [pathList](int state) {
     if (state == Qt::PartiallyChecked){
       return;
     }
