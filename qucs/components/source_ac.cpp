@@ -97,16 +97,15 @@ Element* Source_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
 QString Source_ac::ngspice_netlist()
 {
     QString s = QStringLiteral("V%1").arg(Name);
-    for (Port *p1 : Ports) {
+    for (Port *p1 : std::as_const(Ports)) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }
 
+    // Get source parameters
     double z0 = spicecompat::normalize_value(getProperty("Z")->Value).toDouble();
-    double p = spicecompat::normalize_value(getProperty("P")->Value).toDouble();
-    double vrms = sqrt(z0/1000.0)*pow(10, p/20.0);
-    double vamp = 2.0*vrms*sqrt(2.0);
+    QString pVal = getProperty("P")->Value.trimmed();
     QString f = spicecompat::normalize_value(getProperty("f")->Value);
 
     bool en_tran = true;
@@ -116,10 +115,32 @@ QString Source_ac::ngspice_netlist()
         en_tran = false;
     }
 
-    s += QStringLiteral(" dc 0 ac %1").arg(vamp);
-    if (en_tran) {
+    // Calculate the power
+    // The power may come explicitly in the "Power" field of the component (literal value) or be part of a sweep simulation (symbolic variable).
+    // Check if P is a symbolic parameter (not a numeric dBm literal)
+    bool isNumeric = false;
+    spicecompat::normalize_value(pVal).toDouble(&isNumeric);
+
+    if (isNumeric) {
+      // Original behaviour: pre-compute amplitude
+      double p = spicecompat::normalize_value(pVal).toDouble();
+      double vrms = sqrt(z0/1000.0) * pow(10, p/20.0);
+      double vamp = 2.0 * vrms * sqrt(2.0);
+      s += QStringLiteral(" dc 0 ac %1").arg(vamp);
+      if (en_tran)
         s += QStringLiteral(" SIN(0 %1 %2)").arg(vamp).arg(f);
+    } else {
+      // P is a parameter name — emit a .PARAM expression and reference it
+      // vamp = 2*sqrt(2) * sqrt(z0/1000) * 10^(P/20)
+      QString vamp_param = QStringLiteral("vamp_%1").arg(Name);
+      s.prepend(QStringLiteral(".PARAM %1={2*sqrt(2)*sqrt(%2/1000)*pow(10,(%3)/20)}\n")
+                    .arg(vamp_param).arg(z0).arg(pVal));
+      s += QStringLiteral(" dc 0 ac {%1}").arg(vamp_param);
+      if (en_tran) {
+        s += QStringLiteral(" SIN(0 {%1} %2)").arg(vamp_param, f);
+      }
     }
+
     s += QStringLiteral(" portnum %1").arg(getProperty("Num")->Value);
     s += QStringLiteral(" z0 %1").arg(z0);
     s += "\n";
