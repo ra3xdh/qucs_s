@@ -14,7 +14,7 @@ env:
   EXECUTABLE_NAME: "qucs-s"
   PUBLISHER_NAME: "The Qucs-S Team"
   BUILD_TYPE: Release
-  QT_VERSION: 6.10.1
+  QT_VERSION: 6.10.3
   QUCS_MACOS_BIN: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/bin
   QUCS_MACOS_RESOURCES: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s
   NGSPICE_URL: https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/46/ngspice-46_64.7z
@@ -375,9 +375,9 @@ jobs:
           - os: windows-2022
             msystem: ucrt64
             platform_tag: win64
-          #- os: windows-11-arm
-          #  msystem: clangarm64
-          #  platform_tag: win-arm64
+          - os: windows-11-arm
+            msystem: clangarm64
+            platform_tag: win-arm64
     defaults:
       run:
         shell: msys2 {0}
