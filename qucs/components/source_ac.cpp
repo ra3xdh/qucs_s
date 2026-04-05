@@ -60,15 +60,15 @@ Source_ac::Source_ac()
 
   // This property must be the first one !
   Props.append(new Property("Num", "1", true,
-		QObject::tr("number of the port")));
+                QObject::tr("number of the port")));
   Props.append(new Property("Z", "50 Ohm", true,
-		QObject::tr("port impedance")));
+                QObject::tr("port impedance")));
   Props.append(new Property("P", "0 dBm", false,
-		QObject::tr("(available) ac power in dBm")));
+                QObject::tr("(available) ac power in dBm")));
   Props.append(new Property("f", "1 MHz", false,
-		QObject::tr("frequency in Hertz")));
+                QObject::tr("frequency in Hertz")));
   Props.append(new Property("Temp", "26.85", false,
-	QObject::tr("simulation temperature in degree Celsius")));
+        QObject::tr("simulation temperature in degree Celsius")));
   Props.append(new Property("EnableTran", "true", false,
     QObject::tr("enable transient model as sine source [true,false]")));
 
@@ -97,16 +97,15 @@ Element* Source_ac::info(QString& Name, char* &BitmapFile, bool getNewOne)
 QString Source_ac::ngspice_netlist()
 {
     QString s = QStringLiteral("V%1").arg(Name);
-    for (Port *p1 : Ports) {
+    for (Port *p1 : std::as_const(Ports)) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }
 
+    // Get source parameters
     double z0 = spicecompat::normalize_value(getProperty("Z")->Value).toDouble();
-    double p = spicecompat::normalize_value(getProperty("P")->Value).toDouble();
-    double vrms = sqrt(z0/1000.0)*pow(10, p/20.0);
-    double vamp = 2.0*vrms*sqrt(2.0);
+    QString pVal = getProperty("P")->Value.trimmed();
     QString f = spicecompat::normalize_value(getProperty("f")->Value);
 
     bool en_tran = true;
@@ -116,10 +115,32 @@ QString Source_ac::ngspice_netlist()
         en_tran = false;
     }
 
-    s += QStringLiteral(" dc 0 ac %1").arg(vamp);
-    if (en_tran) {
+    // Calculate the power
+    // The power may come explicitly in the "Power" field of the component (literal value) or be part of a sweep simulation (symbolic variable).
+    // Check if P is a symbolic parameter (not a numeric dBm literal)
+    bool isNumeric = false;
+    spicecompat::normalize_value(pVal).toDouble(&isNumeric);
+
+    QString vamp;
+    if (isNumeric) {
+      // Original behaviour: pre-compute amplitude
+      double p = spicecompat::normalize_value(pVal).toDouble();
+      double vrms = sqrt(z0/1000.0) * pow(10, p/20.0);
+      double vamp = 2.0 * vrms * sqrt(2.0);
+      s += QStringLiteral(" dc 0 ac %1").arg(vamp);
+      if (en_tran)
         s += QStringLiteral(" SIN(0 %1 %2)").arg(vamp).arg(f);
+    } else {
+      // P is a parameter name — emit a .PARAM expression and reference it
+      // vamp = 2*sqrt(2) * sqrt(z0/1000) * 10^(P/20)
+      vamp = QStringLiteral("'2*sqrt(2)*sqrt(%1/1000)*pow(10,(%2)/20)'")
+                 .arg(z0).arg(pVal);
+      s += QStringLiteral(" dc 0 ac %1").arg(vamp);
+      if (en_tran){
+        s += QStringLiteral(" SIN(0 %1 %2 0 0)").arg(vamp, f);
+      }
     }
+
     s += QStringLiteral(" portnum %1").arg(getProperty("Num")->Value);
     s += QStringLiteral(" z0 %1").arg(z0);
     s += "\n";
@@ -129,31 +150,49 @@ QString Source_ac::ngspice_netlist()
 QString Source_ac::xyce_netlist()
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
+    for (Port *p1 : std::as_const(Ports)) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
     }
     s += QStringLiteral(" port=%1 ").arg(getProperty("Num")->Value);
+    // Get source parameters
     QString s_z0 = spicecompat::normalize_value(getProperty("Z")->Value);
     double z0 = s_z0.toDouble();
-    QString s_p = spicecompat::normalize_value(getProperty("P")->Value);
-    double p = s_p.toDouble();
-    double vrms = sqrt(z0/1000.0)*pow(10, p/20.0);
-    double vamp = 2.0*vrms*sqrt(2.0);
+    QString pVal = getProperty("P")->Value.trimmed();
+    QString f = spicecompat::normalize_value(getProperty("f")->Value);
 
     bool en_tran = true;
     if (getProperty("EnableTran")->Value == "true") {
-        en_tran = true;
+      en_tran = true;
     } else {
-        en_tran = false;
+      en_tran = false;
+    }
+
+    // Calculate the power
+    // The power may come explicitly in the "Power" field of the component (literal value) or be part of a sweep simulation (symbolic variable).
+    // Check if P is a symbolic parameter (not a numeric dBm literal)
+    bool isNumeric = false;
+    double p = spicecompat::normalize_value(pVal).toDouble(&isNumeric);
+
+    QString vamp;
+    if (isNumeric) {
+      // Fixed value (not part of a parametric simulation)
+      double vrms = sqrt(z0 / 1000.0) * pow(10.0, p / 20.0);
+      double vamp_val = 2.0 * vrms * sqrt(2.0);
+      vamp = QString::number(vamp_val, 'g', 8);
+    } else {
+      // P is a symbolic variable (.PARAM)
+      // The dBm to V is embedded directly in the netlist line of the AC power source
+      // This is evaluated at each step
+      vamp = QStringLiteral("{2*sqrt(2)*sqrt(%1/1000)*pow(10,(%2)/20)}")
+                      .arg(z0).arg(pVal);
     }
 
     s += QStringLiteral(" z0=%1 ").arg(s_z0);
-    QString f = spicecompat::normalize_value(getProperty("f")->Value);
     s += QStringLiteral(" AC %1 ").arg(vamp);
     if (en_tran) {
-        s += QStringLiteral(" SIN 0 %1 %2").arg(vamp).arg(f);
+        s += QStringLiteral(" SIN 0 %1 %2").arg(vamp, f);
     }
     s += "\n";
     return s;
