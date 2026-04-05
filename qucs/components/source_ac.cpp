@@ -60,15 +60,15 @@ Source_ac::Source_ac()
 
   // This property must be the first one !
   Props.append(new Property("Num", "1", true,
-		QObject::tr("number of the port")));
+                QObject::tr("number of the port")));
   Props.append(new Property("Z", "50 Ohm", true,
-		QObject::tr("port impedance")));
+                QObject::tr("port impedance")));
   Props.append(new Property("P", "0 dBm", false,
-		QObject::tr("(available) ac power in dBm")));
+                QObject::tr("(available) ac power in dBm")));
   Props.append(new Property("f", "1 MHz", false,
-		QObject::tr("frequency in Hertz")));
+                QObject::tr("frequency in Hertz")));
   Props.append(new Property("Temp", "26.85", false,
-	QObject::tr("simulation temperature in degree Celsius")));
+        QObject::tr("simulation temperature in degree Celsius")));
   Props.append(new Property("EnableTran", "true", false,
     QObject::tr("enable transient model as sine source [true,false]")));
 
@@ -150,7 +150,7 @@ QString Source_ac::ngspice_netlist()
 QString Source_ac::xyce_netlist()
 {
     QString s = spicecompat::check_refdes(Name,SpiceModel);
-    for (Port *p1 : Ports) {
+    for (Port *p1 : std::as_const(Ports)) {
         QString nam = p1->Connection->Name;
         if (nam=="gnd") nam = "0";
         s += " "+ nam;   // node names
@@ -158,10 +158,25 @@ QString Source_ac::xyce_netlist()
     s += QStringLiteral(" port=%1 ").arg(getProperty("Num")->Value);
     QString s_z0 = spicecompat::normalize_value(getProperty("Z")->Value);
     double z0 = s_z0.toDouble();
-    QString s_p = spicecompat::normalize_value(getProperty("P")->Value);
-    double p = s_p.toDouble();
-    double vrms = sqrt(z0/1000.0)*pow(10, p/20.0);
-    double vamp = 2.0*vrms*sqrt(2.0);
+
+    // Get the power value or symbolic variable
+    QString pVal = getProperty("P")->Value.trimmed();
+    bool isNumeric = false;
+    double p = spicecompat::normalize_value(pVal).toDouble(&isNumeric);
+
+    QString vamp;
+    if (isNumeric) {
+      // Fixed value (not part of a parametric simulation)
+      double vrms = sqrt(z0 / 1000.0) * pow(10.0, p / 20.0);
+      double vamp_val = 2.0 * vrms * sqrt(2.0);
+      vamp = QString::number(vamp_val, 'g', 8);
+    } else {
+      // P is a symbolic variable (.PARAM)
+      // The dBm to V is embedded directly in the netlist line of the AC power source
+      // This is evaluated at each step
+      vamp = QStringLiteral("{2*sqrt(2)*sqrt(%1/1000)*pow(10,(%2)/20)}")
+                      .arg(z0).arg(pVal);
+    }
 
     bool en_tran = true;
     if (getProperty("EnableTran")->Value == "true") {
@@ -174,7 +189,7 @@ QString Source_ac::xyce_netlist()
     QString f = spicecompat::normalize_value(getProperty("f")->Value);
     s += QStringLiteral(" AC %1 ").arg(vamp);
     if (en_tran) {
-        s += QStringLiteral(" SIN 0 %1 %2").arg(vamp).arg(f);
+        s += QStringLiteral(" SIN 0 %1 %2").arg(vamp, f);
     }
     s += "\n";
     return s;
