@@ -121,6 +121,7 @@ QString Source_ac::ngspice_netlist()
     bool isNumeric = false;
     spicecompat::normalize_value(pVal).toDouble(&isNumeric);
 
+    QString vamp;
     if (isNumeric) {
       // Original behaviour: pre-compute amplitude
       double p = spicecompat::normalize_value(pVal).toDouble();
@@ -132,12 +133,11 @@ QString Source_ac::ngspice_netlist()
     } else {
       // P is a parameter name — emit a .PARAM expression and reference it
       // vamp = 2*sqrt(2) * sqrt(z0/1000) * 10^(P/20)
-      QString vamp_param = QStringLiteral("vamp_%1").arg(Name);
-      s.prepend(QStringLiteral(".PARAM %1={2*sqrt(2)*sqrt(%2/1000)*pow(10,(%3)/20)}\n")
-                    .arg(vamp_param).arg(z0).arg(pVal));
-      s += QStringLiteral(" dc 0 ac {%1}").arg(vamp_param);
-      if (en_tran) {
-        s += QStringLiteral(" SIN(0 {%1} %2)").arg(vamp_param, f);
+      vamp = QStringLiteral("'2*sqrt(2)*sqrt(%1/1000)*pow(10,(%2)/20)'")
+                 .arg(z0).arg(pVal);
+      s += QStringLiteral(" dc 0 ac %1").arg(vamp);
+      if (en_tran){
+        s += QStringLiteral(" SIN(0 %1 %2 0 0)").arg(vamp, f);
       }
     }
 
@@ -156,11 +156,22 @@ QString Source_ac::xyce_netlist()
         s += " "+ nam;   // node names
     }
     s += QStringLiteral(" port=%1 ").arg(getProperty("Num")->Value);
+    // Get source parameters
     QString s_z0 = spicecompat::normalize_value(getProperty("Z")->Value);
     double z0 = s_z0.toDouble();
-
-    // Get the power value or symbolic variable
     QString pVal = getProperty("P")->Value.trimmed();
+    QString f = spicecompat::normalize_value(getProperty("f")->Value);
+
+    bool en_tran = true;
+    if (getProperty("EnableTran")->Value == "true") {
+      en_tran = true;
+    } else {
+      en_tran = false;
+    }
+
+    // Calculate the power
+    // The power may come explicitly in the "Power" field of the component (literal value) or be part of a sweep simulation (symbolic variable).
+    // Check if P is a symbolic parameter (not a numeric dBm literal)
     bool isNumeric = false;
     double p = spicecompat::normalize_value(pVal).toDouble(&isNumeric);
 
@@ -178,15 +189,7 @@ QString Source_ac::xyce_netlist()
                       .arg(z0).arg(pVal);
     }
 
-    bool en_tran = true;
-    if (getProperty("EnableTran")->Value == "true") {
-        en_tran = true;
-    } else {
-        en_tran = false;
-    }
-
     s += QStringLiteral(" z0=%1 ").arg(s_z0);
-    QString f = spicecompat::normalize_value(getProperty("f")->Value);
     s += QStringLiteral(" AC %1 ").arg(vamp);
     if (en_tran) {
         s += QStringLiteral(" SIN 0 %1 %2").arg(vamp, f);
