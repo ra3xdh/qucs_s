@@ -412,11 +412,11 @@ void Module::registerXmlComponents(const QString& componentPath)
             foreach (const QString& name, names)
             {
                 QSharedPointer<XmlComponent> xmlComponent(new XmlComponent(
-                        name,
+                        name.trimmed(),
                         QString::fromUtf8(component->schematic_id().get()),
                         QString::fromUtf8(component->Description()).trimmed(),
-                        QString::fromUtf8(component->Models().DefaultModel().value().get()),
-                        QString::fromUtf8(component->Models().SpiceModel().value().get()),
+                        QString::fromUtf8(component->Models().DefaultModel().value().get()).replace("{names}", name.trimmed()),
+                        QString::fromUtf8(component->Models().SpiceModel().value().get()).replace("{names}", name.trimmed()),
                         nspiceNetlist,
                         nspiceNetlistInclude,
                         cdlNetlist,
