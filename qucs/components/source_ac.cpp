@@ -120,9 +120,14 @@ QString Source_ac::ngspice_netlist()
     // Check if P is a symbolic parameter (not a numeric dBm literal)
     bool isNumeric = false;
     spicecompat::normalize_value(pVal).toDouble(&isNumeric);
+    // if P is empty (unset), the port acts as a terminated port (a passive load).
+    bool isTermination = pVal.isEmpty();
 
     QString vamp;
-    if (isNumeric) {
+    if (isTermination) {
+      // Terminated port: set Vamp to 0
+      s += QStringLiteral(" dc 0 ac 0");
+    } else if (isNumeric) {
       // Original behaviour: pre-compute amplitude
       double p = spicecompat::normalize_value(pVal).toDouble();
       double vrms = sqrt(z0/1000.0) * pow(10, p/20.0);
@@ -174,9 +179,14 @@ QString Source_ac::xyce_netlist()
     // Check if P is a symbolic parameter (not a numeric dBm literal)
     bool isNumeric = false;
     double p = spicecompat::normalize_value(pVal).toDouble(&isNumeric);
+    // if P is empty (unset), the port acts as a terminated port (a passive load).
+    bool isTermination = pVal.isEmpty();
 
     QString vamp;
-    if (isNumeric) {
+    if (isTermination) {
+      // Terminated port: set Vamp to 0
+      vamp = QString::number(0);
+    } else if (isNumeric) {
       // Fixed value (not part of a parametric simulation)
       double vrms = sqrt(z0 / 1000.0) * pow(10.0, p / 20.0);
       double vamp_val = 2.0 * vrms * sqrt(2.0);
@@ -191,7 +201,7 @@ QString Source_ac::xyce_netlist()
 
     s += QStringLiteral(" z0=%1 ").arg(s_z0);
     s += QStringLiteral(" AC %1 ").arg(vamp);
-    if (en_tran) {
+    if (en_tran && !isTermination) {
         s += QStringLiteral(" SIN 0 %1 %2").arg(vamp, f);
     }
     s += "\n";
