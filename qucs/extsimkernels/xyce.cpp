@@ -79,6 +79,75 @@ void Xyce::determineUsedSimulations(QStringList *sim_lst)
 }
 
 /*!
+ * \brief Xyce::getLabelledNets gets all of the named nets in the schematic,
+ * where a named net is either a node or wire with a label.
+ * \param[in] dialect SpiceDialect whether or not this is for Xyce/NGSpice
+ * \param[out] QSet of named nets
+ */
+QSet<QString> Xyce::getLabelledNets(spicecompat::SpiceDialect dialect/*=spicecompat::SPICEXyce*/)
+{
+    if (!a_DC_OP_only) {
+        return AbstractSpiceKernel::getLabelledNets(dialect);
+    }
+
+    // NOTE: DCOP is a special case since Xyce doesn't have a "print all"
+    // Add all remaining nodes, because XYCE has no equivalent for PRINT ALL
+    QSet<QString> namedNets;
+    for (Node* pn : *a_schematic->a_Nodes) {
+        if (pn->Name == "gnd") continue;
+        namedNets.insert(pn->Name);
+    }
+    for (Component *pc : a_schematic->a_DocComps) {
+        // Probes
+        if (pc->isProbe) {
+            namedNets.insert(pc->getProbeVariable(dialect));
+        }
+        // Add DC sources
+        if ((pc->Model == "S4Q_V") || (pc->Model == "Vdc")) {
+            namedNets.insert("I("+pc->Name+")");
+        }
+    }
+    return namedNets;
+}
+
+/*! \brief Xyce::getActiveLabelledNets gets all of the named nets that is connected to
+ * an active or shorted component, in the schematic, where a named net is either a node or wire with a label.
+ * \param[in] dialect SpiceDialect whether or not this is for Xyce/NGSpice
+ * \param[out] QSet of named active nets
+ */
+QSet<QString> Xyce::getActiveLabelledNets(spicecompat::SpiceDialect dialect/*=spicecompat::SPICEXyce*/)
+{
+
+    if (!a_DC_OP_only) {
+        return AbstractSpiceKernel::getActiveLabelledNets(dialect);
+    }
+
+    // NOTE: DCOP is a special case since Xyce doesn't have a "print all"
+    // Add all node names reachable from active (non-open) components,
+    QSet<QString>activeNets;
+    for (Component *pc : a_schematic->a_DocComps) {
+        // the probe/sources are only valid if active
+        if (pc->isActive != COMP_IS_ACTIVE) continue;
+        // Probes
+        if (pc->isProbe) {
+            activeNets.insert(pc->getProbeVariable(dialect));
+        }
+        // DC sources
+        if ((pc->Model == "S4Q_V") || (pc->Model == "Vdc")) {
+            activeNets.insert("I("+pc->Name+")");
+        }
+
+        // add every node name
+        for (Port *pp : pc->Ports) {
+            Node *pn = pp->Connection;
+            if (!pn || pn->Name == "gnd") continue;
+            activeNets.insert(pn->Name);
+        }
+    }
+    return activeNets;
+}
+
+/*!
  * \brief Xyce::createNetlist
  * \param[out] stream QTextStream that associated with spice netlist file
  * \param[in] simulations The list of simulations that need to included in netlist.
@@ -102,51 +171,8 @@ void Xyce::createNetlist(
     startNetlist(stream, spicecompat::SPICEXyce);
 
     // set variable names for named nodes and wires
-    vars.clear();
-    for(Node *pn : a_schematic->a_DocNodes) {
-      if(pn->hasLabel()) {
-          if (!vars.contains(pn->label()->Name)) {
-              vars.append(pn->label()->Name);
-          }
-      }
-    }
-    for(Wire *pw : a_schematic->a_DocWires) {
-      if(pw->hasLabel()) {
-          if (!vars.contains(pw->label()->Name)) {
-              vars.append(pw->label()->Name);
-          }
-      }
-    }
-    for(Component *pc : a_schematic->a_DocComps) {
-        if (pc->isProbe) {
-            QString var_pr = pc->getProbeVariable(spicecompat::SPICEXyce);
-            if (!vars.contains(var_pr)) {
-                vars.append(var_pr);
-            }
-        }
-        /*if (pc->isEquation) {
-            Equation *eq = (Equation *)pc;
-            QStringList vars_eq;
-            eq->getDepVars(vars_eq);
-            vars.append(vars_eq);
-        }*/
-    }
-
-    if (a_DC_OP_only) {
-        // Add all remaining nodes, because XYCE has no equivalent for PRINT ALL
-        for(Node* pn : *a_schematic->a_Nodes) {
-            if ((!vars.contains(pn->Name))&&(pn->Name!="gnd")) {
-                vars.append(pn->Name);
-            }
-        }
-        // Add DC sources
-        for(Component *pc : a_schematic->a_DocComps) {
-             if ((pc->Model == "S4Q_V")||(pc->Model == "Vdc")) {
-                 vars.append("I("+pc->Name+")");
-             }
-        }
-    }
-
+    QSet<QString> validNets = getValidNets(spicecompat::SPICEXyce);
+    vars = QStringList(validNets.begin(), validNets.end());
     vars.sort();
 
     //execute simulations
@@ -407,6 +433,9 @@ void Xyce::slotFinished()
         a_output_files.append("spice4qucs.noise_log");
     }
 
+    // In case of power sweeps, modify the .res file to convert the voltage sweep into a power sweep
+    overwriteResFileWithPowerValues();
+
     if (a_netlistQueue.isEmpty()) {
         emit finished();
         emit progress(100);
@@ -479,4 +508,86 @@ void Xyce::setParallel(bool par)
         a_simulator_cmd = "\"" + QucsSettings.XyceExecutable + "\"";
         a_simulator_parameters = a_simulator_parameters + " -a ";
     }
+}
+
+void Xyce::overwriteResFileWithPowerValues()
+{
+  for (Component *pc : a_schematic->a_DocComps) {
+    if (pc->Model != ".SW" || pc->isActive != COMP_IS_ACTIVE) continue;
+
+    // Resolve the swept parameter to a schematic component
+    // The Param field may contain either a component name (e.g. "P1")
+    // or a symbolic .PARAM variable name shared by one or more Pac sources
+    // (e.g. "Pin" where P1 has P="Pin").
+    QString par = pc->getProperty("Param")->Value.trimmed();
+    Component *target = a_schematic->getComponentByName(par);
+    bool is_pac = (target != nullptr && target->Model == "Pac");
+    if (!is_pac) {
+      for (Component *c : *a_schematic->a_Components) {
+        if (c->Model == "Pac" &&
+            c->getProperty("P")->Value.trimmed() == par) {
+          target = c;
+          is_pac = true;
+          break;
+        }
+      }
+    }
+
+    // Skip if the sweep target is not an AC power source
+    if (!is_pac) continue;
+
+    // Collect the original sweep values in dBm from the sweep component
+    QString type = pc->getProperty("Type")->Value;
+    QStringList dbm_values;
+
+    if (type == "list" || type == "const") {
+      QString list_str = pc->getProperty("Values")->Value;
+      list_str.remove('[').remove(']');
+      dbm_values = list_str.split(';');
+    } else {
+      // Enumerate lin/log points from Start/Stop/Points properties
+      double start, stop, points, fac;
+      QString unit;
+      misc::str2num(pc->getProperty("Start")->Value, start, unit, fac); start *= fac;
+      misc::str2num(pc->getProperty("Stop")->Value,  stop,  unit, fac); stop  *= fac;
+      misc::str2num(pc->getProperty("Points")->Value, points, unit, fac); points *= fac;
+      double step = (stop - start) / (points - 1);
+      for (int i = 0; i < (int)points; ++i)
+        dbm_values << QString::number(start + i * step, 'g', 8);
+        }
+
+    // Get the type of simulation and adjust the name of the .res file according to that
+    QString swp_sim;
+    Component *sim_pc = a_schematic->getComponentByName(pc->getProperty("Sim")->Value);
+    if (sim_pc != nullptr) {
+      QString sim_typ = sim_pc->Model;
+      if (sim_typ == ".TR"){   swp_sim = "tran";
+      } else if (sim_typ == ".AC"){
+          swp_sim = "ac";
+      } else if (sim_typ == ".SP"){
+        swp_sim = "sp";
+      } else if (sim_typ == ".HB"){
+        swp_sim = "hb";
+      } else if (sim_typ == ".DC"){
+        swp_sim = "dc";
+      } else {
+        swp_sim = sim_typ.toLower().remove('.');
+      }
+    }
+
+    // Overwrite the .res file with the original dBm values so that
+    // convertToQucsData() uses power as the sweep axis in the dataset
+    QString res_path = QDir::toNativeSeparators(
+        a_workdir + QDir::separator() + "spice4qucs." + swp_sim + ".cir.res");
+
+    QFile res_file(res_path);
+    if (res_file.open(QFile::WriteOnly)) {
+      QTextStream rs(&res_file);
+      rs << "STEP                " << target->Name << ":P\n";
+      for (int i = 0; i < dbm_values.count(); ++i)
+        rs << QString::number(i) << "          " << dbm_values.at(i).trimmed() << "\n";
+            res_file.close();
+    }
+    break;
+  }
 }

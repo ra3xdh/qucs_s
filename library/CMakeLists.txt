@@ -5,6 +5,7 @@ Analog.lib
 AudioIC.lib
 Bridges.lib
 BJT_Extended.lib
+BJT_Darlington.lib
 Cores.lib
 Crystal.lib
 Diodes.lib
@@ -30,6 +31,8 @@ Neon.lib
 MOSFETs.lib
 NMOSFETs.lib
 OpAmps.lib
+OpAmp_140.lib
+OpAmp_544.lib
 Optocoupler.lib
 PhotovoltaicRelay.lib
 PMOSFETs.lib
@@ -70,6 +73,7 @@ xyce.blacklist
 INSTALL( FILES ${COMPLIBS} ${BLACKLIST} DESTINATION share/${QUCS_NAME}/library )
 INSTALL( DIRECTORY "symbols" DESTINATION share/${QUCS_NAME}/ )
 INSTALL( DIRECTORY "TubesExtended" DESTINATION share/${QUCS_NAME}/library)
+INSTALL( DIRECTORY "BJT_Darlington" DESTINATION share/${QUCS_NAME}/library)
 INSTALL( DIRECTORY "Optocoupler" DESTINATION share/${QUCS_NAME}/library )
 INSTALL( DIRECTORY "DualGateMOSFET" DESTINATION share/${QUCS_NAME}/library )
 INSTALL( DIRECTORY "spicelibrary" DESTINATION share/${QUCS_NAME}/ )

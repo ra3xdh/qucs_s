@@ -179,7 +179,6 @@ QString Equation::getEquations(QString sim, QStringList &dep_vars)
     getNgnutmegVars(ng_vars,ngsims);
 
     QString s;
-    dep_vars.clear();
     for (int i=0;i<Props.count()-1;i++) {
         QStringList tokens;
         QString eqn = Props.at(i)->Value;

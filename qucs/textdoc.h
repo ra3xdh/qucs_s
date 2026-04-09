@@ -31,6 +31,7 @@ Copyright (C) 2014 by Guilherme Brondani Torri <guitorri@gmail.com>
 
 class SyntaxHighlighter;
 class QString;
+class LineNumberArea;
 
 // device type flags
 #define DEV_BJT      0x0001
@@ -86,6 +87,9 @@ public:
 
   QMenu* createStandardContextMenu();
 
+  void lineNumberAreaPaintEvent(QPaintEvent *event);
+  int lineNumberAreaWidth();
+
 signals:
   void signalCursorPosChanged(int, int, QString);
   void signalFileChanged(bool);
@@ -99,13 +103,43 @@ public slots:
   void slotCursorPosChanged ();
   void slotSetChanged ();
 
+protected:
+      void resizeEvent(QResizeEvent *event) override;
+
 private:
   SyntaxHighlighter * syntaxHighlight;
   QDateTime lastLoadModTime; // Timestamp of last successful load
+  LineNumberArea *lineNumberArea;
 
 private slots:
   void highlightCurrentLine();
   bool baseSearch(const QString &, bool, bool, bool);
+
+  // Line numbering
+  void updateLineNumberAreaWidth(int newBlockCount);
+  void updateLineNumberArea(const QRect &rect, int dy);
+};
+
+// Line numbering widget
+class LineNumberArea : public QWidget
+{
+public:
+    LineNumberArea(TextDoc *editor) : QWidget(editor), codeEditor(editor)
+    {}
+
+    QSize sizeHint() const override
+    {
+        return QSize(codeEditor->lineNumberAreaWidth(), 0);
+    }
+
+protected:
+    void paintEvent(QPaintEvent *event) override
+    {
+        codeEditor->lineNumberAreaPaintEvent(event);
+    }
+
+private:
+    TextDoc *codeEditor;
 };
 
 #endif

@@ -16,6 +16,7 @@
  ***************************************************************************/
 #include "incl_script.h"
 #include "main.h"
+#include "misc.h"
 #include <QFontInfo>
 #include <QFontMetrics>
 
@@ -81,5 +82,12 @@ QString InclScript::getExpression(spicecompat::SpiceDialect dialect /* = spiceco
 {
     if (isActive != COMP_IS_ACTIVE || dialect == spicecompat::CDL)
         return QString();
-    return Props.at(0)->Value+"\n";
+
+    QString includeCode = Props.at(0)->Value;
+
+    // manually replace environment variables when using Xyce.
+    if (dialect == spicecompat::SPICEXyce) {
+      includeCode = misc::expandEnvVars(includeCode);
+    }
+    return includeCode + "\n";
 }

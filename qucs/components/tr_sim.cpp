@@ -111,14 +111,21 @@ QString TR_Sim::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
     Npoints = Props.at(3)->Value.toDouble();
     Tstep = (Tstop-Tstart)/(Npoints-1);
 
-    s += QStringLiteral(" %1 %2 %3 ").arg(Tstep).arg(Tstop).arg(Tstart);
+    if (dialect == spicecompat::SPICEXyce) {
+      // Force fixed output interval equal to Tstep so that parameter sweeps
+      // produce the same number of time points for every step.
+      // Without this Xyce uses adaptive internal timesteps giving unequal point counts.
+      // This makes Qucs-S unable to load the data as it assumes the same time vector
+      // for all iterations.
+      s += QStringLiteral(" %1 %2 %3 %4").arg(Tstep).arg(Tstop).arg(Tstart).arg(Tstep);
+    } else {
+      s += QStringLiteral(" %1 %2 %3 ").arg(Tstep).arg(Tstop).arg(Tstart);
+      QString max_step = spicecompat::normalize_value(getProperty("MaxStep")->Value);
+      if (max_step!="0") s+= max_step;
+}
 
-    QString max_step = spicecompat::normalize_value(getProperty("MaxStep")->Value);
-    if (max_step!="0") s+= max_step;
+    if (Props.at(18)->Value == "no") s += " UIC";
 
-    if (dialect != spicecompat::SPICEXyce) { // Xyce ignores this parameter
-        if (Props.at(18)->Value == "no") s += " UIC";
-    }
     s += "\n";
     if (dialect != spicecompat::SPICEXyce) s.remove(0,1);
     return s.toLower();

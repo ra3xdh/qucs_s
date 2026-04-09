@@ -46,6 +46,9 @@ public:
   bool is_connected(Wire* wire) const { return std::ranges::find(m_wires, wire) != m_wires.end(); }
   bool is_connected(Component* comp) const { return std::ranges::find(m_components, comp) != m_components.end(); }
 
+  bool isOverlapping(int, int) const;
+  bool isOverlapping(const Node*) const;
+
   std::size_t conn_count() const { return m_wires.size() + m_components.size(); }
 
   Wire* anyWire() const { return m_wires.empty() ? nullptr : m_wires.front(); }

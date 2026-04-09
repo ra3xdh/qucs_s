@@ -387,6 +387,18 @@ void Component::paintScheme(Schematic *p) {
         p->PostPaintEvent(_Ellipse, cx + pa->x, cy + pa->y, pa->w, pa->h);
 }
 
+bool Component::moveCenter(int dx, int dy) noexcept {
+    bool moved = Element::moveCenter(dx, dy);
+
+    if (moved) {
+        // We also need to move every port node
+        for (auto* pp : Ports) {
+            setNodePortCenter(pp);
+        }
+    }
+    return moved;
+}
+
 // -------------------------------------------------------
 // Rotates the component 90 counter-clockwise around its center
 bool Component::rotate() noexcept {
@@ -411,6 +423,9 @@ bool Component::rotate() noexcept {
         tmp = -p2->x;
         p2->x = p2->y;
         p2->y = tmp;
+
+        // rotate node(s)
+        setNodePortCenter(p2);
     }
 
     // rotate all arcs
@@ -515,8 +530,11 @@ bool Component::mirrorX() noexcept {
     }
 
     // mirror all ports
-    for (Port *p2: Ports)
+    for (Port *p2: Ports) {
         p2->y = -p2->y;
+        // mirror node(s)
+        setNodePortCenter(p2);
+    }
 
     // mirror all arcs
     for (qucs::Arc *p3: Arcs) {
@@ -585,8 +603,11 @@ bool Component::mirrorY() noexcept {
     }
 
     // mirror all ports
-    for (Port *p2: Ports)
+    for (Port *p2: Ports) {
         p2->x = -p2->x;
+        // mirror node(s)
+        setNodePortCenter(p2);
+    }
 
     // mirror all arcs
     for (qucs::Arc *p3: Arcs) {
@@ -644,6 +665,27 @@ bool Component::mirrorY() noexcept {
     return true;
 }
 
+/**
+ * Moves the node connected to port `p` so its center aligns with the port's center.
+ * The new center is calculated as: (component center + port_offset)
+ *
+ * @param p The port whose connected node will be repositioned
+ * @return True if a node was moved, false otherwise
+ *
+ */
+bool Component::setNodePortCenter(Port* p) {
+    Node* node = p->Connection;
+
+    if (node != nullptr) {
+        // use the center of the component, and then the port as an offset
+        auto [ccx, ccy] = center();
+        node->moveCenterTo(ccx + p->x, ccy + p->y);
+        return true;
+    }
+
+    return false;
+}
+
 // -------------------------------------------------------
 QString Component::netlist() {
     QString s = Model + ":" + Name;
@@ -654,7 +696,7 @@ QString Component::netlist() {
 
     // output all properties
     QStringList no_sim_props;
-    no_sim_props<<"Symbol"<<"UseGlobTemp";
+    no_sim_props<<"Symbol"<<"UseGlobTemp"<<"LibName"<<"CompName";
     for (const auto &p2 : Props) {
       if (!no_sim_props.contains(p2->Name)) {
         s += " " + p2->Name + "=\"" + p2->Value + "\"";

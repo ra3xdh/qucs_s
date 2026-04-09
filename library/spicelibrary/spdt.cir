@@ -1,0 +1,9 @@
+* SPDT switch
+
+.subckt SPDT COM NO NC POS NEG vt=1.0 vh=0.25 ron=0.1 roff=1e12
+S1 COM NO POS NEG MYSW1 OFF
+S2 COM NC NEG POS MYSW2 ON
+.model MYSW1 SW(Ron={ron} Roff={roff} Vh={vh} Vt={vt})
+.model MYSW2 SW(Ron={ron} Roff={roff} Vh={vh} Vt={-vt})
+.ends
+

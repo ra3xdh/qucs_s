@@ -62,6 +62,7 @@ private slots:
   // void slotEditFile();
 
   void slotFillFromSpice();
+  void slotSelectModel();
 
 private:
   QIntValidator* intVal;
@@ -73,6 +74,8 @@ private:
   QTextEdit* eqnEditor;
   QComboBox* eqnSimCombo = nullptr;
   QCheckBox* eqnExportCheck = nullptr;
+  QCheckBox* cmdConsoleCheck = nullptr;  // CMD console toggle
+  QCheckBox* cmdHoldCheck = nullptr;     // CMD hold toggle
 
   Component* component;
   Schematic* document;
@@ -89,6 +92,7 @@ private:
   
   // TODO: It would be better for simulations with sweeps to have a flag saying so.
   bool isEquation;
+  bool isPlainText;
   bool hasSweep;
   bool hasFile = false;
   QStringList sweepProperties;
@@ -137,6 +141,32 @@ private:
   QTextCharFormat keywordFormat;
   QTextCharFormat quotationFormat;
   QTextCharFormat functionFormat;
+};
+
+/// @brief Syntax highlighter for shell scripts used in the CMD component.
+class ShellHighlighter : public QSyntaxHighlighter
+{
+  Q_OBJECT
+public:
+  /// @brief Constructor highlighter
+  /// @param parent The text document to apply highlighting to
+  ShellHighlighter(QTextDocument* parent);
+protected:
+  /// @brief Called automatically by Qt for each line of text that needs updating.
+  /// @param text The current line of text to highlight.
+  void highlightBlock(const QString &text) override;
+private:
+  struct HighlightingRule {
+    QRegularExpression pattern;
+    QTextCharFormat format;
+  };
+  QList<HighlightingRule> highlightingRules;
+
+  /// Highlight style for different fields
+  QTextCharFormat keywordFormat;
+  QTextCharFormat commentFormat;
+  QTextCharFormat stringFormat;
+  QTextCharFormat varFormat;
 };
 
 class SimpleEqnDialog : public QDialog

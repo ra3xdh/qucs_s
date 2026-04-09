@@ -109,30 +109,8 @@ void Ngspice::createNetlist(
     }
 
     // set variable names for named nodes and wires
-    vars.clear();
-    for(Node *pn : a_schematic->a_DocNodes) {
-      if(pn->hasLabel()) {
-          if (!vars.contains(pn->label()->Name)) {
-            vars.append(pn->label()->Name);
-          }
-      }
-    }
-    for(Wire *pw : a_schematic->a_DocWires) {
-      if(pw->hasLabel()) {
-          if (!vars.contains(pw->label()->Name)) {
-              vars.append(pw->label()->Name);
-          }
-      }
-    }
-
-    for(Component *pc : a_schematic->a_DocComps) {
-        if (pc->isProbe) {
-            QString var_pr = pc->getProbeVariable();
-            if (!vars.contains(var_pr)) {
-                vars.append(var_pr);
-            }
-        }
-    }
+    QSet<QString> validNets = getValidNets();
+    vars = QStringList(validNets.begin(), validNets.end());
     vars.sort();
 
     stream << "\n.control\n\n";          //execute simulations
@@ -170,6 +148,12 @@ void Ngspice::createNetlist(
         bool hasParSWP = false;
         bool hasDblSWP = false;
         QString cnt_var;
+
+        // track whether we want to netlist equations
+        bool netlist_equations = true;
+        // track whether we want the dependent vars (e.g. equation variables)
+        // to be included in the save node statement
+        bool write_dep_vars = true;
 
         // Duplicate .PARAM in .control section. They may be used in euqations
         for (Component* pc1 : a_schematic->a_DocComps) {
@@ -272,9 +256,14 @@ void Ngspice::createNetlist(
             } else {  // Set Noise1 plot to output noise spectrum
                 spiceNetlist.append("setplot noise1\n");
             }
-            nods = "noise1.all";
+            // NOTE: if we set 'setplot noiseX', and we use 'all'
+            // it will be the equivalent of noiseX.all
+            nods = "all";
+            // since 'all' is included, we don't need to write the dependent variables explicitly
+            write_dep_vars = false;
         } else if ( sim_typ == ".PZ" ) {
             pzSims++;
+            netlist_equations = false;
             spiceNetlist.append(pc->getSpiceNetlist());
             QString out = "spice4qucs." + sim_name + ".cir.pz";
             // Add it twice for poles and zeros
@@ -282,10 +271,12 @@ void Ngspice::createNetlist(
             outputs.append(out);
         } else if ( sim_typ == ".SENS" ) {
             dcSims++;
+            netlist_equations = false;
             spiceNetlist.append(pc->getSpiceNetlist());
             outputs.append("spice4qucs." + sim_name + ".ngspice.sens.dc.prn");
         } else if ( sim_typ == ".SENS_AC" ) {
             freqSims++;
+            netlist_equations = false;
             spiceNetlist.append(pc->getSpiceNetlist());
             outputs.append("spice4qucs." + sim_name + ".sens.prn");
         } else if ( sim_typ == ".SP" ) {
@@ -311,14 +302,16 @@ void Ngspice::createNetlist(
         } else
             continue;
 
-        if ( (sim_typ != ".PZ") && (sim_typ != ".SENS") && (sim_typ != ".SENS_AC") ) {
+        if (netlist_equations) {
             QStringList dep_vars;
             for (Component* pc1 : a_schematic->a_DocComps) {
                 if ( pc1->isActive != COMP_IS_ACTIVE ) continue;
                 if ( pc1->Model == "Eqn" || pc1->Model == "NutmegEq" )
                     spiceNetlist.append(pc1->getEquations(sim_name, dep_vars));
             }
-            nods.append(' ' + dep_vars.join(' '));
+            if (write_dep_vars) {
+                nods.append(' ' + dep_vars.join(' '));
+            }
         }
 
         if ( sim_typ == ".DC" ) {

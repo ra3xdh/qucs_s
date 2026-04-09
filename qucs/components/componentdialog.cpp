@@ -34,6 +34,7 @@
 #include "settings.h"
 #include "misc.h"
 #include "fillfromspicedialog.h"
+#include "selfromlibdialog.h"
 
 #include <cmath>
 
@@ -354,6 +355,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   // Try to work out what kind of component this is.
   isEquation = QStringList({"Eqn", "NutmegEq", "SpiceIC", "SpicePar", "SpiceOptions", "SpiceFunc", "SpiceCSPar", "SpGlobPar",
                             "SpiceNodeset"}).contains(component->Model);
+  isPlainText = QStringList({"CMD"}).contains(component->Model);
   hasSweep = QStringList({".AC", ".DISTO", ".NOISE", ".SW", ".SP", ".TR"}).contains(component->Model);
   hasFile = component->Props.count() > 0 && component->Props.at(0)->Name == "File";
 
@@ -370,7 +372,7 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
   paramsHiddenBySim["Param"] = QStringList{".AC", ".DISTO", ".SP", ".NOISE", ".TR"};
 
   // Setup the dialog according to the component kind.
-  if (isEquation)
+  if (isEquation || isPlainText)
   {
     // Create the equation editor.
     QGroupBox* editorGroup = new QGroupBox(tr("Equation Editor"));
@@ -388,23 +390,38 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
     QFont font("Courier", 10);   
     eqnEditor = new QTextEdit();
     eqnEditor->setFont(font);
-    new EqnHighlighter("ngspice", eqnEditor->document());
+    // Apply highlightning
+    if (isPlainText){
+      new ShellHighlighter(eqnEditor->document());
+    } else{
+      new EqnHighlighter("ngspice", eqnEditor->document());
+    }
     editorLayout->addWidget(eqnEditor, 2);
 
     // Qucsator equations can choose whether to export values.
-    if (!paramsHiddenBySim["Export"].contains(component->Model))
-    {
+    // This creates a checkbox for either
+    // 1) In case of a system command component, run the commands inside a terminal emulator
+    // or
+    // 2) In case of an equation block, export the equations to the dataset
+    if (isPlainText) {
+      QHBoxLayout* checkLayout = new QHBoxLayout;
+      cmdConsoleCheck = new QCheckBox(tr("Open console window"), this);
+      cmdHoldCheck = new QCheckBox(tr("Keep terminal open after execution"), this);
+      checkLayout->addWidget(cmdConsoleCheck);
+      checkLayout->addWidget(cmdHoldCheck);
+      checkLayout->addStretch();
+      editorLayout->addLayout(checkLayout);
+    } else if (!paramsHiddenBySim["Export"].contains(component->Model)) {
       QHBoxLayout* exportLayout = new QHBoxLayout;
       eqnExportCheck = new QCheckBox(tr("Put result in dataset"), this);
       exportLayout->addWidget(eqnExportCheck);
       exportLayout->addStretch();
       editorLayout->addLayout(exportLayout);
     }
-
     updateEqnEditor();
   }
 
-  else 
+  else
   {
     if (hasSweep)
     {
@@ -436,7 +453,21 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
 
       // Setup the widgets as per the stored type.
       sweepParamWidget["Sim"]->setOptions(getSimulationList(false));
-      sweepParamWidget["Type"]->setOptions({"lin", "log", "list"});
+      if (QucsSettings.DefaultSimulator == spicecompat::simNgspice ||
+          QucsSettings.DefaultSimulator == spicecompat::simXyce) {
+        if (component->Model != ".SW" &&
+            component->getProperty("Type")->Value != "list") {
+          if (component->Model == ".TR") {
+            sweepParamWidget["Type"]->setOptions({"lin"});
+          } else {
+            sweepParamWidget["Type"]->setOptions({"lin", "log"});
+          }
+        } else {
+          sweepParamWidget["Type"]->setOptions({"lin", "log", "list"});
+        }
+      } else {
+        sweepParamWidget["Type"]->setOptions({"lin", "log", "list"});
+      }
       updateSweepProperty("All");
 
       // Create the properties page and add it to the tab widget.
@@ -464,7 +495,12 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       propertyTableLayout->addLayout(spiceButtonLayout);
       QPushButton* spiceButton = new QPushButton(tr("Populate parameters from SPICE file..."), this);
       connect(spiceButton, &QPushButton::released, this, &ComponentDialog::slotFillFromSpice);
+
+      QPushButton* selectModelButton = new QPushButton(tr("Select model from Library"), this);
+      connect(selectModelButton, &QPushButton::released, this, &ComponentDialog::slotSelectModel);
+
       spiceButtonLayout->addWidget(spiceButton);
+      spiceButtonLayout->addWidget(selectModelButton);
       spiceButtonLayout->addStretch();
     }
 
@@ -710,6 +746,23 @@ void ComponentDialog::updatePropertyTable(const Component* updateComponent)
 // Updates the equation textedit with the currently stored value.
 void ComponentDialog::updateEqnEditor()
 {
+  // Save plain text components (e.g. systemcommand component)
+  if (isPlainText)
+  {
+    for (auto prop : qAsConst(component->Props)) {
+      if (prop->Name == "cmd"){
+        eqnEditor->setPlainText(prop->Value);
+      }
+      if (prop->Name == "console" && cmdConsoleCheck) {
+        cmdConsoleCheck->setCheckState(prop->Value == "yes" ? Qt::Checked : Qt::Unchecked);
+      }
+      if (prop->Name == "hold" && cmdHoldCheck) {
+        cmdHoldCheck->setCheckState(prop->Value == "yes" ? Qt::Checked : Qt::Unchecked);
+      }
+    }
+    return;
+  }
+
   QString eqnList;
 
   for (auto property : component->Props)
@@ -731,6 +784,27 @@ void ComponentDialog::updateEqnEditor()
 // Clears the current equation component and writes the context of dialog.
 void ComponentDialog::writeEquation()
 {
+  if (isPlainText)
+  {
+    // Currently, the only plainText component is the system-command component (CMD)
+    // Here it writes back the property.
+    // The command text is stored as-is — no parsing or transformation is applied,
+    // preserving multi-line scripts, comments, and blank lines exactly as the user typed them.
+
+    for (auto prop : qAsConst(component->Props)) {
+      if (prop->Name == "cmd") {
+        prop->Value = eqnEditor->document()->toPlainText().trimmed();
+      }
+      if (prop->Name == "console" && cmdConsoleCheck) {
+        prop->Value = cmdConsoleCheck->checkState() == Qt::Checked ? "yes" : "no";
+      }
+      if (prop->Name == "hold" && cmdHoldCheck){
+        prop->Value = cmdHoldCheck->checkState() == Qt::Checked ? "yes" : "no";
+      }
+    }
+    return;
+  }
+
   // Clear all old properties and free their memory.
   qDeleteAll(component->Props.begin(), component->Props.end());
   component->Props.clear();
@@ -742,11 +816,13 @@ void ComponentDialog::writeEquation()
   QString text = eqnEditor->document()->toPlainText();
   QStringList lines = text.split('\n', Qt::SkipEmptyParts);
   
-  for (const QString& line : lines)
+  for (const QString& line : qAsConst(lines))
   {
-    QStringList parts = line.split('=');
-    if (parts.count() == 2)
-      component->Props.append(new Property(parts[0].trimmed(), parts[1].trimmed(), true));
+    QString LHS = line.section('=',0,0).trimmed();
+    QString RHS = line.section('=',1).trimmed();
+    if (!LHS.isEmpty() && !RHS.isEmpty()) {
+      component->Props.append(new Property(LHS, RHS, true));
+    }
   }
 
   if (eqnExportCheck)
@@ -777,7 +853,7 @@ void ComponentDialog::slotApplyButton()
   else
     componentNameWidget->setValue(component->Name);
 
-  if (isEquation)
+  if (isEquation || isPlainText)
     writeEquation();
 
   else
@@ -1068,4 +1144,70 @@ void ComponentDialog::slotFillFromSpice()
     delete property; 
 
   delete dlg;
+}
+
+
+void ComponentDialog::slotSelectModel()
+{
+  SelFromLibDialog *dlg = new SelFromLibDialog(component);
+  int r = dlg->exec();
+  if (r == QDialog::Accepted) {
+    updatePropertyTable(component);
+  }
+  delete dlg;
+}
+
+
+ShellHighlighter::ShellHighlighter(QTextDocument* parent)
+    : QSyntaxHighlighter(parent)
+{
+  HighlightingRule rule;
+
+  // Keywords
+  keywordFormat.setForeground(QColor(0, 87, 174));
+  keywordFormat.setFontWeight(QFont::Bold);
+  const QString keywords[] = {
+      L("\\bif\\b"), L("\\bfi\\b"), L("\\bthen\\b"), L("\\belse\\b"), L("\\belif\\b"),
+      L("\\bfor\\b"), L("\\bdo\\b"), L("\\bdone\\b"), L("\\bwhile\\b"), L("\\buntil\\b"),
+      L("\\bcase\\b"), L("\\besac\\b"), L("\\bfunction\\b"), L("\\breturn\\b"),
+      L("\\bexport\\b"), L("\\blocal\\b"), L("\\becho\\b"), L("\\bread\\b"),
+      L("\\bcd\\b"), L("\\bls\\b"), L("\\bpwd\\b"), L("\\bset\\b"), L("\\bunset\\b"),
+      L("\\bsource\\b"), L("\\bexit\\b"), L("\\btest\\b"), L("\\bexec\\b"),
+      L("\\bin\\b"), L("\\bshift\\b"), L("\\btrap\\b"), L("\\bbreak\\b"), L("\\bcontinue\\b")
+  };
+  for (const QString& p : keywords) {
+    rule.pattern = QRegularExpression(p);
+    rule.format = keywordFormat;
+    highlightingRules.append(rule);
+  }
+
+  // Variables: $VAR, ${VAR}, $1, $@, etc.
+  varFormat.setForeground(QColor(0, 110, 40));
+  rule.pattern = QRegularExpression(L("\\$\\{?[A-Za-z_][A-Za-z0-9_]*\\}?|\\$[0-9@#\\*\\?\\$!\\-]"));
+  rule.format = varFormat;
+  highlightingRules.append(rule);
+
+  // Strings
+  stringFormat.setForeground(QColor(191, 3, 3));
+  rule.pattern = QRegularExpression(L("\"[^\"]*\"|'[^']*'"));
+  rule.format = stringFormat;
+  highlightingRules.append(rule);
+
+  // Comments
+  commentFormat.setForeground(QColor(137, 136, 135));
+  commentFormat.setFontItalic(true);
+  rule.pattern = QRegularExpression(L("#[^\n]*"));
+  rule.format = commentFormat;
+  highlightingRules.append(rule);
+}
+
+void ShellHighlighter::highlightBlock(const QString& text)
+{
+  for (const auto& rule : std::as_const(highlightingRules)) {
+    QRegularExpressionMatchIterator it = rule.pattern.globalMatch(text);
+    while (it.hasNext()) {
+      QRegularExpressionMatch match = it.next();
+      setFormat(match.capturedStart(), match.capturedLength(), rule.format);
+    }
+  }
 }

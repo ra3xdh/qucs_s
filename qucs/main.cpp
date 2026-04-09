@@ -560,7 +560,7 @@ int doPrint(QString schematicFileName, QString printFile,
     QString page, int dpi, QString color, QString orientation)
 {
     QucsSettings.DefaultSimulator = spicecompat::simQucsator;
-
+    Module::registerModules();
     QScopedPointer<Schematic> schematic(openSchematic(schematicFileName));
     if (!schematic)
     {

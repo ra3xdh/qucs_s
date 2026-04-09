@@ -8,16 +8,16 @@ on:
   pull_request:
     branches: [ "master", "current", "release/*" ]
   workflow_dispatch:
-  
+
 env:
   APP_NAME: "Qucs-S"
   EXECUTABLE_NAME: "qucs-s"
   PUBLISHER_NAME: "The Qucs-S Team"
   BUILD_TYPE: Release
-  QT_VERSION: 6.9.2
+  QT_VERSION: 6.10.3
   QUCS_MACOS_BIN: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/bin
   QUCS_MACOS_RESOURCES: ${{github.workspace}}/build/qucs/qucs-s.app/Contents/MacOS/share/qucs-s
-  NGSPICE_URL: https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/45/ngspice-45_64.7z
+  NGSPICE_URL: https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/46/ngspice-46_64.7z
 
 jobs:
   setup:
@@ -35,25 +35,25 @@ jobs:
         if [ "${{ github.ref_type }}" == "tag" ]; then
           VERSION=${{ github.ref_name }}
           SHORT_HASH=""
-        else 
+        else
           MAJOR_MINOR=$(cut -d. -f1-2 VERSION)
           VERSION="${MAJOR_MINOR}.99"
           # Get the short hash of the current commit
           COMMIT_HASH=$(echo ${{ github.sha }} | cut -c1-7)
           SHORT_HASH="-$COMMIT_HASH"
         fi
-        
+
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "version=$VERSION" >> $GITHUB_OUTPUT
-        
+
         echo "SHORT_HASH=$SHORT_HASH" >> $GITHUB_ENV
         echo "short_hash=$SHORT_HASH" >> $GITHUB_OUTPUT
-        
+
     - name: Print version and hash
       run: |
         echo "Qucs-S version is ${{ env.VERSION }}"
         echo "Qucs-S short hash is ${{ env.SHORT_HASH }}"
-      
+
   build-linux-appimage-qt6:
     runs-on: ubuntu-22.04
     needs: setup
@@ -106,7 +106,7 @@ jobs:
           cmake --build ${{github.workspace}}/build -j`nproc` --config ${{env.BUILD_TYPE}}
           cmake --build ${{github.workspace}}/build --target install
 
-      
+
     - name: 'Install linuxdeploy'
       run: |
           wget -q --tries=3 --wait=5 \
@@ -116,7 +116,7 @@ jobs:
           sudo apt-get install fuse libfuse2
           chmod +x linuxdeploy-x86_64.AppImage
           chmod +x linuxdeploy-plugin-qt-x86_64.AppImage
-    
+
     - name: 'Create AppImage'
       run: |
           ./linuxdeploy-x86_64.AppImage --appdir ${{github.workspace}}/AppDir \
@@ -132,7 +132,7 @@ jobs:
       with:
           name: ${{ env.APP_NAME }}-${{env.VERSION}}${{env.SHORT_HASH}}-linux-x86_64
           path: ${{ env.APP_NAME }}-${{env.VERSION}}${{env.SHORT_HASH}}-linux-x86_64.AppImage
-                 
+
   build-mac:
     needs: setup
     runs-on: ${{ matrix.os }}
@@ -144,22 +144,24 @@ jobs:
           - universal
         include:
           - arch: x86_64
-            os: macos-13
+            os: macos-15-intel
             cmake_arch: x86_64
             dmg_suffix: macOSX-x86_64
             deployment_target: 10.14
             qt_version: 6.2.4
+            xcode-ver: '16.2'
           - arch: universal
             os: macos-15
             cmake_arch: arm64;x86_64
             dmg_suffix: macOS
-            deployment_target: 12.0
+            deployment_target: 13.0
             qt_version: ""
+            xcode-ver: latest-stable
 
     steps:
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: latest-stable
+          xcode-version: ${{ matrix.xcode-ver }}
 
       - name: Set version environment variable
         run: |
@@ -174,7 +176,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-          
+
       - name: Set QT_VERSION if not defined in matrix
         run: echo "QT_VERSION=${{ matrix.qt_version != '' && matrix.qt_version || env.QT_VERSION }}" >> $GITHUB_ENV
 
@@ -224,6 +226,7 @@ jobs:
           cp -pR ${{ github.workspace }}/build/qucs-s-spar-viewer/qucs-sspar-viewer.app ${{ env.QUCS_MACOS_BIN }}
           cp -pR ${{ github.workspace }}/build/qucs-transcalc/qucs-strans.app ${{ env.QUCS_MACOS_BIN }}
           cp -pR ${{ github.workspace }}/build/qucsator_rf/src/qucsator_rf ${{ env.QUCS_MACOS_BIN }}
+          cp -pR ${{ github.workspace }}/build/rxcalc/rxcalc.app ${{ env.QUCS_MACOS_BIN }}
           cp -pR ${{ github.workspace }}/build/qucsator_rf/src/converter/qucsconv_rf ${{ env.QUCS_MACOS_BIN }}
           cp -pR ${{ github.workspace }}/examples/* ${{ env.QUCS_MACOS_RESOURCES }}/examples
           cp -pR ${{ github.workspace }}/library/*.lib ${{ env.QUCS_MACOS_RESOURCES }}/library
@@ -237,6 +240,7 @@ jobs:
           macdeployqt ${{ env.QUCS_MACOS_BIN }}/qucs-spowercombining.app
           macdeployqt ${{ env.QUCS_MACOS_BIN }}/qucs-sspar-viewer.app
           macdeployqt ${{ env.QUCS_MACOS_BIN }}/qucs-strans.app
+          macdeployqt ${{ env.QUCS_MACOS_BIN }}/rxcalc.app
           strip ${{ env.QUCS_MACOS_BIN }}/qucsator_rf
           strip ${{ env.QUCS_MACOS_BIN }}/qucsconv_rf
           codesign --force --deep --sign - ${{ github.workspace }}/build/qucs/qucs-s.app
@@ -258,7 +262,7 @@ jobs:
     defaults:
       run:
         shell: pwsh
-    steps:  
+    steps:
     - name: Disable autocrlf in Git
       run: |
         git config --global core.autocrlf false
@@ -276,7 +280,7 @@ jobs:
 
     - name: Checkout repository
       uses: actions/checkout@v4
-    
+
     - name: 'Install Qt6'
       uses: jurplel/install-qt-action@v4
       with:
@@ -295,7 +299,7 @@ jobs:
       uses: TheMrMilchmann/setup-msvc-dev@v3
       with:
         arch: x64
-      
+
     - name: 'Configure CMake'
       run: |
         cmake -B ${{github.workspace}}\build -G 'Ninja'  `
@@ -307,18 +311,17 @@ jobs:
     - name: 'Build Qucs-s'
       run: |
         cmake --build ${{github.workspace}}\build --parallel --config=${{env.BUILD_TYPE}}
-          
+
     - name: 'Cmake install'
       run: |
         cmake --build ${{github.workspace}}\build --target install
-    
+
     - name: 'Deploy Qt6 dependencies'
       run: |
         $qucs_bin_dir = "${{github.workspace}}\build\qucs-suite\bin"
         $executables = @(
           "qucs-s.exe", "qucs-sactivefilter.exe", "qucs-sattenuator.exe",
-          "qucs-sfilter.exe", "qucs-spowercombining.exe", "qucs-strans.exe",
-          "qucs-sspar-viewer.exe"
+          "qucs-sfilter.exe", "qucs-spowercombining.exe", "qucs-strans.exe"
         )
 
         $executables | ForEach-Object { windeployqt "$qucs_bin_dir\$_"  --no-translations --no-opengl-sw --no-system-d3d-compiler --no-network --no-compiler-runtime }
@@ -332,7 +335,7 @@ jobs:
         Copy-Item -Recurse -Force ngspice\Spice64\bin\ $qucs_dir
         Copy-Item -Recurse -Force ngspice\Spice64\lib\ $qucs_dir
         Copy-Item -Recurse -Force ngspice\Spice64\share\ $qucs_dir
-            
+
     - name: 'Create zip archive for release'
       run: |
         $qucs_dir = "${{github.workspace}}\build\qucs-suite"
@@ -343,7 +346,7 @@ jobs:
         Compress-Archive -Path ./bin, ./share, ./lib, ./misc -DestinationPath "${{github.workspace}}\$zipName"
         cd ${{github.workspace}}
 
-    
+
     - name: Compile .ISS to .EXE Installer
       shell: pwsh
       run: |
@@ -354,31 +357,31 @@ jobs:
       with:
         name: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC-x64
         path: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC-x64.zip
-    
+
     - name: Upload exe artifacts
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC-setup
         path: ${{ env.APP_NAME }}-${{ env.VERSION }}${{ env.SHORT_HASH }}-MSVC-setup.exe
-      
+
   build-windows:
     runs-on: ${{ matrix.config.os }}
     continue-on-error: true
-    needs: setup # Bu 'setup' işinin var olduğunu ve 'version' ile 'short_hash' çıktılarını sağladığını varsayıyoruz.
+    needs: setup
     strategy:
       fail-fast: false
       matrix:
         config:
           - os: windows-2022
             msystem: ucrt64
-            platform_tag: win64                 
+            platform_tag: win64
           - os: windows-11-arm
             msystem: clangarm64
             platform_tag: win-arm64
     defaults:
       run:
         shell: msys2 {0}
-    steps:  
+    steps:
     - name: Disable autocrlf in Git
       shell: pwsh
       run: |
@@ -409,7 +412,7 @@ jobs:
         cache: true
         update: true
         install: bison flex dos2unix curl zip p7zip
-        pacboy: cmake:p gcc:p qt6-base:p qt6-tools:p qt6-svg:p make:p ninja:p python:p gperf:p github-cli:p qt6-charts:p
+        pacboy: cmake:p gcc:p qt6-base:p qt6-tools:p qt6-svg:p qt6-multimedia:p make:p ninja:p python:p gperf:p github-cli:p
 
 
     - name: Build project with CMake
@@ -423,14 +426,14 @@ jobs:
     - name: Make install
       run: |
         cmake --build build/ --target install
-        strip build/qucs-suite/bin/*.exe 
+        strip build/qucs-suite/bin/*.exe
 
     - name: Deploy Qt6 dependencies
       run: |
-        deploy_tool="windeployqt-qt6.exe"
+        deploy_tool="windeployqt.exe"
         bin_dir="build/qucs-suite/bin"
         options="--svg --no-translations --no-system-d3d-compiler --no-network"
-        
+
         executables=(
           "qucs-s.exe" "qucs-sactivefilter.exe" "qucs-sattenuator.exe"
           "qucs-sfilter.exe" "qucs-spowercombining.exe" "qucs-strans.exe"
@@ -440,7 +443,7 @@ jobs:
         for exe in "${executables[@]}"; do
           $deploy_tool "$bin_dir/$exe" $options
         done
-          
+
     - name: Copy non-Qt DLLs to bin directory
       run: |
         shopt -s extglob
@@ -450,7 +453,7 @@ jobs:
             cp -r "$file" build/qucs-suite/bin
           fi
         done
-        
+
     - name: Add ngspice to release
       run: |
         curl -sL --retry 3 --retry-delay 5 -o ngspice.7z ${{ env.NGSPICE_URL }}
@@ -459,7 +462,7 @@ jobs:
         cp -rf ngspice/Spice64/bin/ build/qucs-suite
         cp -rf ngspice/Spice64/lib/ build/qucs-suite
         cp -rf ngspice/Spice64/share/ build/qucs-suite
-            
+
     - name: Create zip archive for release
       run: |
         mkdir -p build/qucs-suite/misc
@@ -533,7 +536,7 @@ jobs:
           echo "TAG_NAME=continuous_build" >> $GITHUB_ENV
           echo "RELEASE_NOTES=--notes \"Automated release for commit ${{ github.sha }}\"" >> $GITHUB_ENV
         fi
-          
+
     - name: Create GitHub Release
       continue-on-error: false
       run: |
@@ -554,7 +557,7 @@ jobs:
           fi
           echo "${{ env.TAG_NAME }} deleted!"
         fi
-        
+
         if [ -n "$exe_files" ] && [ -n "$zip_files" ] && [ -n "$dmg_files" ] && [ -n "$appimage_files" ]; then
           gh release create ${{ env.TAG_NAME }} \
                             $exe_files \
@@ -572,6 +575,6 @@ jobs:
           echo "No artifacts to upload."
           exit 1
         fi
-        
+
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

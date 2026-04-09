@@ -48,6 +48,7 @@ namespace misc {
   bool    Verilog_Delay(QString&, const QString&);
   QString Verilog_Param(const QString);
   bool    checkVersion(QString&);
+  QString expandEnvVars(const QString&);
 
   inline const QColor getWidgetForegroundColor(const QWidget *q)
   { return q->palette().color(q->foregroundRole()); }

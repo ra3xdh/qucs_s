@@ -27,11 +27,13 @@ public:
  ~Switch() {};
   Component* newOne();
   static Element* info(QString&, char* &, bool getNewOne=false);
+  static Element* info_spdt(QString&, char* &, bool getNewOne=false);
 
 protected:
   QString spice_netlist(spicecompat::SpiceDialect dialect = spicecompat::SPICEDefault);
   QString netlist();
   void createSymbol();
+  QString getSpiceLibrary();
 };
 
 #endif

@@ -123,6 +123,10 @@ Basic_MOSFET::Basic_MOSFET()
 	QObject::tr("parameter measurement temperature")));
   Props.append(new Property("UseGlobTemp", "yes", false,
         QObject::tr("Use global SPICE temperature")+" [yes,no]"));
+  Props.append(new Property("LibName", "Generic", false,
+                            QObject::tr("Library name")));
+  Props.append(new Property("CompName", "Generic", false,
+                            QObject::tr("Component name in library")));
 
   Name  = "T";
   SpiceModel = "M";
@@ -164,7 +168,7 @@ QString MOSFET_sub::spice_netlist(spicecompat::SpiceDialect dialect /* = spiceco
 
     QStringList spice_incompat,spice_tr;
     spice_incompat<<"Type"<<"Temp"<<"L"<<"W"<<"Ad"<<"As"<<"Pd"<<"Ps"
-                 <<"Rg"<<"N"<<"Tt"<<"Nrd"<<"Nrs"<<"Ffe"<<"UseGlobTemp";
+                 <<"Rg"<<"N"<<"Tt"<<"Nrd"<<"Nrs"<<"Ffe"<<"UseGlobTemp"<<"LibName"<<"CompName";
                               // spice-incompatible parameters
     if (dialect == spicecompat::SPICEXyce) {
         spice_tr<<"Vt0"<<"VtO"; // parameters that need conversion of names

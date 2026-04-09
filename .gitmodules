@@ -1,3 +1,9 @@
 [submodule "qucsator_rf"]
 	path = qucsator_rf
 	url = https://github.com/ra3xdh/qucsator_rf
+[submodule "rxcalc"]
+	path = rxcalc
+	url = https://github.com/arhiv6/rxcalc
+[submodule "qucs-s-spar-viewer"]
+	path = qucs-s-spar-viewer
+	url = https://github.com/andresmmera/qucs-s-spar-viewer.git

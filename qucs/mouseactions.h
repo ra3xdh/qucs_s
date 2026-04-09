@@ -19,6 +19,7 @@
 #define MOUSEACTIONS_H
 
 #include "element.h"
+#include "schematic_selection.h"
 #include <QAction>
 
 
@@ -32,6 +33,13 @@ class QMouseEvent;
 class QucsApp;
 
 extern QAction *formerAction;
+
+struct MovingState {
+  int rotated = 0;
+  bool mirrorX = false;
+  bool mirrorY = false;
+  SchematicSelection selection = {};
+};
 
 
 class MouseActions {
@@ -50,7 +58,8 @@ public:
 
   int  MAx1, MAy1,MAx2, MAy2, MAx3, MAy3;  // cache for mouse movements
   std::list<Element*> movingElements;
-  int movingRotated;
+  // movingElements transformations and selection state
+  MovingState movingState;
 
   // menu appearing by right mouse button click on component
   QMenu *ComponentMenu;
@@ -71,6 +80,8 @@ public:
   void MMoveWire2(Schematic*, QMouseEvent*);
   void MMoveMoving(Schematic*, QMouseEvent*);
   void MMoveMoving2(Schematic*, QMouseEvent*);
+  void MMoveFree(Schematic*, QMouseEvent*);
+  void MMoveFree2(Schematic*, QMouseEvent*);
   void MMovePaste(Schematic*, QMouseEvent*);
   void MMovePaste2(Schematic*, QMouseEvent*);
   void MMoveDelete(Schematic*, QMouseEvent*);
@@ -113,6 +124,7 @@ public:
   void MReleaseSelect2(Schematic*, QMouseEvent*);
   void MReleaseActivate(Schematic*, QMouseEvent*);
   void MReleaseMoving(Schematic*, QMouseEvent*);
+  void MReleaseMoveFree(Schematic*, QMouseEvent*);
   void MReleaseResizeDiagram(Schematic*, QMouseEvent*);
   void MReleasePaste(Schematic*, QMouseEvent*);
   void MReleaseResizePainting(Schematic*, QMouseEvent*);
@@ -122,6 +134,14 @@ public:
 
   void paintElementsScheme(Schematic*);
   void rightPressMenu(Schematic*, QMouseEvent*, float, float);
+
+  // Transformation of moving elements
+  void mirrorXMovingElements(Schematic*, bool doPaint=false);
+  void mirrorYMovingElements(Schematic*, bool doPaint=false);
+  void rotateMovingElements(Schematic*, bool doPaint=false);
+
+  // Helper functions
+  QPoint updateMouseMove(Schematic*, QMouseEvent*, bool onGrid=true);
 };
 
 #endif

@@ -290,13 +290,13 @@ void Module::registerModules (void) {
   REGISTER_LUMPED_1 (vProbe);
 
   //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {
-      REGISTER_LUMPED_1 (Switch);
+      REGISTER_LUMPED_2 (Switch, info, info_spdt);
   //} else {
       REGISTER_LUMPED_1 (S4Q_S);
       REGISTER_LUMPED_1 (S4Q_W);
   //}
 
-  REGISTER_LUMPED_1 (Relais);
+  REGISTER_LUMPED_2 (Relais, info, info_spdt);
 
   // sources
   REGISTER_SOURCE_1 (Volt_dc);
@@ -567,6 +567,7 @@ void Module::registerModules (void) {
   REGISTER_EQUATION_1 (SpiceCSParam);
   REGISTER_EQUATION_1 (SpiceGlobalParam);
   REGISTER_EQUATION_1 (Equation);
+  REGISTER_COMP_1 (QObject::tr("equations"), SystemCommand);
 
   // external simulation
   //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator) {

@@ -62,13 +62,26 @@ add_subdirectory( qucs-filter )
 add_subdirectory( library )
 add_subdirectory( qucs-transcalc )
 add_subdirectory( qucs-powercombining )
-add_subdirectory( qucs-s-spar-viewer )
+
+if(EXISTS ${CMAKE_SOURCE_DIR}/qucs-s-spar-viewer/CMakeLists.txt)
+    add_subdirectory( qucs-s-spar-viewer )
+else()
+    message("qucs-s-spar-viewer submodule not found. Please update submodules")
+endif()
+
 #add_subdirectory( examples )
 if(EXISTS ${CMAKE_SOURCE_DIR}/qucsator_rf/CMakeLists.txt)
     add_subdirectory(qucsator_rf)
 else()
     message("Qucsator RF submodule not found. Please update submodules")
 endif()
+
+if(EXISTS ${CMAKE_SOURCE_DIR}/rxcalc/CMakeLists.txt)
+    add_subdirectory(rxcalc)
+else()
+	message("RxCalc submodule not found. Please update submodules")
+endif()
+
 
 IF (UPDATE_TRANSLATIONS)
   file(GLOB_RECURSE FILES_TO_TRANSLATE "*.cpp" "*.h" "*.ui")

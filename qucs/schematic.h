@@ -29,6 +29,7 @@
 
 #include "qucsdoc.h"
 #include "wire_planner.h"
+#include "schematic_selection.h"
 
 #include "qt3_compat/q3scrollview.h"
 #include <QVector>
@@ -78,6 +79,26 @@ struct SubFile {
 };
 typedef QMap<QString, SubFile> SubMap;
 
+enum class FrameSize : int {
+    // No frame
+    None              = 0,
+
+    // DIN A formats
+    A6_Landscape      = 9,
+    A6_Portrait       = 10,
+    A5_Landscape      = 1,
+    A5_Portrait       = 2,
+    A4_Landscape      = 3,
+    A4_Portrait       = 4,
+    A3_Landscape      = 5,
+    A3_Portrait       = 6,
+
+    // US Letter
+    Letter_Landscape  = 7,
+    Letter_Portrait   = 8,
+};
+
+
 class Schematic : public Q3ScrollView, public QucsDoc {
   Q_OBJECT
 
@@ -108,24 +129,22 @@ public:
   */
   QRect allBoundingRect();
 
-  struct Selection {
-    QRect bounds;
-    std::vector<Component*> components;
-    std::vector<Wire*> wires;
-    std::vector<Painting*> paintings;
-    std::vector<Diagram*> diagrams;
-    std::vector<WireLabel*> labels;
-    std::vector<Marker*> markers;
-    std::vector<Node*> nodes;
-  };
-
+  using Selection = SchematicSelection;
   Selection  currentSelection() const;
+  Selection  elementsToSelection(const std::list<Element*>&) const;
+  void  decoupleElements(Selection selection, bool keepNodeLabel=false);
   bool  rotateElements();
   bool  mirrorXComponents();
   bool  mirrorYComponents();
+  // Same as above - but with an arbitrary selection
+  bool  rotateElements(Selection selection, bool doHeal=true);
+  bool  mirrorXComponents(Selection selection, bool doHeal=true);
+  bool  mirrorYComponents(Selection selection, bool doHeal=true);
+
   QPoint setOnGrid(const QPoint& p);
   void  setOnGrid(int&, int&);
   bool  elementsOnGrid();
+  bool  elementsOnGrid(Selection selection, bool doHeal=true);
 
   /**
     Zoom around a "zooming center". Zooming center is a point on the canvas,
@@ -221,8 +240,8 @@ public:
   void setFrame_Text2(const QString value) { a_Frame_Text2 = value; }
   QString getFrame_Text3() const { return a_Frame_Text3; }
   void setFrame_Text3(const QString value) { a_Frame_Text3 = value; }
-  int getShowFrame() const { return a_showFrame; }
-  void setShowFrame(int value) { a_showFrame = value; }
+  FrameSize getShowFrame() const { return a_showFrame; }
+  void setShowFrame(int value) {a_showFrame = static_cast<FrameSize>(value);}
   int getViewX1() const { return a_ViewX1; }
   int getViewY1() const { return a_ViewY1; }
   int getGridX() const { return a_GridX; }
@@ -275,7 +294,7 @@ private:
   int a_ViewX2;
   int a_ViewY2;
 
-  int a_showFrame;
+  FrameSize a_showFrame; // Frame format
   QString a_Frame_Text0;
   QString a_Frame_Text1;
   QString a_Frame_Text2;
@@ -421,6 +440,23 @@ private:
    ******************************************************************** */
 
 public:
+  // structs for node creation/deletion
+  struct NodeDisconnectResult {
+    bool disconnected;
+    bool removed;
+  };
+  struct WireDisconnectResult {
+    NodeDisconnectResult port1;
+    NodeDisconnectResult port2;
+  };
+  struct CompDisconnectResult {
+    std::vector<NodeDisconnectResult> ports;
+  };
+
+  Node* createNode(int, int) const;
+  Node* createNode(const QPoint& p) const { return createNode(p.x(), p.y()); }
+  Node* findNode(int, int) const;
+  Node* findNode(const QPoint& p) const { return findNode(p.x(), p.y()); }
   Node* provideNode(int, int);
   Node* provideNode(const QPoint& p) { return provideNode(p.x(), p.y()); }
   Node* selectedNode(int, int);
@@ -444,6 +480,8 @@ public:
   Wire* selectedWire(int, int);
   Wire* splitWire(Wire*, Node*);
   void  deleteWire(Wire*, bool remove_orphans=true);
+  WireDisconnectResult disconnectWire(Wire*, bool remove_orphans=true, bool keepNodeLabel=false);
+  void  decoupleWire(Wire*, bool keepNodeLabel=false);
 
   Marker* setMarker(int, int);
   void    markerLeftRight(bool, const std::vector<Marker*>& markers);
@@ -467,9 +505,11 @@ public:
   bool       activateSelectedComponents();
   Component* selectCompText(int, int, int&, int&) const;
   Component* searchSelSubcircuit();
-  void       deleteComp(Component*);
-  void       detachComp(Component*);
+  void       deleteComp(Component*, bool remove_orphans=true);
+  void       detachComp(Component*, bool remove_orphans=true, bool keepNodeLabel=false);
+  void       decoupleComp(Component*, bool keepNodeLabel=false);
   Component* getComponentByName(const QString& compname) const;
+  CompDisconnectResult disconnectComp(Component*, bool remove_orphans=true, bool keepNodeLabel=false);
 
   void     oneLabel(Node*);
   int      placeNodeLabel(WireLabel*);
@@ -480,6 +520,7 @@ public:
 
 private:
   void insertComponentNodes(Component*, bool);
+  NodeDisconnectResult disconnectNode(Node*, Element*, bool remove_orphans=true, bool keepNodeLabel=false) const;
 
 /* ********************************************************************
    *****  The following methods are in the file                   *****

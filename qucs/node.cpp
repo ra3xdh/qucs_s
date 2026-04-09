@@ -115,3 +115,16 @@ bool Node::moveCenter(int dx, int dy) noexcept
 
     return donor;
 }
+
+bool Node::isOverlapping(int otherX, int otherY) const {
+  return (otherX == x() && otherY == y());
+}
+
+bool Node::isOverlapping(const Node* other) const {
+  // Comparison of self is false
+  if (this == other) {
+    return false;
+  }
+
+  return isOverlapping(other->x(), other->y());
+}

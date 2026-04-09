@@ -44,6 +44,15 @@ private:
 
     void nextSimulation();
 
+    /// @brief Overwrites the .res file for power sweep simulations.
+    /// The power sources for Xyce are obtained from a AC Voltage source, so the power settings
+    /// in the "Sweep Parameters" box are converted into voltages for the Xyce netlist generation.
+    /// When Qucs-S loads the data, it looks for the sweep variables in the .res files. Since the Xyce netlist
+    /// was defined with voltages, the .res files contains voltage values.
+    /// This function "hijacks" the ,res file to show the same power sweep settings as in the "Sweep Parameter" block
+    /// @note This method is called in slotFinished(), once the simulation is complete, but before convertToQucsData()
+    void overwriteResFileWithPowerValues();
+
 public:
     void determineUsedSimulations(QStringList *sim_lst = nullptr);
     explicit Xyce(Schematic* schematic, QObject *parent = 0);
@@ -59,6 +68,8 @@ protected:
             QStringList& vars,
             QStringList& outputs);
 
+    QSet<QString> getLabelledNets(spicecompat::SpiceDialect dialect = spicecompat::SPICEXyce) override;
+    QSet<QString> getActiveLabelledNets(spicecompat::SpiceDialect dialect = spicecompat::SPICEXyce) override;
 protected slots:
     void slotFinished();
     void slotProcessOutput();

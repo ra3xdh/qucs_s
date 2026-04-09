@@ -180,7 +180,8 @@ QString VDMOS::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat:
 
 
     QStringList spice_incompat,spice_tr;
-    spice_incompat<<"Type"<<"Thermal"<<"Mul"<<"UseGlobTemp";
+    spice_incompat<<"Type"<<"Thermal"<<"Mul"
+                  <<"UseGlobTemp"<<"LibName"<<"CompName";
     QString par_str = form_spice_param_list(spice_incompat,spice_tr);
 
     QString type = getProperty("Type")->Value;

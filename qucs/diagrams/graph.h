@@ -146,7 +146,7 @@ public:
   QVector<DataX*>& mutable_axes(){return cPointsX;} // HACK
 
   void clear(){ScrPoints.resize(0);}
-  void resizeScrPoints(size_t s){assert(s>=ScrPoints.size()); ScrPoints.resize(s);}
+  void resizeScrPoints(size_t s){assert(s>=ScrPoints.size()); ScrPoints.resize(s); linesInvalidate();}
   iterator begin(){return ScrPoints.begin();}
   iterator end(){return ScrPoints.end();}
   const_iterator begin() const{return ScrPoints.begin();}
@@ -179,6 +179,10 @@ private:
   QVector<DataX*>  cPointsX;
   std::vector<ScrPt> ScrPoints; // data in screen coordinates
   Diagram const* diagram;
+
+  mutable QList<QLineF> lines;
+  mutable QDateTime     linesCalculated;
+  void linesInvalidate() {linesCalculated = QDateTime();} //Set to 'null' date
 };
 
 #endif

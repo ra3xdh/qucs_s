@@ -47,6 +47,8 @@ Switch::Switch()
   b.hidden().simulator(spicecompat::simQucsator);
   Props.append(b.property("Transition", "spline",
         QObject::tr("Resistance transition shape (Qucsator only)")+" [abrupt, linear, spline]"));
+  Props.append(new Property("Type", "SPST", true,
+                            QObject::tr("Switch type)") + "[SPST,SPDT]"));
 
   createSymbol();
   tx = x1+4;
@@ -68,10 +70,24 @@ Component* Switch::newOne()
 // -------------------------------------------------------
 Element* Switch::info(QString& Name, char* &BitmapFile, bool getNewOne)
 {
-  Name = QObject::tr("Switch");
+  Name = QObject::tr("Switch SPST");
   BitmapFile = (char *) "switch";
 
   if(getNewOne)  return new Switch();
+  return 0;
+}
+
+Element* Switch::info_spdt(QString& Name, char* &BitmapFile, bool getNewOne)
+{
+  Name = QObject::tr("Swtich SPDT");
+  BitmapFile = (char *) "switch";
+
+  if(getNewOne)  {
+    auto p = new Switch();
+    p->getProperty("Type")->Value = "SPDT";
+    p->recreate();
+    return p;
+  }
   return 0;
 }
 
@@ -98,10 +114,10 @@ QString Switch::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
   Q_UNUSED(dialect);
 
   QString s = spicecompat::check_refdes(Name,SpiceModel);
+
   QString port1 = spicecompat::normalize_node_name(Ports.at(0)->Connection->Name);
   QString port2 = spicecompat::normalize_node_name(Ports.at(1)->Connection->Name);
 
-  s += QStringLiteral(" %1 %2 control_net%3 0 switch_model%3\n").arg(port1).arg(port2).arg(Name);
 
   QString init = spicecompat::normalize_value(getProperty("init")->Value);
   QString times = spicecompat::normalize_value(getProperty("time")->Value);
@@ -109,6 +125,16 @@ QString Switch::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
   QString Ron = spicecompat::normalize_value(getProperty("Ron")->Value);
   QString Roff = spicecompat::normalize_value(getProperty("Roff")->Value);
   QString Max_duration = spicecompat::normalize_value(getProperty("MaxDuration")->Value);
+
+  if (getProperty("Type")->Value == "SPDT") {
+    QString port3 = spicecompat::normalize_node_name(Ports.at(2)->Connection->Name);
+    s = "X" + s;
+    s += QStringLiteral(" %1 %2 %3 control_net%4 0 spdt ").arg(port1).arg(port2).arg(port3).arg(Name);
+    s += QStringLiteral(" vt=0.5 vh=0.05 ron =%1 roff =%2\n").arg(Ron).arg(Roff);
+  } else {
+    s += QStringLiteral(" %1 %2 control_net%3 0 switch_model%3\n").arg(port1).arg(port2).arg(Name);
+
+  }
 
   double fac, timeValue, changingTime, maxDuration, firstTimeVal, time = 0.0;
   QString unit;
@@ -165,22 +191,15 @@ QString Switch::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
 
   s += ")\n";
 
-  s += QStringLiteral(".model switch_model%1 sw vt =0.5 ron =%2 roff =%3\n").arg(Name).arg(Ron).arg(Roff);
+  if (getProperty("Type")->Value == "SPST") {
+    s += QStringLiteral(".model switch_model%1 sw vt =0.5 ron =%2 roff =%3\n").arg(Name).arg(Ron).arg(Roff);
+  }
   return s;
 }
 
 // -------------------------------------------------------
 void Switch::createSymbol()
 {
-  if(Props.front()->Value != "on") {
-    Lines.append(new qucs::Line(-15,  0, 15,-15,QPen(Qt::darkBlue,2)));
-    y1 = -17;
-  }
-  else {
-    Lines.append(new qucs::Line(-15,  0, 16,-5,QPen(Qt::darkBlue,2)));
-    y1 = -7;
-  }
-
   Lines.append(new qucs::Line(-30,  0,-15,  0,QPen(Qt::darkBlue,2)));
   Lines.append(new qucs::Line( 17,  0, 30,  0,QPen(Qt::darkBlue,2)));
   Arcs.append(new qucs::Arc( 12, -3, 5, 5, 0, 16*360,QPen(Qt::darkBlue,2)));
@@ -190,6 +209,30 @@ void Switch::createSymbol()
   Ports.append(new Port(-30,  0));
   Ports.append(new Port( 30,  0));
 
+  if (getProperty("Type")->Value == "SPDT") {
+    Ports.append(new Port( 30,  -20));
+    Lines.append(new qucs::Line( 17,  -20, 30,  -20,QPen(Qt::darkBlue,2)));
+    Arcs.append(new qucs::Arc( 12, -23, 5, 5, 0, 16*360,QPen(Qt::darkBlue,2)));
+    Lines.append(new qucs::Line(-15,  0, 13,-18,QPen(Qt::darkBlue,2)));
+    y1 = -20;
+  } else {
+    if(Props.front()->Value != "on") {
+      Lines.append(new qucs::Line(-15,  0, 15,-15,QPen(Qt::darkBlue,2)));
+      y1 = -17;
+    }
+    else {
+      Lines.append(new qucs::Line(-15,  0, 16,-5,QPen(Qt::darkBlue,2)));
+      y1 = -7;
+    }
+  }
+
   x1 = -30;
   x2 =  30; y2 =   7;
+}
+
+QString Switch::getSpiceLibrary()
+{
+  QString f = spicecompat::getSpiceLibPath("spdt.cir");
+  QString s = QString (".INCLUDE \"%1\"\n").arg(f);
+  return s;
 }

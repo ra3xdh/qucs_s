@@ -194,7 +194,7 @@ void AbstractSpiceKernel::startNetlist(QTextStream &stream, spicecompat::SpiceDi
         for(Component *pc : a_schematic->a_DocComps) {
             if ((pc->SpiceModel==".FUNC")||
                 (pc->SpiceModel=="INCLSCR")) {
-                s = pc->getExpression();
+                s = pc->getExpression(dialect);
                 stream<<s;
             }
         }
@@ -313,6 +313,123 @@ void AbstractSpiceKernel::createSubNetlist(QTextStream &stream, bool lib)
             QucsSettings.DefaultSimulator == spicecompat::simXyce ? spicecompat::SPICEXyce : spicecompat::SPICEDefault);
     startNetlist(stream, dialect);
     stream<<".ENDS\n";
+}
+
+/*!
+ * \brief AbstractSpiceKernel::getLabelledNets gets all of the named nets in the schematic,
+ * where a named net is either a node or wire with a label.
+ * \param dialect SpiceDialect whether or not this is for Xyce/NGSpice
+ * \return QSet of named nets
+ */
+QSet<QString> AbstractSpiceKernel::getLabelledNets(spicecompat::SpiceDialect dialect)
+{
+    QSet<QString> namedNets;
+
+    // iterate over all nodes and save labels
+    for (Node *pn : a_schematic->a_DocNodes) {
+        if (pn->hasLabel()) {
+            namedNets.insert(pn->label()->Name);
+        }
+    }
+
+    // iterate over all wires and save labels
+    for (Wire *pw : a_schematic->a_DocWires) {
+        if (pw->hasLabel()) {
+            namedNets.insert(pw->label()->Name);
+        }
+    }
+
+    // iterate over all probes
+    for (Component *pc : a_schematic->a_DocComps) {
+        if (pc->isProbe) {
+            namedNets.insert(pc->getProbeVariable(dialect));
+        }
+    }
+
+    return namedNets;
+}
+
+/*!
+ * \brief AbstractSpiceKernel::getActiveLabelledNets gets all of the named nets that is connected to
+ * an active or shorted component, in the schematic, where a named net is either a node or wire with a label.
+ * \param dialect SpiceDialect whether or not this is for Xyce/NGSpice
+ * \return QSet of named active nets
+ */
+QSet<QString> AbstractSpiceKernel::getActiveLabelledNets(spicecompat::SpiceDialect dialect)
+{
+    QSet<Wire*> visitedWires;
+    QSet<QString> activeNets;
+
+    // helper function to add all nodes and wires assosciated with a given node
+    // iteratively traverses all the wires that is connected to startNode
+    auto insertNodeLabels = [&visitedWires](QSet<QString> &set, Node *startNode) {
+        if (!startNode) return;
+
+        QStack<Node*> stack;
+        stack.push(startNode);
+
+        // collect label from starting node before traversal
+        if (startNode->hasLabel()) set.insert(startNode->label()->Name);
+
+        while (!stack.isEmpty()) {
+            Node *pn = stack.pop();
+
+            for (Wire *pw : pn->wires()) {
+                if (visitedWires.contains(pw)) continue;
+                visitedWires.insert(pw);
+
+                // the label is attached to the wire itself
+                if(pw->hasLabel()) set.insert(pw->label()->Name);
+
+                // Port1/Port2 on a wire might be connected to a different wire,
+                // push the far end of the wire onto the stack for further traversal
+                Node *other = (pw->Port1 == pn) ? pw->Port2 : pw->Port1;
+                if (other) {
+                    if (other->hasLabel()) set.insert(other->label()->Name);
+                    stack.push(other);
+                }
+            }
+        }
+    };
+
+    for (Component *pc : a_schematic->a_DocComps) {
+        // we need to add both COMP_IS_SHORTED and COMP_IS_ACTIVE
+        // since COMP_IS_SHORTED adds (valid) resistors
+        if (pc->isActive == COMP_IS_OPEN) continue;
+        // we can't measure the actual probe unless active
+        if (pc->isProbe && pc->isActive == COMP_IS_ACTIVE) {
+            activeNets.insert(pc->getProbeVariable(dialect));
+        }
+        for (Port *pp : pc->Ports) {
+            insertNodeLabels(activeNets, pp->Connection);
+        }
+    }
+
+    return activeNets;
+}
+
+/*!
+ * \brief AbstractSpiceKernel::getValidNets takes the intersection between
+ * AbstractSpiceKernel::getNamedNets and abstractSpiceKernel::getActiveNets
+ * whereas, the discarded set is then the difference.
+ * \param dialect SpiceDialect whether or not this is for Xyce/NGSpice
+ * \return QSet of named active and valid nets
+ */
+QSet<QString> AbstractSpiceKernel::getValidNets(spicecompat::SpiceDialect dialect)
+{
+    QSet<QString> allNets = getLabelledNets(dialect);
+    QSet<QString> activeNets = getActiveLabelledNets(dialect);
+    QSet<QString> discardedNets = allNets - activeNets;
+
+    // log every discarded net for easier debug
+    if (!discardedNets.empty()) {
+        qDebug() << "Netlisting: filtering" << discardedNets.size() << "net(s) attached to disabled components.";
+        for (const QString &name : discardedNets) {
+            qDebug() << "    " << name;
+        }
+    }
+    // intersection between all and activeNets
+    return allNets & activeNets;
 }
 
 /*!
@@ -1280,7 +1397,9 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
         }
         if (var_list.isEmpty()) continue; // nothing to convert
         normalizeVarsNames(var_list, dataset_prefix, isCustomPrefix);
+        // prepend indep to extra_vars and extra_vars_dims
         extra_vars.prepend(var_list.first());
+        extra_vars_dims.prepend(sim_points.count());
         normalizeVarsNames(extra_vars, dataset_prefix, isCustomPrefix);
 
         QString indep = var_list.first();
@@ -1324,16 +1443,22 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             ds_stream<<"</indep>\n";
         }
 
-        int var_idx = 0;
-        for(int i=1;i<var_list.count();i++) { // output dep var
-            bool is_extra_var = false;
+        for(int i = 1 ; i < var_list.count(); i++) { // output dep var
+            QString var = var_list.at(i);
+
             bool extra_indep = false; // For XSPICE digital vars or scalar
             bool is_scalar = false;
+            // Find the correct index in extra_vars to get the dimension
+            int current_extra_idx = extra_vars.indexOf(var);
+            bool is_extra_var = (current_extra_idx != -1);
+            // Get the extra_var length if any, otherwise fallback to sim_points
+            int var_length = (is_extra_var && current_extra_idx < extra_vars_dims.count())
+                  ? extra_vars_dims.at(current_extra_idx)
+                  : sim_points.count();
+
             if (indep.isEmpty()) {
               ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(var_list.at(i)).arg(sim_points.count());
             } else {
-              QString var = var_list.at(i);
-              is_extra_var = extra_vars.contains(var);
               if (is_extra_var && !var.endsWith("_steps")) { // XSPICE digital node
                 // requires another X-variable; not time
                 QString var2 = var + "_steps";
@@ -1352,15 +1477,14 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                   if (hasParSweep) {
                     ds_stream<<QStringLiteral("<dep %1 %2>\n").arg(var).arg(swp_var);
                   } else {
-                    ds_stream<<QStringLiteral("<indep %1 %2>\n")
-                                     .arg(var).arg(extra_vars_dims.at(var_idx));
+                    ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(var).arg(var_length);
                     is_scalar = true;
                   }
                 }
               } else if (is_extra_var && var.endsWith("_steps") && // indep XSPICE digital var
                          !var.contains("(") && !var.contains(")")) {
                 extra_indep = true;
-                ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(var).arg(extra_vars_dims.at(var_idx));
+                ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(var).arg(var_length);
               } else {
                 ds_stream<<QStringLiteral("<dep %1 %2>\n").arg(var_list.at(i)).arg(indep);
               }
@@ -1369,18 +1493,17 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             int count  = 0;
             for (int idx = 0; idx < sim_points.count(); idx++) {
                 auto sim_point = sim_points.at(idx);
-                if (!extra_vars_dims.isEmpty()) {
+                if (is_extra_var) {
                   if (hasParSweep) {
-                    int var_length = extra_vars_dims.at(var_idx);
-                    if (is_extra_var && count >= var_length) {
+                    if (count >= var_length) {
                       // forward variables with dim= suffix
                       int indep_cnt = sim_points.count()/swp_var_val.count();
                       idx = idx + (indep_cnt - var_length - 1);
                       count = 0;
                       continue;
                     }
-                  } else {
-                    if (is_extra_var && idx >= extra_vars_dims.at(var_idx)) break;
+                  } else if (idx >= var_length){
+                    break;
                   }
                 }
                 if (isComplex) {
@@ -1402,7 +1525,6 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
             } else {
               ds_stream<<"</dep>\n";
             }
-            if (is_extra_var) var_idx++;
         }
     }
 

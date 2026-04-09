@@ -195,12 +195,18 @@ Node* GenericPort::node() const
 // Utils
 // --------------------------------------------------------------------------------------
 
+struct QPointCompare {
+    bool operator()(const QPoint& a, const QPoint& b) const {
+        if (a.x() != b.x()) return a.x() < b.x();
+        return a.y() < b.y();
+    }
+};
+
 class JointStateAssessor
 {
-    std::multimap<QPoint,GenericPort*> m_port_locations;
-    std::set<QPoint> m_unique_locations;
+    std::multimap<QPoint, GenericPort*, QPointCompare> m_port_locations;
+    std::set<QPoint, QPointCompare> m_unique_locations;
     Node* m_node;
-
 public:
     JointStateAssessor(Node* node, const vector<shared_ptr<GenericPort>>& ports)
         : m_node{node}
@@ -234,12 +240,12 @@ public:
         return  m_unique_locations.size() == 2;
     }
 
-    const std::multimap<QPoint,GenericPort*>& portLocations() const
+    const std::multimap<QPoint, GenericPort*, QPointCompare>& portLocations() const 
     {
         return m_port_locations;
     }
 
-    const std::set<QPoint>& uniqueLocations() const
+    const std::set<QPoint, QPointCompare>& uniqueLocations() const 
     {
         return m_unique_locations;
     }

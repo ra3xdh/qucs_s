@@ -24,6 +24,7 @@
 #endif*/
 
 #include <QDialog>
+#include <QSpinBox>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
 #include <vector>
@@ -42,6 +43,8 @@ class QTableWidgetItem;
 class QListWidgetItem;
 class QTableWidget;
 class QListWidget;
+class QCompleter; // Variable completion
+class QSpinBox; // Thickness and decimal precission widgets
 
 
 class DiagramDialog : public QDialog  {
@@ -58,8 +61,7 @@ private slots:
   void slotReadVars(int);
   void slotReadVarsAndSetSimulator(int);
   void slotTakeVar(QTableWidgetItem *item);
-//  void slotSelectGraph(int index);
-  void slotSelectGraph(QListWidgetItem*);
+  void slotSelectGraph(QTableWidgetItem*);
   void slotNewGraph();
   void slotDeleteGraph();
   void slotOK();
@@ -68,7 +70,6 @@ private slots:
   void slotSetColor();
   void slotSetGridColor();
   void slotResetToTake(const QString&);
-  void slotSetProp2(const QString&);
   void slotSetNumMode(int);
   void slotSetGridBox(int);
   void slotSetGraphStyle(int);
@@ -89,12 +90,54 @@ private slots:
 
   void slotPlotVs(int);
 
+  ///
+  /// \brief Handles key press events
+  ///
+  void keyPressEvent(QKeyEvent *event) override;
+
+  /*!
+   * \brief Sets the thickness of the currently selected graph trace.
+   *
+   * This slot is triggered when the user changes the value in the thickness
+   * spin box. It updates the Thick property of the selected graph and refreshes
+   * the graph list display to show the new thickness value.
+   *
+   * \param value The new thickness value (0-99 pixels)
+   *
+   * \note Only applies to plot-type diagrams (Rect, Polar, Smith, etc.).
+   *       Does not apply to tabular or truth table diagrams.
+   *
+   * \see slotSetPrecision(), updateGraphListItem()
+   */
+  void slotSetThickness(int);
+
+  /*!
+   * \brief Sets the decimal precision of the currently selected tabular graph.
+   *
+   * This slot is triggered when the user changes the value in the precision
+   * spin box. It updates the Precision property of the selected graph and
+   * refreshes the graph list display.
+   *
+   * \param value The number of decimal places to display (0-99)
+   *
+   * \note Only applies to tabular diagrams
+   *       Does not apply to plot-type diagrams.
+   *
+   * \see slotSetThickness(), slotSetNumMode()
+   */
+  void slotSetPrecision(int);
+
 protected slots:
     void reject();
 
 private:
   void SelectGraph(Graph*);
   void updateXVar();
+  ///
+  /// \brief Updates the content of the graph list to see the trace name along with the trace properties
+  /// \param row: Number of the row to update
+  ///
+  void updateGraphListItem(int row);
 
   Diagram *Diag;
   QString defaultDataSet;
@@ -112,10 +155,11 @@ private:
   QComboBox *LogUnitsY;
   QComboBox *LogUnitsZ;
   QTableWidget *ChooseVars;
-  QListWidget  *GraphList;
+  QTableWidget *GraphList;
 
   QVBoxLayout *all;   // the mother of all widgets
-  QLineEdit   *GraphInput, *Property2, *xLabel, *ylLabel, *yrLabel;
+  QLineEdit   *GraphInput, *xLabel, *ylLabel, *yrLabel;
+  QSpinBox    *thicknessSpin, *precisionSpin;
   QCheckBox   *GridOn, *GridLogX, *GridLogY, *GridLogZ;
   QCheckBox   *manualX, *manualY, *manualZ, *hideInvisible;
   QLineEdit   *startX, *stepX, *stopX;
@@ -124,12 +168,30 @@ private:
   QLineEdit   *rotationX, *rotationY, *rotationZ;
   QLabel      *GridLabel1, *GridLabel2, *Label1, *Label2, *Label3, *Label4,
               *NotationLabel;
+  QLabel      *thicknessLabel, *precisionLabel;
   QComboBox   *PropertyBox, *GridStyleBox, *yAxisBox, *NotationBox;
   QPushButton *ColorButt, *GridColorButt;
   QSlider     *SliderRotX, *SliderRotY, *SliderRotZ;
   Cross3D     *DiagCross;
   bool changed, transfer, toTake;
   std::vector<std::unique_ptr<Graph>>  Graphs;
+
+  ////////////////////////////////////////////////
+  // Variable completion
+  /**
+   * @brief Autocompleter for the GraphInput line edit widget.
+   *
+   * @see updateCompleter()
+   */
+  QCompleter *graphCompleter;
+
+  ///
+  /// \brief Updates the autocomplete model for the GraphInput line edit.
+  /// @see graphCompleter;
+  ///
+  void updateCompleter();
+  ////////////////////////////////////////////////
+
 };
 
 #endif
