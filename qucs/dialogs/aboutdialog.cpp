@@ -64,7 +64,7 @@ AboutDialog::AboutDialog(QWidget *parent)
      "Hampton Morgan - " + tr("Documentation"),
      "Iwbnwif Yiw - " + tr("Refactoring, general improvements"),
      "Thomas Zecha - " + tr("Microelectronics PDK support"),
-     "Maria Dubinina - " + tr("testing, general bugfixes")
+     "Torleif Skår - " + tr("General improvements"),
   }};
   currAuths = {{
     "Guilherme Brondani Torri - " + tr("GUI programmer, Verilog-A dynamic loader"),
@@ -90,7 +90,8 @@ AboutDialog::AboutDialog(QWidget *parent)
       "Gunther Kraut - " + tr("equation solver contributions, exponential sources, author of documentation"),
       "Andrea Zonca - " + tr("temperature model for rectangular waveguide"),
       "Clemens Novak - " + tr("GUI programmer"),
-      "You-Tang Lee (YodaLee) - " + tr("GUI programmer, Qt4 porter")
+      "You-Tang Lee (YodaLee) - " + tr("GUI programmer, Qt4 porter"),
+      "Maria Dubinina - " + tr("Qucs-S testing, general bugfixes")
   }};
 
   trAuths = {{
