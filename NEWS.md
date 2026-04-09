@@ -1,3 +1,37 @@
+# Qucs-S 26.1.0
+
+## New features
+
+* Implemented advanced RF circuit synthesis tool by @andersmmerra #1434
+  Old filter design tools are candidates for deprecation in the next version.
+* RxCalc utility implementing multi-stage receiver calculation by @arhiv6 is integrated with Qucs-S #1463
+* Added possibility to select BJT, JFET, MOSFET, and Diode from library using a button in device properties dialog #1478
+* Added shortcut manager #1528
+* Update Application settings->location UI #1613
+* Added SPDT switches and relay #1602
+* Added system command component #1606
+
+## Library update
+
+* Added Darlington BJT library #1546
+* Added SPICE models for USSR opamps #1586
+
+## General improvements and bugfixes
+
+* Show line numbers in text editor #1520
+* Fixed bug with SPICE netlist generation for multiple Qucs equation blocks #1557
+* Fixed environment variables expansion for Xyce #1610
+* Fixed SPICE AM sources #1587
+* Fixed SPICE netlist generation if schematic contains dangling nets #1594
+* Improved graph performance when rendering huge points number #1598 #1600
+* Added DIN A6 schematic frame #1554
+* Refactoring and bugfixes in schematic editor by @tskaar #1514 #1523 #1559 #1560
+* Improved rotation in schematic editor #1488
+
+## Localization
+
+* Updated Russian and Italian translation #1464 and #1490
+
 # Qucs-S 25.2.0
 
 ## New features
