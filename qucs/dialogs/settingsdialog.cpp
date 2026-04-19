@@ -137,6 +137,12 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
     addFrameItem(Combo_Frame, tr("no Frame"),          0);
 
     // DIN A formats
+    addFrameItem(Combo_Frame, tr("DIN A0 landscape"), 15);
+    addFrameItem(Combo_Frame, tr("DIN A0 portrait"),  16);
+    addFrameItem(Combo_Frame, tr("DIN A1 landscape"), 13);
+    addFrameItem(Combo_Frame, tr("DIN A1 portrait"),  14);
+    addFrameItem(Combo_Frame, tr("DIN A2 landscape"), 11);
+    addFrameItem(Combo_Frame, tr("DIN A2 portrait"),  12);
     addFrameItem(Combo_Frame, tr("DIN A3 landscape"),  5);
     addFrameItem(Combo_Frame, tr("DIN A3 portrait"),   6);
     addFrameItem(Combo_Frame, tr("DIN A4 landscape"),  3);

@@ -320,7 +320,13 @@ bool Schematic::sizeOfFrame(int &xall, int &yall)
     case FrameSize::A6_Landscape: xall =  660; yall =  465; break; // DIN A6 landscape
     case FrameSize::A6_Portrait:  xall =  465; yall =  660; break; // DIN A6 portrait
     // A7 and above formats are too small and the title box doesn't fit in the frame
-    // A0, A1, and A2 are huge
+    // NOTE: A0, A1, and A2 are very large formats
+    case FrameSize::A2_Landscape: xall = 3315; yall = 2295; break; // DIN A2 landscape
+    case FrameSize::A2_Portrait:  xall = 2295; yall = 3315; break; // DIN A2 portrait
+    case FrameSize::A1_Landscape: xall = 5100; yall = 3315; break; // DIN A1 landscape
+    case FrameSize::A1_Portrait:  xall = 3315; yall = 5100; break; // DIN A1 portrait
+    case FrameSize::A0_Landscape: xall = 7650; yall = 5100; break; // DIN A0 landscape
+    case FrameSize::A0_Portrait:  xall = 5100; yall = 7650; break; // DIN A0 portrait
 
     // US letter format
     case FrameSize::Letter_Landscape: xall = 1414; yall = 1054; break; // Letter landscape

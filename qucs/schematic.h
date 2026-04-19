@@ -84,6 +84,8 @@ enum class FrameSize : int {
     None              = 0,
 
     // DIN A formats
+    // A6 format was added later, so its index must be >8 to guarantee backward compatibility with older Qucs-S
+    // versions.
     A6_Landscape      = 9,
     A6_Portrait       = 10,
     A5_Landscape      = 1,
@@ -92,6 +94,12 @@ enum class FrameSize : int {
     A4_Portrait       = 4,
     A3_Landscape      = 5,
     A3_Portrait       = 6,
+    A2_Landscape      = 11,
+    A2_Portrait       = 12,
+    A1_Landscape      = 13,
+    A1_Portrait       = 14,
+    A0_Landscape      = 15,
+    A0_Portrait       = 16,
 
     // US Letter
     Letter_Landscape  = 7,
