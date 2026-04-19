@@ -1919,8 +1919,14 @@ bool QucsApp::saveAs()
       // if no extension was specified or is unknown
       if (!isTextDocument (w))
       {
-        // assume it is a schematic
-        s += ".sch";
+        // if it's a symbol, we add .sym
+        Schematic *sch = dynamic_cast<Schematic*>(Doc);
+        if (sch != nullptr && sch->getIsSymbolOnly()) {
+          s += ".sym";
+        } else {
+          // otherwise assume it is a schematic
+          s += ".sch";
+        }
       }
     }
 
