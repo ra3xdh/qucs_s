@@ -198,10 +198,15 @@ void Xyce::createNetlist(
         return;
     }
 
-    QString sim = simulations.first();
+    // In case we want to save the netlist, the simulations list might be empty,
+    // guard against that case.
+    QString sim = simulations.isEmpty() ? QString() : simulations.first();
     QStringList spar_vars;
     for(Component *pc : a_schematic->a_DocComps) { // Xyce can run
        if(pc->isSimulation && pc->isActive == COMP_IS_ACTIVE) {                        // only one simulations per time.
+           // if we don't have any active simulations, skip the netlisting here
+           if (sim.isEmpty()) continue;
+
            QString sim_typ = pc->Model;              // Multiple simulations are forbidden.
            QString s = pc->getSpiceNetlist(spicecompat::SPICEXyce);
            if ((sim_typ==".AC")&&(sim=="ac")) stream<<s;
@@ -259,6 +264,12 @@ void Xyce::createNetlist(
            }
            if ((sim_typ==".DC")) stream<<s;
        }
+    }
+
+    // In the case we have no simulations, end the netlisting here
+    if (sim.isEmpty()) {
+        stream<<".END\n";
+        return;
     }
 
     if (sim.startsWith("XYCESCR")) {
