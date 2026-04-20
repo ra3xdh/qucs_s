@@ -302,6 +302,7 @@ int spicecompat::getPins(const QString &file, const QString &compname, QStringLi
                 break;
               } else {
                 pin_names.append(pin);
+                r++;
               }
             }
           } else {
@@ -325,10 +326,9 @@ int spicecompat::getPins(const QString &file, const QString &compname, QStringLi
                 if (!s1.contains('=') &&
                    (pp.toLower() != "params:")) {
                     pin_names.append(s1);
+                    r++;
                 }
             }
-            r = pin_names.count();
-            //break;
         }
     }
 
