@@ -411,6 +411,15 @@ ComponentDialog::ComponentDialog(Component* schematicComponent, Schematic* schem
       checkLayout->addWidget(cmdHoldCheck);
       checkLayout->addStretch();
       editorLayout->addLayout(checkLayout);
+
+
+      QHBoxLayout* terminalLayout = new QHBoxLayout;
+      terminalLayout->addWidget(new QLabel(tr("Terminal emulator:"), this));
+      cmdTerminalEdit = new QLineEdit(this);
+      cmdTerminalEdit->setPlaceholderText(tr("Leave empty for auto-detection"));
+      terminalLayout->addWidget(cmdTerminalEdit);
+      editorLayout->addLayout(terminalLayout);
+
     } else if (!paramsHiddenBySim["Export"].contains(component->Model)) {
       QHBoxLayout* exportLayout = new QHBoxLayout;
       eqnExportCheck = new QCheckBox(tr("Put result in dataset"), this);
@@ -759,6 +768,9 @@ void ComponentDialog::updateEqnEditor()
       if (prop->Name == "hold" && cmdHoldCheck) {
         cmdHoldCheck->setCheckState(prop->Value == "yes" ? Qt::Checked : Qt::Unchecked);
       }
+      if (prop->Name == "terminal" && cmdTerminalEdit) {
+        cmdTerminalEdit->setText(prop->Value);
+      }
     }
     return;
   }
@@ -800,6 +812,9 @@ void ComponentDialog::writeEquation()
       }
       if (prop->Name == "hold" && cmdHoldCheck){
         prop->Value = cmdHoldCheck->checkState() == Qt::Checked ? "yes" : "no";
+      }
+      if (prop->Name == "terminal" && cmdTerminalEdit) {
+        prop->Value = cmdTerminalEdit->text().trimmed();
       }
     }
     return;

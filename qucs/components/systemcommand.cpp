@@ -42,6 +42,7 @@ SystemCommand::SystemCommand()
   Props.append(new Property("cmd", "", true, "System command to run after simulation"));
   Props.append(new Property("console", "yes", true, "Open console window [yes, no]"));
   Props.append(new Property("hold", "no", false, "Keep terminal open after execution [yes, no]"));
+  Props.append(new Property("terminal", "", false, "Terminal emulator to use (e.g. xterm, gnome-terminal). Leave empty for auto-detection"));
 }
 
 SystemCommand::~SystemCommand()

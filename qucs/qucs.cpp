@@ -4007,6 +4007,8 @@ void QucsApp::runPostSimCommands(Schematic* sch)
     QString console = c->Props.count() > 1 ? c->Props.at(1)->Value.trimmed() : "no";
     // Keep the terminal open after execution
     QString hold    = c->Props.count() > 2 ? c->Props.at(2)->Value.trimmed() : "no";
+    // Terminal emulator
+    QString terminal = c->Props.count() > 3 ? c->Props.at(3)->Value.trimmed() : "";
     if (cmd.isEmpty()) {
       continue;
     }
@@ -4045,7 +4047,12 @@ void QucsApp::runPostSimCommands(Schematic* sch)
             QProcess::startDetached("osascript", {"-e", script});
       #else
       // Linux: try common terminal emulators in order of preference
-      QStringList terms = {"konsole", "gnome-terminal", "xfce4-terminal", "lxterminal", "xterm"};
+      QStringList terms;
+      if (!terminal.isEmpty()){
+        terms.append(terminal);
+      } else {
+        terms = {"konsole", "gnome-terminal", "xfce4-terminal", "lxterminal", "xterm", "qterminal", "ptyxis"};
+      }
       bool launched = false;
       for (const QString& term : terms) {
         QString exe = QStandardPaths::findExecutable(term);
@@ -4068,9 +4075,17 @@ void QucsApp::runPostSimCommands(Schematic* sch)
         }
       }
       if (!launched) {
-        QMessageBox::warning(nullptr, tr("System Command"),
-                             tr("Could not find a terminal emulator. Tried: xterm, konsole, gnome-terminal.\n"
-                                "Install one or run without console mode."));
+        if (!terminal.isEmpty()){
+          // User-defined terminal emulator. If it reaches this point, it didn't work
+          QMessageBox::warning(nullptr, tr("System Command"),
+                               tr("Could not launch the specified terminal emulator '%1'.\n"
+                                  "Check the 'terminal' property or leave it empty for auto-detection.").arg(terminal));
+        } else {
+          // Mo terminal specified
+          QMessageBox::warning(nullptr, tr("System Command"),
+                               tr("Could not find a terminal emulator. Tried: xterm, konsole, gnome-terminal, qterminal.\n"
+                                  "Install one or run without console mode."));
+        }
       }
 #endif
     } else {

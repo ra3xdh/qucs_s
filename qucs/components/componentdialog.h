@@ -76,6 +76,7 @@ private:
   QCheckBox* eqnExportCheck = nullptr;
   QCheckBox* cmdConsoleCheck = nullptr;  // CMD console toggle
   QCheckBox* cmdHoldCheck = nullptr;     // CMD hold toggle
+  QLineEdit* cmdTerminalEdit;            // CMD component: Specify terminal emulator
 
   Component* component;
   Schematic* document;
