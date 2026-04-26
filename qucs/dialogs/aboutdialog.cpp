@@ -102,7 +102,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     tr("Portuguese by") + " Luciano Franca, Helio de Sousa, Guilherme Brondani Torri",
     tr("Spanish by") + " Jose L. Redrejo Rodriguez",
     tr("Japanese by") + " Toyoyuki Ishikawa",
-    tr("Italian by") + " Giorgio Luparia, Claudio Girardi",
+    tr("Italian by") + " Giorgio Luparia, Claudio Girardi,  (2026) Michele Petrecca",
     tr("Hebrew by") + " Dotan Nahum",
     tr("Swedish by") + " Markus Gothe, Peter Landgren",
     tr("Turkish by") + " Muhammet Şükrü Demir",

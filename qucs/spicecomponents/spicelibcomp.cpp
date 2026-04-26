@@ -230,9 +230,26 @@ QString SpiceLibComp::spice_netlist(spicecompat::SpiceDialect dialect /* = spice
       s += " " + spicecompat::normalize_node_name(p1->Connection->Name);
     }
   } else {
-    QStringList pin_nums = pins.split(";");
-    for (int i = 0; i < pin_nums.count(); i++) {
-      int pn = pin_nums.at(i).toInt();
+    // Sanitize input from dialog
+    QStringList pin_nums = pins.split(";", Qt::SkipEmptyParts);
+    int pinCount = pin_nums.count();
+    int portCount = Ports.count();
+
+    if (pinCount != portCount) {
+      qWarning() << "pinCount=" << pinCount << " != portCount=" << portCount << ", malformed input?";
+    }
+
+    for (int i = 0; i < pinCount; i++) {
+      bool isNumber = false;
+      int pn = pin_nums.at(i).trimmed().toInt(&isNumber);
+      if (!isNumber) {
+        qWarning() << "Invalid pin number:" << pin_nums.at(i) << "; skipping";
+        continue;
+      }
+      if (pn < 1 || pn > portCount) {
+        qWarning() << "Pin number out of range:" << pn << "; skipping";
+        continue;
+      }
       Port *pp = Ports.at(pn-1);
       s += " " + spicecompat::normalize_node_name(pp->Connection->Name);
     }

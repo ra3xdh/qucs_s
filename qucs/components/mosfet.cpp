@@ -178,19 +178,12 @@ QString MOSFET::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompat
 
     QString mosfet_type = getProperty("Type")->Value.at(0).toUpper();
 
-    double l,w,as,ad,ps,pd,fac;
-    misc::str2num(getProperty("L")->Value,l,unit,fac);
-    l *= fac;
-    misc::str2num(getProperty("W")->Value,w,unit,fac);
-    w *= fac;
-    misc::str2num(getProperty("Ad")->Value,ad,unit,fac);
-    ad *= fac;
-    misc::str2num(getProperty("As")->Value,as,unit,fac);
-    as *= fac;
-    misc::str2num(getProperty("Pd")->Value,pd,unit,fac);
-    pd *= fac;
-    misc::str2num(getProperty("Ps")->Value,ps,unit,fac);
-    ps *= fac;
+    auto l = spicecompat::normalize_value(getProperty("L")->Value);
+    auto w = spicecompat::normalize_value(getProperty("W")->Value);
+    auto ad = spicecompat::normalize_value(getProperty("Ad")->Value);
+    auto as = spicecompat::normalize_value(getProperty("As")->Value);
+    auto pd = spicecompat::normalize_value(getProperty("Pd")->Value);
+    auto ps = spicecompat::normalize_value(getProperty("Ps")->Value);
 
     if (getProperty("UseGlobTemp")->Value == "yes") {
       s += QStringLiteral(" MMOD_%1 L=%2 W=%3 Ad=%4 As=%5 Pd=%6 Ps=%7\n")
