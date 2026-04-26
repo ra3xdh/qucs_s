@@ -124,31 +124,37 @@ SettingsDialog::SettingsDialog(Schematic *Doc_)
     // versions.
     // It makes sense to put all the DIN A standard formats together, so a function is needed to
     // decouple the frame index from the frame combobox
-    auto addFrameItem = [this](QComboBox* cb, const QString& text, int code) {
+    auto addFrameItem = [this](QComboBox* cb, const QString& text, FrameSize code) {
         cb->addItem(text);
         int idx = cb->count() - 1;
-        cb->setItemData(idx, code, Qt::UserRole); // code == a_showFrame / <showFrame>
+        cb->setItemData(idx, static_cast<int>(code), Qt::UserRole); // code == a_showFrame / <showFrame>
     };
 
 
     // Visual order: all DIN A paper formats, then Letter
 
     // No frame
-    addFrameItem(Combo_Frame, tr("no Frame"),          0);
+    addFrameItem(Combo_Frame, tr("no Frame"),          FrameSize::None);
 
     // DIN A formats
-    addFrameItem(Combo_Frame, tr("DIN A3 landscape"),  5);
-    addFrameItem(Combo_Frame, tr("DIN A3 portrait"),   6);
-    addFrameItem(Combo_Frame, tr("DIN A4 landscape"),  3);
-    addFrameItem(Combo_Frame, tr("DIN A4 portrait"),   4);
-    addFrameItem(Combo_Frame, tr("DIN A5 landscape"),  1);
-    addFrameItem(Combo_Frame, tr("DIN A5 portrait"),   2);
-    addFrameItem(Combo_Frame, tr("DIN A6 landscape"), 9);
-    addFrameItem(Combo_Frame, tr("DIN A6 portrait"),  10);
+    addFrameItem(Combo_Frame, tr("DIN A0 landscape"), FrameSize::A0_Landscape);
+    addFrameItem(Combo_Frame, tr("DIN A0 portrait"),  FrameSize::A0_Portrait);
+    addFrameItem(Combo_Frame, tr("DIN A1 landscape"), FrameSize::A1_Landscape);
+    addFrameItem(Combo_Frame, tr("DIN A1 portrait"),  FrameSize::A1_Portrait);
+    addFrameItem(Combo_Frame, tr("DIN A2 landscape"), FrameSize::A2_Landscape);
+    addFrameItem(Combo_Frame, tr("DIN A2 portrait"),  FrameSize::A2_Portrait);
+    addFrameItem(Combo_Frame, tr("DIN A3 landscape"), FrameSize::A3_Landscape);
+    addFrameItem(Combo_Frame, tr("DIN A3 portrait"),  FrameSize::A3_Portrait);
+    addFrameItem(Combo_Frame, tr("DIN A4 landscape"), FrameSize::A4_Landscape);
+    addFrameItem(Combo_Frame, tr("DIN A4 portrait"),  FrameSize::A4_Portrait);
+    addFrameItem(Combo_Frame, tr("DIN A5 landscape"), FrameSize::A5_Landscape);
+    addFrameItem(Combo_Frame, tr("DIN A5 portrait"),  FrameSize::A5_Portrait);
+    addFrameItem(Combo_Frame, tr("DIN A6 landscape"), FrameSize::A6_Landscape);
+    addFrameItem(Combo_Frame, tr("DIN A6 portrait"),  FrameSize::A6_Portrait);
 
     // US Letter format
-    addFrameItem(Combo_Frame, tr("Letter landscape"),  7);
-    addFrameItem(Combo_Frame, tr("Letter portrait"),   8);
+    addFrameItem(Combo_Frame, tr("Letter landscape"),  FrameSize::Letter_Landscape);
+    addFrameItem(Combo_Frame, tr("Letter portrait"),   FrameSize::Letter_Portrait);
 
     gp3->addWidget(Combo_Frame, 0, 0, 1, 2);
 
