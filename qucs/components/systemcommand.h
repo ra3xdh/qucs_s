@@ -23,6 +23,8 @@
 ///                user can see live output.
 /// - @c hold    — if @c yes, the terminal window stays open after the command finishes,
 ///                allowing the user to inspect the output before closing manually.
+/// - @c terminal — the terminal emulator.
+///                 If empty Qucs-S falls back to its built-in auto-detection logic.
 ///
 /// @note The component is intentionally excluded from netlist generation so that no
 ///       simulation backend ever sees it.
