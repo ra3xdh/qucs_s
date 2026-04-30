@@ -22,6 +22,7 @@
 
 #include <QCloseEvent>
 #include <QMap>
+#include <QTimer>
 
 // Persistent range storage: key = "componentName|propertyName"
 struct TunerRangeState {
@@ -734,8 +735,9 @@ TunerDialog::TunerDialog(QWidget *_w, QWidget *parent) :
     gbox->addWidget(splitter,0, 1, Qt::AlignRight);
 
     progressBar = new QProgressBar();
-    progressBar->setMaximum(100);
-    progressBar->setVisible(false);
+    progressBar->setRange(0, 100);
+    progressBar->setValue(0);
+    progressBar->setTextVisible(false);
     gbox->addWidget(progressBar, 2, 0);
 
     info->showMessage(tr("Please select a component to tune"));
@@ -748,6 +750,12 @@ TunerDialog::TunerDialog(QWidget *_w, QWidget *parent) :
     //Management of the Esc shortcut. Otherwise, it will exit the tuner and leave the toogle button activated
     QShortcut *shortcut_Esc = new QShortcut(Qt::Key_Escape, this);
     QObject::connect(shortcut_Esc, SIGNAL(activated()), this, SLOT(close()));
+
+    // Timer: if a sim takes > 1 s after a new change arrives, abort and restart
+    m_killTimer = new QTimer(this);
+    m_killTimer->setSingleShot(true);
+    m_killTimer->setInterval(1000);
+    connect(m_killTimer, &QTimer::timeout, this, &TunerDialog::slotKillTimerFired);
 }
 
 void TunerDialog::slotUpdateProgressBar(int value)
@@ -836,8 +844,10 @@ void TunerDialog::slotElementValueUpdated()
 {
     qDebug() << "Tuner::slotElementValueUpdated()";
 
-    progressBar->setVisible(true);
-    this->setEnabled(false);
+    if (m_simulating) { m_pendingUpdate = true; m_killTimer->start(); return; } // retry after current sim ends
+    m_simulating = true;
+    m_pendingUpdate = false;
+    progressBar->setRange(0, 0); // indeterminate busy indicator
 
     switch (QucsSettings.DefaultSimulator) {
     case spicecompat::simQucsator:
@@ -856,10 +866,25 @@ void TunerDialog::SimulationEnded()
 {
     qDebug() << "Tuner::SimulationEnded()";
 
-    this->setEnabled(true);
-    progressBar->setVisible(false);
+    progressBar->setRange(0, 100);
+    progressBar->setValue(0);
+    m_simulating = false;
+    m_killTimer->stop();
+    if (m_pendingUpdate) {
+        m_pendingUpdate = false;
+        slotElementValueUpdated();
+    }
 }
 
+
+void TunerDialog::slotKillTimerFired()
+{
+    qDebug() << "Tuner::slotKillTimerFired() - aborting slow simulation";
+    // Simulation is still running after 1 s; abort it.
+    // SimulationEnded() will be called by the abort path and will trigger
+    // a new simulation since m_pendingUpdate is still true.
+    QucsMain->slotAbortTuningSimulation();
+}
 
 bool TunerDialog::checkChanges()
 {

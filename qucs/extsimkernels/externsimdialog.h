@@ -72,13 +72,13 @@ signals:
 public slots:
     void slotSaveNetlist();
     void slotStart();
+    void slotStop();
 
 private slots:
     void slotProcessOutput();
     //void slotProcessXyceOutput();
     void slotNgspiceStarted();
     void slotNgspiceStartError(QProcess::ProcessError err);
-    void slotStop();
     void slotSetSimulator();
     void slotExit();
 };

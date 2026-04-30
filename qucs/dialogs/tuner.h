@@ -139,12 +139,16 @@ private:
     QProgressBar *progressBar;
     QPushButton *updateValues, *resetValues;//They're private in order to make enable or disable them
 
+    bool m_simulating = false;
+    bool m_pendingUpdate = false;
+    QTimer *m_killTimer = nullptr;
     void blockInput(bool enabled);
     void closeEvent(QCloseEvent *event);
     void infoMsg(const QString msg);
 
 private slots:
     void slotElementValueUpdated();
+    void slotKillTimerFired();
     void slotRemoveTunerElement(tunerElement*);
     void slotUpdateValues();
     void slotResetValues();

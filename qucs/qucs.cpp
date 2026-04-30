@@ -147,6 +147,7 @@ QucsApp::QucsApp(bool netlist2Console) :
   // instance of small text search dialog
   SearchDia = new SearchDialog(this);
   TuningMode = false;
+  sim = nullptr;
 
   // creates a document called "untitled"
   Schematic *d = new Schematic(this, "");
@@ -2736,6 +2737,7 @@ void QucsApp::slotSimulate(QWidget *w)
     this, SLOT(slotChangePage(QString&, QString&)));
 
   if (TuningMode == true) {
+      this->sim = sim; // store for potential abort
       connect(sim, SIGNAL(progressBarChanged(int)), tunerDia, SLOT(slotUpdateProgressBar(int)));
   } else { //It doesn't make sense to connect the slot outside the tuning mode
       sim->show();
@@ -2757,7 +2759,8 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
 
   if(Status != 0) { // errors ocurred ?
       if (TuningMode) {
-          sim->show();
+          if (!m_tunerAbortForRerun) sim->show();
+          m_tunerAbortForRerun = false;
           tunerDia->SimulationEnded();
       }
       return;
@@ -3675,6 +3678,19 @@ void QucsApp::slotSimSettings()
     fillSimulatorsComboBox();
 }
 
+void QucsApp::slotAbortTuningSimulation()
+{
+    m_tunerAbortForRerun = true;
+    switch (QucsSettings.DefaultSimulator) {
+    case spicecompat::simQucsator:
+        if (sim) sim->AbortSim();
+        break;
+    default: // ngspice, xyce, spiceOpus
+        if (a_tunerExternSimDlg) a_tunerExternSimDlg->slotStop();
+        break;
+    }
+}
+
 void QucsApp::slotSimulateWithSpice()
 {
     if (!isTextDocument(DocumentTab->currentWidget()))
@@ -3714,6 +3730,7 @@ void QucsApp::slotSimulateWithSpice()
 
         if (TuningMode || schematic->getShowBias() == 0)
         {
+            a_tunerExternSimDlg = SimDlg; // store for potential abort
             SimDlg->slotStart();
         }
         else
@@ -3830,7 +3847,10 @@ void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
     disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
     disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
     if (TuningMode && SimDlg->hasError()) {
-        SimDlg->show();
+        if (!m_tunerAbortForRerun) SimDlg->show();
+        m_tunerAbortForRerun = false;
+        a_tunerExternSimDlg = nullptr;
+        tunerDia->SimulationEnded();
         return;
     }
     if (SimDlg->wasSimulated()) {
@@ -3859,6 +3879,8 @@ void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
       octave->runOctaveScript(sch->getScript());
     }
     if (TuningMode) {
+        m_tunerAbortForRerun = false;
+        a_tunerExternSimDlg = nullptr;
         tunerDia->SimulationEnded();
     }
     if (sch->getShowBias()>0 || QucsMain->TuningMode) SimDlg->close();
