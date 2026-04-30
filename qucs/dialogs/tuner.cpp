@@ -22,6 +22,7 @@
 
 #include <QCloseEvent>
 #include <QMap>
+#include <QSet>
 #include <QTimer>
 
 // Persistent range storage: key = "componentName|propertyName"
@@ -31,6 +32,9 @@ struct TunerRangeState {
     float step;
 };
 static QMap<QString, TunerRangeState> s_tunerRangeMap;
+
+// Persistent set of active tuner parameters: "schematicPath|componentName|propertyName"
+static QSet<QString> s_tunerActiveElements;
 
 bool isPropertyTunable(Component* propertyOwner, Property* property) {
   // Simulation parameters
@@ -797,6 +801,9 @@ void TunerDialog::addTunerElement(tunerElement *element)
 
     if (!currentProps.contains(element->getElementProperty()))
     {
+        // Remember this element across open/close cycles
+        s_tunerActiveElements.insert(
+            element->schematicName + "|" + element->c->Name + "|" + element->getElementProperty()->Name);
         splitter->addWidget(element);
         currentProps.append(element->getElementProperty());
         currentElements.append(element);
@@ -827,6 +834,9 @@ void TunerDialog::slotComponentDeleted(Component *c)
 void TunerDialog::slotRemoveTunerElement(tunerElement *e)
 {
     qDebug() << "Tuner::slotRemoveTunerElement()";
+    // User explicitly removed this element — forget it
+    s_tunerActiveElements.remove(
+        e->schematicName + "|" + e->c->Name + "|" + e->getElementProperty()->Name);
     currentProps.removeAll(e->getElementProperty());
     currentElements.removeAll(e);//This will also destroy the element in QSplitter: https://stackoverflow.com/questions/371599/how-to-remove-qwidgets-from-qsplitter
     delete e;
@@ -970,6 +980,30 @@ void TunerDialog::showEvent(QShowEvent *e)
     {
         if (currentElements.at(i)->getElementProperty() == nullptr)
             currentElements.removeAt(i);
+    }
+
+    // Auto-restore previously selected tuner parameters
+    if (s_tunerActiveElements.isEmpty() || !w)
+        return;
+    Schematic *sch = dynamic_cast<Schematic*>(w);
+    if (!sch)
+        return;
+    QString schPath = sch->getDocName();
+    for (Component *comp : *sch->a_Components) {
+        if (!comp) continue;
+        for (int idx = 0; idx < comp->Props.size(); ++idx) {
+            Property *pp = comp->Props.at(idx);
+            QString key = schPath + "|" + comp->Name + "|" + pp->Name;
+            if (!s_tunerActiveElements.contains(key))
+                continue;
+            if (containsProperty(pp))
+                continue; // already loaded
+            if (!isPropertyTunable(comp, pp))
+                continue;
+            tunerElement *elem = new tunerElement(this, comp, pp, idx);
+            elem->schematicName = schPath;
+            addTunerElement(elem);
+        }
     }
 }
 
