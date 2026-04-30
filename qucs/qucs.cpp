@@ -2593,6 +2593,7 @@ void QucsApp::slotTune(bool checked)
         MouseReleaseAction = nullptr; //While Tune is active release is not needed. This puts Press Action back to normal select
 
         tunerDia->show();
+        tunerDia->move(this->geometry().topLeft());
     }
     else
     {
