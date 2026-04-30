@@ -21,6 +21,15 @@
 #include "extsimkernels/spicecompat.h"
 
 #include <QCloseEvent>
+#include <QMap>
+
+// Persistent range storage: key = "componentName|propertyName"
+struct TunerRangeState {
+    float min;
+    float max;
+    float step;
+};
+static QMap<QString, TunerRangeState> s_tunerRangeMap;
 
 bool isPropertyTunable(Component* propertyOwner, Property* property) {
   // Simulation parameters
@@ -242,6 +251,26 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
     maxValue = numValue*1.15;// max = initial_value + 15%
     minValue = numValue*0.85;// min = initial_value - 15%
     stepValue = (maxValue-minValue)/20;//20 steps between minimum and maximum
+
+    // Restore previously saved range for this component property, if any
+    m_rangeKey = component->Name + "|" + pp->Name;
+    if (s_tunerRangeMap.contains(m_rangeKey)) {
+        const TunerRangeState &state = s_tunerRangeMap[m_rangeKey];
+        // state stores absolute values; numValue/maxValue/minValue/stepValue are in display units
+        // (i.e. divided by getScale(magnitudeIndex)). Convert back to display units for the UI.
+        float displayScale = getScale(magnitudeIndex);
+        float absNumValue = numValue * displayScale;
+        float restoredMax = state.max;
+        float restoredMin = state.min;
+        float restoredStep = state.step;
+        // Widen range if current value has moved outside it
+        if (absNumValue > restoredMax) restoredMax = absNumValue * 1.15f;
+        if (absNumValue < restoredMin) restoredMin = absNumValue * 0.85f;
+        maxValue = restoredMax / displayScale;
+        minValue = restoredMin / displayScale;
+        stepValue = restoredStep / displayScale;
+    }
+
     maximum->setText(QString::number(maxValue));
     minimum->setText(QString::number(minValue));
     value->setText(QString::number(numValue));
@@ -391,6 +420,7 @@ void tunerElement::slotMaxValueChanged()
     }
     qDebug() << "tunerElement::slotMaxValueChanged() " << v;
 
+    saveRange();
     updateSlider();
     maximum->blockSignals(false);
     MaxUnitsCombobox->blockSignals(false);
@@ -433,6 +463,7 @@ void tunerElement::slotMinValueChanged()
 
     qDebug() << "slotMinValueChanged() " << v;
 
+    saveRange();
     updateSlider();
     minimum->blockSignals(false);
     MinUnitsCombobox->blockSignals(false);
@@ -461,6 +492,7 @@ void tunerElement::slotStepChanged()
     }
 
     stepValue = v;
+    saveRange();
 }
 
 
@@ -639,6 +671,12 @@ float tunerElement::getMinValue(bool &ok)
 float tunerElement::getStep(bool &ok)
 {
    return step->text().toFloat(&ok)*getScale(StepUnitsCombobox->currentIndex());
+}
+
+// Persists the current min/max/step range for this element
+void tunerElement::saveRange()
+{
+    s_tunerRangeMap[m_rangeKey] = { minValue, maxValue, stepValue };
 }
 
 tunerElement::~tunerElement()

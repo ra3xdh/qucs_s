@@ -91,6 +91,9 @@ class tunerElement : public QWidget
         float minValue;
         float maxValue;
         float stepValue;
+        QString m_rangeKey;
+
+        void saveRange();
 
     private slots:
 
