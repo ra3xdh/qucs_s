@@ -21,6 +21,20 @@
 #include "extsimkernels/spicecompat.h"
 
 #include <QCloseEvent>
+#include <QMap>
+#include <QSet>
+#include <QTimer>
+
+// Persistent range storage: key = "componentName|propertyName"
+struct TunerRangeState {
+    float min;
+    float max;
+    float step;
+};
+static QMap<QString, TunerRangeState> s_tunerRangeMap;
+
+// Persistent set of active tuner parameters: "schematicPath|componentName|propertyName"
+static QSet<QString> s_tunerActiveElements;
 
 bool isPropertyTunable(Component* propertyOwner, Property* property) {
   // Simulation parameters
@@ -242,6 +256,26 @@ tunerElement::tunerElement(QWidget *parent, Component *component, Property *pp, 
     maxValue = numValue*1.15;// max = initial_value + 15%
     minValue = numValue*0.85;// min = initial_value - 15%
     stepValue = (maxValue-minValue)/20;//20 steps between minimum and maximum
+
+    // Restore previously saved range for this component property, if any
+    m_rangeKey = component->Name + "|" + pp->Name;
+    if (s_tunerRangeMap.contains(m_rangeKey)) {
+        const TunerRangeState &state = s_tunerRangeMap[m_rangeKey];
+        // state stores absolute values; numValue/maxValue/minValue/stepValue are in display units
+        // (i.e. divided by getScale(magnitudeIndex)). Convert back to display units for the UI.
+        float displayScale = getScale(magnitudeIndex);
+        float absNumValue = numValue * displayScale;
+        float restoredMax = state.max;
+        float restoredMin = state.min;
+        float restoredStep = state.step;
+        // Widen range if current value has moved outside it
+        if (absNumValue > restoredMax) restoredMax = absNumValue * 1.15f;
+        if (absNumValue < restoredMin) restoredMin = absNumValue * 0.85f;
+        maxValue = restoredMax / displayScale;
+        minValue = restoredMin / displayScale;
+        stepValue = restoredStep / displayScale;
+    }
+
     maximum->setText(QString::number(maxValue));
     minimum->setText(QString::number(minValue));
     value->setText(QString::number(numValue));
@@ -391,6 +425,7 @@ void tunerElement::slotMaxValueChanged()
     }
     qDebug() << "tunerElement::slotMaxValueChanged() " << v;
 
+    saveRange();
     updateSlider();
     maximum->blockSignals(false);
     MaxUnitsCombobox->blockSignals(false);
@@ -433,6 +468,7 @@ void tunerElement::slotMinValueChanged()
 
     qDebug() << "slotMinValueChanged() " << v;
 
+    saveRange();
     updateSlider();
     minimum->blockSignals(false);
     MinUnitsCombobox->blockSignals(false);
@@ -461,6 +497,7 @@ void tunerElement::slotStepChanged()
     }
 
     stepValue = v;
+    saveRange();
 }
 
 
@@ -641,6 +678,12 @@ float tunerElement::getStep(bool &ok)
    return step->text().toFloat(&ok)*getScale(StepUnitsCombobox->currentIndex());
 }
 
+// Persists the current min/max/step range for this element
+void tunerElement::saveRange()
+{
+    s_tunerRangeMap[m_rangeKey] = { minValue, maxValue, stepValue };
+}
+
 tunerElement::~tunerElement()
 {
     //dtor
@@ -696,8 +739,9 @@ TunerDialog::TunerDialog(QWidget *_w, QWidget *parent) :
     gbox->addWidget(splitter,0, 1, Qt::AlignRight);
 
     progressBar = new QProgressBar();
-    progressBar->setMaximum(100);
-    progressBar->setVisible(false);
+    progressBar->setRange(0, 100);
+    progressBar->setValue(0);
+    progressBar->setTextVisible(false);
     gbox->addWidget(progressBar, 2, 0);
 
     info->showMessage(tr("Please select a component to tune"));
@@ -710,6 +754,12 @@ TunerDialog::TunerDialog(QWidget *_w, QWidget *parent) :
     //Management of the Esc shortcut. Otherwise, it will exit the tuner and leave the toogle button activated
     QShortcut *shortcut_Esc = new QShortcut(Qt::Key_Escape, this);
     QObject::connect(shortcut_Esc, SIGNAL(activated()), this, SLOT(close()));
+
+    // Timer: if a sim takes > 1 s after a new change arrives, abort and restart
+    m_killTimer = new QTimer(this);
+    m_killTimer->setSingleShot(true);
+    m_killTimer->setInterval(1000);
+    connect(m_killTimer, &QTimer::timeout, this, &TunerDialog::slotKillTimerFired);
 }
 
 void TunerDialog::slotUpdateProgressBar(int value)
@@ -751,6 +801,9 @@ void TunerDialog::addTunerElement(tunerElement *element)
 
     if (!currentProps.contains(element->getElementProperty()))
     {
+        // Remember this element across open/close cycles
+        s_tunerActiveElements.insert(
+            element->schematicName + "|" + element->c->Name + "|" + element->getElementProperty()->Name);
         splitter->addWidget(element);
         currentProps.append(element->getElementProperty());
         currentElements.append(element);
@@ -781,6 +834,9 @@ void TunerDialog::slotComponentDeleted(Component *c)
 void TunerDialog::slotRemoveTunerElement(tunerElement *e)
 {
     qDebug() << "Tuner::slotRemoveTunerElement()";
+    // User explicitly removed this element — forget it
+    s_tunerActiveElements.remove(
+        e->schematicName + "|" + e->c->Name + "|" + e->getElementProperty()->Name);
     currentProps.removeAll(e->getElementProperty());
     currentElements.removeAll(e);//This will also destroy the element in QSplitter: https://stackoverflow.com/questions/371599/how-to-remove-qwidgets-from-qsplitter
     delete e;
@@ -798,8 +854,10 @@ void TunerDialog::slotElementValueUpdated()
 {
     qDebug() << "Tuner::slotElementValueUpdated()";
 
-    progressBar->setVisible(true);
-    this->setEnabled(false);
+    if (m_simulating) { m_pendingUpdate = true; m_killTimer->start(); return; } // retry after current sim ends
+    m_simulating = true;
+    m_pendingUpdate = false;
+    progressBar->setRange(0, 0); // indeterminate busy indicator
 
     switch (QucsSettings.DefaultSimulator) {
     case spicecompat::simQucsator:
@@ -818,10 +876,25 @@ void TunerDialog::SimulationEnded()
 {
     qDebug() << "Tuner::SimulationEnded()";
 
-    this->setEnabled(true);
-    progressBar->setVisible(false);
+    progressBar->setRange(0, 100);
+    progressBar->setValue(0);
+    m_simulating = false;
+    m_killTimer->stop();
+    if (m_pendingUpdate) {
+        m_pendingUpdate = false;
+        slotElementValueUpdated();
+    }
 }
 
+
+void TunerDialog::slotKillTimerFired()
+{
+    qDebug() << "Tuner::slotKillTimerFired() - aborting slow simulation";
+    // Simulation is still running after 1 s; abort it.
+    // SimulationEnded() will be called by the abort path and will trigger
+    // a new simulation since m_pendingUpdate is still true.
+    QucsMain->slotAbortTuningSimulation();
+}
 
 bool TunerDialog::checkChanges()
 {
@@ -907,6 +980,30 @@ void TunerDialog::showEvent(QShowEvent *e)
     {
         if (currentElements.at(i)->getElementProperty() == nullptr)
             currentElements.removeAt(i);
+    }
+
+    // Auto-restore previously selected tuner parameters
+    if (s_tunerActiveElements.isEmpty() || !w)
+        return;
+    Schematic *sch = dynamic_cast<Schematic*>(w);
+    if (!sch)
+        return;
+    QString schPath = sch->getDocName();
+    for (Component *comp : *sch->a_Components) {
+        if (!comp) continue;
+        for (int idx = 0; idx < comp->Props.size(); ++idx) {
+            Property *pp = comp->Props.at(idx);
+            QString key = schPath + "|" + comp->Name + "|" + pp->Name;
+            if (!s_tunerActiveElements.contains(key))
+                continue;
+            if (containsProperty(pp))
+                continue; // already loaded
+            if (!isPropertyTunable(comp, pp))
+                continue;
+            tunerElement *elem = new tunerElement(this, comp, pp, idx);
+            elem->schematicName = schPath;
+            addTunerElement(elem);
+        }
     }
 }
 

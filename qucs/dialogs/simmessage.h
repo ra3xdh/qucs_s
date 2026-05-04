@@ -54,6 +54,7 @@ signals:
 
 public slots:
   void slotClose();
+  void AbortSim();
 
 private slots:
   void slotDisplayMsg();
@@ -62,7 +63,6 @@ private slots:
   void slotStateChanged(QProcess::ProcessState newState);
   void slotSimEnded(int exitCode, QProcess::ExitStatus exitStatus);
   void slotDisplayButton();
-  void AbortSim();
 
   void slotReadSpiceNetlist();
   void slotFinishSpiceNetlist(int status);

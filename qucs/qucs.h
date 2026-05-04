@@ -116,6 +116,8 @@ public:
   SearchDialog *SearchDia; // global in order to keep values
   TunerDialog *tunerDia;   // global in order to keep values
   SimMessage *sim;         // global in order to keep values
+  ExternSimDialog *a_tunerExternSimDlg = nullptr;
+  bool m_tunerAbortForRerun = false;
 
   // current mouse methods
   void (MouseActions::*MouseMoveAction)(Schematic *, QMouseEvent *);
@@ -192,6 +194,7 @@ public slots:
 
   void slotSimulate(QWidget *w = nullptr);
   void slotSimulateWithSpice();
+  void slotAbortTuningSimulation();
   void slotTune(bool checked);
 
 private slots:
