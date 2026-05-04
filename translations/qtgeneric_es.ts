@@ -3,7 +3,7 @@
     <name>QApplication</name>
     <message>
         <source>Executable &apos;%1&apos; requires Qt %2, found Qt %3.</source>
-        <translation>El ejecutable  &apos;%1&apos; necesita Qt %2, se encontró Qt %3.</translation>
+        <translation>El ejecutable &apos;%1&apos; requiere Qt %2, se encontró Qt %3.</translation>
     </message>
     <message>
         <source>Incompatible Qt Library Error</source>
@@ -46,11 +46,11 @@
     </message>
     <message>
         <source>&amp;Custom colors</source>
-        <translation>Colores &amp;a medida</translation>
+        <translation>Colores a &amp;medida</translation>
     </message>
     <message>
         <source>&amp;Define Custom Colors &gt;&gt;</source>
-        <translation>&amp;Definir colores a Medida &gt;&gt;</translation>
+        <translation>&amp;Definir colores a medida &gt;&gt;</translation>
     </message>
     <message>
         <source>OK</source>
@@ -147,11 +147,11 @@
     </message>
     <message>
         <source>Look &amp;in:</source>
-        <translation>Mirar &amp;en:</translation>
+        <translation>Buscar &amp;en:</translation>
     </message>
     <message>
         <source>File &amp;name:</source>
-        <translation>Nombre del Archivo:</translation>
+        <translation>Nombre del archivo:</translation>
     </message>
     <message>
         <source>File &amp;type:</source>
@@ -167,7 +167,7 @@
     </message>
     <message>
         <source>Create New Folder</source>
-        <translation>Crear Nueva Carpeta </translation>
+        <translation>Crear nueva carpeta</translation>
     </message>
     <message>
         <source>List View</source>
@@ -179,7 +179,7 @@
     </message>
     <message>
         <source>Preview File Info</source>
-        <translation>Información previa del Archivo</translation>
+        <translation>Información previa del archivo</translation>
     </message>
     <message>
         <source>Preview File Contents</source>
@@ -275,7 +275,7 @@
     </message>
     <message>
         <source>Show &amp;hidden files</source>
-        <translation>Mostar archivos &amp;ocultos</translation>
+        <translation>Mostrar archivos &amp;ocultos</translation>
     </message>
     <message>
         <source>the file</source>
@@ -291,7 +291,7 @@
     </message>
     <message>
         <source>Delete %1</source>
-        <translation>Elimiar %1</translation>
+        <translation>Eliminar %1</translation>
     </message>
     <message>
         <source>&lt;qt&gt;Are you sure you wish to delete %1 &quot;%2&quot;?&lt;/qt&gt;</source>
@@ -370,11 +370,11 @@ Compruebe el directorio y el nombre del archivo.</translation>
     </message>
     <message>
         <source>Runic</source>
-        <translation>Runico</translation>
+        <translation>Rúnico</translation>
     </message>
     <message>
         <source>Ogham</source>
-        <translation></translation>
+        <translation>Ogham</translation>
     </message>
     <message>
         <source>Hebrew</source>
@@ -494,7 +494,7 @@ Compruebe el directorio y el nombre del archivo.</translation>
     </message>
     <message>
         <source>Currency Symbols</source>
-        <translation>Símobolos monetarios</translation>
+        <translation>Símbolos monetarios</translation>
     </message>
     <message>
         <source>Letterlike Symbols</source>
@@ -569,7 +569,7 @@ Compruebe el directorio y el nombre del archivo.</translation>
     </message>
     <message>
         <source>Scr&amp;ipt</source>
-        <translation>Guió&amp;n</translation>
+        <translation>Gu&amp;ión</translation>
     </message>
     <message>
         <source>OK</source>
@@ -635,7 +635,7 @@ Compruebe el directorio y el nombre del archivo.</translation>
     </message>
     <message>
         <source>&lt;h3&gt;About Qt&lt;/h3&gt;&lt;p&gt;This program uses Qt version %1.&lt;/p&gt;&lt;p&gt;Qt is a C++ toolkit for multiplatform GUI &amp;amp; application development.&lt;/p&gt;&lt;p&gt;Qt provides single-source portability across MS&amp;nbsp;Windows, Mac&amp;nbsp;OS&amp;nbsp;X, Linux, and all major commercial Unix variants.&lt;br&gt;Qt is also available for embedded devices.&lt;/p&gt;&lt;p&gt;Qt is a Trolltech product. See &lt;tt&gt;http://www.trolltech.com/qt/&lt;/tt&gt; for more information.&lt;/p&gt;</source>
-        <translation>&lt;h3&gt;Acerca de  Qt&lt;/h3&gt;&lt;p&gt;Este programa usa la versión %1 de Qt.&lt;/p&gt;&lt;p&gt;Qt es un conjunto de herramientas C++ multiplataforma para desarrollo de aplicaciones GUI.&lt;/p&gt;&lt;p&gt;Qt proporciona portabilidad a nivel de código fuente entre  MS&amp;nbsp;Windows, Mac&amp;nbsp;OS&amp;nbsp;X, Linux, y las principales variantes de Unix comerciales.&lt;br&gt;Qt está disponible también para dispositivos embebidos.&lt;/p&gt;&lt;p&gt;Qt es un producto Trolltech.  Visite &lt;tt&gt;http://www.trolltech.com/qt/&lt;/tt&gt; para más información.&lt;/p&gt;</translation>
+        <translation>&lt;h3&gt;Acerca de Qt&lt;/h3&gt;&lt;p&gt;Este programa usa la versión %1 de Qt.&lt;/p&gt;&lt;p&gt;Qt es un conjunto de herramientas C++ multiplataforma para el desarrollo de aplicaciones GUI.&lt;/p&gt;&lt;p&gt;Qt proporciona portabilidad a nivel de código fuente entre MS&amp;nbsp;Windows, Mac&amp;nbsp;OS&amp;nbsp;X, Linux y las principales variantes comerciales de Unix.&lt;br&gt;Qt está disponible también para dispositivos embebidos.&lt;/p&gt;&lt;p&gt;Qt es un producto Trolltech. Visite &lt;tt&gt;http://www.trolltech.com/qt/&lt;/tt&gt; para más información.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
