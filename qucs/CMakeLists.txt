@@ -149,6 +149,7 @@ SET(QUCS_SRCS
   imagewriter.cpp printerwriter.cpp projectView.cpp
   symbolwidget.cpp wire_planner.cpp
   qucsshortcutmanager.cpp
+  schematicvalidator.cpp
 )
 
 SET(QUCS_HDRS
@@ -166,6 +167,7 @@ octave_window.h
 qucs.h
 qucsdoc.h
 qucsshortcutmanager.h
+schematicvalidator.h
 schematic.h
 settings.h
 syntax.h
