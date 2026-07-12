@@ -43,6 +43,10 @@ private:
   /// @brief SP/AC frequency sweep must not be a list if the simulation backend is ngspice or xyce
   QVector<ValidationIssue> checkFrequencySweepType(Schematic *sch, const QString &backend) const;
 
+  /// @brief ngspice needs at least two AC power sources in SP simulation
+  QVector<ValidationIssue> checkMinimumPortsInSPSimulation(Schematic *sch, const QString &backend) const;
+
+
   /// @}
 };
 

@@ -12,7 +12,7 @@ QVector<ValidationIssue> SchematicValidator::validate(Schematic *sch, const QStr
   QVector<ValidationIssue> issues;
 
   issues += checkFrequencySweepType(sch, backend);
-  // issues += checkSomeOtherThing(sch, backend);
+  issues += checkMinimumPortsInSPSimulation(sch, backend);
 
   return issues;
 }
@@ -49,6 +49,52 @@ QVector<ValidationIssue> SchematicValidator::checkFrequencySweepType(
       issue.suggestedFix = QObject::tr("Use lin or log frequency sweep in %1").arg(component->Name);
       issues.append(issue);
     }
+  }
+
+  return issues;
+}
+
+
+QVector<ValidationIssue> SchematicValidator::checkMinimumPortsInSPSimulation(
+    Schematic *sch, const QString &backend) const {
+  QVector<ValidationIssue> issues;
+
+  if (backend.toLower() != "ngspice")
+    return issues; // only ngspice has this restriction
+
+
+  bool hasActiveSPBlock = false;
+  for (Component *component : sch->a_DocComps) {
+    if (component->isActive && component->Model == ".SP") {
+      hasActiveSPBlock = true;
+      break;
+    }
+  }
+  if (!hasActiveSPBlock)
+    return issues; // no S-parameter simulation, nothing to check
+
+  int acSourceCount = 0;
+  for (Component *component : sch->a_DocComps) {
+    if (!component->isActive) {
+      // Ignore deactivated components
+      continue;
+    }
+
+    if (component->Model.startsWith("VP")) {
+      // AC power source found. They start with VP for ngspice
+      acSourceCount++;
+    }
+  }
+
+  if (acSourceCount < 2) {
+    ValidationIssue issue;
+    issue.message = QObject::tr(
+                        "The schematic has %1 AC power source."
+                        "ngspice requires at least 2 for S-parameter analysis.").arg(acSourceCount);
+    issue.severity = 1; // Critical - simulation will fail
+    issue.suggestedFix = QObject::tr(
+        "If this is a 1-port SP simulation, add another AC Power souce component with the negative port connected to GND");
+    issues.append(issue);
   }
 
   return issues;
