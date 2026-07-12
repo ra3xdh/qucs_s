@@ -7,18 +7,17 @@
 #include "schematic.h"
 #include "components/component.h"
 
-QVector<ValidationIssue> SchematicValidator::validate(Schematic *sch, const QString &backend) const
+QVector<ValidationIssue> SchematicValidator::validate() const
 {
   QVector<ValidationIssue> issues;
 
-  issues += checkFrequencySweepType(sch, backend);
-  issues += checkMinimumPortsInSPSimulation(sch, backend);
+  issues += checkFrequencySweepType();
+  issues += checkMinimumPortsInSPSimulation();
 
   return issues;
 }
 
-QVector<ValidationIssue> SchematicValidator::checkFrequencySweepType(
-    Schematic *sch, const QString &backend) const
+QVector<ValidationIssue> SchematicValidator::checkFrequencySweepType() const
 {
   QVector<ValidationIssue> issues; // It may be several SP/AC blocks
 
@@ -55,8 +54,7 @@ QVector<ValidationIssue> SchematicValidator::checkFrequencySweepType(
 }
 
 
-QVector<ValidationIssue> SchematicValidator::checkMinimumPortsInSPSimulation(
-    Schematic *sch, const QString &backend) const {
+QVector<ValidationIssue> SchematicValidator::checkMinimumPortsInSPSimulation() const {
   QVector<ValidationIssue> issues;
 
   if (backend.toLower() != "ngspice")

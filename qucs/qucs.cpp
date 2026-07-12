@@ -3768,7 +3768,9 @@ bool QucsApp::runPreSimulationChecks(QWidget *w, const QString &backend)
   if (!sch)
     return false; // nothing to check on non-schematic documents
 
-  QVector<ValidationIssue> issues = a_validator.validate(sch, backend);
+  a_validator.setSimulationBackend(backend);
+  a_validator.setSchematic(sch);
+  QVector<ValidationIssue> issues = a_validator.validate();
   if (issues.isEmpty())
     return false;
 

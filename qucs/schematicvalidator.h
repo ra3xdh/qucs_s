@@ -34,17 +34,30 @@ class SchematicValidator
 public:
   /// @brief Run all checks against an schematic given a certain simulation backend,
   /// e.g. qucsator-RF, ngspice, xyce
-  QVector<ValidationIssue> validate(Schematic *sch, const QString &backend) const;
+  QVector<ValidationIssue> validate() const;
+
+  /// @brief Set simulation backend
+  /// @param SimulationBackend Name of the backend simulator
+  /// @details Used by Qucs-S main app to set the simulation backend for the validation
+  void setSimulationBackend(QString SimulationBackend) {backend = SimulationBackend;}
+
+  /// @brief Set the schematic to validate
+  /// @param Schematic Schematic object
+  /// @details Used by Qucs-S main app to set the schematic under validation
+  void setSchematic(Schematic *Schematic){sch = Schematic;}
 
 private:
+
+  Schematic *sch;
+  QString backend; /// Simulation backend
 
   /// Checks @{
 
   /// @brief SP/AC frequency sweep must not be a list if the simulation backend is ngspice or xyce
-  QVector<ValidationIssue> checkFrequencySweepType(Schematic *sch, const QString &backend) const;
+  QVector<ValidationIssue> checkFrequencySweepType() const;
 
   /// @brief ngspice needs at least two AC power sources in SP simulation
-  QVector<ValidationIssue> checkMinimumPortsInSPSimulation(Schematic *sch, const QString &backend) const;
+  QVector<ValidationIssue> checkMinimumPortsInSPSimulation() const;
 
 
   /// @}
