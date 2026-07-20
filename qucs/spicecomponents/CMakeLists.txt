@@ -193,6 +193,10 @@ spicelibcomp.h
 
 ADD_LIBRARY(spicecomponents STATIC ${COMPONENTS_HDRS} ${COMPONENTS_SRCS} ${COMPONENTS_MOC_SRCS} )
 
+ADD_EXECUTABLE(test_incl_script_directive_rewrite test_incl_script_directive_rewrite.cpp)
+TARGET_LINK_LIBRARIES(test_incl_script_directive_rewrite Qt6::Core)
+ADD_TEST(NAME InclScriptDirectiveRewriteTest COMMAND test_incl_script_directive_rewrite)
+
 
 
 

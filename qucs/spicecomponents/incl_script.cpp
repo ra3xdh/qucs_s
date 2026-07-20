@@ -15,6 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "incl_script.h"
+#include "incl_script_directive_rewrite.h"
 #include "main.h"
 #include "misc.h"
 #include <QFontInfo>
@@ -89,5 +90,13 @@ QString InclScript::getExpression(spicecompat::SpiceDialect dialect /* = spiceco
     if (dialect == spicecompat::SPICEXyce) {
       includeCode = misc::expandEnvVars(includeCode);
     }
+
+    includeCode = qucs_s::rewriteIncludeLines(
+        includeCode,
+        [this](const QString& f) {
+          return misc::properAbsFileName(f, containingSchematic);
+        },
+        QucsSettings.DefaultSimulator != spicecompat::simSpiceOpus);
+
     return includeCode + "\n";
 }
