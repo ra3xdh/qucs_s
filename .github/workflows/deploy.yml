@@ -423,7 +423,8 @@ jobs:
         cmake.exe -B build/ -G 'Ninja' \
                   -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
                   -DCMAKE_INSTALL_PREFIX=build/qucs-suite  \
-                  -DCI_VERSION="${{env.VERSION}}"
+                  -DCI_VERSION="${{env.VERSION}}" \
+                  -DCMAKE_CXX_FLAGS="-DNO_OLDNAMES"
         cmake.exe --build build/ --parallel --config ${{env.BUILD_TYPE}}
 
     - name: Make install
