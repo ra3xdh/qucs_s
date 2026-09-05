@@ -35,6 +35,7 @@ QHash<QString, Module *> Module::Modules;
 QList<Category *> Category::Categories;
 
 QMap<QString, QString> Module::vaComponents;
+QHash<QString, pInfoFunc> Module::LoadFactories;
 
 // Constructor creates instance of module object.
 Module::Module () {
@@ -67,6 +68,13 @@ void Module::registerComponent(QString category, pInfoFunc info) {
   char* File;
   Component* c = (Component*)info(Name, File, true);
 
+  // register the factory unconditionally so that schematic loading can
+  // still recognize and instantiate this component model even when it is
+  // incompatible with the currently selected simulator
+  if (!LoadFactories.contains(c->Model)) {
+    LoadFactories.insert(c->Model, info);
+  }
+
   // put into category and the component hash
   if ((c->Simulator & QucsSettings.DefaultSimulator) ==
       QucsSettings.DefaultSimulator) {
@@ -98,6 +106,19 @@ Component * Module::getComponent (QString Model) {
               vacomponent::info (Name, vaBitmap, true, vaComponents[Model]);
     else
       return (Component *) m->info (Name, File, true);
+  }
+  return 0;
+}
+
+// Returns instantiated component based on the given "Model" name, ignoring
+// simulator compatibility. Used while loading a schematic so that a
+// previously-registered component model is never treated as unknown just
+// because it is incompatible with the currently selected simulator.
+Component* Module::getComponentForLoad(QString Model) {
+  if (LoadFactories.contains(Model)) {
+    QString Name;
+    char* File;
+    return (Component*)LoadFactories.value(Model)(Name, File, true);
   }
   return 0;
 }
@@ -644,6 +665,7 @@ void Module::unregisterModules(void) {
     }
   }
   Modules.clear();
+  LoadFactories.clear();
 }
 
 // Constructor creates instance of module object.

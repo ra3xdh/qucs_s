@@ -42,6 +42,7 @@
 #include "module.h"
 #include "misc.h"
 #include "extsimkernels/abstractspicekernel.h"
+#include "extsimkernels/spicecompat.h"
 #include "extsimkernels/s2spice.h"
 #include "osdi/osdi_0_3.h"
 
@@ -1557,6 +1558,21 @@ bool Schematic::throughAllComps(QTextStream *stream, int& countInit,
   for (auto* pc : a_DocComps) {
 
     if(pc->isActive != COMP_IS_ACTIVE) continue;
+
+    // reject netlisting an active component that is incompatible with the
+    // currently selected simulator, instead of silently emitting an
+    // incomplete netlist (e.g. a component loaded from CLI for a schematic
+    // whose default simulator does not support it)
+    if ((pc->Simulator & QucsSettings.DefaultSimulator) !=
+        QucsSettings.DefaultSimulator) {
+      ErrText->appendPlainText(
+          QObject::tr("ERROR: Component \"%1\" (%2) is not compatible with the "
+                      "selected simulator \"%3\".")
+              .arg(pc->Name, pc->Model,
+                   spicecompat::getDefaultSimulatorName(
+                       QucsSettings.DefaultSimulator)));
+      return false;
+    }
 
     if(pc->Model == "CMD") continue; // Skip "system command" component. It must not go to the simulation backend
 
