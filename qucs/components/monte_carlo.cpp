@@ -43,7 +43,7 @@ Component* MonteCarlo::newOne() {
 
 Element* MonteCarlo::info(QString& Name, char*& BitmapFile, bool getNewOne) {
   Name       = QObject::tr("Monte Carlo simulation");
-  BitmapFile = (char*)"sweep";
+  BitmapFile = (char*)"monte_carlo";
 
   if (getNewOne) {
     return new MonteCarlo();
