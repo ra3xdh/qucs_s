@@ -128,6 +128,12 @@ int main(int argc, char *argv[])
 #endif
     QucsSettings.LangDir = QucsDir.canonicalPath() + "/share/qucs/lang/";
   }
+
+  // Qucs component library directory (holds Substrates.lib), derived from the
+  // same QucsDir as above and consistent with the main Qucs application.
+  QucsSettings.LibDir =
+    QucsDir.canonicalPath() + "/share/" QUCS_NAME "/library/";
+
   loadSettings();
 
   a.setFont(QucsSettings.font);

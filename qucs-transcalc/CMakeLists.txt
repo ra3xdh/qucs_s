@@ -78,6 +78,7 @@ SET(QUCSTRANS_SRCS
   main.cpp
   optionsdialog.cpp
   qucstrans.cpp
+  substratelib.cpp
 )
 
 SET(QUCSTRANS_HDRS
@@ -88,6 +89,7 @@ SET(QUCSTRANS_HDRS
   rectwaveguide.h
   transline.h
   stripline.h
+  substratelib.h
   units.h
 )
 
@@ -147,6 +149,11 @@ SET_TARGET_PROPERTIES(${QUCS_NAME}trans PROPERTIES POSITION_INDEPENDENT_CODE TRU
 
 #ADD_SUBDIRECTORY( bitmaps ) -> added as resources
 ADD_SUBDIRECTORY( examples )
+
+# Standalone, frameworkless test for the substrate library reader.
+ADD_EXECUTABLE( test_substratelib substratelib.cpp test_substratelib.cpp )
+TARGET_LINK_LIBRARIES( test_substratelib Qt6::Core )
+ADD_TEST( NAME SubstrateLibParser COMMAND test_substratelib )
 
 #INSTALL( FILES qucstrans.1 DESTINATION share/man/man1 )
 
