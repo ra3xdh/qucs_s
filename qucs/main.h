@@ -80,6 +80,7 @@ struct tQucsSettings {
   QDir AdmsXmlBinDir;  // dir of admsXml executable
   QDir AscoBinDir;     // dir of asco executable
   QString OpenVAFExecutable;
+  QString IverilogExecutable;
   QString NgspiceExecutable;  // Executables of external simulators
   QString XyceExecutable;
   QString XyceParExecutable;

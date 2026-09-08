@@ -30,6 +30,7 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     a_lblNgspice(new QLabel(tr("Ngspice executable location"))),
     a_lblSpiceOpus(new QLabel(tr("SpiceOpus executable location"))),
     a_lblQucsator(new QLabel(tr("Qucsator executable location"))),
+    a_lblIverilog(new QLabel(tr("Icarus Verilog executable location"))),
     a_lblNgspiceSimParam(new QLabel(tr("Ngspice CLI parameters"))),
     a_lblXyceSimParam(new QLabel(tr("Xyce CLI parameters"))),
     a_lblSpopusSimParam(new QLabel(tr("SpiceOpus CLI parameters"))),
@@ -39,6 +40,7 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     a_edtSpiceOpus(new QLineEdit(QucsSettings.SpiceOpusExecutable)),
     a_edtXyce(new QLineEdit(QucsSettings.XyceExecutable)),
     a_edtQucsator(new QLineEdit(QucsSettings.Qucsator)),
+    a_edtIverilog(new QLineEdit(QucsSettings.IverilogExecutable)),
     a_edtNgspiceSimParam(new QLineEdit()),
     a_edtXyceSimParam(new QLineEdit()),
     a_edtSpopusSimParam(new QLineEdit()),
@@ -47,7 +49,8 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     a_btnSetNgspice(new QPushButton(tr("Select ..."))),
     a_btnSetSpOpus(new QPushButton(tr("Select ..."))),
     a_btnSetXyce(new QPushButton(tr("Select ..."))),
-    a_btnSetQucsator(new QPushButton(tr("Select ...")))
+    a_btnSetQucsator(new QPushButton(tr("Select ..."))),
+    a_btnSetIverilog(new QPushButton(tr("Select ...")))
 {
     qDebug()<<QucsSettings.DefaultSimulator;
 
@@ -63,6 +66,7 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
     connect(a_btnSetXyce,SIGNAL(clicked()),this,SLOT(slotSetXyce()));
     connect(a_btnSetSpOpus,SIGNAL(clicked()),this,SLOT(slotSetSpiceOpus()));
     connect(a_btnSetQucsator,SIGNAL(clicked()),this,SLOT(slotSetQucsator()));
+    connect(a_btnSetIverilog,SIGNAL(clicked()),this,SLOT(slotSetIverilog()));
 
     QStringList lst_modes;
     lst_modes<<"Default"<<"LTspice"<<"HSPICE"<<"Spice3";
@@ -119,6 +123,17 @@ SimSettingsDialog::SimSettingsDialog(QWidget *parent) :
 
     top->addWidget(gbp2);
 
+    QGroupBox *gbp3 = new QGroupBox;
+    gbp3->setTitle(tr("Digital simulation settings"));
+    QVBoxLayout *top4 = new QVBoxLayout;
+    top4->addWidget(a_lblIverilog);
+    QHBoxLayout *h10 = new QHBoxLayout;
+    h10->addWidget(a_edtIverilog,3);
+    h10->addWidget(a_btnSetIverilog,1);
+    top4->addLayout(h10);
+    gbp3->setLayout(top4);
+    top->addWidget(gbp3);
+
     QHBoxLayout *h3 = new QHBoxLayout;
     h3->addWidget(a_btnOK);
     h3->addWidget(a_btnCancel);
@@ -138,6 +153,7 @@ void SimSettingsDialog::slotApply()
     QucsSettings.XyceExecutable = a_edtXyce->text();
     QucsSettings.SpiceOpusExecutable = a_edtSpiceOpus->text();
     QucsSettings.Qucsator = a_edtQucsator->text();
+    QucsSettings.IverilogExecutable = a_edtIverilog->text();
     settingsManager& qs = _settings::Get();
     qs.setItem<int>("NgspiceCompatMode", a_cbxCompatMode->currentIndex());
     qs.setItem<QString>("NgspiceParams", a_edtNgspiceSimParam->text());
@@ -186,5 +202,13 @@ void SimSettingsDialog::slotSetQucsator()
     QString s = QFileDialog::getOpenFileName(this,tr("Select Qucsator executable location"),a_edtQucsator->text(),"All files (*)");
     if (!s.isEmpty()) {
         a_edtQucsator->setText(s);
+    }
+}
+
+void SimSettingsDialog::slotSetIverilog()
+{
+    QString s = QFileDialog::getOpenFileName(this,tr("Select Icarus Verilog executable location"),a_edtIverilog->text(),"All files (*)");
+    if (!s.isEmpty()) {
+        a_edtIverilog->setText(s);
     }
 }
