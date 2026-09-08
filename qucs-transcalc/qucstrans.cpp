@@ -709,11 +709,6 @@ void QucsTranscalc::updatePropItem (TransValue * val) {
 
 /* Switches to the current type of transmission line layout. */
 void QucsTranscalc::setMode (int _mode) {
-  // A material only fills the fields once; it is not bound across mode changes
-  // or file loads.
-  if (substrateMaterialCombo)
-    substrateMaterialCombo->setCurrentIndex (0);
-
   // change necessary?
   if (mode == _mode) return;
   storeValues ();
@@ -794,8 +789,8 @@ void QucsTranscalc::createPropItems (QGroupBox *parent, int box) {
   parent->setLayout(boxGrid);
 
   // For the substrate box add an additive material selector as the first row.
-  // Choosing a material copies its values once into the manual fields below;
-  // the fields stay fully editable and the "Manual" entry changes nothing.
+  // Choosing a material copies its values into the editable fields below;
+  // the fields stay fully editable and the "Custom" entry changes nothing.
   if (box == TRANS_SUBSTRATE) {
     substrateMaterials =
       readSubstrateLibrary (QucsSettings.LibDir + "Substrates.lib");
@@ -805,7 +800,7 @@ void QucsTranscalc::createPropItems (QGroupBox *parent, int box) {
     boxGrid->addWidget (matLabel, boxGrid->rowCount (), 0);
 
     substrateMaterialCombo = new QComboBox ();
-    substrateMaterialCombo->addItem (tr("Manual"));
+    substrateMaterialCombo->addItem (tr("Custom"));
     for (const SubstrateMaterial & m : substrateMaterials)
       substrateMaterialCombo->addItem (m.name);
     boxGrid->addWidget (substrateMaterialCombo, boxGrid->rowCount () - 1, 1);
@@ -1042,8 +1037,18 @@ void QucsTranscalc::closeEvent(QCloseEvent *Event)
 
 void QucsTranscalc::slotSelectType (int Type)
 {
+  const int materialIndex =
+    substrateMaterialCombo ? substrateMaterialCombo->currentIndex () : 0;
+  const bool modeChanged = mode != Type;
+
   pix->setPixmap(QPixmap(":/bitmaps/" + QString(TransLineTypes[Type].bitmap)));
   setMode (Type);
+
+  if (modeChanged && materialIndex > 0) {
+    slotSelectSubstrateMaterial (materialIndex);
+    slotAnalyze ();
+  }
+
   statusBar()->showMessage(tr("Ready."));
 }
 
@@ -1074,8 +1079,8 @@ void QucsTranscalc::slotValueChanged()
 
 /* Copies the parameters of the substrate material selected in the combo box
    into the compatible fields of the current transmission line.  Index 0
-   ("Manual") leaves everything untouched.  This is a one-shot copy: the
-   fields stay ordinary editable line edits afterwards.  setProperty() and
+   ("Custom") leaves everything untouched.  The fields stay ordinary editable
+   line edits afterwards.  setProperty() and
    setUnit() silently ignore properties that the current mode does not have,
    so no per-mode branching is needed. */
 void QucsTranscalc::slotSelectSubstrateMaterial(int index)
@@ -1120,6 +1125,9 @@ void QucsTranscalc::slotSelectSubstrateMaterial(int index)
 bool QucsTranscalc::loadFile(QString fname, int * _mode) {
   QFile file(QDir::toNativeSeparators(fname));
   if(!file.open(QIODevice::ReadOnly)) return false; // file doesn't exist
+
+  if (substrateMaterialCombo)
+    substrateMaterialCombo->setCurrentIndex (0);
 
   QTextStream stream(&file);
   QString Line, Name, Unit;
