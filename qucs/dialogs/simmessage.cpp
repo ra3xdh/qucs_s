@@ -97,6 +97,7 @@ SimMessage::SimMessage(QWidget *w, QWidget *parent)
   ProgText->setMinimumSize(400,80);
   wasLF = false;
   simKilled = false;
+  DigitalSimulationRunning = false;
 
   QGroupBox *HGroup = new QGroupBox();
   QHBoxLayout *hbox = new QHBoxLayout();
@@ -342,6 +343,144 @@ static QString pathName(QString longpath) {
 #endif
 
 
+bool SimMessage::prepareDigitalSimulation(bool isVerilog,
+                                          const QString &simTime,
+                                          bool correctDataset)
+{
+  QDir tempDir(QucsSettings.tempFilesDir);
+  const QString workDir = tempDir.absolutePath();
+
+  const QStringList staleFiles = {
+      "digi.v", "digi.vhdl", "digi.vcd", "digi", "digi.bin"};
+
+  for (const QString &name : staleFiles) {
+    const QString path = tempDir.filePath(name);
+    if (QFile::exists(path) && !QFile::remove(path)) {
+      ErrText->appendPlainText(
+          tr("ERROR: Cannot remove temporary file \"%1\"!").arg(path));
+      return false;
+    }
+  }
+
+  const QString source = tempDir.filePath("netlist.txt");
+  const QString target =
+      tempDir.filePath(isVerilog ? "digi.v" : "digi.vhdl");
+
+  if (!QFile::copy(source, target)) {
+    ErrText->appendPlainText(
+        tr("ERROR: Cannot create temporary HDL file \"%1\"!").arg(target));
+    return false;
+  }
+
+  DigitalStages.clear();
+
+  auto addStage = [&](const QString &program, const QStringList &arguments) {
+    DigitalStages.append({program, arguments, workDir});
+  };
+
+  if (isVerilog) {
+#if defined(_WIN32) || defined(__MINGW32__)
+    const QString outputFile = "digi.bin";
+#else
+    const QString outputFile = "digi";
+#endif
+    addStage(QucsSettings.IverilogExecutable,
+             {"-o", outputFile, "-s", "TestBench", "digi.v"});
+    addStage("vvp", {outputFile, "-vcd"});
+  } else {
+    QString stopTime = simTime;
+    stopTime.remove(' ');
+    addStage("ghdl", {"-a", "digi.vhdl"});
+    addStage("ghdl", {"-e", "TestBench"});
+    addStage("ghdl",
+             {"-r", "TestBench", "--vcd=digi.vcd",
+              "--stop-time=" + stopTime});
+  }
+
+  QStringList convArguments;
+  if (correctDataset)
+    convArguments << "-c";
+  convArguments << "-if" << "vcd"
+                << "-of" << "qucsdata"
+                << "-i" << "digi.vcd"
+                << "-o" << DataSet;
+
+  addStage(QucsSettings.Qucsconv, convArguments);
+  DigitalSimulationRunning = true;
+  return true;
+}
+
+
+// ------------------------------------------------------------------------
+void SimMessage::startNextDigitalStage()
+{
+  if (simKilled) {
+    DigitalStages.clear();
+    DigitalSimulationRunning = false;
+    FinishSimulation(-1);
+    return;
+  }
+
+  if (DigitalStages.isEmpty()) {
+    DigitalSimulationRunning = false;
+    FinishSimulation(0);
+    return;
+  }
+
+  const DigitalStage stage = DigitalStages.takeFirst();
+  Program = stage.program;
+  SimProcess.setWorkingDirectory(stage.workingDirectory);
+
+  if (Program.isEmpty()) {
+    DigitalStages.clear();
+    DigitalSimulationRunning = false;
+    ErrText->appendPlainText(
+        tr("ERROR: Digital simulation executable is not configured."));
+    FinishSimulation(-1);
+    return;
+  }
+
+  qDebug() << "Command :" << Program << stage.arguments.join(" ");
+  SimProcess.start(Program, stage.arguments);
+}
+
+
+// ------------------------------------------------------------------------
+void SimMessage::slotDigitalStageFinished(
+    int exitCode, QProcess::ExitStatus exitStatus)
+{
+  if (simKilled) {
+    DigitalStages.clear();
+    DigitalSimulationRunning = false;
+    FinishSimulation(-1);
+    return;
+  }
+
+  if (exitStatus != QProcess::NormalExit) {
+    DigitalStages.clear();
+    DigitalSimulationRunning = false;
+    ErrText->appendPlainText(
+        tr("ERROR: Digital simulation stage \"%1\" crashed!").arg(Program));
+    FinishSimulation(-1);
+    return;
+  }
+
+  if (exitCode != 0) {
+    DigitalStages.clear();
+    DigitalSimulationRunning = false;
+    ErrText->appendPlainText(
+        tr("ERROR: Digital simulation stage \"%1\" exited with code %2.")
+            .arg(Program)
+            .arg(exitCode));
+    FinishSimulation(exitCode);
+    return;
+  }
+
+  startNextDigitalStage();
+}
+
+
+// ------------------------------------------------------------------------
 /*!
  * \brief SimMessage::startSimulator simulates the document in view.
  */
@@ -356,12 +495,8 @@ void SimMessage::startSimulator()
   QString SimPath = QDir::toNativeSeparators(QucsSettings.tempFilesDir.absolutePath());
 #if defined(_WIN32) || defined(__MINGW32__)
   QString QucsDigiLib = "qucs_mkdigilib.bat";
-  QString QucsDigi = "qucs_run_hdl.bat";
-  QString QucsVeri = "qucs_run_verilog.bat";
 #else
   QString QucsDigiLib = "qucs_mkdigilib";
-  QString QucsDigi = "qucs_run_hdl";
-  QString QucsVeri = "qucs_run_verilog";
 #endif
   SimOpt = nullptr;
   bool isVerilog = false;
@@ -380,32 +515,10 @@ void SimMessage::startSimulator()
     // Simulation.
     if (Doc->simulation) {
       SimTime = Doc->getSimTime();
-      QString libs = Doc->Libraries.toLower();
-      /// \todo \bug error: unrecognized command line option '-Wl'
-#if defined(_WIN32) || defined(__MINGW32__)
-      if(libs.isEmpty()) {
-        libs = "";
+      if (!prepareDigitalSimulation(false, SimTime, false)) {
+        FinishSimulation(-1);
+        return;
       }
-      else {
-        libs.replace(" ",",-l");
-        libs = "-Wl,-l" + libs;
-      }
-#else
-      if(libs.isEmpty()) {
-        libs = "-c";
-      }
-      else {
-        libs.replace(" ",",-l");
-        libs = "-c,-l" + libs;
-      }
-#endif
-      // The following code runs the the qucs_run_hdl[.bat] script which in turn
-      // runs GHDL (three passes with -a -e and -r commands.). Note GHDL expects the
-      // time without spaces, so strip spaces from SimTime.
-      Program = pathName(QucsSettings.BinDir + QucsDigi);
-      Arguments  << QucsSettings.tempFilesDir.filePath("netlist.txt")
-                 << DataSet << SimTime.remove(" ") << pathName(SimPath)
-                 << pathName(QucsSettings.BinDir) << libs;
     }
     // Module.
     else {
@@ -556,30 +669,9 @@ void SimMessage::startSimulator()
       }
     }
     else {
-      if (isVerilog) {
-          Program = QDir::toNativeSeparators(QucsSettings.BinDir + QucsVeri);
-          Arguments << QDir::toNativeSeparators(QucsSettings.tempFilesDir.filePath("netlist.txt"))
-                    << DataSet
-                    << SimTime
-                    << QDir::toNativeSeparators(SimPath)
-                    << QDir::toNativeSeparators(QucsSettings.BinDir)
-                    << "-c";
-      } else {
-/// \todo \bug error: unrecognized command line option '-Wl'
-#if defined(_WIN32) || defined(__MINGW32__)
-    Program = QDir::toNativeSeparators(pathName(QucsSettings.BinDir + QucsDigi));
-    Arguments << QDir::toNativeSeparators(QucsSettings.tempFilesDir.filePath("netlist.txt"))
-              << DataSet
-              << SimTime
-              << QDir::toNativeSeparators(SimPath)
-              << QDir::toNativeSeparators(QucsSettings.BinDir) << "-Wall" << "-c";
-#else
-    Program = QDir::toNativeSeparators(pathName(QucsSettings.BinDir + QucsDigi));
-    Arguments << QucsSettings.tempFilesDir.filePath("netlist.txt")
-              << DataSet << SimTime.remove(" ") << pathName(SimPath)
-              << pathName(QucsSettings.BinDir) << "-Wall" << "-c";
-
-#endif
+      if (!prepareDigitalSimulation(isVerilog, SimTime, true)) {
+        FinishSimulation(-1);
+        return;
       }
     }
   }
@@ -587,8 +679,13 @@ void SimMessage::startSimulator()
   disconnect(&SimProcess, 0, 0, 0);
   connect(&SimProcess, SIGNAL(readyReadStandardError()), SLOT(slotDisplayErr()));
   connect(&SimProcess, SIGNAL(readyReadStandardOutput()), SLOT(slotDisplayMsg()));
-  connect(&SimProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
-                       SLOT(slotSimEnded(int, QProcess::ExitStatus)));
+  if (DigitalSimulationRunning) {
+    connect(&SimProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
+                         SLOT(slotDigitalStageFinished(int, QProcess::ExitStatus)));
+  } else {
+    connect(&SimProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
+                         SLOT(slotSimEnded(int, QProcess::ExitStatus)));
+  }
   connect(&SimProcess, SIGNAL(stateChanged(QProcess::ProcessState)),
                        SLOT(slotStateChanged(QProcess::ProcessState)));
 
@@ -637,8 +734,12 @@ void SimMessage::startSimulator()
   }
   SimProcess.setProcessEnvironment(env);
 
-  qDebug() << "Command :" << Program << Arguments.join(" ");
-  SimProcess.start(Program, Arguments); // launch the program
+  if (DigitalSimulationRunning) {
+    startNextDigitalStage();
+  } else {
+    qDebug() << "Command :" << Program << Arguments.join(" ");
+    SimProcess.start(Program, Arguments); // launch the program
+  }
 
 }
 
@@ -740,6 +841,10 @@ void SimMessage::slotStateChanged(QProcess::ProcessState newState)
             case QProcess::Starting: // failed to start.
               ErrText->insertPlainText(tr("ERROR: Cannot start ") + Program +
                   " (" + SimProcess.errorString() + ")\n");
+              if (DigitalSimulationRunning) {
+                DigitalStages.clear();
+                DigitalSimulationRunning = false;
+              }
               FinishSimulation(-1);
               break;
             case QProcess::Running:
