@@ -28,6 +28,10 @@
 #include <QCloseEvent>
 #include <QMainWindow>
 #include <QDir>
+#include <QList>
+
+#include "substratelib.h"
+
 class QComboBox;
 class QLineEdit;
 class QLabel;
@@ -64,6 +68,7 @@ struct tQucsSettings {
   int x, y, dx, dy;    // position and size of main window
   QFont font;          // font
   QString LangDir;     // translation directory
+  QString LibDir;      // Qucs component library directory
   QString Language;
   int length_unit;     // default length unit
   int freq_unit;       // default frequency unit
@@ -161,6 +166,7 @@ private slots:
   void slotSynthesize();
   void slotAnalyze();
   void slotValueChanged();
+  void slotSelectSubstrateMaterial(int);
   void slotFileLoad();
   void slotFileSave();
   void slotHelpIntro();
@@ -195,6 +201,9 @@ private:
   QComboBox * tranType;
   QGroupBox * calculated;
   int mode;
+
+  QComboBox * substrateMaterialCombo = nullptr;
+  QList<SubstrateMaterial> substrateMaterials;
 };
 
 #endif /* QUCSTRANS_H */

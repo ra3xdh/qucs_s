@@ -78,6 +78,7 @@ SET(QUCSTRANS_SRCS
   main.cpp
   optionsdialog.cpp
   qucstrans.cpp
+  substratelib.cpp
 )
 
 SET(QUCSTRANS_HDRS
@@ -88,6 +89,7 @@ SET(QUCSTRANS_HDRS
   rectwaveguide.h
   transline.h
   stripline.h
+  substratelib.h
   units.h
 )
 
