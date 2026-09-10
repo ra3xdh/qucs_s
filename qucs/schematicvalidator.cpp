@@ -21,6 +21,7 @@ QVector<ValidationIssue> SchematicValidator::runAllChecks(QSet<QString> &visited
 
   // Top-level schematic checks. Not applicable to subcircuits
   issues += checkFrequencySweepType();
+  issues += checkMCRunsCount();
   issues += checkMinimumPortsInSPSimulation();
   issues += checkMissingSimulation();
 
@@ -126,6 +127,35 @@ QVector<ValidationIssue> SchematicValidator::checkFrequencySweepType() const
     }
   }
 
+  return issues;
+}
+
+QVector<ValidationIssue> SchematicValidator::checkMCRunsCount() const
+{
+  QVector<ValidationIssue> issues;
+  for (Component *comp : sch->a_DocComps) {
+    if (!comp->isActive)
+      continue;
+    if (comp->Model == ".MC") {
+      Property* runsProp = comp->getProperty("Runs");
+      bool ok        = false;
+      const int runs = runsProp->Value.trimmed().toInt(&ok);
+      if (!ok || runs <= 0) {
+        ValidationIssue issue;
+        // Issue title
+        issue.title = QObject::tr("Wrong Monte Carlo runs count");
+        // Error message
+        issue.message = QObject::tr("%1 uses a malformed or negative runs count")
+                            .arg(comp->Name);
+        // Issue relevance
+        issue.severity = 1; // Critical - Simulation will fail
+        // Suggested solution
+        issue.suggestedFix = QObject::tr("Set Runs property as positive"
+                                         " integer number at component %1").arg(comp->Name);
+        issues.append(issue);
+      }
+    }
+  }
   return issues;
 }
 

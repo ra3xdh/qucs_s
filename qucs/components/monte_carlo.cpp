@@ -62,20 +62,6 @@ Element* MonteCarlo::info(QString& Name, char*& BitmapFile, bool getNewOne) {
   return 0;
 }
 
-int MonteCarlo::effectiveRuns() {
-  Property* runsProp = getProperty("Runs");
-  if (runsProp == nullptr) {
-    return 1;
-  }
-
-  bool ok        = false;
-  const int runs = runsProp->Value.trimmed().toInt(&ok);
-  if (!ok || runs <= 0) {
-    return 1;
-  }
-  return runs;
-}
-
 QString MonteCarlo::counterVarName() {
   QString counter = Name.toLower();
   counter.remove(QRegularExpression("[^a-z0-9_]"));
@@ -97,12 +83,13 @@ QString MonteCarlo::getNgspiceBeforeSim(QString sim, int lvl) {
   QString relvar = getProperty("Relvar")->Value;
   QString sigma = getProperty("NSigma")->Value;
   QString func = getProperty("Function")->Value;
+  QString runs = getProperty("Runs")->Value;
   const QString counter = counterVarName();
 
   QString s =  QString("let %1 = 0\n"
                         "dowhile %1 < %2\n")
       .arg(counter)
-      .arg(effectiveRuns());
+      .arg(runs);
   int vars_count = std::min(vars.count(),vals.count());
   for (int i = 0; i < vars_count; i++) {
     s += QString("alterparam %1 = %2(%3,%4").arg(vars.at(i))

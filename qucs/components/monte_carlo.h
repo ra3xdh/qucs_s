@@ -44,8 +44,6 @@ protected:
   QString netlist() override;
 
 private:
-  //! Parsed \c Runs value; non-numeric, empty or <= 0 is clamped to 1.
-  int effectiveRuns();
   //! Nutmeg-safe loop counter name, unique per component instance.
   QString counterVarName();
 };
