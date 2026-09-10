@@ -34,9 +34,10 @@ MonteCarlo::MonteCarlo() {
   Props.append(new Property("Runs", "10", true,
                             QObject::tr("number of Monte Carlo runs")));
   Props.append(new Property("Variable", "Var", true,
-                            QObject::tr("Variable name defined in .PARAM block to apply variation")));
+                            QObject::tr("Variable name defined in .PARAM block to apply variation;"
+                                        " or semicolon separated list of variables")));
   Props.append(new Property("Value", "10.0", true,
-                            QObject::tr("Starting value")));
+                            QObject::tr("Initial value or semicolon separated list of values")));
   Props.append(new Property("Relvar", "0.1", true,
                             QObject::tr("Variable relative variance")));
   Props.append(new Property("NSigma", "3", true,
@@ -89,23 +90,30 @@ QString MonteCarlo::getNgspiceBeforeSim(QString sim, int lvl) {
     return QString();
   }
 
-  auto var = getProperty("Variable")->Value;
-  auto val = getProperty("Value")->Value;
-  auto relvar = getProperty("Relvar")->Value;
-  auto sigma = getProperty("NSigma")->Value;
-  auto func = getProperty("Function")->Value;
+  // List of variables semicolon separated
+  QStringList vars = getProperty("Variable")->Value.split(";");
+  // List of initial values semicolon separated
+  QStringList vals = getProperty("Value")->Value.split(";");
+  QString relvar = getProperty("Relvar")->Value;
+  QString sigma = getProperty("NSigma")->Value;
+  QString func = getProperty("Function")->Value;
   const QString counter = counterVarName();
 
   QString s =  QString("let %1 = 0\n"
                         "dowhile %1 < %2\n")
       .arg(counter)
       .arg(effectiveRuns());
-  s += QString("alterparam %1 = %2(%3,%4").arg(var).arg(func).arg(val).arg(relvar);
-  if (func == "gauss") {
-    s += QString(",%1)\n").arg(sigma);
-  } else {
-    s += ")\n";
+  int vars_count = std::min(vars.count(),vals.count());
+  for (int i = 0; i < vars_count; i++) {
+    s += QString("alterparam %1 = %2(%3,%4").arg(vars.at(i))
+             .arg(func).arg(vals.at(i)).arg(relvar);
+    if (func == "gauss") {
+      s += QString(",%1)\n").arg(sigma);
+    } else {
+      s += ")\n";
+    }
   }
+
   s += "reset\n";
   return s;
 }
