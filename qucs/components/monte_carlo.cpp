@@ -33,6 +33,16 @@ MonteCarlo::MonteCarlo() {
       QObject::tr("simulation to run the Monte Carlo analysis on")));
   Props.append(new Property("Runs", "10", true,
                             QObject::tr("number of Monte Carlo runs")));
+  Props.append(new Property("Variable", "Var", true,
+                            QObject::tr("Variable name defined in .PARAM block to apply variation")));
+  Props.append(new Property("Value", "10.0", true,
+                            QObject::tr("Starting value")));
+  Props.append(new Property("Relvar", "0.1", true,
+                            QObject::tr("Variable relative variance")));
+  Props.append(new Property("NSigma", "3", true,
+                            QObject::tr("Sigmas number for Gauss distribution")));
+  Props.append(new Property("Function", "gauss", true,
+                            QObject::tr("Distribution function [unif,gauss]")));
 }
 
 MonteCarlo::~MonteCarlo() {}
@@ -79,12 +89,25 @@ QString MonteCarlo::getNgspiceBeforeSim(QString sim, int lvl) {
     return QString();
   }
 
+  auto var = getProperty("Variable")->Value;
+  auto val = getProperty("Value")->Value;
+  auto relvar = getProperty("Relvar")->Value;
+  auto sigma = getProperty("NSigma")->Value;
+  auto func = getProperty("Function")->Value;
   const QString counter = counterVarName();
-  return QStringLiteral("let %1 = 0\n"
-                        "dowhile %1 < %2\n"
-                        "reset\n")
+
+  QString s =  QString("let %1 = 0\n"
+                        "dowhile %1 < %2\n")
       .arg(counter)
       .arg(effectiveRuns());
+  s += QString("alterparam %1 = %2(%3,%4").arg(var).arg(func).arg(val).arg(relvar);
+  if (func == "gauss") {
+    s += QString(",%1)\n").arg(sigma);
+  } else {
+    s += ")\n";
+  }
+  s += "reset\n";
+  return s;
 }
 
 QString MonteCarlo::getNgspiceAfterSim(QString sim, int lvl) {
