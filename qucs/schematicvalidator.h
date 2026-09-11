@@ -87,7 +87,7 @@ private:
 
   /// @brief MC runs count must be > 0
   /// @return A list of ValidationIssue entries..
-  QVector<ValidationIssue> checkMCRunsCount() const;
+  QVector<ValidationIssue> checkMCSimulation() const;
 
   /// @brief ngspice needs at least two AC power sources in SP simulation
   /// @return A list of ValidationIssue entries.

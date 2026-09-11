@@ -21,7 +21,7 @@ QVector<ValidationIssue> SchematicValidator::runAllChecks(QSet<QString> &visited
 
   // Top-level schematic checks. Not applicable to subcircuits
   issues += checkFrequencySweepType();
-  issues += checkMCRunsCount();
+  issues += checkMCSimulation();
   issues += checkMinimumPortsInSPSimulation();
   issues += checkMissingSimulation();
 
@@ -130,9 +130,11 @@ QVector<ValidationIssue> SchematicValidator::checkFrequencySweepType() const
   return issues;
 }
 
-QVector<ValidationIssue> SchematicValidator::checkMCRunsCount() const
+QVector<ValidationIssue> SchematicValidator::checkMCSimulation() const
 {
   QVector<ValidationIssue> issues;
+
+  // Check MC runs count
   for (Component *comp : sch->a_DocComps) {
     if (!comp->isActive)
       continue;
@@ -156,6 +158,65 @@ QVector<ValidationIssue> SchematicValidator::checkMCRunsCount() const
       }
     }
   }
+
+  // Check MC conflicts
+  QStringList mcTargets;
+  QStringList swTargets;
+
+  for (Component* pc : sch->a_DocComps) {
+    if (!pc->isSimulation) {
+      continue;
+    }
+    if (pc->isActive != COMP_IS_ACTIVE) {
+      continue;
+    }
+
+    if (pc->Model == ".MC") {
+      const QString target = pc->Props.at(0)->Value.trimmed().toLower();
+      if (target.isEmpty()) {
+        continue;
+      }
+      if (mcTargets.contains(target)) {
+        ValidationIssue issue;
+        // Issue title
+        issue.title = QObject::tr("Monte Carlo simulation conflict");
+        // Error message
+        issue.message = QObject::tr("Two Monte Carlo simulations points to the same simulation")
+                            .arg(pc->Name);
+        // Issue relevance
+        issue.severity = 1; // Critical - Simulation will fail
+        // Suggested solution
+        issue.suggestedFix = QObject::tr("Delete one of conflictiing Monte Carlo simulation blocks");
+        issues.append(issue);
+        break;
+      }
+      mcTargets.append(target);
+    } else if (pc->Model == ".SW") {
+      const QString target = pc->Props.at(0)->Value.trimmed().toLower();
+      if (target.isEmpty()) {
+        continue;
+      }
+      swTargets.append(target);
+    }
+  }
+
+  for (const QString& target : mcTargets) {
+    if (swTargets.contains(target)) {
+      ValidationIssue issue;
+      // Issue title
+      issue.title = QObject::tr("Monte Carlo simulation conflict");
+      // Error message
+      issue.message = QObject::tr("Monte Carlo and Parameter sweep simulations attached to the same block");
+      // Issue relevance
+      issue.severity = 1; // Critical - Simulation will fail
+      // Suggested solution
+      issue.suggestedFix = QObject::tr("Delete one of simulation blocks");
+      issues.append(issue);
+      break;
+    }
+  }
+
+
   return issues;
 }
 
