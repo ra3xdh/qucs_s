@@ -31,6 +31,7 @@ QVector<ValidationIssue> SchematicValidator::runAllChecks(QSet<QString> &visited
 
   // Top-level schematic checks. Not applicable to subcircuits
   issues += checkFrequencySweepType();
+  issues += checkMCSimulation();
   issues += checkMinimumPortsInSPSimulation();
   issues += checkMissingSimulation();
 
@@ -139,6 +140,96 @@ QVector<ValidationIssue> SchematicValidator::checkFrequencySweepType() const
   return issues;
 }
 
+QVector<ValidationIssue> SchematicValidator::checkMCSimulation() const
+{
+  QVector<ValidationIssue> issues;
+
+  // Check MC runs count
+  for (Component *comp : sch->a_DocComps) {
+    if (!comp->isActive)
+      continue;
+    if (comp->Model == ".MC") {
+      Property* runsProp = comp->getProperty("Runs");
+      bool ok        = false;
+      const int runs = runsProp->Value.trimmed().toInt(&ok);
+      if (!ok || runs <= 0) {
+        ValidationIssue issue;
+        // Issue title
+        issue.title = QObject::tr("Wrong Monte Carlo runs count");
+        // Error message
+        issue.message = QObject::tr("%1 uses a malformed or negative runs count")
+                            .arg(comp->Name);
+        // Issue relevance
+        issue.severity = 1; // Critical - Simulation will fail
+        // Suggested solution
+        issue.suggestedFix = QObject::tr("Set Runs property as positive"
+                                         " integer number at component %1").arg(comp->Name);
+        issues.append(issue);
+      }
+    }
+  }
+
+  // Check MC conflicts
+  QStringList mcTargets;
+  QStringList swTargets;
+
+  for (Component* pc : sch->a_DocComps) {
+    if (!pc->isSimulation) {
+      continue;
+    }
+    if (pc->isActive != COMP_IS_ACTIVE) {
+      continue;
+    }
+
+    if (pc->Model == ".MC") {
+      const QString target = pc->Props.at(0)->Value.trimmed().toLower();
+      if (target.isEmpty()) {
+        continue;
+      }
+      if (mcTargets.contains(target)) {
+        ValidationIssue issue;
+        // Issue title
+        issue.title = QObject::tr("Monte Carlo simulation conflict");
+        // Error message
+        issue.message = QObject::tr("Two Monte Carlo simulations points to the same simulation")
+                            .arg(pc->Name);
+        // Issue relevance
+        issue.severity = 1; // Critical - Simulation will fail
+        // Suggested solution
+        issue.suggestedFix = QObject::tr("Delete one of conflictiing Monte Carlo simulation blocks");
+        issues.append(issue);
+        break;
+      }
+      mcTargets.append(target);
+    } else if (pc->Model == ".SW") {
+      const QString target = pc->Props.at(0)->Value.trimmed().toLower();
+      if (target.isEmpty()) {
+        continue;
+      }
+      swTargets.append(target);
+    }
+  }
+
+  for (const QString& target : mcTargets) {
+    if (swTargets.contains(target)) {
+      ValidationIssue issue;
+      // Issue title
+      issue.title = QObject::tr("Monte Carlo simulation conflict");
+      // Error message
+      issue.message = QObject::tr("Monte Carlo and Parameter sweep simulations attached to the same block");
+      // Issue relevance
+      issue.severity = 1; // Critical - Simulation will fail
+      // Suggested solution
+      issue.suggestedFix = QObject::tr("Delete one of simulation blocks");
+      issues.append(issue);
+      break;
+    }
+  }
+
+
+  return issues;
+}
+
 
 QVector<ValidationIssue> SchematicValidator::checkMinimumPortsInSPSimulation() const {
   QVector<ValidationIssue> issues;
@@ -189,13 +280,14 @@ QVector<ValidationIssue> SchematicValidator::checkMissingSimulation() const
 {
   QVector<ValidationIssue> issues;
 
-  // Model strings for all recognized simulation controller blocks.
-  static const QStringList kSimulationBlockModels = {
-      ".AC", ".SP", ".TR", ".DC", ".HB", ".SW", ".NOISE", ".TF"
+  // Dependent simulations have no effect without another attached simulation
+  static const QStringList depSimulationsModels = {
+      ".SW", ".MC"
   };
 
   for (Component *component : sch->a_DocComps) {
-    if (component->isActive && kSimulationBlockModels.contains(component->Model))
+    if (component->isActive && component->isSimulation &&
+        !depSimulationsModels.contains(component->Model))
       // Found one block. It's ok
       return issues;
   }

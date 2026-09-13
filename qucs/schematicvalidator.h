@@ -88,6 +88,10 @@ private:
   /// @return A list of ValidationIssue entries..
   QVector<ValidationIssue> checkFrequencySweepType() const;
 
+  /// @brief MC runs count must be > 0
+  /// @return A list of ValidationIssue entries..
+  QVector<ValidationIssue> checkMCSimulation() const;
+
   /// @brief ngspice needs at least two AC power sources in SP simulation
   /// @return A list of ValidationIssue entries.
   QVector<ValidationIssue> checkMinimumPortsInSPSimulation() const;
