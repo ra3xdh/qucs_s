@@ -788,6 +788,26 @@ void QucsTranscalc::createPropItems (QGroupBox *parent, int box) {
   boxGrid->setSpacing(2);
   parent->setLayout(boxGrid);
 
+  // For the substrate box add an additive material selector as the first row.
+  // Choosing a material copies its values into the editable fields below;
+  // the fields stay fully editable and the "Custom" entry changes nothing.
+  if (box == TRANS_SUBSTRATE) {
+    substrateMaterials =
+      readSubstrateLibrary (QucsSettings.LibDir + "Substrates.lib");
+
+    QLabel * matLabel = new QLabel (tr("Material"));
+    matLabel->setAlignment (Qt::AlignRight);
+    boxGrid->addWidget (matLabel, boxGrid->rowCount (), 0);
+
+    substrateMaterialCombo = new QComboBox ();
+    substrateMaterialCombo->addItem (tr("Custom"));
+    for (const SubstrateMaterial & m : substrateMaterials)
+      substrateMaterialCombo->addItem (m.name);
+    boxGrid->addWidget (substrateMaterialCombo, boxGrid->rowCount () - 1, 1);
+    connect (substrateMaterialCombo, SIGNAL(activated(int)),
+             SLOT(slotSelectSubstrateMaterial(int)));
+  }
+
   // go through each parameter category
   for (int i = 0; i < TransMaxBox[box]; i++) {
     // fix uninitialized memory
@@ -1017,8 +1037,18 @@ void QucsTranscalc::closeEvent(QCloseEvent *Event)
 
 void QucsTranscalc::slotSelectType (int Type)
 {
+  const int materialIndex =
+    substrateMaterialCombo ? substrateMaterialCombo->currentIndex () : 0;
+  const bool modeChanged = mode != Type;
+
   pix->setPixmap(QPixmap(":/bitmaps/" + QString(TransLineTypes[Type].bitmap)));
   setMode (Type);
+
+  if (modeChanged && materialIndex > 0) {
+    slotSelectSubstrateMaterial (materialIndex);
+    slotAnalyze ();
+  }
+
   statusBar()->showMessage(tr("Ready."));
 }
 
@@ -1047,10 +1077,57 @@ void QucsTranscalc::slotValueChanged()
   statusBar()->showMessage(tr("Values are inconsistent."));
 }
 
+/* Copies the parameters of the substrate material selected in the combo box
+   into the compatible fields of the current transmission line.  Index 0
+   ("Custom") leaves everything untouched.  The fields stay ordinary editable
+   line edits afterwards.  setProperty() and
+   setUnit() silently ignore properties that the current mode does not have,
+   so no per-mode branching is needed. */
+void QucsTranscalc::slotSelectSubstrateMaterial(int index)
+{
+  if (index <= 0 || index > substrateMaterials.count())
+    return;
+
+  const SubstrateMaterial & m = substrateMaterials.at (index - 1);
+  const QByteArray hUnit = m.hUnit.toLatin1 ();
+  const QByteArray tUnit = m.tUnit.toLatin1 ();
+
+  // relative permittivity
+  setProperty ("Er", m.er);
+
+  // substrate height ("H" in most modes, lowercase "h" in stripline)
+  setProperty ("H", m.h);
+  setUnit ("H", hUnit.constData ());
+  setProperty ("h", m.h);
+  setUnit ("h", hUnit.constData ());
+
+  // metalization thickness
+  setProperty ("T", m.t);
+  setUnit ("T", tUnit.constData ());
+
+  // dielectric loss tangent
+  setProperty ("Tand", m.tand);
+
+  // metal conductivity = 1 / specific resistance ("Cond" or "Sigma")
+  if (m.rho > 0.0) {
+    setProperty ("Cond", 1.0 / m.rho);
+    setProperty ("Sigma", 1.0 / m.rho);
+  }
+
+  // rms substrate roughness: bare SI value, applied in metres
+  setProperty ("Rough", m.D);
+  setUnit ("Rough", "m");
+
+  slotValueChanged ();
+}
+
 // Load transmission line values from the given file.
 bool QucsTranscalc::loadFile(QString fname, int * _mode) {
   QFile file(QDir::toNativeSeparators(fname));
   if(!file.open(QIODevice::ReadOnly)) return false; // file doesn't exist
+
+  if (substrateMaterialCombo)
+    substrateMaterialCombo->setCurrentIndex (0);
 
   QTextStream stream(&file);
   QString Line, Name, Unit;
