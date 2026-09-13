@@ -41,6 +41,7 @@ private:
     QString a_spinit_name;
 
     bool checkNodeNames(QStringList &incompat);
+    bool checkMonteCarloConflicts();
     static QString collectSpiceinit(Schematic* sch);
     bool findMathFuncInc(QString &mathf_inc);
     QString getParentSWPscript(Component *pc_swp, QString sim, bool before, bool &hasDblSWP);

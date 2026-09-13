@@ -813,8 +813,45 @@ void ComponentDialog::updatePropertyTable(const Component* updateComponent)
 
       // Check description for combo box options and create a combo box if found.
       QStringList options = getOptionsFromString(property->Description);
-      if (!options.isEmpty())
-      {
+
+      // Monte Carlo (.MC): the "Sim" property selects an existing .AC/.SP
+      // target, excluding targets already used by another active .MC or a .SW.
+      if (updateComponent->Model == ".MC" && property->Name == "Sim") {
+        QComboBox* mcSimCombo = new QComboBox();
+        Schematic* sch        = component->getSchematic();
+        if (sch != nullptr) {
+          QStringList blockedTargets;
+          for (Component* c : sch->a_DocComps) {
+            if (c == component) {
+              continue;
+            }
+            if (!c->isSimulation) {
+              continue;
+            }
+            if (c->isActive != COMP_IS_ACTIVE) {
+              continue;
+            }
+            if (c->Model == ".MC" || c->Model == ".SW") {
+              blockedTargets.append(c->Props.at(0)->Value.trimmed().toLower());
+            }
+          }
+          for (Component* c : sch->a_DocComps) {
+            if (!c->isSimulation) {
+              continue;
+            }
+            if (c->Model != ".AC" && c->Model != ".SP") {
+              continue;
+            }
+            if (blockedTargets.contains(c->Name.trimmed().toLower())) {
+              continue;
+            }
+            mcSimCombo->addItem(c->Name);
+          }
+        }
+        mcSimCombo->setCurrentText(property->Value);
+        propertyTable->setCellWidget(row, 1, mcSimCombo);
+        propertyTable->setItem(row, 1, new QTableWidgetItem(ComboBoxCell));
+      } else if (!options.isEmpty()) {
         QComboBox* optionsCombo = new QComboBox();
         optionsCombo->addItems(options);
         optionsCombo->setCurrentText(property->Value);

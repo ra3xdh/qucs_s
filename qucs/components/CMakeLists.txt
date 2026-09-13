@@ -48,6 +48,7 @@ cpwopen.cpp		jfet.cpp		pad2bit.cpp		volt_ac.cpp
 cpwshort.cpp		jk_flipflop.cpp		pad3bit.cpp		volt_dc.cpp
 cpwstep.cpp		jkff_SR.cpp		pad4bit.cpp		volt_noise.cpp
 ctline.cpp		libcomp.cpp		param_sweep.cpp		vprobe.cpp
+monte_carlo.cpp
 d_flipflop.cpp		log_amp.cpp		phaseshifter.cpp	vpulse.cpp
 dc_sim.cpp		logic_0.cpp		photodiode.cpp		vrect.cpp
 dcblock.cpp		logic_1.cpp		phototransistor.cpp
@@ -187,6 +188,7 @@ pad2bit.h
 pad3bit.h
 pad4bit.h
 param_sweep.h
+monte_carlo.h
 phaseshifter.h
 photodiode.h
 phototransistor.h

@@ -183,6 +183,13 @@ void Ngspice::createNetlist(
                     }
                 }
             }
+            if (sim_typ == ".MC") {
+              QString mcSim = pc1->Props.at(0)->Value.toLower();
+              if (mcSim == sim_name &&
+                  (pc->Model == ".AC" || pc->Model == ".SP")) {
+                spiceNetlist.append(pc1->getNgspiceBeforeSim(sim_name));
+              }
+            }
         }
 
         if ( sim_typ == ".AC" ) {
@@ -362,6 +369,13 @@ void Ngspice::createNetlist(
                     }
                 }
             }
+            if (sim_typ == ".MC") {
+              QString mcSim = pc1->Props.at(0)->Value.toLower();
+              if (mcSim == sim_name &&
+                  (pc->Model == ".AC" || pc->Model == ".SP")) {
+                spiceNetlist.append(pc1->getNgspiceAfterSim(sim_name));
+              }
+            }
         }
 
         spiceNetlist.append("destroy all\n");
@@ -456,6 +470,14 @@ void Ngspice::slotSimulate()
         checker_error = true;
     }
 
+    if (!checkMonteCarloConflicts()) {
+      a_output.append(
+          "Monte Carlo configuration conflict: only one active .MC may target "
+          "a simulation, and .MC cannot target a simulation already used by an "
+          "active parameter sweep.\n");
+      checker_error = true;
+    }
+
     if (!checkNodeNames(incompat)) {
         QString s = incompat.join("; ");
         a_output.append("There were Nutmeg-incompatible node names. Simulator cannot proceed.\n");
@@ -526,6 +548,52 @@ bool Ngspice::checkNodeNames(QStringList &incompat)
       }
     }
     return result;
+}
+
+/*!
+ * \brief Ngspice::checkMonteCarloConflicts Check for unsupported Monte Carlo
+ *        configurations that v1 does not handle.
+ * \return False if more than one active .MC targets the same simulation, or if
+ *         an active .MC and an active .SW target the same simulation; true
+ *         otherwise.
+ */
+bool Ngspice::checkMonteCarloConflicts() {
+  QStringList mcTargets;
+  QStringList swTargets;
+
+  for (Component* pc : a_schematic->a_DocComps) {
+    if (!pc->isSimulation) {
+      continue;
+    }
+    if (pc->isActive != COMP_IS_ACTIVE) {
+      continue;
+    }
+
+    if (pc->Model == ".MC") {
+      const QString target = pc->Props.at(0)->Value.trimmed().toLower();
+      if (target.isEmpty()) {
+        continue;
+      }
+      if (mcTargets.contains(target)) {
+        return false;
+      }
+      mcTargets.append(target);
+    } else if (pc->Model == ".SW") {
+      const QString target = pc->Props.at(0)->Value.trimmed().toLower();
+      if (target.isEmpty()) {
+        continue;
+      }
+      swTargets.append(target);
+    }
+  }
+
+  for (const QString& target : mcTargets) {
+    if (swTargets.contains(target)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 /*!

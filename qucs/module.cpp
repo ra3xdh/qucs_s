@@ -529,6 +529,7 @@ void Module::registerModules (void) {
       REGISTER_SIMULATION_1 (HB_Sim);
   //}
   REGISTER_SIMULATION_1 (Param_Sweep);
+  REGISTER_SIMULATION_1(MonteCarlo);
   REGISTER_SIMULATION_1 (Digi_Sim);
   //if (QucsSettings.DefaultSimulator == spicecompat::simQucsator)
       REGISTER_SIMULATION_1 (Optimize_Sim);
