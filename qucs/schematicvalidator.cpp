@@ -270,13 +270,14 @@ QVector<ValidationIssue> SchematicValidator::checkMissingSimulation() const
 {
   QVector<ValidationIssue> issues;
 
-  // Model strings for all recognized simulation controller blocks.
-  static const QStringList kSimulationBlockModels = {
-      ".AC", ".SP", ".TR", ".DC", ".HB", ".SW", ".NOISE", ".TF"
+  // Dependent simulations have no effect without another attached simulation
+  static const QStringList depSimulationsModels = {
+      ".SW", ".MC"
   };
 
   for (Component *component : sch->a_DocComps) {
-    if (component->isActive && kSimulationBlockModels.contains(component->Model))
+    if (component->isActive && component->isSimulation &&
+        !depSimulationsModels.contains(component->Model))
       // Found one block. It's ok
       return issues;
   }

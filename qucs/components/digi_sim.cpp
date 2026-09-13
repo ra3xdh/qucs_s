@@ -24,6 +24,7 @@ Digi_Sim::Digi_Sim()
   initSymbol(Description);
   Model = ".Digi";
   Name  = "Digi";
+  isSimulation = true;
 
   // Property list must keeps its order !
   Props.append(new Property("Type", "TruthTable", true,
