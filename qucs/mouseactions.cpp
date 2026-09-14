@@ -1493,6 +1493,7 @@ void MouseActions::MReleaseMoving(Schematic *Doc, QMouseEvent* event)
     if ( Doc->healAfterMousyMutation() || MAx3 != 0 || MAy3 != 0 ) {
         Doc->setChanged(true, true);
     }
+    Doc->endCancellableMove();
 
     Doc->viewport()->update();
     Doc->releaseKeyboard(); // allow keyboard inputs again
@@ -1533,6 +1534,7 @@ void MouseActions::MReleaseMoveFree(Schematic *Doc, QMouseEvent *Event)
     if (Doc->healAfterMousyMutation() || MAx3 != 0 || MAy3 != 0) {
         Doc->setChanged(true, true);
     }
+    Doc->endCancellableMove();
     Doc->viewport()->update();
 
     // Reset everything and go back to select mode

@@ -1791,6 +1791,38 @@ bool Schematic::redo()
 }
 
 // ---------------------------------------------------
+// Captures the current document state so a keyboard move can be cancelled
+// later. Overwrites any previous (by now inactive) snapshot.
+void Schematic::beginCancellableMove() {
+  a_moveSnapshotSymbolMode = a_symbolMode;
+  a_moveSnapshotIdx        = a_symbolMode ? a_undoSymbolIdx : a_undoActionIdx;
+  a_moveSnapshot =
+      a_symbolMode ? createSymbolUndoString('*') : createUndoString('*');
+}
+
+// ---------------------------------------------------
+// Tells whether a_moveSnapshot still belongs to a keyboard move that is
+// genuinely still in progress, i.e. no undo entry has been committed since
+// beginCancellableMove() was called.
+bool Schematic::cancellableMovePending() const {
+  if (!a_moveSnapshot.has_value()) {
+    return false;
+  }
+  if (a_symbolMode != a_moveSnapshotSymbolMode) {
+    return false;
+  }
+  int currentIdx = a_symbolMode ? a_undoSymbolIdx : a_undoActionIdx;
+  return currentIdx == a_moveSnapshotIdx;
+}
+
+// ---------------------------------------------------
+// Discards the pending move snapshot without touching the schematic or the
+// undo stack. Called once a keyboard move has been committed normally.
+void Schematic::endCancellableMove() {
+  a_moveSnapshot.reset();
+}
+
+// ---------------------------------------------------
 void Schematic::switchPaintMode()
 {
     a_symbolMode = !a_symbolMode; // change mode

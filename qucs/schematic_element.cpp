@@ -1718,8 +1718,8 @@ bool Schematic::elementsOnGrid(Selection selection, bool doHeal)
 
     if (doHeal) {
         heal(&noninteractiveMutationParams);
+        setChanged(true, true);
     }
-    setChanged(true, true);
     return true;
 }
 
@@ -1789,15 +1789,17 @@ bool Schematic::rotateElements(Selection selection, bool doHeal)
 
     if (a_symbolMode || a_isSymbolOnly) {
         internal::symbolElementsOnGrid(this, selection.paintings);
-        setChanged(true, true);
+        if (doHeal) {
+            setChanged(true, true);
+        }
     } else {
-        // elementsOnGrid heals and adds undo-entry by its own
-        // if it changes something
+        // elementsOnGrid() heals and commits via setChanged() itself,
+        // but only when doHeal is true and it actually changed something.
         if (!elementsOnGrid(selection, doHeal)) {
             if (doHeal) {
                 heal(&noninteractiveMutationParams);
+                setChanged(true, true);
             }
-            setChanged(true, true);
         }
     }
 
@@ -1842,15 +1844,17 @@ bool Schematic::mirrorXComponents(Selection selection, bool doHeal)
 
     if (a_symbolMode || a_isSymbolOnly) {
         internal::symbolElementsOnGrid(this, selection.paintings);
-        setChanged(true, true);
+        if (doHeal) {
+            setChanged(true, true);
+        }
     } else {
-        // elementsOnGrid heals and adds undo-entry by its own
-        // if it changes something
+        // elementsOnGrid() heals and commits via setChanged() itself,
+        // but only when doHeal is true and it actually changed something.
         if (!elementsOnGrid(selection, doHeal)) {
             if (doHeal) {
                 heal(&noninteractiveMutationParams);
+                setChanged(true, true);
             }
-            setChanged(true, true);
         }
     }
 
@@ -1894,15 +1898,17 @@ bool Schematic::mirrorYComponents(Selection selection, bool doHeal)
 
     if (a_symbolMode || a_isSymbolOnly) {
         internal::symbolElementsOnGrid(this, selection.paintings);
-        setChanged(true, true);
+        if (doHeal) {
+            setChanged(true, true);
+        }
     } else {
-        // elementsOnGrid heals and adds undo-entry by its own
-        // if it changes something
+        // elementsOnGrid() heals and commits via setChanged() itself,
+        // but only when doHeal is true and it actually changed something.
         if (!elementsOnGrid(selection, doHeal)) {
             if (doHeal) {
                 heal(&noninteractiveMutationParams);
+                setChanged(true, true);
             }
-            setChanged(true, true);
         }
     }
 
