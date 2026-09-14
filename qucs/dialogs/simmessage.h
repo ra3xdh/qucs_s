@@ -20,6 +20,7 @@
 
 #include <QDialog>
 #include <QProcess>
+#include <QList>
 #include <QStringList>
 #include <QFile>
 #include <QTextStream>
@@ -62,6 +63,7 @@ private slots:
   void slotCloseStdin();
   void slotStateChanged(QProcess::ProcessState newState);
   void slotSimEnded(int exitCode, QProcess::ExitStatus exitStatus);
+  void slotDigitalStageFinished(int exitCode, QProcess::ExitStatus exitStatus);
   void slotDisplayButton();
 
   void slotReadSpiceNetlist();
@@ -76,10 +78,22 @@ private:
 */
 
 private:
+  struct DigitalStage {
+    QString program;
+    QStringList arguments;
+    QString workingDirectory;
+  };
+
   void FinishSimulation(int);
   void nextSPICE();
   void startSimulator();
+  bool prepareDigitalSimulation(bool isVerilog, const QString &simTime,
+                                bool correctDataset);
+  void startNextDigitalStage();
   Component * findOptimization(Schematic *);
+
+  QList<DigitalStage> DigitalStages;
+  bool DigitalSimulationRunning;
 
 public:
   QWidget *DocWidget;
