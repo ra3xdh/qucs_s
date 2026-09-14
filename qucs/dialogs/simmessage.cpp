@@ -390,9 +390,9 @@ bool SimMessage::prepareDigitalSimulation(bool isVerilog,
   } else {
     QString stopTime = simTime;
     stopTime.remove(' ');
-    addStage("ghdl", {"-a", "digi.vhdl"});
-    addStage("ghdl", {"-e", "TestBench"});
-    addStage("ghdl",
+    addStage(QucsSettings.GhdlExecutable, {"-a", "digi.vhdl"});
+    addStage(QucsSettings.GhdlExecutable, {"-e", "TestBench"});
+    addStage(QucsSettings.GhdlExecutable,
              {"-r", "TestBench", "--vcd=digi.vcd",
               "--stop-time=" + stopTime});
   }

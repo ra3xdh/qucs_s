@@ -81,6 +81,7 @@ struct tQucsSettings {
   QDir AscoBinDir;     // dir of asco executable
   QString OpenVAFExecutable;
   QString IverilogExecutable;
+  QString GhdlExecutable;
   QString NgspiceExecutable;  // Executables of external simulators
   QString XyceExecutable;
   QString XyceParExecutable;

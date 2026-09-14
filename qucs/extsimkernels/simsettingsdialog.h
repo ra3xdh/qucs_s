@@ -32,6 +32,7 @@ private:
     QLabel *a_lblSpiceOpus;
     QLabel *a_lblQucsator;
     QLabel *a_lblIverilog;
+    QLabel *a_lblGhdl;
     QLabel *a_lblNgspiceSimParam;
     QLabel *a_lblXyceSimParam;
     QLabel *a_lblSpopusSimParam;
@@ -44,6 +45,7 @@ private:
     QLineEdit *a_edtXyce;
     QLineEdit *a_edtQucsator;
     QLineEdit *a_edtIverilog;
+    QLineEdit *a_edtGhdl;
     QLineEdit *a_edtNgspiceSimParam;
     QLineEdit *a_edtXyceSimParam;
     QLineEdit *a_edtSpopusSimParam;
@@ -56,6 +58,7 @@ private:
     QPushButton *a_btnSetXyce;
     QPushButton *a_btnSetQucsator;
     QPushButton *a_btnSetIverilog;
+    QPushButton *a_btnSetGhdl;
 
 public:
     explicit SimSettingsDialog(QWidget *parent = 0);
@@ -70,6 +73,7 @@ private slots:
     void slotSetSpiceOpus();
     void slotSetQucsator();
     void slotSetIverilog();
+    void slotSetGhdl();
 
 };
 

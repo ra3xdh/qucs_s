@@ -60,6 +60,7 @@ void settingsManager::initDefaults()
     m_Defaults["RFLayoutExecutable"] = "qucsrflayout.exe";
     m_Defaults["OctaveExecutable"] = "octave.exe";
     m_Defaults["IverilogExecutable"] = "iverilog.exe";
+    m_Defaults["GhdlExecutable"] = "ghdl.exe";
 #else
     m_Defaults["NgspiceExecutable"] = "ngspice";
     #ifndef Q_OS_MACOS
@@ -70,6 +71,7 @@ void settingsManager::initDefaults()
     m_Defaults["RFLayoutExecutable"] = "qucsrflayout";
     m_Defaults["OctaveExecutable"] = "octave";
     m_Defaults["IverilogExecutable"] = "iverilog";
+    m_Defaults["GhdlExecutable"] = "ghdl";
 #endif
 
     m_Defaults["XyceParExecutable"] = "mpirun -np %p /usr/local/Xyce-Release-6.8.0-OPENMPI-OPENSOURCE/bin/Xyce";

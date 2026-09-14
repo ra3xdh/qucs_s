@@ -137,6 +137,7 @@ bool loadSettings()
     QucsSettings.OctaveExecutable = _settings::Get().item<QString>("OctaveExecutable");
     QucsSettings.OpenVAFExecutable = _settings::Get().item<QString>("OpenVAFExecutable");
     QucsSettings.IverilogExecutable = _settings::Get().item<QString>("IverilogExecutable");
+    QucsSettings.GhdlExecutable = _settings::Get().item<QString>("GhdlExecutable");
 
     QucsSettings.RFLayoutExecutable = _settings::Get().item<QString>("RFLayoutExecutable");
     QucsSettings.ResolveSpicePrefix = _settings::Get().item<bool>("ResolveSpicePrefix");
@@ -220,6 +221,7 @@ bool saveApplSettings()
     qs.setItem<QString>("OctaveExecutable",QucsSettings.OctaveExecutable);
     qs.setItem<QString>("OpenVAFExecutable",QucsSettings.OpenVAFExecutable);
     qs.setItem<QString>("IverilogExecutable",QucsSettings.IverilogExecutable);
+    qs.setItem<QString>("GhdlExecutable",QucsSettings.GhdlExecutable);
     qs.setItem<QString>("QucsHomeDir", QucsSettings.qucsWorkspaceDir.canonicalPath());
     qs.setItem<bool>("IgnoreVersion", QucsSettings.IgnoreFutureVersion);
     qs.setItem<bool>("GraphAntiAliasing", QucsSettings.GraphAntiAliasing);
