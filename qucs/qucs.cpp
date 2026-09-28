@@ -51,6 +51,7 @@
 #include "schematic.h"
 #include "mouseactions.h"
 #include "messagedock.h"
+#include "simulationdock.h"
 #include "settings.h"
 #include "wire.h"
 #include "module.h"
@@ -574,6 +575,11 @@ void QucsApp::initView()
   // ............................................
 
   messageDock = new MessageDock(this);
+
+  // Simulation console docking window (starts hidden)
+  simulationDock = new SimulationDock(this);
+  addDockWidget(Qt::BottomDockWidgetArea, simulationDock);
+  simulationDock->hide();
 
     // initial projects directory model
     a_homeDirModel = new QucsFileSystemModel(this);

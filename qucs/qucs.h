@@ -40,6 +40,7 @@ class MouseActions;
 class SearchDialog;
 class OctaveWindow;
 class MessageDock;
+class SimulationDock;
 class ProjectView;
 class ContextMenuTabWidget;
 class TunerDialog;
@@ -320,6 +321,7 @@ private:
   QDockWidget *octDock;
   OctaveWindow *octave;
   MessageDock *messageDock;
+  SimulationDock* simulationDock;
 
   QListView *Projects;
   ProjectView *Content;
