@@ -92,6 +92,7 @@ Diagram::Diagram(int _cx, int _cy) {
     isSelected = false;
     GridPen = QPen(Qt::lightGray, 0);
     whiteBackground = false; // Transparent background
+   // legend is handled by legend class, default hidden
 }
 
 Diagram::~Diagram() {
@@ -158,6 +159,12 @@ void Diagram::paintDiagram(QPainter *painter) {
 
         painter->restore();
     }
+    // paint legend on top
+    if (legend.isVisible() && !legend.hasCustomPosition()) {
+        bool is3D = (Name.left(6) == "Rect3D");
+        legend.calculateDefaultPosition(QRectF(0, -y2, x2, y2), Graphs, is3D);
+    }
+    legend.paint(painter, Graphs);
 
     if (isSelected) {
         QRectF bounds(0, -y2, x2, y2);
@@ -180,6 +187,7 @@ void Diagram::paintMarkers(QPainter *p, bool paintAll) {
                 pm->paint(p);
             }
 }
+
 
 // ------------------------------------------------------------
 void Diagram::paintScheme(Schematic *p) {
@@ -634,6 +642,16 @@ void Diagram::Bounding(int &_x1, int &_y1, int &_x2, int &_y2) {
     _y1 = cy - y2 - Bounding_y2;
     _x2 = cx + x2 + Bounding_x2;
     _y2 = cy - Bounding_y1;
+    if (legend.isVisible() && !legend.size().isEmpty()) {
+        int lx1 = cx + int(legend.position().x());
+        int ly1 = cy + int(legend.position().y());
+        int lx2 = lx1 + int(legend.size().width());
+        int ly2 = ly1 + int(legend.size().height());
+        if (lx1 < _x1) _x1 = lx1;
+        if (ly1 < _y1) _y1 = ly1;
+        if (lx2 > _x2) _x2 = lx2;
+        if (ly2 > _y2) _y2 = ly2;
+    }
 }
 
 // -------------------------------------------------------
@@ -1251,6 +1269,7 @@ QString Diagram::save() {
     if (xAxis.GridOn) c |= 1;
     if (hideLines) c |= 2;
     if (whiteBackground) c |= 4;
+    // Legend is saved separately below
     s += c;
     s += " " + GridPen.color().name() + " " + QString::number(GridPen.style());
 
@@ -1291,6 +1310,9 @@ QString Diagram::save() {
     for (Graph *pg: std::as_const(Graphs))
         s += pg->save() + "\n";
 
+    // save legend state
+    legend.save(s);
+
     s += "  </" + Name + ">";
     return s;
 }
@@ -1327,6 +1349,7 @@ bool Diagram::load(const QString &Line, QTextStream *stream) {
     xAxis.GridOn = yAxis.GridOn = (c & 1) != 0;
     hideLines = (c & 2) != 0;
     whiteBackground = (c & 4) != 0;
+    // Legend is loaded separately below
 
     n = s.section(' ', 6, 6);    // color for GridPen
     QColor co = misc::ColorFromString(n);
@@ -1435,6 +1458,12 @@ bool Diagram::load(const QString &Line, QTextStream *stream) {
         if (s.isEmpty()) continue;
 
         if (s == ("</" + Name + ">")) return true;  // found end tag ?
+
+        if (s.startsWith("<legend")) {
+            legend.load(s);
+            continue;
+        }
+
         if (s.section(' ', 0, 0) == "<Mkr") {
 
             // .......................................................
@@ -2020,7 +2049,15 @@ QRect Diagram::boundingRect() const noexcept
     int y1_ = cy - y2 - Bounding_y2;
     int x2_ = cx + x2 + Bounding_x2;
     int y2_ = cy - Bounding_y1;
-    return QRect{QPoint{x1_, y1_}, QPoint{x2_, y2_}}.normalized();
+    QRect r = QRect{QPoint{x1_, y1_}, QPoint{x2_, y2_}}.normalized();
+    if (legend.isVisible() && !legend.size().isEmpty()) {
+        QRect legendRect(cx + int(legend.position().x()),
+                         cy + int(legend.position().y()),
+                         int(legend.size().width()),
+                         int(legend.size().height()));
+        r = r.united(legendRect);
+    }
+    return r;
 }
 
 QImage Diagram::toImage() const {
@@ -2047,3 +2084,54 @@ QImage Diagram::toImage() const {
 
   return img;
 }
+
+// ------------------------------------------------------------
+bool Diagram::isLegendAt(const QPointF& point) const
+{
+    if (!legend.isVisible()) {
+        return false;
+    }
+    // 'point' is in schematic coordinates; convert to diagram-local coordinates
+    return legend.contains(QPointF(point.x() - cx, point.y() - cy));
+}
+
+// ------------------------------------------------------------
+void Diagram::moveLegendTo(const QPointF& pos)
+{
+    // Diagram-local coordinates: plot rectangle is [0, x2] x [-y2, 0]
+    // Allow flexible positioning around the diagram
+    QRectF allowedArea(-200, -y2 - 200, x2 + 400, y2 + 400);
+
+    QPointF newPos = pos;
+
+    // Soft constrain to allowed area
+    if (newPos.x() < allowedArea.left())
+        newPos.setX(allowedArea.left());
+    if (newPos.y() < allowedArea.top())
+        newPos.setY(allowedArea.top());
+    if (newPos.x() + legend.size().width() > allowedArea.right())
+        newPos.setX(allowedArea.right() - legend.size().width());
+    if (newPos.y() + legend.size().height() > allowedArea.bottom())
+        newPos.setY(allowedArea.bottom() - legend.size().height());
+
+    legend.setPosition(newPos);
+}
+
+// ------------------------------------------------------------
+void Diagram::setLegendVisible(bool visible)
+{
+    if (legend.isVisible() == visible) return;
+    legend.setVisible(visible);
+    if (visible && !legend.hasCustomPosition()) {
+        bool is3D = (Name.left(6) == "Rect3D");
+        QRectF plotRect(0, -y2, x2, y2);
+        legend.calculateDefaultPosition(plotRect, Graphs, is3D);
+    }
+}
+
+// ------------------------------------------------------------
+void Diagram::toggleLegend()
+{
+    setLegendVisible(!legend.isVisible());
+}
+

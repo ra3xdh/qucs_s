@@ -49,6 +49,7 @@ public:
 
   static void setPainter(Schematic*);
   bool pasteElements(Schematic*);
+  bool isDraggingLegend() const { return m_draggingLegend; }
   void editElement(Schematic*, QMouseEvent*);
   void editLabel(Schematic*, WireLabel*);
 
@@ -72,6 +73,10 @@ private:
   QPointF mouseDownPoint;
   QPointF mouseUpPoint;
 
+  // legend dragging state
+  bool m_draggingLegend;
+  Diagram* m_draggedDiagram;
+  QPointF m_dragOffset;
   // -------------------------------------------------------------------
 public:
   void MMoveSelect(Schematic*, QMouseEvent*);
@@ -98,6 +103,8 @@ public:
   void MMoveMoveTextB(Schematic*, QMouseEvent*);
   void MMoveZoomIn(Schematic*, QMouseEvent*);
   void MMoveScrollBar(Schematic*, QMouseEvent*);
+  void MMoveLegendDrag(Schematic*, QMouseEvent*);
+  void MReleaseLegendDrag(Schematic*, QMouseEvent*);
 
   void MPressSelect(Schematic*, QMouseEvent*, float, float);
   void MPressTune(Schematic *Doc, QMouseEvent *Event, float fX, float fY);

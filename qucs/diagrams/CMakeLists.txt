@@ -10,6 +10,7 @@ diagram.h
 diagramdialog.h
 diagrams.h
 graph.h
+legend.h
 marker.h
 markerdialog.h
 polardiagram.h
@@ -24,9 +25,9 @@ truthdiagram.h
 
 SET(DIAGRAMS_SRCS
 curvediagram.cpp	graph.cpp		polardiagram.cpp	smithdiagram.cpp
-diagram.cpp		marker.cpp		psdiagram.cpp		tabdiagram.cpp
+diagram.cpp	       	marker.cpp		psdiagram.cpp		tabdiagram.cpp
 diagramdialog.cpp	markerdialog.cpp	rect3ddiagram.cpp	timingdiagram.cpp
-rectdiagram.cpp		truthdiagram.cpp
+rectdiagram.cpp		truthdiagram.cpp        legend.cpp 
 )
 
 SET(DIAGRAMS_MOC_HDRS

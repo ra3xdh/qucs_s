@@ -20,6 +20,7 @@
 
 #include "graph.h"
 #include "element.h"
+#include "legend.h"
 
 #include <QTextStream>
 #include <QList>
@@ -104,6 +105,7 @@ double inline db2num(double zD, int unit) {
 }
 
 class Diagram : public Element {
+    friend class Legend;
 public:
   Diagram(int _cx=0, int _cy=0);
   virtual ~Diagram();
@@ -119,10 +121,18 @@ public:
   virtual void finishMarkerCoordinates(float&, float&) const;
   virtual void calcLimits() {};
   virtual QString extraMarkerText(Marker const*) const {return "";}
-  
+
   virtual void paint(QPainter* p);
   virtual void paintDiagram(QPainter* painter);
   void paintMarkers(QPainter* p, bool paintAll = true);
+// legend access
+  Legend* getLegend() { return &legend; }
+  const Legend* getLegend() const { return &legend; }
+// legend interaction
+  bool isLegendAt(const QPointF& point) const;
+  void moveLegendTo(const QPointF& pos);
+  void setLegendVisible(bool visible);
+  void toggleLegend();
   void    paintScheme(Schematic*) override;
   void    Bounding(int&, int&, int&, int&);
   QRect boundingRect() const noexcept override;
@@ -182,6 +192,8 @@ protected:
 
   QTransform pointTransform; // Transform between Qucs-S logical coordinates and diagram (logical) point coordinates.
   QTransform valueTransform; // Transform between diagram point coordinates and diagram values.
+
+  Legend legend;
 
 private:
   int Bounding_x1, Bounding_x2, Bounding_y1, Bounding_y2;
