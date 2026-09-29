@@ -3748,6 +3748,9 @@ void QucsApp::slotSimulateWithSpice()
     if (!isTextDocument(DocumentTab->currentWidget()))
     {
         Schematic* schematic(dynamic_cast<Schematic*>(DocumentTab->currentWidget()));
+        // Keep the active document: in tuning mode it may be a data display
+        // page, which is where the results must be shown afterwards.
+        Schematic* origin = schematic;
         if (TuningMode)
         {
             QFileInfo Info(schematic->getDocName());
@@ -3776,6 +3779,7 @@ void QucsApp::slotSimulateWithSpice()
             schematic->setShowBias(biasState);
         }
         ExternSimDialog *SimDlg = new ExternSimDialog(schematic, false);
+        SimDlg->setOriginDocument(origin);
         connect(SimDlg, SIGNAL(simulated(ExternSimDialog*)), this, SLOT(slotAfterSpiceSimulation(ExternSimDialog*)));
         connect(SimDlg, SIGNAL(warnings()), this, SLOT(slotShowWarnings()));
         connect(SimDlg, SIGNAL(success()), this, SLOT(slotResetWarnings()));
@@ -4000,7 +4004,8 @@ void QucsApp::slotSaveCdlNetlist()
 
 void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
 {
-    Schematic *sch = (Schematic*)DocumentTab->currentWidget();
+    // May be null if the origin document was closed during the simulation
+    Schematic* sch = SimDlg->originDocument();
     disconnect(SimDlg,SIGNAL(simulated(ExternSimDialog *)),
                this,SLOT(slotAfterSpiceSimulation(ExternSimDialog *)));
     disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
@@ -4012,7 +4017,7 @@ void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
         tunerDia->SimulationEnded();
         return;
     }
-    if (SimDlg->wasSimulated()) {
+    if (sch != nullptr && SimDlg->wasSimulated()) {
         if(sch->getSimOpenDpl()) {
             if (sch->getShowBias() < 1) {
                 if (!TuningMode) {
@@ -4030,19 +4035,23 @@ void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
         }
     }
 
-    sch->reloadGraphs();
-    sch->viewport()->update();
-    if(sch->getSimRunScript()) {
-      // run script
-      octave->startOctave();
-      octave->runOctaveScript(sch->getScript());
+    if (sch != nullptr) {
+        sch->reloadGraphs();
+        sch->viewport()->update();
+        if (sch->getSimRunScript()) {
+          // run script
+          octave->startOctave();
+          octave->runOctaveScript(sch->getScript());
+        }
     }
     if (TuningMode) {
         m_tunerAbortForRerun = false;
         a_tunerExternSimDlg = nullptr;
         tunerDia->SimulationEnded();
     }
-    if (sch->getShowBias()>0 || QucsMain->TuningMode) SimDlg->close();
+    if ((sch != nullptr && sch->getShowBias() > 0) || QucsMain->TuningMode) {
+        SimDlg->close();
+    }
 
     // Run post-simulation system commands
     runPostSimCommands(sch);
