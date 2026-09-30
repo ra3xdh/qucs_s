@@ -129,7 +129,7 @@ public:
   SearchDialog *SearchDia; // global in order to keep values
   TunerDialog *tunerDia;   // global in order to keep values
   SimMessage *sim;         // global in order to keep values
-  ExternSimDialog *a_tunerExternSimDlg = nullptr;
+  QPointer<ExternSimDialog> a_tunerExternSimDlg;
   bool m_tunerAbortForRerun = false;
 
   SchematicValidator a_validator; // Schematic validation
