@@ -3800,6 +3800,11 @@ void QucsApp::slotSimulateWithSpice()
             slotFileSaveAs();
             schematic->setShowBias(biasState);
         }
+        // Only the last session is kept. deleteLater(): the previous session
+        // may still be emitting simulated() (tuner rerun).
+        if (a_activeSpiceSimDlg && !a_activeSpiceSimDlg->isRunning()) {
+            a_activeSpiceSimDlg->deleteLater();
+        }
         ExternSimDialog *SimDlg = new ExternSimDialog(schematic, false);
         SimDlg->setOriginDocument(origin);
         a_activeSpiceSimDlg = SimDlg;
