@@ -23,8 +23,10 @@
 #include "externsimdialog.h"
 #include "main.h"
 
+// The session is owned by the application, not by the simulated schematic:
+// it may outlive the document (see slotDocumentDestroyed()).
 ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netlist_mode) :
-    QDialog(sch),
+    QDialog(QucsMain),
     a_schematic(sch),
     a_buttonStopSim(new QPushButton(tr("Stop"),this)),
     a_buttonSaveNetlist(new QPushButton(tr("Save netlist"),this)),
@@ -52,6 +54,8 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
         QDir dir;
         dir.mkpath(workdir);
     }
+
+    connect(sch,SIGNAL(destroyed()),this,SLOT(slotDocumentDestroyed()));
 
     connect(a_buttonStopSim,SIGNAL(clicked()),a_ngspice,SLOT(killThemAll()));
     connect(a_buttonStopSim,SIGNAL(clicked()),a_xyce,SLOT(killThemAll()));
@@ -98,7 +102,6 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
 
 ExternSimDialog::~ExternSimDialog()
 {
-    a_ngspice->killThemAll();
 }
 
 void ExternSimDialog::slotSetSimulator()
@@ -297,9 +300,34 @@ void ExternSimDialog::slotStart()
 
 void ExternSimDialog::slotStop()
 {
+    // The tuner may still hold a session aborted by slotDocumentDestroyed()
+    if (a_ngspice == nullptr) {
+        return;
+    }
     a_buttonStopSim->setEnabled(false);
     a_buttonSaveNetlist->setEnabled(true);
     a_ngspice->killThemAll();
+}
+
+void ExternSimDialog::slotDocumentDestroyed()
+{
+    // The kernels keep a raw pointer to the schematic and may still use it
+    // (e.g. Xyce between analyses, DC bias conversion). Destroying them
+    // stops the simulator without further callbacks (~AbstractSpiceKernel).
+    delete a_ngspice;
+    a_ngspice = nullptr;
+    delete a_xyce;
+    a_xyce = nullptr;
+
+    a_buttonStopSim->setEnabled(false);
+    a_buttonSaveNetlist->setEnabled(false);
+
+    if (a_running) {
+        a_running = false;
+        const QString msg = tr("Simulation aborted: the document was closed.");
+        a_editSimConsole->insertPlainText("\n" + msg + "\n");
+        addLogEntry(msg, this->style()->standardIcon(QStyle::SP_MessageBoxCritical));
+    }
 }
 
 void ExternSimDialog::slotSaveNetlist()
