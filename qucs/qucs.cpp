@@ -2887,6 +2887,13 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
 // ------------------------------------------------------------------------
 void QucsApp::slotDCbias()
 {
+  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator &&
+      spiceSimulationRunning()) {
+    QMessageBox::warning(this, tr("Simulate schematic"),
+                         tr("A simulation is already running. Please wait "
+                            "until it has finished."));
+    return;
+  }
   getDoc()->setShowBias(0);
   slotSimulate();
 }
@@ -3743,8 +3750,23 @@ void QucsApp::slotAbortTuningSimulation()
     }
 }
 
+bool QucsApp::spiceSimulationRunning() const {
+  return a_activeSpiceSimDlg && a_activeSpiceSimDlg->isRunning();
+}
+
 void QucsApp::slotSimulateWithSpice()
 {
+    // Only one external SPICE simulation at a time: they share work files
+    if (spiceSimulationRunning()) {
+        QMessageBox::warning(this, tr("Simulate schematic"),
+                             tr("A simulation is already running. Please wait "
+                                "until it has finished."));
+        if (TuningMode) {
+            tunerDia->SimulationEnded();
+        }
+        return;
+    }
+
     if (!isTextDocument(DocumentTab->currentWidget()))
     {
         Schematic* schematic(dynamic_cast<Schematic*>(DocumentTab->currentWidget()));
@@ -3780,6 +3802,7 @@ void QucsApp::slotSimulateWithSpice()
         }
         ExternSimDialog *SimDlg = new ExternSimDialog(schematic, false);
         SimDlg->setOriginDocument(origin);
+        a_activeSpiceSimDlg = SimDlg;
         connect(SimDlg, SIGNAL(simulated(ExternSimDialog*)), this, SLOT(slotAfterSpiceSimulation(ExternSimDialog*)));
         connect(SimDlg, SIGNAL(warnings()), this, SLOT(slotShowWarnings()));
         connect(SimDlg, SIGNAL(success()), this, SLOT(slotResetWarnings()));

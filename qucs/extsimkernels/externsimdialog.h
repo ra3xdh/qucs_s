@@ -48,6 +48,7 @@ private:
     bool a_wasSimulated;
     bool a_hasError;
     bool a_netlist2Console;
+    bool a_running;
 
     // Document that was active when the simulation was started (it may be
     // a data display page in tuning mode, not the simulated schematic).
@@ -62,6 +63,7 @@ public:
 
     bool wasSimulated() const { return a_wasSimulated; }
     bool hasError() const { return a_hasError; }
+    bool isRunning() const { return a_running; }
 
     void setOriginDocument(Schematic* doc) { a_originDocument = doc; }
     Schematic* originDocument() const { return a_originDocument; }

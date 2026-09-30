@@ -36,7 +36,8 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
     a_xyce(new Xyce(sch,this)),
     a_wasSimulated(true),
     a_hasError(false),
-    a_netlist2Console(netlist2Console)
+    a_netlist2Console(netlist2Console),
+    a_running(false)
 {
     const QString workdir(QucsSettings.S4Qworkdir);
 
@@ -159,6 +160,9 @@ void ExternSimDialog::slotSetSimulator()
 
 void ExternSimDialog::slotProcessOutput()
 {
+    // Cleared before emitting simulated(), so that a tuner rerun started from
+    // there is not rejected as a concurrent simulation.
+    a_running = false;
     a_buttonSaveNetlist->setEnabled(true);
     a_buttonStopSim->setEnabled(false);
     QString out;
@@ -249,6 +253,7 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
     switch (err) {
     case QProcess::FailedToStart:
         msg = tr("Failed to start simulator!");
+        a_running = false; // no finished() follows this error
         break;
     case QProcess::Crashed:
         msg = tr("Simulator crashed!");
@@ -271,14 +276,19 @@ void ExternSimDialog::slotStart()
 {
     a_buttonStopSim->setEnabled(true);
     a_buttonSaveNetlist->setEnabled(false);
+    // a_running is set before starting the kernel: checker errors are
+    // reported synchronously and must be able to clear it again.
     switch (QucsSettings.DefaultSimulator) {
     case spicecompat::simNgspice:
+        a_running = true;
         a_ngspice->slotSimulate();
         break;
     case spicecompat::simXyce:
+        a_running = true;
         a_xyce->slotSimulate();
         break;
     case spicecompat::simSpiceOpus:
+        a_running = true;
         a_ngspice->slotSimulate();
         break;
     default: break;

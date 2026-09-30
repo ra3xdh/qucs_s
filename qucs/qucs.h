@@ -23,6 +23,7 @@
 #include <QFileSystemModel>
 #include <QHash>
 #include <QMainWindow>
+#include <QPointer>
 #include <QSortFilterProxyModel>
 #include <QStack>
 #include <QString>
@@ -579,6 +580,12 @@ private:
   /// @note This method is called from both @c slotAfterSimulation() and
   ///       @c slotAfterSpiceSimulation(), covering all simulation backends.
   void runPostSimCommands(Schematic* sch);
+
+  /// @brief Returns true while an external SPICE simulation is running.
+  bool spiceSimulationRunning() const;
+
+  // Last external SPICE simulation session (may still be running)
+  QPointer<ExternSimDialog> a_activeSpiceSimDlg;
 
   QString lastExportFilename;
 };
