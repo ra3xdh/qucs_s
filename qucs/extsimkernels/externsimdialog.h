@@ -31,7 +31,7 @@ class ExternSimDialog : public QDialog
     Q_OBJECT
 
 private:
-    Schematic* a_schematic;
+    QPointer<Schematic> a_schematic;
 
     QPushButton *a_buttonStopSim;
     QPushButton *a_buttonSaveNetlist;
@@ -91,6 +91,7 @@ private slots:
     void slotNgspiceStartError(QProcess::ProcessError err);
     void slotSetSimulator();
     void slotExit();
+    void slotDocumentDestroyed();
 };
 
 #endif // EXTERNSIMDIALOG_H
