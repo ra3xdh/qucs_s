@@ -23,6 +23,7 @@
 #include <QFileSystemModel>
 #include <QHash>
 #include <QMainWindow>
+#include <QPointer>
 #include <QSortFilterProxyModel>
 #include <QStack>
 #include <QString>
@@ -40,6 +41,7 @@ class MouseActions;
 class SearchDialog;
 class OctaveWindow;
 class MessageDock;
+class SimulationDock;
 class ProjectView;
 class ContextMenuTabWidget;
 class TunerDialog;
@@ -127,7 +129,7 @@ public:
   SearchDialog *SearchDia; // global in order to keep values
   TunerDialog *tunerDia;   // global in order to keep values
   SimMessage *sim;         // global in order to keep values
-  ExternSimDialog *a_tunerExternSimDlg = nullptr;
+  QPointer<ExternSimDialog> a_tunerExternSimDlg;
   bool m_tunerAbortForRerun = false;
 
   SchematicValidator a_validator; // Schematic validation
@@ -320,6 +322,7 @@ private:
   QDockWidget *octDock;
   OctaveWindow *octave;
   MessageDock *messageDock;
+  SimulationDock* simulationDock;
 
   QListView *Projects;
   ProjectView *Content;
@@ -577,6 +580,12 @@ private:
   /// @note This method is called from both @c slotAfterSimulation() and
   ///       @c slotAfterSpiceSimulation(), covering all simulation backends.
   void runPostSimCommands(Schematic* sch);
+
+  /// @brief Returns true while an external SPICE simulation is running.
+  bool spiceSimulationRunning() const;
+
+  // Last external SPICE simulation session (may still be running)
+  QPointer<ExternSimDialog> a_activeSpiceSimDlg;
 
   QString lastExportFilename;
 };
