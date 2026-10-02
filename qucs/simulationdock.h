@@ -10,7 +10,7 @@
 
 class QVBoxLayout;
 
-/// @brief Bottom dock of the main window that will host the simulation
+/// @brief Bottom dock of the main window that hosts the simulation
 ///        console (issue #235).
 ///
 /// The dock is owned by QucsApp and lives for the whole application
