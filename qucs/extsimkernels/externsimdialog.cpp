@@ -43,10 +43,6 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
 {
     const QString workdir(QucsSettings.S4Qworkdir);
 
-    QSettings settings("qucs", "qucs_s");
-    restoreGeometry(settings.value("ExternSimDialog/geometry").toByteArray());
-
-    setWindowTitle(tr("Simulate with external simulator"));
     setMinimumWidth(500);
 
     QFileInfo inf(workdir);
@@ -232,7 +228,6 @@ void ExternSimDialog::slotProcessOutput()
     //if (out.contains("error",Qt::CaseInsensitive))
     //    a_hasError = true;
     emit simulated(this);
-    //if (a_schematic->getShowBias()>0 || QucsMain->TuningMode) this->close();
 }
 
 
