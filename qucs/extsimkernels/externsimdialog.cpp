@@ -24,13 +24,13 @@
 #include "main.h"
 
 // The session is owned by the application, not by the simulated schematic:
-// it may outlive the document (see slotDocumentDestroyed()).
+// it may outlive the document (see slotDocumentDestroyed()). It is not a
+// window: QucsApp shows it in the simulation dock.
 ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netlist_mode) :
-    QDialog(QucsMain),
+    QWidget(QucsMain),
     a_schematic(sch),
     a_buttonStopSim(new QPushButton(tr("Stop"),this)),
     a_buttonSaveNetlist(new QPushButton(tr("Save netlist"),this)),
-    a_buttonExit(new QPushButton(tr("Exit"),this)),
     a_editSimConsole(new QPlainTextEdit(this)),
     a_simStatusLog(new QListWidget),
     a_simProgress(new QProgressBar(this)),
@@ -63,10 +63,6 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
 
     connect(a_buttonSaveNetlist,SIGNAL(clicked()),this,SLOT(slotSaveNetlist()));
 
-    connect(a_buttonExit,SIGNAL(clicked()),this,SLOT(slotExit()));
-    connect(a_buttonExit,SIGNAL(clicked()),a_ngspice,SLOT(killThemAll()));
-    connect(a_buttonExit,SIGNAL(clicked()),a_xyce,SLOT(killThemAll()));
-
     QGroupBox *grp_1 = new QGroupBox(tr("Simulation console"),this);
     QVBoxLayout *vbl1 = new QVBoxLayout;
 
@@ -90,7 +86,6 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
     QHBoxLayout *hl1 = new QHBoxLayout;
     hl1->addWidget(a_buttonStopSim);
     hl1->addWidget(a_buttonSaveNetlist);
-    hl1->addWidget(a_buttonExit);
     vl_top->addLayout(hl1);
     setLayout(vl_top);
 
@@ -368,15 +363,6 @@ void ExternSimDialog::slotSaveNetlist()
                 QObject::tr("Save netlist"),
                 QObject::tr("Disk write error!"), QMessageBox::Ok);
     }
-}
-
-void ExternSimDialog::slotExit()
-{
-    // Save window size / position and close this dialog.
-    QSettings settings("qucs","qucs_s");
-    settings.setValue("ExternSimDialog/geometry", saveGeometry());  
-
-    accept();
 }
 
 void ExternSimDialog::saveLog()

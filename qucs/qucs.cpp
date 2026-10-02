@@ -3808,6 +3808,8 @@ void QucsApp::slotSimulateWithSpice()
         ExternSimDialog *SimDlg = new ExternSimDialog(schematic, false);
         SimDlg->setOriginDocument(origin);
         a_activeSpiceSimDlg = SimDlg;
+        // Before the dock is shown: the session is not a window
+        simulationDock->setSession(SimDlg);
         connect(SimDlg, SIGNAL(simulated(ExternSimDialog*)), this, SLOT(slotAfterSpiceSimulation(ExternSimDialog*)));
         connect(SimDlg, SIGNAL(warnings()), this, SLOT(slotShowWarnings()));
         connect(SimDlg, SIGNAL(success()), this, SLOT(slotResetWarnings()));
@@ -3819,7 +3821,8 @@ void QucsApp::slotSimulateWithSpice()
         }
         else
         {
-            SimDlg->exec();
+            simulationDock->show();
+            simulationDock->raise();
         }
         /*disconnect(SimDlg, SIGNAL(simulated()), this, SLOT(slotAfterSpiceSimulation()));
         disconnect(SimDlg, SIGNAL(warnings()), this, SLOT(slotShowWarnings()));
@@ -4039,7 +4042,10 @@ void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
     disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
     disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
     if (TuningMode && SimDlg->hasError()) {
-        if (!m_tunerAbortForRerun) SimDlg->show();
+        if (!m_tunerAbortForRerun) {
+            simulationDock->show();
+            simulationDock->raise();
+        }
         m_tunerAbortForRerun = false;
         a_tunerExternSimDlg = nullptr;
         tunerDia->SimulationEnded();
@@ -4076,9 +4082,6 @@ void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
         m_tunerAbortForRerun = false;
         a_tunerExternSimDlg = nullptr;
         tunerDia->SimulationEnded();
-    }
-    if ((sch != nullptr && sch->getShowBias() > 0) || QucsMain->TuningMode) {
-        SimDlg->close();
     }
 
     // Run post-simulation system commands

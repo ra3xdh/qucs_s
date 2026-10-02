@@ -26,7 +26,7 @@
 
 class Schematic;
 
-class ExternSimDialog : public QDialog
+class ExternSimDialog : public QWidget
 {
     Q_OBJECT
 
@@ -35,7 +35,6 @@ private:
 
     QPushButton *a_buttonStopSim;
     QPushButton *a_buttonSaveNetlist;
-    QPushButton *a_buttonExit;
 
     QPlainTextEdit *a_editSimConsole;
     QListWidget *a_simStatusLog;
@@ -90,7 +89,6 @@ private slots:
     void slotNgspiceStarted();
     void slotNgspiceStartError(QProcess::ProcessError err);
     void slotSetSimulator();
-    void slotExit();
     void slotDocumentDestroyed();
 };
 
