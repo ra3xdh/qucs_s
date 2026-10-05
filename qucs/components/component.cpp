@@ -1832,6 +1832,14 @@ Component *getComponentFromName(QString &Line, Schematic *p) {
         c = Module::getComponent(cstr);
 
     if (!c) {
+        // Model is known but incompatible with the currently selected
+        // simulator: instantiate the real component type anyway so the
+        // schematic loads; Component::drawSymbol() renders it with
+        // WrongSimulatorPen and netlisting is rejected explicitly later.
+        c = Module::getComponentForLoad(cstr);
+    }
+
+    if (!c) {
         /// \todo enable user to load partial schematic, skip unknown components
         if (QucsMain != nullptr) {
             QMessageBox *msg = new QMessageBox(QMessageBox::Warning, QObject::tr("Warning"),
