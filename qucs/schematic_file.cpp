@@ -1371,6 +1371,24 @@ bool Schematic::rebuildSymbol(QString *s)
   return true;
 }
 
+// -------------------------------------------------------------
+// Restores the schematic from the pending cancellable-move snapshot and
+// discards it. Does nothing if no keyboard move is genuinely still pending
+// (see cancellableMovePending()).
+void Schematic::cancelCancellableMove() {
+  if (!cancellableMovePending()) {
+    return;
+  }
+
+  if (a_symbolMode) {
+    rebuildSymbol(&*a_moveSnapshot);
+  } else {
+    rebuild(&*a_moveSnapshot);
+    reloadGraphs(); // load recent simulation data
+  }
+
+  a_moveSnapshot.reset();
+}
 
 // ***************************************************************
 // *****                                                     *****

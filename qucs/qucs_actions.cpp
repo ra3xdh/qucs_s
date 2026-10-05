@@ -238,6 +238,21 @@ void QucsApp::slotEditDelete(bool on) {
 }
 
 // ------------------------------------------------------------------------
+// Resolves a pending cancellable keyboard move on Doc - restores the
+// pre-move snapshot and clears MouseActions' transient pointers - if one is
+// genuinely still active. No-op otherwise.
+static void resolvePendingKeyboardMove(Schematic* Doc, MouseActions* view) {
+  if (!Doc || !Doc->cancellableMovePending()) {
+    return;
+  }
+  view->focusElement = nullptr;
+  view->movingElements.clear();
+  view->movingState = MovingState{};
+  Doc->cancelCancellableMove();
+  Doc->viewport()->update();
+}
+
+// ------------------------------------------------------------------------
 // Is called if "Strech (move w/wiring)"-Button is pressed.
 void QucsApp::slotEditStretch(bool on) {
   Schematic *Doc = dynamic_cast<Schematic *>(DocumentTab->currentWidget());
@@ -251,8 +266,16 @@ void QucsApp::slotEditStretch(bool on) {
     return;
   }
 
+  if (!on) {
+    resolvePendingKeyboardMove(Doc, view);
+  }
+
   performToggleAction(on, editStretch, nullptr, &MouseActions::MMoveMoving,
                       nullptr);
+
+  if (on) {
+    Doc->beginCancellableMove();
+  }
 }
 
 // ------------------------------------------------------------------------
@@ -269,7 +292,15 @@ void QucsApp::slotEditMove(bool on) {
     return;
   }
 
+  if (!on) {
+    resolvePendingKeyboardMove(Doc, view);
+  }
+
   performToggleAction(on, editMove, nullptr, &MouseActions::MMoveFree, nullptr);
+
+  if (on) {
+    Doc->beginCancellableMove();
+  }
 }
 
 // -----------------------------------------------------------------------
@@ -353,6 +384,11 @@ void QucsApp::slotZoomIn(bool on) {
 }
 
 void QucsApp::slotEscape() {
+  if (activeAction == editStretch || activeAction == editMove) {
+    auto* Doc = dynamic_cast<Schematic*>(DocumentTab->currentWidget());
+    resolvePendingKeyboardMove(Doc, view);
+  }
+
   select->setChecked(true);
   slotSearchClear();
 }
