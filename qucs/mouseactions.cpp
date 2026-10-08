@@ -88,6 +88,9 @@ MouseActions::MouseActions(QucsApp *App_)
     }
     isMoveEqual = false; // mouse cursor move x and y the same way
     focusElement = nullptr;    //element being interacted with mouse
+    // Legend dragging state
+    m_draggingLegend = false;
+    m_draggedDiagram = nullptr;
 
     // ...............................................................
     // initialize menu appearing by right mouse button click on component
@@ -357,7 +360,7 @@ void MouseActions::MMoveMoving(Schematic *Doc, QMouseEvent *Event)
 // Moves components by keeping the mouse button pressed.
 void MouseActions::MMoveMoving2(Schematic *Doc, QMouseEvent *Event)
 {
-    setPainter(Doc);
+   setPainter(Doc);
 
     // use grid _unless_ CTRL key is pressed
     bool onGrid = Event->modifiers().testFlag(Qt::ControlModifier) == 0;
@@ -445,6 +448,37 @@ void MouseActions::MMoveScrollBar(Schematic *Doc, QMouseEvent *Event)
     if (d->scrollTo(MAx2, x - MAx1, y - MAy1)) {
         Doc->setChanged(true, true, 'm'); // 'm' = only the first time
     }
+}
+
+// -----------------------------------------------------------
+void MouseActions::MMoveLegendDrag(Schematic *Doc, QMouseEvent *Event)
+{
+    if (!m_draggingLegend || !m_draggedDiagram) return;
+
+    auto inModel = Doc->contentsToModel(Event->pos());
+    QPointF newAbsPos = QPointF(inModel.x(), inModel.y()) - m_dragOffset;
+    QPointF newRelPos = newAbsPos - QPointF(m_draggedDiagram->cx, m_draggedDiagram->cy);
+    m_draggedDiagram->moveLegendTo(newRelPos);
+    Doc->viewport()->update();
+}
+
+// -----------------------------------------------------------
+void MouseActions::MReleaseLegendDrag(Schematic *Doc, QMouseEvent *)
+{
+    Doc->releaseKeyboard();
+    if (m_draggingLegend && m_draggedDiagram) {
+        m_draggedDiagram->getLegend()->setSelected(false);
+        m_draggedDiagram = nullptr;
+        Doc->setChanged(true, true);
+    }
+    m_draggingLegend = false;
+
+    QucsMain->MouseMoveAction = nullptr;
+    QucsMain->MousePressAction = &MouseActions::MPressSelect;
+    QucsMain->MouseReleaseAction = &MouseActions::MReleaseSelect;
+    QucsMain->MouseDoubleClickAction = &MouseActions::MDoubleClickSelect;
+
+    Doc->viewport()->update();
 }
 
 /**
@@ -731,7 +765,17 @@ void MouseActions::rightPressMenu(Schematic *Doc, QMouseEvent *Event, float fX, 
                     (!diagram->xAxis.autoScale || !diagram->yAxis.autoScale || !diagram->zAxis.autoScale)) {
                     ComponentMenu->addAction(QucsMain->resetDiagramLimits);
                 }
-
+                // add legend toggle for Cartesian diagrams
+                if (diagram->Name == "Rect" || diagram->Name.left(6) == "Rect3D") {
+                    QAction* legendAction = ComponentMenu->addAction(QObject::tr("Show Legend"));
+                    legendAction->setCheckable(true);
+                    legendAction->setChecked(diagram->getLegend()->isVisible());
+                    QObject::connect(legendAction, &QAction::toggled, [diagram, Doc](bool checked) {
+                        diagram->setLegendVisible(checked);
+                        Doc->setChanged(true, true);
+                        Doc->viewport()->update();
+                    });
+                }
                 // TODO: This should probably be in qucs_init::initActions.
                 QAction *actExport = new QAction(QObject::tr("Export as image"), QucsMain);
                 QObject::connect(actExport,
@@ -903,6 +947,38 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent *, float fX, float fY
 void MouseActions::MPressSelect(Schematic *Doc, QMouseEvent *Event, float fX, float fY)
 {
     const bool Ctrl = Event->modifiers().testFlag(Qt::ControlModifier);
+
+    // Check if clicked on a diagram's legend first
+    for (Diagram* diagram : *Doc->a_Diagrams) {
+        if (diagram->isLegendAt(QPointF(fX, fY))) {
+            Doc->deselectElements(nullptr);
+            for (Diagram* d : *Doc->a_Diagrams) {
+                d->getLegend()->setSelected(false);
+            }
+            m_draggingLegend = true;
+            m_draggedDiagram = diagram;
+            diagram->getLegend()->setSelected(true);
+            QPointF legendAbsPos(diagram->cx + diagram->getLegend()->position().x(),
+                                 diagram->cy + diagram->getLegend()->position().y());
+            m_dragOffset = QPointF(fX, fY) - legendAbsPos;
+
+            QucsMain->MouseMoveAction = &MouseActions::MMoveLegendDrag;
+            QucsMain->MouseReleaseAction = &MouseActions::MReleaseLegendDrag;
+            QucsMain->MousePressAction = nullptr;
+            QucsMain->MouseDoubleClickAction = nullptr;
+            Doc->grabKeyboard();
+            Doc->viewport()->update();
+            return;
+        }
+    }
+
+    // Deselect any selected legends when clicking elsewhere
+    for (Diagram* d : *Doc->a_Diagrams) {
+        if (d->getLegend()->isSelected()) {
+            d->getLegend()->setSelected(false);
+            Doc->viewport()->update();
+        }
+    }
 
     int No = 0;
     MAx1 = int(fX);

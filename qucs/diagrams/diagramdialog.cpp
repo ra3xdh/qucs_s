@@ -523,6 +523,16 @@ DiagramDialog::DiagramDialog(Diagram *d, QWidget *parent, Graph *currentGraph)
     Row++;
     WhiteBackground->setChecked(Diag->whiteBackground);
 
+    // Enable legend
+    if (Diag->Name == "Rect" || Diag->Name.left(6) == "Rect3D") {
+      ShowLegend = new QCheckBox(tr("show legend"), Tab2);
+      gp->addWidget(ShowLegend, Row, 0);
+      Row++;
+      ShowLegend->setChecked(Diag->getLegend()->isVisible());
+    } else {
+      ShowLegend = nullptr;
+    }
+
     NotationLabel = new QLabel(tr("Number notation: "), Tab2);
     gp->addWidget(NotationLabel, Row, 0);
     NotationBox = new QComboBox(Tab2);
@@ -1532,6 +1542,13 @@ void DiagramDialog::slotApply() {
     if (WhiteBackground) {
       if (Diag->whiteBackground != WhiteBackground->isChecked()) {
         Diag->whiteBackground = WhiteBackground->isChecked();
+        changed = true;
+      }
+    }
+    if (ShowLegend) {
+      bool wantLegend = ShowLegend->isChecked();
+      if (Diag->getLegend()->isVisible() != wantLegend) {
+        Diag->setLegendVisible(wantLegend);
         changed = true;
       }
     }
