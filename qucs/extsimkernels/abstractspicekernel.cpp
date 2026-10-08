@@ -87,9 +87,15 @@ AbstractSpiceKernel::AbstractSpiceKernel(Schematic *schematic, QObject *parent) 
 }
 
 
-AbstractSpiceKernel::~AbstractSpiceKernel()
-{
-    killThemAll();
+AbstractSpiceKernel::~AbstractSpiceKernel() {
+  // Stop the simulator before its QProcess is destroyed. Disconnect it
+  // first: waiting emits its signals, and this kernel and its console may
+  // already be partially destroyed.
+  QObject::disconnect(a_simProcess, nullptr, this, nullptr);
+  if (a_simProcess->state() != QProcess::NotRunning) {
+    a_simProcess->kill();
+    a_simProcess->waitForFinished();
+  }
 }
 
 void AbstractSpiceKernel::killThemAll()
