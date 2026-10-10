@@ -4,6 +4,7 @@
 #include <QPoint>
 #include <functional>
 #include <map>
+#include <vector>
 
 namespace qucs_s {
 namespace wire {
