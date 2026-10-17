@@ -34,6 +34,7 @@
 #include "qt3_compat/q3scrollview.h"
 #include <QVector>
 #include <QStringList>
+#include <optional>
 
 class QTextStream;
 class QTextEdit;
@@ -228,6 +229,13 @@ public:
   bool    undo();
   bool    redo();
 
+  // Transient snapshot for cancelling an in-progress keyboard move (M /
+  // Shift+M). Kept outside the normal undo history; see schematic_file.cpp.
+  void beginCancellableMove();
+  bool cancellableMovePending() const;
+  void cancelCancellableMove();
+  void endCancellableMove();
+
   void scrollUp(int);
   void scrollDown(int);
   void scrollLeft(int);
@@ -321,6 +329,12 @@ private:
   QVector<QString *> a_undoAction;
   int a_undoSymbolIdx;
   QVector<QString *> a_undoSymbol;    // undo stack for circuit symbol
+
+  // a_undoActionIdx/a_undoSymbolIdx and a_symbolMode when a_moveSnapshot was
+  // taken, so cancellableMovePending() can detect an intervening commit.
+  std::optional<QString> a_moveSnapshot;
+  int a_moveSnapshotIdx         = 0;
+  bool a_moveSnapshotSymbolMode = false;
 
   bool isImageFilePath(const QString& path); // Detect if a file is an image
 
