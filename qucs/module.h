@@ -39,11 +39,16 @@ class Module
   static void registerComponent (QString, pInfoFunc);
   static void intoCategory (Module *);
   static Component * getComponent (QString);
+  static Component* getComponentForLoad(QString);
   static void registerDynamicComponents(void);
 
  public:
   static QHash<QString, Module *> Modules;
   static QMap<QString, QString> vaComponents;
+  // Unconditional model name -> factory registry used only while loading a
+  // schematic, so that components incompatible with the currently selected
+  // simulator can still be recognized and instantiated as their real type.
+  static QHash<QString, pInfoFunc> LoadFactories;
 
  public:
   static void registerModules (void);
