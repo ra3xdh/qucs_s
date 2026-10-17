@@ -32,7 +32,9 @@
 
 
 #include <QPlainTextEdit>
+#include <QtMath>
 #include <algorithm>
+#include <cmath>
 
 /*!
   \file abstractspicekernel.cpp
@@ -1467,6 +1469,97 @@ void AbstractSpiceKernel::convertToQucsData(const QString &qucs_dataset)
                 }
                 ds_stream<<"</indep>\n";
                 indep += " " + swp_var2;
+            }
+
+            // For HB with a single parameter sweep, additionally write one 1D
+            // <dep> variable per complex variable per FREQ bin so that a
+            // single harmonic can be plotted against the swept parameter,
+            // e.g. "xyce/V(PR1)_h1@xyce/P1:P" (see Graph::loadDatFile).
+            if (!hasDblParSweep && ngspice_output_filename.endsWith("HB.FD.prn")
+                && indep_cnt > 0 && swp_var_val.count() > 1) {
+                int nBins = indep_cnt;
+                int nSteps = swp_var_val.count();
+
+                // FREQ bin values from the first sweep step
+                QList<double> binF;
+                for (int b = 0; b < nBins; b++)
+                    binF.append(sim_points.at(b).at(0));
+
+                // Name the bins by harmonic index (h0, h1, ..., h-1) if all
+                // bins are integer multiples of f0, otherwise by frequency
+                double f0 = 0.0;
+                for (double f : binF)
+                    if (f > 0.0) { f0 = f; break; }
+                bool useHarmonicNames = (f0 > 0.0);
+                if (useHarmonicNames) {
+                    for (double f : binF) {
+                        if (qAbs(f - qRound(f / f0) * f0) > 0.49 * f0) {
+                            useHarmonicNames = false;
+                            break;
+                        }
+                    }
+                }
+                QStringList binSuffix;
+                for (double f : binF)
+                    binSuffix.append(useHarmonicNames
+                                     ? "h" + QString::number(qRound(f / f0))
+                                     : "f" + QString::number(f, 'g', 3).remove('+'));
+
+                // complex vars are the last K entries of var_list
+                int nComplex = 0;
+                for (int i = 1; i + 1 < var_list.count(); i++)
+                    if (var_list.at(i).startsWith("Re(")
+                        && var_list.at(i + 1).startsWith("Im("))
+                        nComplex++;
+                for (int p = 0; p < nComplex; p++) {
+                    int vi = var_list.count() - nComplex + p;
+                    const QString base = var_list.at(vi);
+                    QString magName, phName;
+                    if (base.startsWith("V(")) {
+                        magName = "VMag" + base.mid(1);
+                        phName = "VPh" + base.mid(1);
+                    } else if (base.startsWith("I(")) {
+                        magName = "IMag" + base.mid(1);
+                        phName = "IPh" + base.mid(1);
+                    }
+                    const bool haveMagPh = !magName.isEmpty();
+
+                    for (int b = 0; b < nBins; b++) {
+                        const QString suffix = binSuffix.at(b);
+                        QStringList reStr, magStr, phStr;
+                        for (int step = 0; step < nSteps; step++) {
+                            const auto sp = sim_points.at(step * nBins + b);
+                            const double re = sp.at(2 * (vi - 1) + 1);
+                            const double im = sp.at(2 * vi);
+                            reStr.append(QString::number(re, 'e', 12)
+                                         + (im < 0.0 ? "-j" : "+j")
+                                         + QString::number(qAbs(im), 'e', 12));
+                            if (haveMagPh) {
+                                magStr.append(
+                                    QString::number(qSqrt(re * re + im * im), 'e', 12));
+                                phStr.append(QString::number(
+                                    qRadiansToDegrees(std::atan2(im, re)), 'e', 12));
+                            }
+                        }
+                        ds_stream << "<dep " << base << '_' << suffix
+                                  << " " << swp_var << ">\n";
+                        for (const QString& s : reStr)
+                            ds_stream << s << '\n';
+                        ds_stream << "</dep>\n";
+                        if (haveMagPh) {
+                            ds_stream << "<dep " << magName << '_' << suffix
+                                      << " " << swp_var << ">\n";
+                            for (const QString& s : magStr)
+                                ds_stream << s << '\n';
+                            ds_stream << "</dep>\n";
+                            ds_stream << "<dep " << phName << '_' << suffix
+                                      << " " << swp_var << ">\n";
+                            for (const QString& s : phStr)
+                                ds_stream << s << '\n';
+                            ds_stream << "</dep>\n";
+                        }
+                    }
+                }
             }
         } else if (!indep.isEmpty()) {
             ds_stream<<QStringLiteral("<indep %1 %2>\n").arg(indep).arg(sim_points.count()); // output indep var: TODO: parameter sweep
