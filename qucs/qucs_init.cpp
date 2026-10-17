@@ -25,7 +25,6 @@
 #include "misc.h"
 #include "octave_window.h"
 #include "qucs.h"
-#include "simulationdock.h"
 
 #include <QAction>
 #include <QApplication>
@@ -1027,7 +1026,6 @@ void QucsApp::initMenuBar() {
   // viewMenu->setCheckable(true);
   viewMenu->addAction(viewBrowseDock);
   viewMenu->addAction(viewOctaveDock);
-  viewMenu->addAction(simulationDock->toggleViewAction());
   viewMenu->addAction(messageDock->msgDock->toggleViewAction());
 
   helpMenu = new QMenu(tr("&Help")); // menuBar entry helpMenu

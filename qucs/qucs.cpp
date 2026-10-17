@@ -51,7 +51,6 @@
 #include "schematic.h"
 #include "mouseactions.h"
 #include "messagedock.h"
-#include "simulationdock.h"
 #include "settings.h"
 #include "wire.h"
 #include "module.h"
@@ -575,11 +574,6 @@ void QucsApp::initView()
   // ............................................
 
   messageDock = new MessageDock(this);
-
-  // Simulation console docking window (starts hidden)
-  simulationDock = new SimulationDock(this);
-  addDockWidget(Qt::BottomDockWidgetArea, simulationDock);
-  simulationDock->hide();
 
     // initial projects directory model
     a_homeDirModel = new QucsFileSystemModel(this);
@@ -3809,7 +3803,7 @@ void QucsApp::slotSimulateWithSpice()
         SimDlg->setOriginDocument(origin);
         a_activeSpiceSimDlg = SimDlg;
         // Before the dock is shown: the session is not a window
-        simulationDock->setSession(SimDlg);
+        messageDock->setSimulationSession(SimDlg);
         connect(SimDlg, SIGNAL(simulated(ExternSimDialog*)), this, SLOT(slotAfterSpiceSimulation(ExternSimDialog*)));
         connect(SimDlg, SIGNAL(warnings()), this, SLOT(slotShowWarnings()));
         connect(SimDlg, SIGNAL(success()), this, SLOT(slotResetWarnings()));
@@ -3821,8 +3815,7 @@ void QucsApp::slotSimulateWithSpice()
         }
         else
         {
-            simulationDock->show();
-            simulationDock->raise();
+            messageDock->showSimulationLog();
         }
         /*disconnect(SimDlg, SIGNAL(simulated()), this, SLOT(slotAfterSpiceSimulation()));
         disconnect(SimDlg, SIGNAL(warnings()), this, SLOT(slotShowWarnings()));
@@ -4043,8 +4036,7 @@ void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
     disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
     if (TuningMode && SimDlg->hasError()) {
         if (!m_tunerAbortForRerun) {
-            simulationDock->show();
-            simulationDock->raise();
+            messageDock->showSimulationLog();
         }
         m_tunerAbortForRerun = false;
         a_tunerExternSimDlg = nullptr;
