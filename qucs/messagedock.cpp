@@ -23,6 +23,7 @@
 
 #include <QDockWidget>
 #include <QTextBlock>
+#include <QVBoxLayout>
 #include <QDebug>
 
 /*!
@@ -48,16 +49,24 @@ MessageDock::MessageDock(QucsApp *App_): QWidget()
     admsOutput = new QPlainTextEdit();
     admsOutput->setReadOnly(true);
 
-    builderTabs->insertTab(0,admsOutput,tr("admsXml"));
+    builderTabs->insertTab(kVaTab,admsOutput,tr("admsXml"));
 
 
     // 2) add a dock for the cpp compiler messages
     cppOutput = new QPlainTextEdit();
     cppOutput->setReadOnly(true);
 
-    builderTabs->insertTab(1,cppOutput,tr("Compiler"));
+    builderTabs->insertTab(kCompilerTab,cppOutput,tr("Compiler"));
+
+    // 3) add a page for the simulation console (empty for now)
+    QWidget *simulationPage = new QWidget();
+    simulationLayout = new QVBoxLayout(simulationPage);
+    simulationLayout->setContentsMargins(0, 0, 0, 0);
+
+    builderTabs->insertTab(kSimulationTab,simulationPage,tr("Simulation"));
 
     msgDock = new QDockWidget(tr("admsXml Dock"));
+    msgDock->setObjectName("MessageDock");
     msgDock->setWidget(builderTabs);
     App_->addDockWidget(Qt::BottomDockWidgetArea, msgDock);
 
@@ -80,8 +89,8 @@ void MessageDock::reset()
     admsOutput->clear();
     cppOutput->clear();
 
-    builderTabs->setTabIcon(0,QPixmap());
-    builderTabs->setTabIcon(1,QPixmap());
+    builderTabs->setTabIcon(kVaTab,QPixmap());
+    builderTabs->setTabIcon(kCompilerTab,QPixmap());
 }
 
 /*!
@@ -137,9 +146,9 @@ void MessageDock::slotAdmsChanged()
 
     // Change adms tab icon
     if (error)
-         builderTabs->setTabIcon(0,QPixmap(":/bitmaps/svg/error.svg"));
+         builderTabs->setTabIcon(kVaTab,QPixmap(":/bitmaps/svg/error.svg"));
     else
-         builderTabs->setTabIcon(0,QPixmap(":/bitmaps/svg/ok_apply.svg"));
+         builderTabs->setTabIcon(kVaTab,QPixmap(":/bitmaps/svg/ok_apply.svg"));
 }
 
 /*!
@@ -160,9 +169,9 @@ void MessageDock::slotCppChanged()
 
     // Change compiler tab icon
     if (error)
-         builderTabs->setTabIcon(1,QPixmap(":/bitmaps/svg/error.svg"));
+         builderTabs->setTabIcon(kCompilerTab,QPixmap(":/bitmaps/svg/error.svg"));
     else
-         builderTabs->setTabIcon(1,QPixmap(":/bitmaps/svg/ok_apply.svg"));
+         builderTabs->setTabIcon(kCompilerTab,QPixmap(":/bitmaps/svg/ok_apply.svg"));
 }
 
 /*!

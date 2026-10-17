@@ -21,6 +21,7 @@
 
 #include "extsimkernels/spicecompat.h"
 #include "main.h"
+#include "messagedock.h"
 #include "misc.h"
 #include "octave_window.h"
 #include "qucs.h"
@@ -1027,6 +1028,7 @@ void QucsApp::initMenuBar() {
   viewMenu->addAction(viewBrowseDock);
   viewMenu->addAction(viewOctaveDock);
   viewMenu->addAction(simulationDock->toggleViewAction());
+  viewMenu->addAction(messageDock->msgDock->toggleViewAction());
 
   helpMenu = new QMenu(tr("&Help")); // menuBar entry helpMenu
   helpMenu->addAction(helpIndex);

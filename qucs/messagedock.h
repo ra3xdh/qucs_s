@@ -25,6 +25,7 @@
 class QDockWidget;
 class QTabWidget;
 class QPlainTextEdit;
+class QVBoxLayout;
 
 /*!
  * \file messagedock.h
@@ -37,6 +38,11 @@ public:
  ~MessageDock() {};
 
 public:
+
+  // builderTabs page indexes
+  static constexpr int kVaTab = 0;
+  static constexpr int kCompilerTab = 1;
+  static constexpr int kSimulationTab = 2;
 
   QDockWidget *msgDock;
 
@@ -53,6 +59,11 @@ public:
 
   void reset();
 
+private:
+  /*!
+   * \brief simulationLayout holds the simulation console (not used yet)
+   */
+  QVBoxLayout *simulationLayout;
 
 private slots:
   void slotAdmsChanged();
