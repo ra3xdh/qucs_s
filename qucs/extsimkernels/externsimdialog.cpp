@@ -25,7 +25,7 @@
 
 // The session is owned by the application, not by the simulated schematic:
 // it may outlive the document (see slotDocumentDestroyed()). It is not a
-// window: QucsApp shows it in the simulation dock.
+// window: QucsApp shows it in the message dock.
 ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netlist_mode) :
     QWidget(QucsMain),
     a_schematic(sch),
