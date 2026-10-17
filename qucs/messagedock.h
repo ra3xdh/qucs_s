@@ -20,6 +20,7 @@
 
 #include "qucs.h"
 
+#include <QPointer>
 #include <QWidget>
 
 class QDockWidget;
@@ -59,11 +60,19 @@ public:
 
   void reset();
 
+  void setSimulationSession(QWidget *session);
+  void showSimulationLog();
+  void showBuildLog();
+
 private:
   /*!
-   * \brief simulationLayout holds the simulation console (not used yet)
+   * \brief simulationLayout holds the simulation console
    */
   QVBoxLayout *simulationLayout;
+  /*!
+   * \brief simulationSession is the session shown in the Simulation tab
+   */
+  QPointer<QWidget> simulationSession;
 
 private slots:
   void slotAdmsChanged();

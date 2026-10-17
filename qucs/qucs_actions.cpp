@@ -1733,7 +1733,6 @@ void QucsApp::slotBuildModule() {
   messageDock->builderTabs->setTabText(0, tr("admsXml"));
   messageDock->builderTabs->setTabIcon(1, QPixmap());
   messageDock->builderTabs->setTabText(1, tr("Compiler"));
-  messageDock->msgDock->setWindowTitle(tr("admsXml Dock"));
 
   QString make;
 
@@ -1835,13 +1834,12 @@ void QucsApp::slotBuildModule() {
   messageDock->cppOutput->appendPlainText(cppStatus);
 
   // shot the message docks
-  messageDock->msgDock->show();
+  messageDock->showBuildLog();
 }
 
 void QucsApp::buildWithOpenVAF() {
   messageDock->builderTabs->setTabIcon(0, QPixmap());
   messageDock->builderTabs->setTabText(0, tr("OpenVAF"));
-  messageDock->msgDock->setWindowTitle(tr("OpenVAF Dock"));
 
   QString workDir = QucsSettings.QucsWorkDir.absolutePath();
   QDir::setCurrent(workDir);
@@ -1886,7 +1884,7 @@ void QucsApp::buildWithOpenVAF() {
   messageDock->admsOutput->appendPlainText(vaStatus);
 
   // shot the message docks
-  messageDock->msgDock->show();
+  messageDock->showBuildLog();
 }
 
 // ----------------------------------------------------------

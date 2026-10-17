@@ -65,7 +65,7 @@ MessageDock::MessageDock(QucsApp *App_): QWidget()
 
     builderTabs->insertTab(kSimulationTab,simulationPage,tr("Simulation"));
 
-    msgDock = new QDockWidget(tr("admsXml Dock"));
+    msgDock = new QDockWidget(tr("Messages"));
     msgDock->setObjectName("MessageDock");
     msgDock->setWidget(builderTabs);
     App_->addDockWidget(Qt::BottomDockWidgetArea, msgDock);
@@ -91,6 +91,49 @@ void MessageDock::reset()
 
     builderTabs->setTabIcon(kVaTab,QPixmap());
     builderTabs->setTabIcon(kCompilerTab,QPixmap());
+}
+
+/*!
+ * \brief MessageDock::setSimulationSession shows \p session in the
+ *        Simulation tab instead of the previous one
+ *
+ * The session is reparented to the Simulation tab. The previous session is
+ * only removed from the layout and hidden: deleting it is up to the caller.
+ * Neither the dock visibility nor the current tab are changed.
+ */
+void MessageDock::setSimulationSession(QWidget *session)
+{
+    if (session == simulationSession) {
+        return;
+    }
+    if (simulationSession) {
+        simulationLayout->removeWidget(simulationSession);
+        simulationSession->hide();
+    }
+    simulationSession = session;
+    if (session) {
+        simulationLayout->addWidget(session);
+        session->show();
+    }
+}
+
+/*!
+ * \brief MessageDock::showSimulationLog shows the dock on the Simulation tab
+ */
+void MessageDock::showSimulationLog()
+{
+    msgDock->show();
+    msgDock->raise();
+    builderTabs->setCurrentIndex(kSimulationTab);
+}
+
+/*!
+ * \brief MessageDock::showBuildLog shows the dock on the Verilog-A build tab
+ */
+void MessageDock::showBuildLog()
+{
+    msgDock->show();
+    builderTabs->setCurrentIndex(kVaTab);
 }
 
 /*!
