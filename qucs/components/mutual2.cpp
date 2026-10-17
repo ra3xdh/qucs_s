@@ -142,7 +142,7 @@ QString Mutual2::spice_netlist(spicecompat::SpiceDialect dialect /* = spicecompa
     s += QStringLiteral("%1 %2 %3 %4\n").arg(k12, l1, l2,
             spicecompat::normalize_value(getProperty("k12")->Value));
     s += QStringLiteral("%1 %2 %3 %4\n").arg(k13, l1, l3,
-            spicecompat::normalize_value(getProperty("k12")->Value));
+            spicecompat::normalize_value(getProperty("k13")->Value));
     s += QStringLiteral("%1 %2 %3 %4\n").arg(k23, l2, l3,
             spicecompat::normalize_value(getProperty("k23")->Value));
     return s;
