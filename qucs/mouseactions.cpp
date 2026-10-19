@@ -142,7 +142,13 @@ void MouseActions::editLabel(Schematic *Doc, WireLabel *pl)
       initialColor = ((Wire*)owner)->color();  initialWidth = ((Wire*)owner)->lineWidth();
     }
 
-    NetPropertiesDialog *Dia = new NetPropertiesDialog(initialColor, initialWidth, pl->Name, pl->initValue, Doc);
+    QString netlistName;
+    if (owner->Type == isNode) {
+        netlistName = Doc->netlistNameForNode((Node*)owner);
+    } else if (owner->Type == isWire) {
+        netlistName = Doc->netlistNameForNode(((Wire*)owner)->Port1);
+    }
+    NetPropertiesDialog *Dia = new NetPropertiesDialog(initialColor, initialWidth, pl->Name, pl->initValue, netlistName, Doc);
     if (Dia->exec() != QDialog::Accepted) {
       delete Dia;
       return;
@@ -892,9 +898,14 @@ void MouseActions::MPressLabel(Schematic *Doc, QMouseEvent *, float fX, float fY
         pl = ((Conductor *) pe)->label();
     }
 
+    QString netlistName;
+    if (pw) netlistName = Doc->netlistNameForNode(pw->Port1);
+    else if (pn) netlistName = Doc->netlistNameForNode(pn);
+
     NetPropertiesDialog *Dia = new NetPropertiesDialog(initialColor, initialWidth,
                                                        pl ? pl->Name : QString(),
                                                        pl ? pl->initValue : QString(),
+                                                       netlistName,
                                                        Doc);
     if (Dia->exec() != QDialog::Accepted) {
       delete Dia;
@@ -2207,7 +2218,11 @@ void MouseActions::setNetProperties(Schematic *Doc, Element *elem)
     initialValue = lbl->initValue;
   }
 
-  NetPropertiesDialog dlg(initialColor, initialWidth, initialName, initialValue, Doc);
+  QString netlistName;
+  if (elem->Type == isWire) netlistName = Doc->netlistNameForNode(((Wire*)elem)->Port1);
+  else if (elem->Type == isNode) netlistName = Doc->netlistNameForNode((Node*)elem);
+
+  NetPropertiesDialog dlg(initialColor, initialWidth, initialName, initialValue, netlistName, Doc);
   if (dlg.exec() != QDialog::Accepted) return;
 
   if (elem->Type == isNode) {

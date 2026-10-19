@@ -23,10 +23,22 @@
 
 NetPropertiesDialog::NetPropertiesDialog(const QColor& initialColor, int initialLineWidth,
                                          const QString& initialName, const QString& initialValue,
+                                         const QString& netlistName,
                                          QWidget *parent)
     : QDialog(parent), m_netcolor(initialColor), m_lineWidth(initialLineWidth) {
 
   setWindowTitle(tr("Net Properties"));
+
+  QVBoxLayout *layout = new QVBoxLayout(this);
+
+  // --- Net info group box ---
+  QGroupBox *infoGroup = new QGroupBox(tr("Net info"), this);
+  QGridLayout *infoLayout = new QGridLayout(infoGroup);
+  infoLayout->addWidget(new QLabel(tr("Netlist name:"), this), 0, 0);
+  m_netlistNameLabel = new QLabel(netlistName.isEmpty() ? tr("(auto)") : netlistName, this);
+  m_netlistNameLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+  infoLayout->addWidget(m_netlistNameLabel, 0, 1, 1, 2);
+  layout->addWidget(infoGroup);
 
   // --- Label group box ---
   QGroupBox *labelGroup = new QGroupBox(tr("Label"), this);
@@ -51,8 +63,8 @@ NetPropertiesDialog::NetPropertiesDialog(const QColor& initialColor, int initial
   Expr_InitialVoltage.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
   Validator_InitialVoltage = new QRegularExpressionValidator(Expr_InitialVoltage, this);
   InitValue->setValidator(Validator_InitialVoltage);
-  InitValue->setValidator(Validator_InitialVoltage);
   labelLayout->addWidget(InitValue, 1, 1, 1, 2);
+  layout->addWidget(labelGroup);
 
   // --- Style group box ---
   QGroupBox *styleGroup = new QGroupBox(tr("Style"), this);
@@ -81,15 +93,12 @@ NetPropertiesDialog::NetPropertiesDialog(const QColor& initialColor, int initial
   widthRow->addWidget(defaultBtn);
   widthRow->addStretch();
   styleLayout->addLayout(widthRow);
+  layout->addWidget(styleGroup);
 
   // --- OK / Cancel ---
   QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
   connect(buttonBox, &QDialogButtonBox::accepted, this, &NetPropertiesDialog::slotOk);
   connect(buttonBox, &QDialogButtonBox::rejected, this, &NetPropertiesDialog::slotCancel);
-
-  QVBoxLayout *layout = new QVBoxLayout(this);
-  layout->addWidget(labelGroup);
-  layout->addWidget(styleGroup);
   layout->addWidget(buttonBox);
 
   setFocusProxy(NodeName);

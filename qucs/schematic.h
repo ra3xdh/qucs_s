@@ -536,6 +536,7 @@ public:
   void     oneLabel(Node*);
   int      placeNodeLabel(WireLabel*);
   Element* getWireLabel(Node*);
+  QString  netlistNameForNode(Node* node);
 
   Painting* selectedPainting(float, float);
 
