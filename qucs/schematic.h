@@ -450,6 +450,7 @@ private:
   double renderModel(double scale, QRect newModelBounds, QPoint modelPlaneCoords, QPoint viewportCoords);
   void drawElements(QPainter* painter);
   void drawDcBiasPoints(QPainter* painter);
+  void drawNetNames(QPainter* painter);
   void drawPostPaintEvents(QPainter* painter);
   void paintFrame(QPainter* painter);
   void drawGrid(QPainter* painter);

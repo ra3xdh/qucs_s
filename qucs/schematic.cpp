@@ -449,6 +449,9 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
     if (a_showBias > 0) {
         drawDcBiasPoints(p);
     }
+    if (QucsSettings.ShowNetNames && !a_symbolMode) {
+        drawNetNames(p);
+    }
 
     drawPostPaintEvents(p);
 }
@@ -617,6 +620,46 @@ static void computeNetNames(Schematic* doc,
         for (Node* n : component) names[n] = name;
         if (components) components->push_back(std::move(component));
     }
+}
+
+// Only the auto-named (otherwise invisible) nets are drawn, so already
+// labelled nets are not annotated twice.
+void Schematic::drawNetNames(QPainter* painter)
+{
+    std::unordered_map<Node*, QString> names;
+    std::unordered_set<Node*> unlabeled;
+    std::vector<std::vector<Node*>> components;
+    computeNetNames(this, names, unlabeled, &components);
+
+    painter->save();
+    const int xOffset = 10;
+    const int yOffset = 10;
+    for (const std::vector<Node*>& component : components) {
+        if (component.empty()) continue;
+        // Draw once per net, only if the net got an auto-generated name.
+        if (!unlabeled.count(component[0])) continue;
+        const QString& name = names[component[0]];
+        if (name.isEmpty()) continue;
+
+        // Place the chip at the net's centroid to avoid overlapping the wires.
+        long sx = 0, sy = 0;
+        for (Node* cn : component) { sx += cn->cx; sy += cn->cy; }
+        int x = static_cast<int>(sx / static_cast<long>(component.size()));
+        int y = static_cast<int>(sy / static_cast<long>(component.size())) - yOffset;
+        x += (component[0]->x1 & 0x10) ? xOffset : -xOffset;
+
+        QRect textRect = painter->fontMetrics().boundingRect(name);
+        int rectWidth = textRect.width() + 6;
+        int rectHeight = textRect.height() + 4;
+        int rectX = x - rectWidth / 2;
+        int rectY = y - rectHeight / 2;
+        painter->setBrush(QBrush(QColor(255, 245, 214)));
+        painter->setPen(QPen(QColor(178, 116, 0)));
+        painter->drawRoundedRect(QRectF(rectX, rectY, rectWidth, rectHeight), 15, 15, Qt::RelativeSize);
+        painter->setPen(QColor(160, 96, 0));
+        painter->drawText(x - textRect.width() / 2, y + textRect.height() / 4, name);
+    }
+    painter->restore();
 }
 
 // Return the netlist name of the net that the given node belongs to, using the
