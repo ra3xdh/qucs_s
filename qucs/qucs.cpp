@@ -845,6 +845,19 @@ void QucsApp::slotChangeSimulator(int index) {
       return;
     }
 
+    // The running session reads DefaultSimulator when it finishes
+    if (spiceSimulationRunning()) {
+        // Restore before the message box: it runs a nested event loop
+        const int current = simulatorsCombobox->findData(QucsSettings.DefaultSimulator);
+        if (current >= 0) {
+            simulatorsCombobox->setCurrentIndex(current);
+        }
+        QMessageBox::warning(this, tr("Simulate schematic"),
+                             tr("A simulation is already running. Please wait "
+                                "until it has finished."));
+        return;
+    }
+
     QucsSettings.DefaultSimulator = simu;
     saveApplSettings();
 
@@ -3725,6 +3738,13 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
 
 void QucsApp::slotSimSettings()
 {
+    // Changing the simulator paths may change DefaultSimulator
+    if (spiceSimulationRunning()) {
+        QMessageBox::warning(this, tr("Simulate schematic"),
+                             tr("A simulation is already running. Please wait "
+                                "until it has finished."));
+        return;
+    }
     SimSettingsDialog *SetDlg = new SimSettingsDialog(this);
     SetDlg->exec();
     delete SetDlg;
