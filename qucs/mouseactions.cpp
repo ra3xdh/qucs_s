@@ -83,9 +83,7 @@ void showWireModeHint(QucsApp* app, const qucs_s::wire::Planner planner)
 MouseActions::MouseActions(QucsApp *App_)
 {
     App = App_;          // pointer to main app
-    if(selElem != nullptr){
-      selElem = nullptr;         // no component/diagram is selected
-    }
+    selElem = nullptr;         // no component/diagram is selected
     isMoveEqual = false; // mouse cursor move x and y the same way
     focusElement = nullptr;    //element being interacted with mouse
     // Legend dragging state
