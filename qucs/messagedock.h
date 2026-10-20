@@ -61,6 +61,7 @@ public:
   void reset();
 
   void setSimulationSession(QWidget *session);
+  void setSimulationActions(QAction *start, QAction *stop);
   void showSimulationLog();
   void showBuildLog();
 

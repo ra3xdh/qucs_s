@@ -29,7 +29,6 @@
 ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netlist_mode) :
     QWidget(QucsMain),
     a_schematic(sch),
-    a_buttonStopSim(new QPushButton(tr("Stop"),this)),
     a_buttonSaveNetlist(new QPushButton(tr("Save netlist"),this)),
     a_editSimConsole(new QPlainTextEdit(this)),
     a_simStatusLog(new QListWidget),
@@ -52,9 +51,6 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
     }
 
     connect(sch,SIGNAL(destroyed()),this,SLOT(slotDocumentDestroyed()));
-
-    connect(a_buttonStopSim,SIGNAL(clicked()),this,SLOT(stopSimulation()));
-    a_buttonStopSim->setEnabled(false);
 
     connect(a_buttonSaveNetlist,SIGNAL(clicked()),this,SLOT(slotSaveNetlist()));
 
@@ -79,7 +75,6 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
     vl_top->addWidget(a_simStatusLog,1);
     vl_top->addWidget(a_simProgress);
     QHBoxLayout *hl1 = new QHBoxLayout;
-    hl1->addWidget(a_buttonStopSim);
     hl1->addWidget(a_buttonSaveNetlist);
     vl_top->addLayout(hl1);
     setLayout(vl_top);
@@ -155,9 +150,8 @@ void ExternSimDialog::slotProcessOutput()
 {
     // Cleared before emitting simulated(), so that a tuner rerun started from
     // there is not rejected as a concurrent simulation.
-    a_running = false;
+    setRunning(false);
     a_buttonSaveNetlist->setEnabled(true);
-    a_buttonStopSim->setEnabled(false);
     QString out;
 
     // Set temporary safe output name
@@ -245,7 +239,7 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
     switch (err) {
     case QProcess::FailedToStart:
         msg = tr("Failed to start simulator!");
-        a_running = false; // no finished() follows this error
+        setRunning(false); // no finished() follows this error
         break;
     case QProcess::Crashed:
         msg = tr("Simulator crashed!");
@@ -266,21 +260,20 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
 
 void ExternSimDialog::slotStart()
 {
-    a_buttonStopSim->setEnabled(true);
     a_buttonSaveNetlist->setEnabled(false);
     // a_running is set before starting the kernel: checker errors are
     // reported synchronously and must be able to clear it again.
     switch (QucsSettings.DefaultSimulator) {
     case spicecompat::simNgspice:
-        a_running = true;
+        setRunning(true);
         a_ngspice->slotSimulate();
         break;
     case spicecompat::simXyce:
-        a_running = true;
+        setRunning(true);
         a_xyce->slotSimulate();
         break;
     case spicecompat::simSpiceOpus:
-        a_running = true;
+        setRunning(true);
         a_ngspice->slotSimulate();
         break;
     default: break;
@@ -293,7 +286,6 @@ void ExternSimDialog::slotStop()
     if (a_ngspice == nullptr) {
         return;
     }
-    a_buttonStopSim->setEnabled(false);
     a_buttonSaveNetlist->setEnabled(true);
     a_ngspice->killThemAll();
 }
@@ -315,6 +307,15 @@ void ExternSimDialog::stopSimulation()
     }
 }
 
+void ExternSimDialog::setRunning(bool running)
+{
+    if (a_running == running) {
+        return;
+    }
+    a_running = running;
+    emit runningChanged(running);
+}
+
 void ExternSimDialog::slotDocumentDestroyed()
 {
     // The kernels keep a raw pointer to the schematic and may still use it
@@ -325,11 +326,10 @@ void ExternSimDialog::slotDocumentDestroyed()
     delete a_xyce;
     a_xyce = nullptr;
 
-    a_buttonStopSim->setEnabled(false);
     a_buttonSaveNetlist->setEnabled(false);
 
     if (a_running) {
-        a_running = false;
+        setRunning(false);
         const QString msg = tr("Simulation aborted: the document was closed.");
         a_editSimConsole->insertPlainText("\n" + msg + "\n");
         addLogEntry(msg, this->style()->standardIcon(QStyle::SP_MessageBoxCritical));

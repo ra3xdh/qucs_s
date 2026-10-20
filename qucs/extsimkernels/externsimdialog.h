@@ -33,7 +33,6 @@ class ExternSimDialog : public QWidget
 private:
     QPointer<Schematic> a_schematic;
 
-    QPushButton *a_buttonStopSim;
     QPushButton *a_buttonSaveNetlist;
 
     QPlainTextEdit *a_editSimConsole;
@@ -68,6 +67,7 @@ public:
     Schematic* originDocument() const { return a_originDocument; }
 
 private:
+    void setRunning(bool running);
     void saveLog();
     void addLogEntry(const QString&text, const QIcon &icon);
     bool logContainsError(const QString &out);
@@ -77,6 +77,7 @@ signals:
     void simulated(ExternSimDialog *);
     void warnings();
     void success();
+    void runningChanged(bool running);
 
 public slots:
     void slotSaveNetlist();

@@ -242,6 +242,8 @@ private slots:
   void slotSaveCdlNetlist();
   void slotCdlSettings();
   void slotAfterSpiceSimulation(ExternSimDialog *SimDlg);
+  void slotStopSimulation();
+  void slotUpdateSimulationControls();
   void slotBuildVAModule();
   /*void slotBuildXSPICEIfs(int mode = 0);
   void slotEDDtoIFS();
@@ -300,7 +302,7 @@ public:
       *projClose, *applSettings, *refreshSchPath, *editCut, *editCopy, *magAll,
       *magSel, *magOne, *magMinus, *filePrintFit, *tune, *symEdit, *intoH,
       *popH, *simulate, *save_netlist, *dpl_sch, *undo, *redo, *dcbias,
-      *saveCdlNetlist, *cdlSettings;
+      *saveCdlNetlist, *cdlSettings, *simulationStop;
 
   // Navigate tabs
   QAction *TabFirstAction;    /// Action for raising the first document tab

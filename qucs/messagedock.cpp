@@ -23,6 +23,7 @@
 
 #include <QDockWidget>
 #include <QTextBlock>
+#include <QToolBar>
 #include <QVBoxLayout>
 #include <QDebug>
 
@@ -115,6 +116,21 @@ void MessageDock::setSimulationSession(QWidget *session)
         simulationLayout->addWidget(session);
         session->show();
     }
+}
+
+/*!
+ * \brief MessageDock::setSimulationActions adds \p start and \p stop as a
+ *        compact toolbar above the session in the Simulation tab
+ *
+ * The actions stay owned by the caller, which also keeps their enabled state.
+ */
+void MessageDock::setSimulationActions(QAction *start, QAction *stop)
+{
+    QToolBar *bar = new QToolBar(simulationLayout->parentWidget());
+    bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    bar->addAction(start);
+    bar->addAction(stop);
+    simulationLayout->insertWidget(0, bar);
 }
 
 /*!

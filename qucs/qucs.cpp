@@ -3768,6 +3768,16 @@ bool QucsApp::spiceSimulationRunning() const {
   return a_activeSpiceSimDlg && a_activeSpiceSimDlg->isRunning();
 }
 
+void QucsApp::slotStopSimulation() {
+  if (spiceSimulationRunning()) {
+    a_activeSpiceSimDlg->stopSimulation();
+  }
+}
+
+void QucsApp::slotUpdateSimulationControls() {
+  simulationStop->setEnabled(spiceSimulationRunning());
+}
+
 void QucsApp::slotSimulateWithSpice()
 {
     // Only one external SPICE simulation at a time: they share work files
@@ -3827,6 +3837,7 @@ void QucsApp::slotSimulateWithSpice()
         connect(SimDlg, SIGNAL(simulated(ExternSimDialog*)), this, SLOT(slotAfterSpiceSimulation(ExternSimDialog*)));
         connect(SimDlg, SIGNAL(warnings()), this, SLOT(slotShowWarnings()));
         connect(SimDlg, SIGNAL(success()), this, SLOT(slotResetWarnings()));
+        connect(SimDlg, SIGNAL(runningChanged(bool)), this, SLOT(slotUpdateSimulationControls()));
 
         if (TuningMode || schematic->getShowBias() == 0)
         {
@@ -3837,6 +3848,8 @@ void QucsApp::slotSimulateWithSpice()
         {
             messageDock->showSimulationLog();
         }
+        // F2 starts the session in its constructor, before the connection
+        slotUpdateSimulationControls();
         /*disconnect(SimDlg, SIGNAL(simulated()), this, SLOT(slotAfterSpiceSimulation()));
         disconnect(SimDlg, SIGNAL(warnings()), this, SLOT(slotShowWarnings()));
         disconnect(SimDlg, SIGNAL(success()), this, SLOT(slotResetWarnings()));*/
