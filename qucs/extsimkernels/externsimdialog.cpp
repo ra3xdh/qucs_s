@@ -53,8 +53,7 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
 
     connect(sch,SIGNAL(destroyed()),this,SLOT(slotDocumentDestroyed()));
 
-    connect(a_buttonStopSim,SIGNAL(clicked()),a_ngspice,SLOT(killThemAll()));
-    connect(a_buttonStopSim,SIGNAL(clicked()),a_xyce,SLOT(killThemAll()));
+    connect(a_buttonStopSim,SIGNAL(clicked()),this,SLOT(stopSimulation()));
     a_buttonStopSim->setEnabled(false);
 
     connect(a_buttonSaveNetlist,SIGNAL(clicked()),this,SLOT(slotSaveNetlist()));
@@ -297,6 +296,23 @@ void ExternSimDialog::slotStop()
     a_buttonStopSim->setEnabled(false);
     a_buttonSaveNetlist->setEnabled(true);
     a_ngspice->killThemAll();
+}
+
+/*!
+ * \brief ExternSimDialog::stopSimulation stops the running simulation. Only
+ *        the kernel of the running simulator has a process; Xyce also drops
+ *        its pending analyses. The session then finishes as usual through
+ *        slotProcessOutput().
+ */
+void ExternSimDialog::stopSimulation()
+{
+    // The kernels are gone once the document was closed
+    if (a_ngspice != nullptr) {
+        a_ngspice->killThemAll();
+    }
+    if (a_xyce != nullptr) {
+        a_xyce->stop();
+    }
 }
 
 void ExternSimDialog::slotDocumentDestroyed()

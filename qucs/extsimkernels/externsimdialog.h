@@ -82,6 +82,7 @@ public slots:
     void slotSaveNetlist();
     void slotStart();
     void slotStop();
+    void stopSimulation();
 
 private slots:
     void slotProcessOutput();
