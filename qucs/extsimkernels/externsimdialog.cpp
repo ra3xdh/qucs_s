@@ -31,7 +31,8 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
     a_schematic(sch),
     a_buttonSaveNetlist(new QPushButton(tr("Save netlist"),this)),
     a_editSimConsole(new QPlainTextEdit(this)),
-    a_simStatusLog(new QListWidget),
+    a_statusIcon(new QLabel(this)),
+    a_statusText(new QLabel(this)),
     a_simProgress(new QProgressBar(this)),
     a_ngspice(new Ngspice(sch,this)),
     a_xyce(new Xyce(sch,this)),
@@ -41,8 +42,6 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
     a_running(false)
 {
     const QString workdir(QucsSettings.S4Qworkdir);
-
-    setMinimumWidth(500);
 
     QFileInfo inf(workdir);
     if (!inf.exists()) {
@@ -54,29 +53,33 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
 
     connect(a_buttonSaveNetlist,SIGNAL(clicked()),this,SLOT(slotSaveNetlist()));
 
-    QGroupBox *grp_1 = new QGroupBox(tr("Simulation console"),this);
-    QVBoxLayout *vbl1 = new QVBoxLayout;
-
     QFont font;
     font.setFamily("monospace");
     font.setPointSize(10);
     a_editSimConsole->setFont(font);
     a_editSimConsole->setReadOnly(true);
-    vbl1->addWidget(a_editSimConsole);
-    grp_1->setLayout(vbl1);
+    a_editSimConsole->setFrameShape(QFrame::NoFrame);
     a_ngspice->setConsole(a_editSimConsole);
     a_xyce->setConsole(a_editSimConsole);
 
     connect(a_ngspice,SIGNAL(progress(int)),a_simProgress,SLOT(setValue(int)));
     connect(a_xyce,SIGNAL(progress(int)),a_simProgress,SLOT(setValue(int)));
 
+    // A single status line above the console, as in an IDE output pane.
+    // Save netlist acts on this session: the menu Save netlist uses the
+    // active document, which is the data display after a simulation.
+    a_statusText->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    a_simProgress->setMaximumWidth(200);
+    QHBoxLayout *statusLine = new QHBoxLayout;
+    statusLine->addWidget(a_statusIcon);
+    statusLine->addWidget(a_statusText,1);
+    statusLine->addWidget(a_simProgress);
+    statusLine->addWidget(a_buttonSaveNetlist);
+
     QVBoxLayout *vl_top = new QVBoxLayout;
-    vl_top->addWidget(grp_1,3);
-    vl_top->addWidget(a_simStatusLog,1);
-    vl_top->addWidget(a_simProgress);
-    QHBoxLayout *hl1 = new QHBoxLayout;
-    hl1->addWidget(a_buttonSaveNetlist);
-    vl_top->addLayout(hl1);
+    vl_top->setContentsMargins(0, 0, 0, 0);
+    vl_top->addLayout(statusLine);
+    vl_top->addWidget(a_editSimConsole,1);
     setLayout(vl_top);
 
     slotSetSimulator();
@@ -390,10 +393,11 @@ void ExternSimDialog::saveLog()
 
 void ExternSimDialog::addLogEntry(const QString &text, const QIcon &icon)
 {
-    QListWidgetItem *itm = new QListWidgetItem;
-    itm->setText(text);
-    itm->setIcon(icon);
-    a_simStatusLog->addItem(itm);
+    const int size = style()->pixelMetric(QStyle::PM_SmallIconSize, nullptr, this);
+    a_statusIcon->setPixmap(icon.pixmap(size, size));
+    a_statusText->setText(text);
+    a_statusLog.append(text);
+    a_statusText->setToolTip(a_statusLog.join('\n'));
 }
 
 bool ExternSimDialog::logContainsError(const QString &out)

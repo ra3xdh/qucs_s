@@ -36,7 +36,10 @@ private:
     QPushButton *a_buttonSaveNetlist;
 
     QPlainTextEdit *a_editSimConsole;
-    QListWidget *a_simStatusLog;
+    // Status line: last log entry; the whole log is its tooltip
+    QLabel *a_statusIcon;
+    QLabel *a_statusText;
+    QStringList a_statusLog;
 
     QProgressBar *a_simProgress;
 
