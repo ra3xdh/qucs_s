@@ -29,6 +29,7 @@ public:
   /// @brief Class constructor
   NetPropertiesDialog(const QColor& initialColor, int initialLineWidth,
                       const QString& initialName, const QString& initialValue,
+                      const QString& netlistName = QString(),
                       QWidget *parent = nullptr);
 
          /// @brief Class destructor
@@ -73,6 +74,7 @@ private:
 
   /// Label
   QLineEdit *NodeName, *InitValue;
+  QLabel *m_netlistNameLabel;
 
   // Net name validatos
   // Ensure that the name is valid for SPICE

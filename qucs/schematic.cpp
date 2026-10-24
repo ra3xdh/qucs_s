@@ -16,8 +16,11 @@
  ***************************************************************************/
 
 #include <algorithm>
+#include <cstddef>
 #include <QString>
+#include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
 #include "components/vafile.h"
 #include "components/verilogfile.h"
@@ -31,6 +34,8 @@
 #include "schematic.h"
 #include "settings.h"
 #include "textdoc.h"
+#include "components/component.h"
+#include "components/component.h"
 
 #include "misc.h"
 
@@ -444,6 +449,9 @@ void Schematic::drawContents(QPainter *p, int, int, int, int)
     if (a_showBias > 0) {
         drawDcBiasPoints(p);
     }
+    if (QucsSettings.ShowNetNames && !a_symbolMode) {
+        drawNetNames(p);
+    }
 
     drawPostPaintEvents(p);
 }
@@ -522,6 +530,149 @@ void Schematic::drawDcBiasPoints(QPainter* painter) {
         painter->drawText(x - textRect.width() / 2, y + textRect.height() / 4, value);
     }
     painter->restore();
+}
+
+// -----------------------------------------------------------
+// Compute, for every node, the name of the net it belongs to, exactly as the
+// netlist generator would (see giveNodeNames()). The names are computed
+// locally without touching Node::Name (which may hold DC bias voltages after
+// a simulation). It fills:
+//   names     - node -> net name (label, "gnd", or an auto-generated "_netN")
+//   unlabeled - the set of nodes that received an auto-generated name
+//   components - the wire-connected groups, so callers can draw once per net
+static void computeNetNames(Schematic* doc,
+                            std::unordered_map<Node*, QString>& names,
+                            std::unordered_set<Node*>& unlabeled,
+                            std::vector<std::vector<Node*>>* components)
+{
+    // 1) Explicit labels placed on nodes.
+    bool isAnalog = !doc->isDigitalCircuit();
+    std::list<Node*>& nodes = *doc->a_Nodes;
+    std::list<Wire*>& wires = *doc->a_Wires;
+    std::list<Component*>& comps = *doc->a_Components;
+
+    for (Node* n : nodes) {
+        if (n->hasLabel()) {
+            if (isAnalog) names[n] = n->label()->Name;
+            else names[n] = "net" + n->label()->Name;
+        }
+    }
+
+    // 2) Labels placed on wires name the wire's first port node.
+    for (Wire* w : wires) {
+        if (w->hasLabel() && w->Port1) {
+            if (isAnalog) names[w->Port1] = w->label()->Name;
+            else names[w->Port1] = "net" + w->label()->Name;
+        }
+    }
+
+    // 3) Ground nets get the reserved name "gnd".
+    for (Component* c : comps) {
+        if (c->isActive != COMP_IS_OPEN && c->Model == "GND" && !c->Ports.isEmpty()) {
+            Node* n = c->Ports.first()->Connection;
+            if (n) names[n] = "gnd";
+        }
+    }
+
+    // 4) Group wire-connected nodes into nets; an explicit name wins over an
+    //    auto-generated one.
+    std::unordered_set<Node*> visited;
+    std::vector<Node*> stack;
+    int auto_count = 0;
+    for (Node* start : nodes) {
+        if (visited.count(start)) continue;
+
+        std::vector<Node*> component;
+        stack.clear();
+        stack.push_back(start);
+        visited.insert(start);
+        while (!stack.empty()) {
+            Node* n = stack.back();
+            stack.pop_back();
+            component.push_back(n);
+            for (Wire* w : n->wires()) {
+                Node* other = (w->Port1 == n) ? w->Port2 : w->Port1;
+                if (other && !visited.count(other)) {
+                    visited.insert(other);
+                    stack.push_back(other);
+                }
+            }
+        }
+
+        QString name;
+        for (Node* n : component) {
+            auto it = names.find(n);
+            if (it != names.end() && !it->second.isEmpty()) {
+                name = it->second;
+                break;
+            }
+        }
+
+        // 5) A net without any user label gets the same auto-generated name the
+        //    netlist generator would assign ("_netN" for analog, "net_netN" for
+        //    digital). Only such nets are annotated by the overlay.
+        if (name.isEmpty()) {
+            name = (isAnalog ? "_net" : "net_net") +
+                   QString::number(auto_count++);
+            unlabeled.insert(component.begin(), component.end());
+        }
+
+        for (Node* n : component) names[n] = name;
+        if (components) components->push_back(std::move(component));
+    }
+}
+
+// Only the auto-named (otherwise invisible) nets are drawn, so already
+// labelled nets are not annotated twice.
+void Schematic::drawNetNames(QPainter* painter)
+{
+    std::unordered_map<Node*, QString> names;
+    std::unordered_set<Node*> unlabeled;
+    std::vector<std::vector<Node*>> components;
+    computeNetNames(this, names, unlabeled, &components);
+
+    painter->save();
+    const int xOffset = 10;
+    const int yOffset = 10;
+    for (const std::vector<Node*>& component : components) {
+        if (component.empty()) continue;
+        // Draw once per net, only if the net got an auto-generated name.
+        if (!unlabeled.count(component[0])) continue;
+        const QString& name = names[component[0]];
+        if (name.isEmpty()) continue;
+
+        // Place the chip at the net's centroid to avoid overlapping the wires.
+        long sx = 0, sy = 0;
+        for (Node* cn : component) { sx += cn->cx; sy += cn->cy; }
+        int x = static_cast<int>(sx / static_cast<long>(component.size()));
+        int y = static_cast<int>(sy / static_cast<long>(component.size())) - yOffset;
+        x += (component[0]->x1 & 0x10) ? xOffset : -xOffset;
+
+        QRect textRect = painter->fontMetrics().boundingRect(name);
+        int rectWidth = textRect.width() + 6;
+        int rectHeight = textRect.height() + 4;
+        int rectX = x - rectWidth / 2;
+        int rectY = y - rectHeight / 2;
+        painter->setBrush(QBrush(QColor(255, 245, 214)));
+        painter->setPen(QPen(QColor(178, 116, 0)));
+        painter->drawRoundedRect(QRectF(rectX, rectY, rectWidth, rectHeight), 15, 15, Qt::RelativeSize);
+        painter->setPen(QColor(160, 96, 0));
+        painter->drawText(x - textRect.width() / 2, y + textRect.height() / 4, name);
+    }
+    painter->restore();
+}
+
+// Return the netlist name of the net that the given node belongs to, using the
+// same rules as the netlist generator. Used by the net-properties dialog to
+// show which "_netN" name a wire will carry in the generated netlist.
+QString Schematic::netlistNameForNode(Node* node)
+{
+    if (!node) return QString();
+    std::unordered_map<Node*, QString> names;
+    std::unordered_set<Node*> unlabeled;
+    computeNetNames(this, names, unlabeled, nullptr);
+    auto it = names.find(node);
+    return it == names.end() ? QString() : it->second;
 }
 
 

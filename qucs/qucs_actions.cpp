@@ -363,6 +363,17 @@ void QucsApp::slotShowGrid() {
 }
 
 // -----------------------------------------------------------------------
+// Is called, when "show net names" action is toggled.
+void QucsApp::slotShowNetNames(bool on) {
+  QucsSettings.ShowNetNames = on;
+  saveApplSettings();
+  Schematic *schematic = static_cast<Schematic *>(DocumentTab->currentWidget());
+  if (!isTextDocument(schematic)) {
+    schematic->viewport()->repaint();
+  }
+}
+
+// -----------------------------------------------------------------------
 // Is called, when "move component text" action is triggered.
 void QucsApp::slotMoveText(bool on) {
   performToggleAction(on, moveText, 0, &MouseActions::MMoveMoveTextB,
