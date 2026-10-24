@@ -20,11 +20,13 @@
 
 #include "qucs.h"
 
+#include <QPointer>
 #include <QWidget>
 
 class QDockWidget;
 class QTabWidget;
 class QPlainTextEdit;
+class QVBoxLayout;
 
 /*!
  * \file messagedock.h
@@ -37,6 +39,11 @@ public:
  ~MessageDock() {};
 
 public:
+
+  // builderTabs page indexes
+  static constexpr int kVaTab = 0;
+  static constexpr int kCompilerTab = 1;
+  static constexpr int kSimulationTab = 2;
 
   QDockWidget *msgDock;
 
@@ -53,6 +60,20 @@ public:
 
   void reset();
 
+  void setSimulationSession(QWidget *session);
+  void setSimulationActions(QAction *start, QAction *stop);
+  void showSimulationLog();
+  void showBuildLog();
+
+private:
+  /*!
+   * \brief simulationLayout holds the simulation console
+   */
+  QVBoxLayout *simulationLayout;
+  /*!
+   * \brief simulationSession is the session shown in the Simulation tab
+   */
+  QPointer<QWidget> simulationSession;
 
 private slots:
   void slotAdmsChanged();

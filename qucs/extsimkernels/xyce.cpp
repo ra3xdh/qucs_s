@@ -485,6 +485,17 @@ void Xyce::slotProcessOutput()
 }
 
 /*!
+ * \brief Xyce::stop Kill the running analysis and drop the pending ones, so
+ *        that slotFinished() ends the simulation instead of starting the next
+ *        analysis from the queue.
+ */
+void Xyce::stop()
+{
+    a_netlistQueue.clear();
+    killThemAll();
+}
+
+/*!
  * \brief Xyce::nextSimulation Execute the next simulation from queue.
  */
 void Xyce::nextSimulation()

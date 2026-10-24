@@ -18,6 +18,7 @@
 #ifndef EXTERNSIMDIALOG_H
 #define EXTERNSIMDIALOG_H
 
+#include <QPointer>
 #include <QtGui>
 
 #include "ngspice.h"
@@ -25,19 +26,20 @@
 
 class Schematic;
 
-class ExternSimDialog : public QDialog
+class ExternSimDialog : public QWidget
 {
     Q_OBJECT
 
 private:
-    Schematic* a_schematic;
+    QPointer<Schematic> a_schematic;
 
-    QPushButton *a_buttonStopSim;
     QPushButton *a_buttonSaveNetlist;
-    QPushButton *a_buttonExit;
 
     QPlainTextEdit *a_editSimConsole;
-    QListWidget *a_simStatusLog;
+    // Status line: last log entry; the whole log is its tooltip
+    QLabel *a_statusIcon;
+    QLabel *a_statusText;
+    QStringList a_statusLog;
 
     QProgressBar *a_simProgress;
 
@@ -47,6 +49,11 @@ private:
     bool a_wasSimulated;
     bool a_hasError;
     bool a_netlist2Console;
+    bool a_running;
+
+    // Document that was active when the simulation was started (it may be
+    // a data display page in tuning mode, not the simulated schematic).
+    QPointer<Schematic> a_originDocument;
 
 public:
     explicit ExternSimDialog(
@@ -57,8 +64,13 @@ public:
 
     bool wasSimulated() const { return a_wasSimulated; }
     bool hasError() const { return a_hasError; }
+    bool isRunning() const { return a_running; }
+
+    void setOriginDocument(Schematic* doc) { a_originDocument = doc; }
+    Schematic* originDocument() const { return a_originDocument; }
 
 private:
+    void setRunning(bool running);
     void saveLog();
     void addLogEntry(const QString&text, const QIcon &icon);
     bool logContainsError(const QString &out);
@@ -68,11 +80,13 @@ signals:
     void simulated(ExternSimDialog *);
     void warnings();
     void success();
+    void runningChanged(bool running);
 
 public slots:
     void slotSaveNetlist();
     void slotStart();
     void slotStop();
+    void stopSimulation();
 
 private slots:
     void slotProcessOutput();
@@ -80,7 +94,7 @@ private slots:
     void slotNgspiceStarted();
     void slotNgspiceStartError(QProcess::ProcessError err);
     void slotSetSimulator();
-    void slotExit();
+    void slotDocumentDestroyed();
 };
 
 #endif // EXTERNSIMDIALOG_H

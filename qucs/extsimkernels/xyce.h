@@ -76,6 +76,7 @@ protected slots:
 
 public slots:
     void slotSimulate();
+    void stop();
 
 };
 
