@@ -2,6 +2,7 @@
 SET(COMPLIBS
 555_timer.lib
 Analog.lib
+AnalogSwitches.lib
 AudioIC.lib
 Bridges.lib
 BJT_Extended.lib
