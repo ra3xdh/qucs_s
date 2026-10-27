@@ -4,7 +4,7 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../qucs/dialogs/aboutdialog.cpp" line="+121"/>
+        <location filename="../qucs/dialogs/aboutdialog.cpp" line="+123"/>
         <source>About Qucs</source>
         <translation>Qucs Hakkında</translation>
     </message>
@@ -21,12 +21,12 @@
         <translation>Telif hakkı</translation>
     </message>
     <message>
-        <location line="-82"/>
+        <location line="-83"/>
         <source>GUI programmer, Verilog-A dynamic loader</source>
         <translation>GUI programcısı, Verilog-A dinamik yükleyici</translation>
     </message>
     <message>
-        <location line="-14"/>
+        <location line="-15"/>
         <source>project maintainer, simulator interface and GUI design</source>
         <translation>proje yürütücüsü, simülatör arayüzü ve GUI tasarımı</translation>
     </message>
@@ -61,12 +61,11 @@
         <translation>CI kurulumu, derleme sistemi, MacOS desteği</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>testing, general bugfixes</source>
-        <translation>testler, genel hata düzeltmeleri</translation>
+        <translation type="vanished">testler, genel hata düzeltmeleri</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+8"/>
         <source>testing, modelling and documentation, tutorial contributor</source>
         <translation>test, modelleme ve dokümantasyon, eğitici katılımcı</translation>
     </message>
@@ -101,20 +100,20 @@
         <translation>yeniden kodlama, modülerlik</translation>
     </message>
     <message>
-        <location line="-14"/>
-        <location line="+15"/>
+        <location line="-15"/>
+        <location line="+16"/>
         <source>RF design tools</source>
         <translation>RF tasarım araçları</translation>
     </message>
     <message>
-        <location line="-16"/>
+        <location line="-17"/>
         <source>Schematic rendering engine, refactoring</source>
         <translation>Şematik oluşturma motoru, yeniden düzenleme</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Documentation</source>
-        <translation type="unfinished"></translation>
+        <translation>Belgeler</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -122,7 +121,17 @@
         <translation>Yeniden kodlama, genel iyileştirmeler</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+1"/>
+        <source>Microelectronics PDK support</source>
+        <translation>Mikroelektronik PDK desteği</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>General improvements</source>
+        <translation>Genel iyileştirmeler</translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>founder of the project, GUI programmer</source>
         <translation>projenin kurucusu, GUI programcısı</translation>
     </message>
@@ -178,7 +187,12 @@
         <translation>GUI programcısı</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
+        <source>Qucs-S testing, general bugfixes</source>
+        <translation>Qucs-S testleri, genel hata düzeltmeleri</translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>German by</source>
         <translation>Almanca&apos;ya çeviren</translation>
     </message>
@@ -341,7 +355,7 @@
 <context>
     <name>AbstractSpiceKernel</name>
     <message>
-        <location filename="../qucs/extsimkernels/abstractspicekernel.cpp" line="+1389"/>
+        <location filename="../qucs/extsimkernels/abstractspicekernel.cpp" line="+1664"/>
         <source>Simulate</source>
         <translation>Benzetimi Başlat</translation>
     </message>
@@ -442,7 +456,7 @@
 <context>
     <name>AuxFilesDialog</name>
     <message>
-        <location filename="../qucs/dialogs/settingsdialog.cpp" line="+360"/>
+        <location filename="../qucs/dialogs/settingsdialog.cpp" line="+410"/>
         <source>Select</source>
         <translation>Seç</translation>
     </message>
@@ -450,6 +464,34 @@
         <location line="+3"/>
         <source>Cancel</source>
         <translation>İptal</translation>
+    </message>
+</context>
+<context>
+    <name>CdlSettingsDialog</name>
+    <message>
+        <location filename="../qucs/extsimkernels/CdlSettingsDialog.cpp" line="+31"/>
+        <source>Apply changes</source>
+        <translation>Değişiklikleri uygula</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cancel</source>
+        <translation>İptal</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Resolve spice prefix</source>
+        <translation>SPICE önekini çözümle</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>CDL netlist settings</source>
+        <translation>CDL net listesi ayarları</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>CDL Settings</source>
+        <translation>CDL Ayarları</translation>
     </message>
 </context>
 <context>
@@ -551,22 +593,22 @@
 <context>
     <name>ComponentDialog</name>
     <message>
-        <location filename="../qucs/components/componentdialog.cpp" line="+334"/>
+        <location filename="../qucs/components/componentdialog.cpp" line="+337"/>
         <source>Edit Component Properties</source>
         <translation>Bileşen Özelliklerini Değiştir</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+148"/>
         <source>Equation Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Denklem Düzenleyici</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+47"/>
         <source>Put result in dataset</source>
-        <translation type="unfinished"></translation>
+        <translation>Sonucu veri kümesine yaz</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+18"/>
         <source>Sweep</source>
         <translation>Tara</translation>
     </message>
@@ -623,7 +665,7 @@
         <translation type="vanished">Sayı:</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+41"/>
         <location line="+12"/>
         <source>Properties</source>
         <translation>Özelliler</translation>
@@ -633,72 +675,124 @@
         <translation type="vanished">İsim:</translation>
     </message>
     <message>
-        <location line="-103"/>
-        <location line="+124"/>
+        <location line="-250"/>
+        <location line="+276"/>
         <source>Name</source>
         <translation>İsim</translation>
     </message>
     <message>
-        <location line="-55"/>
+        <location line="-246"/>
+        <source>Xyce Option Package</source>
+        <translation>Xyce Seçenek Paketi</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Xyce option package (e.g., DEVICE, DIAGNOSTIC)</source>
+        <translation>Xyce seçenek paketi (ör. DEVICE, DIAGNOSTIC)</translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Only available when using Xyce as simulator</source>
+        <translation>Yalnızca simülatör olarak Xyce kullanıldığında geçerlidir</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>&apos;%1&apos; is not a recognized Xyce option package.
+Xyce will silently skip invalid options.</source>
+        <translation>&apos;%1&apos; tanınan bir Xyce seçenek paketi değil.
+Xyce geçersiz seçenekleri sessizce atlar.</translation>
+    </message>
+    <message>
+        <location line="+71"/>
+        <source>Open console window</source>
+        <translation>Konsol penceresi aç</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Keep terminal open after execution</source>
+        <translation>Çalıştırmadan sonra terminali açık tut</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Terminal emulator:</source>
+        <translation>Terminal öykünücüsü (emülatör):</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Leave empty for auto-detection</source>
+        <translation>Otomatik algılama için boş bırakın</translation>
+    </message>
+    <message>
+        <location line="+29"/>
         <source>Simulation</source>
-        <translation type="unfinished">Benzetim</translation>
+        <translation>Simülasyon</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sweep Parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Taranan Parametre</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tür</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Values</source>
-        <translation type="unfinished"></translation>
+        <translation>Değerler</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Başlangıç</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Stop</source>
-        <translation type="unfinished">Dur</translation>
+        <translation>Bitiş</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Step</source>
-        <translation type="unfinished">Adım</translation>
+        <translation>Adım</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Sayı</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+50"/>
         <source>Populate parameters from SPICE file...</source>
-        <translation type="unfinished"></translation>
+        <translation>Parametreleri SPICE dosyasından doldur...</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+3"/>
+        <source>Select model from Library</source>
+        <translation>Kütüphaneden model seç</translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Value</source>
         <translation>Değer</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Show</source>
-        <translation type="unfinished">Göster</translation>
+        <translation>Göster</translation>
+    </message>
+    <message>
+        <location line="+323"/>
+        <source>Xyce option package</source>
+        <translation>Xyce seçenek paketi</translation>
     </message>
     <message>
         <source>display</source>
         <translation type="vanished">gösterge</translation>
     </message>
     <message>
-        <location line="+0"/>
+        <location line="-323"/>
         <source>Description</source>
         <translation>Açıklama</translation>
     </message>
@@ -751,7 +845,7 @@
         <translation type="vanished">hayır</translation>
     </message>
     <message>
-        <location line="+427"/>
+        <location line="+506"/>
         <source>Select a file</source>
         <translation>Dosya seç</translation>
     </message>
@@ -791,9 +885,22 @@
     </message>
 </context>
 <context>
+    <name>ContextMenuTabWidget</name>
+    <message>
+        <location filename="../qucs/qucs.cpp" line="+4464"/>
+        <source>Info</source>
+        <translation>Bilgi</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please save the document first before renaming it.</source>
+        <translation>Yeniden adlandırmadan önce lütfen belgeyi kaydedin.</translation>
+    </message>
+</context>
+<context>
     <name>CustomSimDialog</name>
     <message>
-        <location filename="../qucs/extsimkernels/customsimdialog.cpp" line="+52"/>
+        <location filename="../qucs/extsimkernels/customsimdialog.cpp" line="+53"/>
         <location line="+46"/>
         <source>Edit SPICE code</source>
         <translation>SPICE kodunu düzenle</translation>
@@ -867,31 +974,32 @@
         <translation>sağ Eksen</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location line="+11"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+8"/>
+        <location line="+239"/>
         <source>y-Axis</source>
         <translation>y-Ekseni</translation>
     </message>
     <message>
-        <location line="-8"/>
-        <location line="+5"/>
+        <location line="-245"/>
+        <location line="+4"/>
         <source>smith Axis</source>
         <translation>smith Ekseni</translation>
     </message>
     <message>
-        <location line="-4"/>
-        <location line="+3"/>
+        <location line="-3"/>
+        <location line="+2"/>
         <source>polar Axis</source>
         <translation>kutupsal Eksen</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+4"/>
         <source>z-Axis</source>
         <translation>z-Ekseni</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+25"/>
         <source>Graph Input</source>
         <translation>Grafik Girişi</translation>
     </message>
@@ -901,7 +1009,7 @@
         <translation>Plot Vs.</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+25"/>
         <source>Number Notation: </source>
         <translation>Sayı Gösterimi:</translation>
     </message>
@@ -921,80 +1029,93 @@
         <translation>genlik/açı (radyan)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Precision:</source>
         <translation>Hassaslık:</translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>Color:</source>
-        <translation>Renk:</translation>
+        <translation type="vanished">Renk:</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+15"/>
+        <location line="+155"/>
+        <source>Color</source>
+        <translation>Renk</translation>
+    </message>
+    <message>
+        <location line="-144"/>
+        <source>Gradient</source>
+        <translation>Renk geçişi</translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Style:</source>
         <translation>Biçim:</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location line="+164"/>
+        <location line="+242"/>
         <source>solid line</source>
         <translation>katı çizgi</translation>
     </message>
     <message>
-        <location line="-163"/>
-        <location line="+164"/>
+        <location line="-241"/>
+        <location line="+242"/>
         <source>dash line</source>
         <translation>kesik çizgi</translation>
     </message>
     <message>
-        <location line="-163"/>
-        <location line="+164"/>
+        <location line="-241"/>
+        <location line="+242"/>
         <source>dot line</source>
         <translation>nokta çizgi</translation>
     </message>
     <message>
-        <location line="-162"/>
+        <location line="-240"/>
         <source>long dash line</source>
         <translation>uzun kesikli çizgi</translation>
     </message>
     <message>
         <location line="+1"/>
+        <location line="+2039"/>
         <source>stars</source>
         <translation>yıldızlar</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-2038"/>
+        <location line="+2041"/>
         <source>circles</source>
         <translation>çemberler</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-2040"/>
+        <location line="+2043"/>
         <source>arrows</source>
         <translation>oklar</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="-2034"/>
         <source>Thickness:</source>
         <translation>Kalınlık:</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+14"/>
         <source>y-Axis:</source>
         <translation>y-Ekseni:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+34"/>
         <source>Dataset</source>
         <translation>Veri Kümesi</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+21"/>
         <source>Data from simulator:</source>
         <translation>Simülatörden alınan veriler:</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+22"/>
         <source>Name</source>
         <translation>İsim</translation>
     </message>
@@ -1009,43 +1130,59 @@
         <translation>Büyüklük</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Graph</source>
         <translation>Grafik</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+18"/>
+        <location line="+7"/>
+        <source>Variable</source>
+        <translation>Değişken</translation>
+    </message>
+    <message>
+        <location line="-7"/>
+        <source>Style</source>
+        <translation>Stil</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Thick</source>
+        <translation>Kalınlık</translation>
+    </message>
+    <message>
+        <location line="+50"/>
         <source>New Graph</source>
         <translation>Yeni Grafik</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Delete Graph</source>
         <translation>Grafiği Sil</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Data</source>
         <translation>Veri</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
         <source>x-Axis Label:</source>
         <translation>x-Ekseni Adı:</translation>
     </message>
     <message>
+        <location line="+6"/>
         <location line="+7"/>
-        <location line="+8"/>
         <source>Label:</source>
         <translation>Etiket:</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+7"/>
         <source>&lt;b&gt;Label text&lt;/b&gt;: Use LaTeX style for special characters, e.g. \tau</source>
         <translation>&lt;b&gt;Etiket&lt;/b&gt;: LaTeX özel harflerini kullan, mesela \tau</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>show Grid</source>
         <translation>Izgarayı göster</translation>
     </message>
@@ -1055,7 +1192,7 @@
         <translation>Izgara rengi:</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Grid Style: </source>
         <translation>Izgara Biçimi:</translation>
     </message>
@@ -1070,7 +1207,17 @@
         <translation>kesikli nokta nokta çizgi</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+18"/>
+        <source>white background</source>
+        <translation>beyaz arka plan</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>show legend</source>
+        <translation>göstergeyi göster</translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Number notation: </source>
         <translation>Sayı gösterimi:</translation>
     </message>
@@ -1085,9 +1232,59 @@
         <translation>mühendislik notasyonu</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>logarithmic X Axis Grid</source>
         <translation>logaritmik X Ekseni Izgarası</translation>
+    </message>
+    <message>
+        <location line="+1734"/>
+        <source>solid</source>
+        <translation>düz</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>dash</source>
+        <translation>kesikli</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>dot</source>
+        <translation>noktalı</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>long dash</source>
+        <translation>uzun kesikli</translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>left</source>
+        <translation>sol</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>right</source>
+        <translation>sağ</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>smith</source>
+        <translation>smith</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>polar</source>
+        <translation>polar</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>y</source>
+        <translation>y</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>z</source>
+        <translation>z</translation>
     </message>
     <message>
         <source>logarithmical X Axis Grid</source>
@@ -1098,19 +1295,19 @@
         <translation type="vanished">ters üstel (log)</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <location line="+11"/>
+        <location line="-1777"/>
+        <location line="+15"/>
         <source>Grid</source>
         <translation>Izgara</translation>
     </message>
     <message>
-        <location line="-11"/>
-        <location line="+11"/>
+        <location line="-15"/>
+        <location line="+15"/>
         <source>logarithmic</source>
         <translation>logaritmik</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+21"/>
         <source>hide invisible lines</source>
         <translation>görünmez çizgileri sakla</translation>
     </message>
@@ -1120,71 +1317,71 @@
         <translation>x-Ekseni etrafında çevir:</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+22"/>
         <source>Rotation around y-Axis:</source>
         <translation>y-Ekseni etrafında çevir:</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+25"/>
         <source>Rotation around z-Axis:</source>
         <translation>z-Ekseni etrafında çevir:</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+24"/>
         <source>2D-projection:</source>
         <translation>2B-İzdüşüm:</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+15"/>
         <source>Properties</source>
         <translation>Özellikler</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>x-Axis</source>
         <translation>x-Ekseni</translation>
     </message>
     <message>
         <location line="+7"/>
-        <location line="+43"/>
-        <location line="+45"/>
+        <location line="+44"/>
+        <location line="+49"/>
         <source>manual</source>
         <translation>kılavuz</translation>
     </message>
     <message>
-        <location line="-80"/>
-        <location line="+43"/>
+        <location line="-84"/>
         <location line="+45"/>
+        <location line="+49"/>
         <source>start</source>
         <translation>başla</translation>
     </message>
     <message>
-        <location line="-79"/>
-        <location line="+45"/>
-        <location line="+44"/>
+        <location line="-85"/>
+        <location line="+49"/>
+        <location line="+48"/>
         <source>step</source>
         <translation>adım</translation>
     </message>
     <message>
-        <location line="-80"/>
-        <location line="+45"/>
-        <location line="+44"/>
+        <location line="-88"/>
+        <location line="+49"/>
+        <location line="+48"/>
         <source>stop</source>
         <translation>dur</translation>
     </message>
     <message>
-        <location line="-54"/>
-        <location line="+44"/>
+        <location line="-59"/>
+        <location line="+48"/>
         <source>number</source>
         <translation>sayı</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+24"/>
         <source>Limits</source>
         <translation>Sınırlar</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+61"/>
         <source>OK</source>
         <translation>Tamam</translation>
     </message>
@@ -1383,7 +1580,7 @@
         <translation type="obsolete">Benzetimi Başlat</translation>
     </message>
     <message>
-        <location filename="../qucs/extsimkernels/externsimdialog.cpp" line="+31"/>
+        <location filename="../qucs/extsimkernels/externsimdialog.cpp" line="+29"/>
         <source>Stop</source>
         <translation>Dur</translation>
     </message>
@@ -1730,8 +1927,8 @@ Süzgeç tasarım yazılımı
         <translation>QucsFilter bir filtre sentez programıdır. Bir filtre oluşturmak için tüm parametreleri girmeniz ve ana pencerenin altındaki büyük düğmeye basmanız yeterlidir. Hemen, filtrenin şeması hesaplanır ve panoya yerleştirilir. Şimdi Qucs&apos;a gidin, boş bir şema açın ve CTRL-V&apos;ye (panodan yapıştır) basın. Filtre şeması artık eklenebilir ve simüle edilebilir. İyi eğlenceler!</translation>
     </message>
     <message>
-        <location line="+29"/>
         <location filename="../qucs-activefilter/helpdialog.cpp" line="+69"/>
+        <location filename="../qucs-filter/helpdialog.cpp" line="+29"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
@@ -1808,23 +2005,23 @@ Süzgeç tasarım yazılımı
         <translation>Çeşit</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+9"/>
         <location line="+106"/>
         <location line="+37"/>
         <location line="+49"/>
-        <location line="+47"/>
+        <location line="+40"/>
         <source>yes</source>
         <translation>evet</translation>
     </message>
     <message>
-        <location line="-239"/>
+        <location line="-232"/>
         <location line="+143"/>
-        <location line="+96"/>
+        <location line="+89"/>
         <source>no</source>
         <translation>hayır</translation>
     </message>
     <message>
-        <location line="-221"/>
+        <location line="-214"/>
         <source>display in schematic</source>
         <translation>Şematikte göster</translation>
     </message>
@@ -2145,53 +2342,42 @@ Süzgeç tasarım yazılımı
 <context>
     <name>LabelDialog</name>
     <message>
-        <location filename="../qucs/dialogs/labeldialog.cpp" line="+33"/>
         <source>Insert Nodename</source>
-        <translation>Düğüm Adı Girin</translation>
+        <translation type="vanished">Düğüm Adı Girin</translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>Enter the label:</source>
-        <translation>Yaftayı (Etiket) Girin:</translation>
+        <translation type="vanished">Yaftayı (Etiket) Girin:</translation>
     </message>
     <message>
-        <location line="+11"/>
         <source>Initial node voltage:</source>
-        <translation>Düğümün ilk gerilimi:</translation>
+        <translation type="vanished">Düğümün ilk gerilimi:</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <location line="+35"/>
         <source>Less...</source>
-        <translation>Az...</translation>
+        <translation type="vanished">Az...</translation>
     </message>
     <message>
-        <location line="-33"/>
         <source>Ok</source>
-        <translation>Tamam</translation>
+        <translation type="vanished">Tamam</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>Cancel</source>
-        <translation>İptal</translation>
+        <translation type="vanished">İptal</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <location line="+29"/>
         <source>More...</source>
-        <translation>Daha fazla...</translation>
+        <translation type="vanished">Daha fazla...</translation>
     </message>
     <message>
-        <location line="+16"/>
         <source>SPICE checker</source>
-        <translation>SPICE denetleyicisi</translation>
+        <translation type="vanished">SPICE denetleyicisi</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Node name &quot;%1&quot; is Nutmeg reserved keyword!
 Please select another node name!
 Node name will not be changed.</source>
-        <translation>Düğüm adı &quot;%1&quot; Nutmeg için ayrılmış anahtar sözcük!
+        <translation type="vanished">Düğüm adı &quot;%1&quot; Nutmeg için ayrılmış anahtar sözcük!
 Lütfen başka bir düğüm adı seçin!
 Düğüm adı değiştirilmeyecektir.</translation>
     </message>
@@ -2199,7 +2385,7 @@ Düğüm adı değiştirilmeyecektir.</translation>
 <context>
     <name>LibraryDialog</name>
     <message>
-        <location filename="../qucs/dialogs/librarydialog.cpp" line="+58"/>
+        <location filename="../qucs/dialogs/librarydialog.cpp" line="+57"/>
         <source>Create Library</source>
         <translation>Kütüphane Olustur</translation>
     </message>
@@ -2222,7 +2408,7 @@ Düğüm adı değiştirilmeyecektir.</translation>
     <message>
         <location line="+6"/>
         <source>Analog models only</source>
-        <translation type="unfinished"></translation>
+        <translation>Yalnızca analog modeller</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2385,7 +2571,7 @@ Düğüm adı değiştirilmeyecektir.</translation>
 </translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+50"/>
         <source>Error creating library.</source>
         <translation>Kütüphane oluşturulurken hata oluştu.</translation>
     </message>
@@ -2533,6 +2719,191 @@ Düğüm adı değiştirilmeyecektir.</translation>
         <location line="+1"/>
         <source>File not found: %1</source>
         <translation>Dosya bulunamadı: %1</translation>
+    </message>
+</context>
+<context>
+    <name>MagCoreDialog</name>
+    <message>
+        <location filename="../qucs/magnetics/magcoredialog.cpp" line="+21"/>
+        <source>Domains wall density, A (A/m)</source>
+        <translation>Domen duvarı yoğunluğu, A (A/m)</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <location line="+8"/>
+        <location line="+8"/>
+        <location line="+8"/>
+        <location line="+8"/>
+        <location line="+8"/>
+        <location line="+8"/>
+        <location line="+8"/>
+        <source>Show</source>
+        <translation>Göster</translation>
+    </message>
+    <message>
+        <location line="-52"/>
+        <source>Domains pinning, K (A/m)</source>
+        <translation>Domen sabitlenmesi, K (A/m)</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Magnetization reversibility, C</source>
+        <translation>Mıknatıslanma tersinirliği, C</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Saturation magnetization, MS (A/m)</source>
+        <translation>Doyum mıknatıslanması, MS (A/m)</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Interdomain coupling, α</source>
+        <translation>Domenler arası bağlaşım, α</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Magnetic path length (m)</source>
+        <translation>Manyetik yol uzunluğu (m)</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Core cross section area (m^2)</source>
+        <translation>Nüve kesit alanı (m^2)</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Air gap length (m)</source>
+        <translation>Hava aralığı uzunluğu (m)</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>H and B probe pins</source>
+        <translation>H ve B ölçüm uçları</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Select model from library</source>
+        <translation>Kütüphaneden model seç</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Core drawing</source>
+        <translation>Nüve çizimi</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Core configuration type:</source>
+        <translation>Nüve yapılandırma türü:</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Core dimensions</source>
+        <translation>Nüve boyutları</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <location line="+7"/>
+        <source>Ring diameter</source>
+        <translation>Halka çapı</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>OK</source>
+        <translation>Tamam</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Cancel</source>
+        <translation>İptal</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Apply</source>
+        <translation>Uygula</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>Dimension A (mm)</source>
+        <translation>A boyutu (mm)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Dimension B (mm)</source>
+        <translation>B boyutu (mm)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Dimension C (mm)</source>
+        <translation>C boyutu (mm)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Dimension D (mm)</source>
+        <translation>D boyutu (mm)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Dimension E (mm)</source>
+        <translation>E boyutu (mm)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Dimension F (mm)</source>
+        <translation>F boyutu (mm)</translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Ring outer diameter D (mm)</source>
+        <translation>Halka dış çapı D (mm)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ring inner diameter d (mm)</source>
+        <translation>Halka iç çapı d (mm)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ring height H (mm)</source>
+        <translation>Halka yüksekliği H (mm)</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Dimension 1</source>
+        <translation>Boyut 1</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Dimension 2</source>
+        <translation>Boyut 2</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Dimension 3</source>
+        <translation>Boyut 3</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Dimension 4</source>
+        <translation>Boyut 4</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Dimension 5</source>
+        <translation>Boyut 5</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Dimension 6</source>
+        <translation>Boyut 6</translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>Core dimension calculation error! Check input data</source>
+        <translation>Nüve boyutu hesaplama hatası! Girilen verileri kontrol edin</translation>
     </message>
 </context>
 <context>
@@ -2928,6 +3299,66 @@ olmalı fakat şu anda %1 !</translation>
     </message>
 </context>
 <context>
+    <name>NetPropertiesDialog</name>
+    <message>
+        <location filename="../qucs/dialogs/netpropertiesdialog.cpp" line="+29"/>
+        <source>Net Properties</source>
+        <translation>Net Özellikleri</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Label</source>
+        <translation>Etiket</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Name:</source>
+        <translation>İsim:</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Initial voltage:</source>
+        <translation>Başlangıç gerilimi:</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Style</source>
+        <translation>Stil</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Net color:</source>
+        <translation>Net rengi:</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Line width:</source>
+        <translation>Çizgi kalınlığı:</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Default Style</source>
+        <translation>Varsayılan Stil</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Select Net Color</source>
+        <translation>Net Rengini Seç</translation>
+    </message>
+    <message>
+        <location line="+50"/>
+        <source>SPICE checker</source>
+        <translation>SPICE denetleyicisi</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Node name &quot;%1&quot; is Nutmeg reserved keyword!
+Please select another node name!</source>
+        <translation>&quot;%1&quot; düğüm adı Nutmeg için ayrılmış bir anahtar sözcük!
+Lütfen başka bir düğüm adı seçin!</translation>
+    </message>
+</context>
+<context>
     <name>NewProjDialog</name>
     <message>
         <location filename="../qucs/dialogs/newprojdialog.cpp" line="+31"/>
@@ -2958,7 +3389,7 @@ olmalı fakat şu anda %1 !</translation>
 <context>
     <name>Ngspice</name>
     <message>
-        <location filename="../qucs/extsimkernels/ngspice.cpp" line="+620"/>
+        <location filename="../qucs/extsimkernels/ngspice.cpp" line="+634"/>
         <source>Problem with SaveNetlist</source>
         <translation>SaveNetlist ile ilgili sorun</translation>
     </message>
@@ -3100,82 +3531,82 @@ olmalı fakat şu anda %1 !</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+184"/>
-        <location line="+362"/>
+        <location line="+183"/>
+        <location line="+364"/>
         <source>linear double</source>
         <translation>doğrusal çift duyarlıklı</translation>
     </message>
     <message>
-        <location line="-545"/>
-        <location line="+185"/>
-        <location line="+362"/>
+        <location line="-546"/>
+        <location line="+184"/>
+        <location line="+364"/>
         <source>logarithmic double</source>
         <translation>üstel çift duyarlıklı</translation>
     </message>
     <message>
-        <location line="-546"/>
-        <location line="+186"/>
-        <location line="+362"/>
+        <location line="-547"/>
+        <location line="+185"/>
+        <location line="+364"/>
         <source>linear integer</source>
         <translation>doğrusal tam sayı</translation>
     </message>
     <message>
-        <location line="-547"/>
-        <location line="+201"/>
+        <location line="-548"/>
+        <location line="+200"/>
         <source>logarithmic integer</source>
         <translation>üstel tam sayı</translation>
     </message>
     <message>
-        <location line="-200"/>
-        <location line="+186"/>
-        <location line="+362"/>
+        <location line="-199"/>
+        <location line="+185"/>
+        <location line="+364"/>
         <source>E3 series</source>
         <translation>E3 serisi</translation>
     </message>
     <message>
-        <location line="-547"/>
-        <location line="+187"/>
-        <location line="+362"/>
+        <location line="-548"/>
+        <location line="+186"/>
+        <location line="+364"/>
         <source>E6 series</source>
         <translation>E6 serisi</translation>
     </message>
     <message>
-        <location line="-548"/>
-        <location line="+188"/>
-        <location line="+362"/>
+        <location line="-549"/>
+        <location line="+187"/>
+        <location line="+364"/>
         <source>E12 series</source>
         <translation>E12 serisi</translation>
     </message>
     <message>
-        <location line="-549"/>
-        <location line="+189"/>
-        <location line="+362"/>
+        <location line="-550"/>
+        <location line="+188"/>
+        <location line="+364"/>
         <source>E24 series</source>
         <translation>E24 serisi</translation>
     </message>
     <message>
-        <location line="-550"/>
-        <location line="+190"/>
-        <location line="+362"/>
+        <location line="-551"/>
+        <location line="+189"/>
+        <location line="+364"/>
         <source>E48 series</source>
         <translation>E48 serisi</translation>
     </message>
     <message>
-        <location line="-551"/>
-        <location line="+191"/>
-        <location line="+362"/>
+        <location line="-552"/>
+        <location line="+190"/>
+        <location line="+364"/>
         <source>E96 series</source>
         <translation>E96 serisi</translation>
     </message>
     <message>
-        <location line="-552"/>
-        <location line="+192"/>
-        <location line="+362"/>
+        <location line="-553"/>
+        <location line="+191"/>
+        <location line="+364"/>
         <source>E192 series</source>
         <translation>E192 serisi</translation>
     </message>
     <message>
-        <location line="-550"/>
+        <location line="-551"/>
         <location line="+69"/>
         <source>Add</source>
         <translation>Ekle</translation>
@@ -3213,47 +3644,47 @@ olmalı fakat şu anda %1 !</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+147"/>
-        <location line="+373"/>
+        <location line="+146"/>
+        <location line="+375"/>
         <source>minimize</source>
         <translation>en küçüğü bul</translation>
     </message>
     <message>
-        <location line="-519"/>
-        <location line="+148"/>
-        <location line="+373"/>
+        <location line="-520"/>
+        <location line="+147"/>
+        <location line="+375"/>
         <source>maximize</source>
         <translation>en büyüğü bul</translation>
     </message>
     <message>
-        <location line="-520"/>
-        <location line="+149"/>
-        <location line="+373"/>
+        <location line="-521"/>
+        <location line="+148"/>
+        <location line="+375"/>
         <source>less</source>
         <translation>az</translation>
     </message>
     <message>
-        <location line="-521"/>
-        <location line="+150"/>
-        <location line="+373"/>
+        <location line="-522"/>
+        <location line="+149"/>
+        <location line="+375"/>
         <source>greater</source>
         <translation>daha büyük</translation>
     </message>
     <message>
-        <location line="-522"/>
-        <location line="+151"/>
-        <location line="+373"/>
+        <location line="-523"/>
+        <location line="+150"/>
+        <location line="+375"/>
         <source>equal</source>
         <translation>eşit</translation>
     </message>
     <message>
-        <location line="-523"/>
-        <location line="+152"/>
+        <location line="-524"/>
+        <location line="+151"/>
         <source>monitor</source>
         <translation>izle</translation>
     </message>
     <message>
-        <location line="-135"/>
+        <location line="-134"/>
         <source>Goals</source>
         <translation>Amaçlar</translation>
     </message>
@@ -3273,16 +3704,16 @@ olmalı fakat şu anda %1 !</translation>
         <translation>İptal</translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+58"/>
         <location line="+105"/>
         <location line="+34"/>
         <location line="+37"/>
-        <location line="+199"/>
+        <location line="+201"/>
         <source>yes</source>
         <translation>evet</translation>
     </message>
     <message>
-        <location line="-375"/>
+        <location line="-377"/>
         <location line="+139"/>
         <location line="+37"/>
         <source>no</source>
@@ -3313,7 +3744,7 @@ olmalı fakat şu anda %1 !</translation>
         <translation>&quot;%1&quot; isimli amaç dizgede zaten var!</translation>
     </message>
     <message>
-        <location line="+263"/>
+        <location line="+265"/>
         <source>Set precision</source>
         <translation>Hassasiyeti ayarlayın</translation>
     </message>
@@ -3528,7 +3959,7 @@ olmalı fakat şu anda %1 !</translation>
 <context>
     <name>ProjectView</name>
     <message>
-        <location filename="../qucs/projectView.cpp" line="+77"/>
+        <location filename="../qucs/projectView.cpp" line="+78"/>
         <source>Content of %1</source>
         <translation>1&apos;in içeriği</translation>
     </message>
@@ -3588,7 +4019,7 @@ olmalı fakat şu anda %1 !</translation>
         <translation>Diğerleri</translation>
     </message>
     <message>
-        <location line="+50"/>
+        <location line="+48"/>
         <source>-port</source>
         <translation>-uç</translation>
     </message>
@@ -3608,52 +4039,52 @@ olmalı fakat şu anda %1 !</translation>
         <translation>AC duyarlılık simülasyonu</translation>
     </message>
     <message>
-        <location line="-22"/>
         <location filename="../qucs/spicecomponents/sp_sens.cpp" line="+33"/>
+        <location filename="../qucs/spicecomponents/sp_sens_ac.cpp" line="-22"/>
         <source>Output variable</source>
         <translation>Çıktı değişkeni</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/spicecomponents/sp_noise.cpp" line="+35"/>
-        <location filename="../qucs/spicecomponents/sp_disto.cpp" line="+34"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+33"/>
-        <location filename="../qucs/components/sp_sim.cpp" line="+34"/>
-        <location filename="../qucs/components/param_sweep.cpp" line="+36"/>
         <location filename="../qucs/components/ac_sim.cpp" line="-23"/>
+        <location filename="../qucs/components/param_sweep.cpp" line="+36"/>
+        <location filename="../qucs/components/sp_sim.cpp" line="+34"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+36"/>
+        <location filename="../qucs/spicecomponents/sp_disto.cpp" line="+34"/>
+        <location filename="../qucs/spicecomponents/sp_noise.cpp" line="+35"/>
+        <location filename="../qucs/spicecomponents/sp_sens_ac.cpp" line="+2"/>
         <source>sweep type</source>
         <translation>süpürüm çeşidi</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/spicecomponents/sp_noise.cpp" line="+2"/>
-        <location filename="../qucs/spicecomponents/sp_disto.cpp" line="+2"/>
         <location filename="../qucs/components/sp_sim.cpp" line="+2"/>
-        <location filename="../qucs/components/ac_sim.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_disto.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_noise.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_sens_ac.cpp" line="+2"/>
         <source>start frequency in Hertz</source>
         <translation>Hertz cinsinden başlangıç sıklığı</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/spicecomponents/sp_noise.cpp" line="+2"/>
-        <location filename="../qucs/spicecomponents/sp_disto.cpp" line="+2"/>
         <location filename="../qucs/components/sp_sim.cpp" line="+2"/>
-        <location filename="../qucs/components/ac_sim.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_disto.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_noise.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_sens_ac.cpp" line="+2"/>
         <source>stop frequency in Hertz</source>
         <translation>Hertz cinsinden bitiş sıklığı</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/spicecomponents/sp_noise.cpp" line="+2"/>
-        <location filename="../qucs/spicecomponents/sp_disto.cpp" line="+2"/>
-        <location filename="../qucs/components/sp_sim.cpp" line="+2"/>
         <location filename="../qucs/components/param_sweep.cpp" line="+8"/>
-        <location filename="../qucs/components/ac_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/sp_sim.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_disto.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_noise.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_sens_ac.cpp" line="+2"/>
         <source>number of simulation steps</source>
         <translation>benzetim adım sayısı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ac_sim.cpp" line="+2"/>
+        <location line="+2"/>
         <source>calculate noise voltages</source>
         <translation>gürültü gerilimini hesapla</translation>
     </message>
@@ -3668,38 +4099,39 @@ olmalı fakat şu anda %1 !</translation>
         <translation>GM (AM)</translation>
     </message>
     <message>
-        <location filename="../qucs/components/volt_ac.cpp" line="+53"/>
+        <location line="+15"/>
         <location filename="../qucs/components/pm_modulator.cpp" line="+58"/>
-        <location filename="../qucs/components/am_modulator.cpp" line="+15"/>
+        <location filename="../qucs/components/volt_ac.cpp" line="+53"/>
         <source>peak voltage in Volts</source>
         <translation>Volt cinsinden en yüksek gerilim değeri</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/source_ac.cpp" line="+69"/>
-        <location filename="../qucs/components/pm_modulator.cpp" line="+2"/>
-        <location filename="../qucs/components/hb_sim.cpp" line="+35"/>
         <location filename="../qucs/components/ampere_ac.cpp" line="+53"/>
-        <location filename="../qucs/components/am_modulator.cpp" line="+2"/>
+        <location filename="../qucs/components/hb_sim.cpp" line="+35"/>
+        <location filename="../qucs/components/pm_modulator.cpp" line="+2"/>
+        <location filename="../qucs/components/source_ac.cpp" line="+69"/>
+        <location filename="../qucs/components/volt_ac.cpp" line="+2"/>
         <source>frequency in Hertz</source>
         <translation>Hertz cinsinden sıklık</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/pm_modulator.cpp" line="+2"/>
         <location filename="../qucs/components/ampere_ac.cpp" line="+2"/>
-        <location filename="../qucs/components/am_modulator.cpp" line="+2"/>
+        <location filename="../qucs/components/pm_modulator.cpp" line="+2"/>
+        <location filename="../qucs/components/source_ac.cpp" line="+2"/>
+        <location filename="../qucs/components/volt_ac.cpp" line="+2"/>
         <source>initial phase in degrees</source>
         <translation>derece cinsinden başlangıç açısı</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location filename="../qucs/components/volt_ac.cpp" line="+4"/>
         <source>offset voltage (SPICE only)</source>
         <translation>ofset gerilimi (yalnızca SPICE)</translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/components/ampere_ac.cpp" line="+6"/>
+        <location filename="../qucs/components/volt_ac.cpp" line="+2"/>
         <source>delay time (SPICE only)</source>
         <translation>gecikme süresi (yalnızca SPICE)</translation>
     </message>
@@ -3726,16 +4158,16 @@ olmalı fakat şu anda %1 !</translation>
     <message>
         <location line="+8"/>
         <source>offset current (SPICE only)</source>
-        <translation type="unfinished"></translation>
+        <translation>ofset akımı (yalnızca SPICE)</translation>
     </message>
     <message>
+        <location line="-2"/>
         <location filename="../qucs/components/volt_ac.cpp" line="-4"/>
-        <location filename="../qucs/components/ampere_ac.cpp" line="-2"/>
         <source>damping factor (transient simulation only)</source>
         <translation>sönüm çarpanı (sadece kalımsız benzetim)</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ampere_ac.cpp" line="+20"/>
+        <location line="+20"/>
         <source>ac Current Source</source>
         <translation>ac Akım Kaynağı</translation>
     </message>
@@ -3750,12 +4182,12 @@ olmalı fakat şu anda %1 !</translation>
         <translation>Amper cinsinden akım</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+35"/>
         <source>dc Current Source</source>
         <translation>dc Akım Kaynağı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ampere_noise.cpp" line="+25"/>
+        <location filename="../qucs/components/ampere_noise.cpp" line="+26"/>
         <source>noise current source</source>
         <translation>gürültü akım kaynağı</translation>
     </message>
@@ -3765,34 +4197,34 @@ olmalı fakat şu anda %1 !</translation>
         <translation>akım gücü yelpaze yoğunluğu A^2/Hz</translation>
     </message>
     <message>
-        <location filename="../qucs/components/volt_noise.cpp" line="+51"/>
-        <location filename="../qucs/components/noise_vv.cpp" line="+71"/>
-        <location filename="../qucs/components/noise_iv.cpp" line="+77"/>
+        <location line="+2"/>
         <location filename="../qucs/components/noise_ii.cpp" line="+83"/>
-        <location filename="../qucs/components/ampere_noise.cpp" line="+2"/>
+        <location filename="../qucs/components/noise_iv.cpp" line="+77"/>
+        <location filename="../qucs/components/noise_vv.cpp" line="+71"/>
+        <location filename="../qucs/components/volt_noise.cpp" line="+51"/>
         <source>frequency exponent</source>
         <translation>sıklık üsteli</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/noise_vv.cpp" line="+2"/>
-        <location filename="../qucs/components/noise_iv.cpp" line="+2"/>
         <location filename="../qucs/components/noise_ii.cpp" line="+2"/>
-        <location filename="../qucs/components/ampere_noise.cpp" line="+2"/>
+        <location filename="../qucs/components/noise_iv.cpp" line="+2"/>
+        <location filename="../qucs/components/noise_vv.cpp" line="+2"/>
+        <location filename="../qucs/components/volt_noise.cpp" line="+2"/>
         <source>frequency coefficient</source>
         <translation>sıklık sabiti</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/noise_vv.cpp" line="+2"/>
-        <location filename="../qucs/components/noise_iv.cpp" line="+2"/>
         <location filename="../qucs/components/noise_ii.cpp" line="+2"/>
-        <location filename="../qucs/components/ampere_noise.cpp" line="+2"/>
+        <location filename="../qucs/components/noise_iv.cpp" line="+2"/>
+        <location filename="../qucs/components/noise_vv.cpp" line="+2"/>
+        <location filename="../qucs/components/volt_noise.cpp" line="+2"/>
         <source>additive frequency term</source>
         <translation>eklenecek sıklık terimi</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ampere_noise.cpp" line="+16"/>
+        <location line="+16"/>
         <source>Noise Current Source</source>
         <translation>Gürültü Akım Kaynağı</translation>
     </message>
@@ -3802,26 +4234,26 @@ olmalı fakat şu anda %1 !</translation>
         <translation>fikirsel yükselteç</translation>
     </message>
     <message>
-        <location filename="../qucs/components/vfile.cpp" line="+64"/>
+        <location line="+22"/>
         <location filename="../qucs/components/opamp.cpp" line="+54"/>
-        <location filename="../qucs/components/amplifier.cpp" line="+22"/>
+        <location filename="../qucs/components/vfile.cpp" line="+64"/>
         <source>voltage gain</source>
         <translation>gerilim kazancı</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/isolator.cpp" line="+51"/>
-        <location filename="../qucs/components/amplifier.cpp" line="+2"/>
         <source>reference impedance of input port</source>
         <translation>giriş ucu referans empedansı</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/amplifier.cpp" line="+2"/>
+        <location filename="../qucs/components/isolator.cpp" line="+2"/>
         <source>reference impedance of output port</source>
         <translation>çıkış ucu referans empedansı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/amplifier.cpp" line="+2"/>
+        <location line="+2"/>
         <source>noise figure</source>
         <translation>gürültü rakamı</translation>
     </message>
@@ -3836,57 +4268,65 @@ olmalı fakat şu anda %1 !</translation>
         <translation>4x2 andor verilog cihazı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mux8to1.cpp" line="+28"/>
-        <location filename="../qucs/components/mux4to1.cpp" line="+28"/>
-        <location filename="../qucs/components/mux2to1.cpp" line="+28"/>
-        <location filename="../qucs/components/ha1b.cpp" line="+28"/>
-        <location filename="../qucs/components/fa2b.cpp" line="+28"/>
-        <location filename="../qucs/components/fa1b.cpp" line="+28"/>
-        <location filename="../qucs/components/dmux4to16.cpp" line="+28"/>
-        <location filename="../qucs/components/dmux3to8.cpp" line="+29"/>
-        <location filename="../qucs/components/dmux2to4.cpp" line="+28"/>
-        <location filename="../qucs/components/comp_4bit.cpp" line="+28"/>
-        <location filename="../qucs/components/comp_2bit.cpp" line="+28"/>
-        <location filename="../qucs/components/comp_1bit.cpp" line="+28"/>
-        <location filename="../qucs/components/andor4x4.cpp" line="+28"/>
+        <location line="+3"/>
         <location filename="../qucs/components/andor4x3.cpp" line="+28"/>
-        <location filename="../qucs/components/andor4x2.cpp" line="+3"/>
+        <location filename="../qucs/components/andor4x4.cpp" line="+28"/>
+        <location filename="../qucs/components/comp_1bit.cpp" line="+29"/>
+        <location filename="../qucs/components/comp_2bit.cpp" line="+28"/>
+        <location filename="../qucs/components/comp_4bit.cpp" line="+28"/>
+        <location filename="../qucs/components/dmux2to4.cpp" line="+28"/>
+        <location filename="../qucs/components/dmux3to8.cpp" line="+29"/>
+        <location filename="../qucs/components/dmux4to16.cpp" line="+28"/>
+        <location filename="../qucs/components/fa1b.cpp" line="+28"/>
+        <location filename="../qucs/components/fa2b.cpp" line="+28"/>
+        <location filename="../qucs/components/ha1b.cpp" line="+28"/>
+        <location filename="../qucs/components/mux2to1.cpp" line="+28"/>
+        <location filename="../qucs/components/mux4to1.cpp" line="+28"/>
+        <location filename="../qucs/components/mux8to1.cpp" line="+28"/>
         <source>transfer function high scaling factor</source>
         <translation>transfer fonksiyonu yüksek ölçekleme faktörü</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/mux4to1.cpp" line="+2"/>
-        <location filename="../qucs/components/mux2to1.cpp" line="+2"/>
-        <location filename="../qucs/components/hpribin4bit.cpp" line="+30"/>
-        <location filename="../qucs/components/ha1b.cpp" line="+2"/>
-        <location filename="../qucs/components/greytobinary4bit.cpp" line="+30"/>
-        <location filename="../qucs/components/fa2b.cpp" line="+2"/>
-        <location filename="../qucs/components/fa1b.cpp" line="+2"/>
-        <location filename="../qucs/components/dmux4to16.cpp" line="+2"/>
-        <location filename="../qucs/components/dmux3to8.cpp" line="+2"/>
-        <location filename="../qucs/components/dmux2to4.cpp" line="+2"/>
-        <location filename="../qucs/components/comp_4bit.cpp" line="+2"/>
-        <location filename="../qucs/components/comp_2bit.cpp" line="+2"/>
-        <location filename="../qucs/components/comp_1bit.cpp" line="+2"/>
-        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+30"/>
-        <location filename="../qucs/components/andor4x4.cpp" line="+2"/>
         <location filename="../qucs/components/andor4x3.cpp" line="+2"/>
-        <location filename="../qucs/components/andor4x2.cpp" line="+2"/>
+        <location filename="../qucs/components/andor4x4.cpp" line="+2"/>
+        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+30"/>
+        <location filename="../qucs/components/comp_1bit.cpp" line="+2"/>
+        <location filename="../qucs/components/comp_2bit.cpp" line="+2"/>
+        <location filename="../qucs/components/comp_4bit.cpp" line="+2"/>
+        <location filename="../qucs/components/dmux2to4.cpp" line="+2"/>
+        <location filename="../qucs/components/dmux3to8.cpp" line="+2"/>
+        <location filename="../qucs/components/dmux4to16.cpp" line="+2"/>
+        <location filename="../qucs/components/fa1b.cpp" line="+2"/>
+        <location filename="../qucs/components/fa2b.cpp" line="+2"/>
+        <location filename="../qucs/components/greytobinary4bit.cpp" line="+30"/>
+        <location filename="../qucs/components/ha1b.cpp" line="+2"/>
+        <location filename="../qucs/components/hpribin4bit.cpp" line="+30"/>
+        <location filename="../qucs/components/mux2to1.cpp" line="+2"/>
+        <location filename="../qucs/components/mux4to1.cpp" line="+2"/>
+        <location filename="../qucs/components/mux8to1.cpp" line="+2"/>
         <source>output delay</source>
         <translation>çıkış gecikmesi</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tff_SR.cpp" line="+34"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+54"/>
-        <location line="+3"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+50"/>
-        <location filename="../qucs/components/nigbt.cpp" line="+30"/>
-        <location filename="../qucs/components/mux8to1.cpp" line="+1"/>
-        <location filename="../qucs/components/mux4to1.cpp" line="+1"/>
-        <location filename="../qucs/components/mux2to1.cpp" line="+1"/>
-        <location filename="../qucs/components/jkff_SR.cpp" line="+34"/>
-        <location filename="../qucs/components/hpribin4bit.cpp" line="+1"/>
+        <location line="+1"/>
+        <location filename="../qucs/components/andor4x3.cpp" line="+1"/>
+        <location filename="../qucs/components/andor4x4.cpp" line="+1"/>
+        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+1"/>
+        <location filename="../qucs/components/comp_1bit.cpp" line="+1"/>
+        <location filename="../qucs/components/comp_2bit.cpp" line="+1"/>
+        <location filename="../qucs/components/comp_4bit.cpp" line="+1"/>
+        <location filename="../qucs/components/dff_SR.cpp" line="+34"/>
+        <location filename="../qucs/components/DLS_1ton.cpp" line="+21"/>
+        <location filename="../qucs/components/DLS_nto1.cpp" line="+22"/>
+        <location filename="../qucs/components/dmux2to4.cpp" line="+1"/>
+        <location filename="../qucs/components/dmux3to8.cpp" line="+1"/>
+        <location filename="../qucs/components/dmux4to16.cpp" line="+1"/>
+        <location filename="../qucs/components/fa1b.cpp" line="+1"/>
+        <location filename="../qucs/components/fa2b.cpp" line="+1"/>
+        <location filename="../qucs/components/gatedDlatch.cpp" line="+33"/>
+        <location filename="../qucs/components/greytobinary4bit.cpp" line="+1"/>
+        <location filename="../qucs/components/ha1b.cpp" line="+1"/>
         <location filename="../qucs/components/hic2_full.cpp" line="+58"/>
         <location line="+62"/>
         <location line="+66"/>
@@ -3895,30 +4335,22 @@ olmalı fakat şu anda %1 !</translation>
         <location line="+3"/>
         <location line="+5"/>
         <location line="+19"/>
-        <location filename="../qucs/components/ha1b.cpp" line="+1"/>
-        <location filename="../qucs/components/greytobinary4bit.cpp" line="+1"/>
-        <location filename="../qucs/components/gatedDlatch.cpp" line="+33"/>
-        <location filename="../qucs/components/fa2b.cpp" line="+1"/>
-        <location filename="../qucs/components/fa1b.cpp" line="+1"/>
-        <location filename="../qucs/components/dmux4to16.cpp" line="+1"/>
-        <location filename="../qucs/components/dmux3to8.cpp" line="+1"/>
-        <location filename="../qucs/components/dmux2to4.cpp" line="+1"/>
-        <location filename="../qucs/components/dff_SR.cpp" line="+34"/>
-        <location filename="../qucs/components/comp_4bit.cpp" line="+1"/>
-        <location filename="../qucs/components/comp_2bit.cpp" line="+1"/>
-        <location filename="../qucs/components/comp_1bit.cpp" line="+1"/>
-        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+1"/>
-        <location filename="../qucs/components/andor4x4.cpp" line="+1"/>
-        <location filename="../qucs/components/andor4x3.cpp" line="+1"/>
-        <location filename="../qucs/components/andor4x2.cpp" line="+1"/>
+        <location filename="../qucs/components/hpribin4bit.cpp" line="+1"/>
+        <location filename="../qucs/components/jkff_SR.cpp" line="+34"/>
         <location filename="../qucs/components/MESFET.cpp" line="+71"/>
-        <location filename="../qucs/components/DLS_nto1.cpp" line="+22"/>
-        <location filename="../qucs/components/DLS_1ton.cpp" line="+21"/>
+        <location filename="../qucs/components/mux2to1.cpp" line="+1"/>
+        <location filename="../qucs/components/mux4to1.cpp" line="+1"/>
+        <location filename="../qucs/components/mux8to1.cpp" line="+1"/>
+        <location filename="../qucs/components/nigbt.cpp" line="+30"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+50"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+54"/>
+        <location line="+3"/>
+        <location filename="../qucs/components/tff_SR.cpp" line="+34"/>
         <source>s</source>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../qucs/components/andor4x2.cpp" line="+19"/>
+        <location line="+19"/>
         <source>4x2 AndOr</source>
         <translation>4x2 VeYa</translation>
     </message>
@@ -3953,47 +4385,48 @@ olmalı fakat şu anda %1 !</translation>
         <translation>güç zayıflaması</translation>
     </message>
     <message>
-        <location filename="../qucs/components/phaseshifter.cpp" line="+51"/>
-        <location filename="../qucs/components/hybrid.cpp" line="+60"/>
-        <location filename="../qucs/components/gyrator.cpp" line="+61"/>
+        <location line="+2"/>
         <location filename="../qucs/components/coupler.cpp" line="+70"/>
-        <location filename="../qucs/components/attenuator.cpp" line="+2"/>
+        <location filename="../qucs/components/gyrator.cpp" line="+62"/>
+        <location filename="../qucs/components/hybrid.cpp" line="+60"/>
+        <location filename="../qucs/components/phaseshifter.cpp" line="+51"/>
         <source>reference impedance</source>
         <translation>referans sanal direnci</translation>
     </message>
     <message>
-        <location filename="../qucs/components/twistedpair.cpp" line="+75"/>
-        <location filename="../qucs/components/tunneldiode.cpp" line="+54"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+25"/>
-        <location filename="../qucs/components/tline_4port.cpp" line="+61"/>
-        <location filename="../qucs/components/tline.cpp" line="+57"/>
-        <location filename="../qucs/components/taperedline.cpp" line="+67"/>
-        <location filename="../qucs/components/spiralinductor.cpp" line="+68"/>
-        <location filename="../qucs/components/source_ac.cpp" line="+2"/>
-        <location filename="../qucs/components/rlcg.cpp" line="+75"/>
-        <location filename="../qucs/components/relais.cpp" line="+76"/>
-        <location filename="../qucs/components/rectline.cpp" line="+66"/>
-        <location filename="../qucs/components/msvia.cpp" line="+51"/>
-        <location filename="../qucs/components/msline.cpp" line="+58"/>
-        <location filename="../qucs/components/mslange.cpp" line="+64"/>
-        <location filename="../qucs/components/mscoupled.cpp" line="+72"/>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="+121"/>
-        <location filename="../qucs/components/jfet.cpp" line="+64"/>
-        <location filename="../qucs/components/isolator.cpp" line="+2"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="+46"/>
-        <location filename="../qucs/components/diode.cpp" line="+62"/>
-        <location filename="../qucs/components/dc_sim.cpp" line="+29"/>
-        <location filename="../qucs/components/ctline.cpp" line="+71"/>
-        <location filename="../qucs/components/coaxialline.cpp" line="+61"/>
-        <location filename="../qucs/components/circularloop.cpp" line="+57"/>
-        <location filename="../qucs/components/bondwire.cpp" line="+60"/>
+        <location line="+2"/>
         <location filename="../qucs/components/bjtsub.cpp" line="+97"/>
-        <location filename="../qucs/components/attenuator.cpp" line="+2"/>
+        <location filename="../qucs/components/bondwire.cpp" line="+60"/>
+        <location filename="../qucs/components/circularloop.cpp" line="+57"/>
+        <location filename="../qucs/components/coaxialline.cpp" line="+63"/>
+        <location filename="../qucs/components/ctline.cpp" line="+73"/>
+        <location filename="../qucs/components/dc_sim.cpp" line="+29"/>
+        <location filename="../qucs/components/diode.cpp" line="+62"/>
+        <location filename="../qucs/components/etr_sim.cpp" line="+46"/>
+        <location filename="../qucs/components/isolator.cpp" line="+2"/>
+        <location filename="../qucs/components/jfet.cpp" line="+64"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+121"/>
+        <location filename="../qucs/components/mscoupled.cpp" line="+73"/>
+        <location filename="../qucs/components/mslange.cpp" line="+64"/>
+        <location filename="../qucs/components/msline.cpp" line="+61"/>
+        <location filename="../qucs/components/msvia.cpp" line="+51"/>
+        <location filename="../qucs/components/rectline.cpp" line="+66"/>
+        <location filename="../qucs/components/relais.cpp" line="+42"/>
+        <location filename="../qucs/components/rlcg.cpp" line="+75"/>
+        <location filename="../qucs/components/source_ac.cpp" line="+3"/>
+        <location filename="../qucs/components/spiralinductor.cpp" line="+68"/>
+        <location filename="../qucs/components/taperedline.cpp" line="+67"/>
+        <location filename="../qucs/components/tline.cpp" line="+59"/>
+        <location filename="../qucs/components/tline_4port.cpp" line="+63"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+27"/>
+        <location filename="../qucs/components/tunneldiode.cpp" line="+54"/>
+        <location filename="../qucs/components/twistedpair.cpp" line="+75"/>
+        <location filename="../qucs/components/vdmos.cpp" line="+133"/>
         <source>simulation temperature in degree Celsius</source>
         <translation>Santigrad cinsinden benzetim sıcaklığı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/attenuator.cpp" line="+14"/>
+        <location line="+14"/>
         <source>Attenuator</source>
         <translation>Zayıflatıcı</translation>
     </message>
@@ -4003,19 +4436,19 @@ olmalı fakat şu anda %1 !</translation>
         <translation>kutuplama t</translation>
     </message>
     <message>
+        <location line="+35"/>
         <location filename="../qucs/components/dcfeed.cpp" line="+51"/>
-        <location filename="../qucs/components/biast.cpp" line="+35"/>
         <source>for transient simulation: inductance in Henry</source>
         <translation>kalımsız benzetim için: Henri cinsinden sargı etkisi</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/dcblock.cpp" line="+50"/>
-        <location filename="../qucs/components/biast.cpp" line="+2"/>
         <source>for transient simulation: capacitance in Farad</source>
         <translation>kalımsız benzetim için: Farad cinsinden sığa</translation>
     </message>
     <message>
-        <location filename="../qucs/components/biast.cpp" line="+14"/>
+        <location line="+14"/>
         <source>Bias T</source>
         <translation>Kutuplama T</translation>
     </message>
@@ -4025,17 +4458,17 @@ olmalı fakat şu anda %1 !</translation>
         <translation>4bit ikiliden griye dönüştürücü verilog cihazı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/logical_inv.cpp" line="+34"/>
-        <location filename="../qucs/components/logical_buf.cpp" line="+34"/>
-        <location filename="../qucs/components/hpribin4bit.cpp" line="-3"/>
+        <location line="+3"/>
+        <location filename="../qucs/components/component.cpp" line="+1561"/>
         <location filename="../qucs/components/greytobinary4bit.cpp" line="-3"/>
-        <location filename="../qucs/components/component.cpp" line="+1522"/>
-        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+3"/>
+        <location filename="../qucs/components/hpribin4bit.cpp" line="-3"/>
+        <location filename="../qucs/components/logical_buf.cpp" line="+34"/>
+        <location filename="../qucs/components/logical_inv.cpp" line="+34"/>
         <source>transfer function scaling factor</source>
         <translation>transfer fonksiyonu ölçekleme faktörü</translation>
     </message>
     <message>
-        <location filename="../qucs/components/binarytogrey4bit.cpp" line="+23"/>
+        <location line="+23"/>
         <source>4Bit Bin2Gray</source>
         <translation>4Bit Bin2Gray</translation>
     </message>
@@ -4045,71 +4478,72 @@ olmalı fakat şu anda %1 !</translation>
         <translation>çift kutuplu eklem transistör (bjt)</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+54"/>
-        <location filename="../qucs/components/bjt.cpp" line="+62"/>
+        <location line="+62"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+58"/>
         <source>npn transistor</source>
         <translation>npn transistör</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location filename="../qucs/components/bjt.cpp" line="+10"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="+10"/>
         <source>pnp transistor</source>
         <translation>pnp transistör</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="-94"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="-138"/>
         <location filename="../qucs/components/jfet.cpp" line="-36"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="-134"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="-94"/>
+        <location filename="../qucs/components/vdmos.cpp" line="-104"/>
         <source>polarity</source>
         <translation>kutuplanma</translation>
     </message>
     <message>
-        <location filename="../qucs/components/triac.cpp" line="+59"/>
-        <location filename="../qucs/components/thyristor.cpp" line="+55"/>
-        <location filename="../qucs/components/diode.cpp" line="-34"/>
+        <location line="+2"/>
         <location filename="../qucs/components/diac.cpp" line="+55"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location filename="../qucs/components/diode.cpp" line="-34"/>
+        <location filename="../qucs/components/thyristor.cpp" line="+55"/>
+        <location filename="../qucs/components/triac.cpp" line="+59"/>
         <source>saturation current</source>
         <translation>doyum akımı</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-30"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>forward emission coefficient</source>
         <translation>düz yayım katsayısı</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+2"/>
         <source>reverse emission coefficient</source>
         <translation>ters yayım katsayısı</translation>
     </message>
     <message>
-        <location line="+30"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+30"/>
         <source>high current corner for forward beta</source>
         <translation>düz beta için yüksek akım köşesi</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+3"/>
         <source>high current corner for reverse beta</source>
         <translation>ters beta için yüksek akım köşesi</translation>
     </message>
     <message>
-        <location line="-31"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="-31"/>
         <source>forward early voltage</source>
         <translation>forward early voltage</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+3"/>
         <source>reverse early voltage</source>
         <translation>reverse early voltage</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <source>base-emitter leakage saturation current</source>
         <translation>baz-emetör kaçak akım doyumu</translation>
     </message>
@@ -4129,19 +4563,19 @@ olmalı fakat şu anda %1 !</translation>
         <translation>baz-emetör kaçak yayım sabiti</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-14"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>forward beta</source>
         <translation>düz/ileri beta</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+2"/>
         <source>reverse beta</source>
         <translation>ters/geri beta</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <source>minimum base resistance for high currents</source>
         <translation>yüksek akımlar için en küçük baz direnci</translation>
     </message>
@@ -4166,43 +4600,43 @@ olmalı fakat şu anda %1 !</translation>
         <translation>sıfır-kutuplama baz direnci (yüksek-akıma bağlı olabilir)</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+20"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>base-emitter zero-bias depletion capacitance</source>
         <translation>baz-emetör sıfır-kutuplama tüketim sığası</translation>
     </message>
     <message>
-        <location line="-3"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="-3"/>
         <source>base-emitter junction built-in potential</source>
         <translation>baz-emetör eklem gerilimi</translation>
     </message>
     <message>
-        <location line="-2"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="-2"/>
         <source>base-emitter junction exponential factor</source>
         <translation>baz-emetör eklemi üstel çarpanı</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+13"/>
         <source>base-collector zero-bias depletion capacitance</source>
         <translation>baz-kollektör sıfır-kutuplama tüketim sığası</translation>
     </message>
     <message>
-        <location line="-3"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="-3"/>
         <source>base-collector junction built-in potential</source>
         <translation>baz-kollektör eklem gerilimi</translation>
     </message>
     <message>
-        <location line="-2"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="-2"/>
         <source>base-collector junction exponential factor</source>
         <translation>baz-kollektör eklemi üstel çarpanı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <source>fraction of Cjc that goes to internal base pin</source>
         <translation>baz ucuna giden Cjc oranı</translation>
     </message>
@@ -4222,21 +4656,21 @@ olmalı fakat şu anda %1 !</translation>
         <translation>alttabaka eklem üstel çarpanı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/photodiode.cpp" line="-3"/>
+        <location line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+10"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <location filename="../qucs/components/MESFET.cpp" line="-3"/>
+        <location filename="../qucs/components/photodiode.cpp" line="-3"/>
         <source>forward-bias depletion capacitance coefficient</source>
         <translation>düz-kutuplanma tüketim bölgesi sığa sabiti</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+11"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>ideal forward transit time</source>
         <translation>fikirsel düz geçis zamanı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <source>coefficient of bias-dependence for Tf</source>
         <translation>Tf için kutuplama-bağımlılığı sabiti</translation>
     </message>
@@ -4251,45 +4685,47 @@ olmalı fakat şu anda %1 !</translation>
         <translation>Tf üzerindeki yüksek gerilim etkisi</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/phototransistor.cpp" line="-3"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>ideal reverse transit time</source>
         <translation>fikirsel ters geçis zamanı</translation>
     </message>
     <message>
-        <location line="+21"/>
-        <location line="+2"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+24"/>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="+88"/>
-        <location filename="../qucs/components/jfet.cpp" line="+30"/>
+        <location line="+4"/>
         <location filename="../qucs/components/diode.cpp" line="+14"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+4"/>
+        <location filename="../qucs/components/jfet.cpp" line="+30"/>
         <location filename="../qucs/components/MESFET.cpp" line="+78"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+88"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+24"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+21"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/vdmos.cpp" line="+20"/>
         <source>flicker noise coefficient</source>
         <translation>flicker gürültü sabiti</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+2"/>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="+2"/>
-        <location filename="../qucs/components/jfet.cpp" line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+2"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location filename="../qucs/components/jfet.cpp" line="+2"/>
         <location filename="../qucs/components/MESFET.cpp" line="-2"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+2"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+2"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+2"/>
+        <location filename="../qucs/components/vdmos.cpp" line="+2"/>
         <source>flicker noise exponent</source>
         <translation>flicker gürültü üsteli</translation>
     </message>
     <message>
-        <location filename="../qucs/components/photodiode.cpp" line="+2"/>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="+2"/>
-        <location filename="../qucs/components/jfet.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+2"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location filename="../qucs/components/jfet.cpp" line="+2"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+2"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+2"/>
         <source>flicker noise frequency exponent</source>
         <translation>flicker gürültü sıklık üsteli</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <source>burst noise coefficient</source>
         <translation>ani gürültü sabiti</translation>
     </message>
@@ -4314,33 +4750,49 @@ olmalı fakat şu anda %1 !</translation>
         <translation>düz ve ters beta için sıcaklık üsteli</translation>
     </message>
     <message>
-        <location filename="../qucs/components/photodiode.cpp" line="-23"/>
-        <location filename="../qucs/components/jfet.cpp" line="+4"/>
+        <location line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+8"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location filename="../qucs/components/jfet.cpp" line="+4"/>
+        <location filename="../qucs/components/photodiode.cpp" line="-23"/>
         <source>saturation current temperature exponent</source>
         <translation>doyum akımı sıcaklık üsteli</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+2"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
         <source>energy bandgap in eV</source>
         <translation>eV cinsinden enerji aralığı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/jfet.cpp" line="+6"/>
+        <location line="+2"/>
         <location filename="../qucs/components/diode.cpp" line="+14"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location filename="../qucs/components/jfet.cpp" line="+6"/>
         <source>temperature at which parameters were extracted</source>
         <translation>değişkenlerin elde edildiği sıcaklık</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bjtsub.cpp" line="+2"/>
+        <location line="+2"/>
         <source>default area for bipolar transistor</source>
         <translation>çift kutuplu eklem transistör (bjt) için varsayılan alan</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+4"/>
+        <location filename="../qucs/components/diode.cpp" line="+8"/>
+        <location filename="../qucs/components/jfet.cpp" line="+6"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+8"/>
+        <source>Library name</source>
+        <translation>Kütüphane adı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location filename="../qucs/components/jfet.cpp" line="+2"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+2"/>
+        <source>Component name in library</source>
+        <translation>Kütüphanedeki bileşen adı</translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>bipolar junction transistor with substrate</source>
         <translation>alttabakalı çift kutuplu eklem transistör</translation>
     </message>
@@ -4380,37 +4832,37 @@ olmalı fakat şu anda %1 !</translation>
         <translation>lehim teli modeli</translation>
     </message>
     <message>
-        <location filename="../qucs/components/msvia.cpp" line="-4"/>
-        <location filename="../qucs/components/mstee.cpp" line="+39"/>
-        <location filename="../qucs/components/msstep.cpp" line="+52"/>
-        <location filename="../qucs/components/msmbend.cpp" line="+51"/>
-        <location filename="../qucs/components/mscross.cpp" line="+31"/>
+        <location line="+2"/>
         <location filename="../qucs/components/mscorner.cpp" line="+50"/>
-        <location filename="../qucs/components/bondwire.cpp" line="+2"/>
+        <location filename="../qucs/components/mscross.cpp" line="+31"/>
+        <location filename="../qucs/components/msmbend.cpp" line="+51"/>
+        <location filename="../qucs/components/msstep.cpp" line="+52"/>
+        <location filename="../qucs/components/mstee.cpp" line="+39"/>
+        <location filename="../qucs/components/msvia.cpp" line="-4"/>
         <source>substrate</source>
         <translation>substrat (alt tabaka)</translation>
     </message>
     <message>
-        <location filename="../qucs/components/bondwire.cpp" line="+12"/>
+        <location line="+12"/>
         <source>Bond Wire</source>
         <translation>Lehim Teli</translation>
     </message>
     <message>
-        <location filename="../qucs/components/triac.cpp" line="+8"/>
-        <location filename="../qucs/components/thyristor.cpp" line="+8"/>
-        <location filename="../qucs/components/potentiometer.cpp" line="+49"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+15"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+25"/>
-        <location filename="../qucs/components/nigbt.cpp" line="+41"/>
-        <location filename="../qucs/components/log_amp.cpp" line="+66"/>
-        <location filename="../qucs/components/hic2_full.cpp" line="+86"/>
         <location filename="../qucs/components/diac.cpp" line="+6"/>
+        <location filename="../qucs/components/hic2_full.cpp" line="+86"/>
+        <location filename="../qucs/components/log_amp.cpp" line="+66"/>
         <location filename="../qucs/components/MESFET.cpp" line="+9"/>
+        <location filename="../qucs/components/nigbt.cpp" line="+41"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+25"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+15"/>
+        <location filename="../qucs/components/potentiometer.cpp" line="+49"/>
+        <location filename="../qucs/components/thyristor.cpp" line="+8"/>
+        <location filename="../qucs/components/triac.cpp" line="+8"/>
         <source>simulation temperature</source>
         <translation>benzetim sıcaklığı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/capacitor.cpp" line="+25"/>
+        <location filename="../qucs/components/capacitor.cpp" line="+26"/>
         <source>capacitor</source>
         <translation>kapasitör</translation>
     </message>
@@ -4425,49 +4877,49 @@ olmalı fakat şu anda %1 !</translation>
         <translation>Kalımsız benzetim için ilk gerilim degeri</translation>
     </message>
     <message>
-        <location filename="../qucs/components/resistor.cpp" line="+39"/>
-        <location filename="../qucs/components/logical_inv.cpp" line="+4"/>
-        <location filename="../qucs/components/logical_buf.cpp" line="+4"/>
-        <location filename="../qucs/components/diode.cpp" line="+4"/>
+        <location line="+2"/>
         <location filename="../qucs/components/component.cpp" line="+4"/>
-        <location filename="../qucs/components/capacitor.cpp" line="+2"/>
+        <location filename="../qucs/components/diode.cpp" line="-6"/>
+        <location filename="../qucs/components/logical_buf.cpp" line="+4"/>
+        <location filename="../qucs/components/logical_inv.cpp" line="+4"/>
+        <location filename="../qucs/components/resistor.cpp" line="+50"/>
         <source>schematic symbol</source>
         <translation>şematik simgesi</translation>
     </message>
     <message>
-        <location filename="../qucs/components/capacitor.cpp" line="+17"/>
+        <location line="+17"/>
         <source>Capacitor</source>
         <translation>Kapasitör</translation>
     </message>
     <message>
-        <location filename="../qucs/components/cccs.cpp" line="+25"/>
+        <location filename="../qucs/components/cccs.cpp" line="+26"/>
         <source>current controlled current source</source>
         <translation>akımla denetlenen akım kaynağı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/vcvs.cpp" line="+67"/>
-        <location filename="../qucs/components/ccvs.cpp" line="+62"/>
-        <location filename="../qucs/components/cccs.cpp" line="+37"/>
+        <location line="+39"/>
+        <location filename="../qucs/components/ccvs.cpp" line="+65"/>
+        <location filename="../qucs/components/vcvs.cpp" line="+75"/>
         <source>forward transfer factor</source>
         <translation>düz geçirme çarpanı</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location filename="../qucs/components/vccs.cpp" line="+65"/>
-        <location filename="../qucs/components/ccvs.cpp" line="+1"/>
-        <location filename="../qucs/components/cccs.cpp" line="+1"/>
+        <location line="+3"/>
+        <location filename="../qucs/components/ccvs.cpp" line="+2"/>
+        <location filename="../qucs/components/vccs.cpp" line="+70"/>
+        <location filename="../qucs/components/vcvs.cpp" line="+2"/>
         <source>delay time (Qucsator only)</source>
         <translation>gecikme süresi (sadece Qucsator)</translation>
     </message>
     <message>
-        <location filename="../qucs/components/vfile.cpp" line="+1"/>
-        <location filename="../qucs/components/rs_flipflop.cpp" line="+26"/>
-        <location filename="../qucs/components/logical_inv.cpp" line="-6"/>
-        <location filename="../qucs/components/logical_buf.cpp" line="-6"/>
-        <location filename="../qucs/components/jk_flipflop.cpp" line="+26"/>
-        <location filename="../qucs/components/ifile.cpp" line="+62"/>
-        <location filename="../qucs/components/d_flipflop.cpp" line="+27"/>
         <location filename="../qucs/components/component.cpp" line="-6"/>
+        <location filename="../qucs/components/d_flipflop.cpp" line="+27"/>
+        <location filename="../qucs/components/ifile.cpp" line="+62"/>
+        <location filename="../qucs/components/jk_flipflop.cpp" line="+28"/>
+        <location filename="../qucs/components/logical_buf.cpp" line="-6"/>
+        <location filename="../qucs/components/logical_inv.cpp" line="-6"/>
+        <location filename="../qucs/components/rs_flipflop.cpp" line="+26"/>
+        <location filename="../qucs/components/vfile.cpp" line="+1"/>
         <source>delay time</source>
         <translation>gecikme zamanı</translation>
     </message>
@@ -4477,12 +4929,12 @@ olmalı fakat şu anda %1 !</translation>
         <translation>Akım Denetimli Akım Kaynağı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ccvs.cpp" line="-39"/>
+        <location filename="../qucs/components/ccvs.cpp" line="-42"/>
         <source>current controlled voltage source</source>
         <translation>akım denetimli gerilim kaynağı</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+56"/>
         <source>Current Controlled Voltage Source</source>
         <translation>Akım Denetimli Gerilim Kaynağı</translation>
     </message>
@@ -4512,32 +4964,32 @@ olmalı fakat şu anda %1 !</translation>
         <translation>Devrettirici</translation>
     </message>
     <message>
-        <location filename="../qucs/components/coaxialline.cpp" line="-37"/>
+        <location filename="../qucs/components/coaxialline.cpp" line="-38"/>
         <source>coaxial transmission line</source>
         <translation>koaksiyel iletim hattı</translation>
     </message>
     <message>
+        <location line="+24"/>
         <location filename="../qucs/components/rectline.cpp" line="-8"/>
-        <location filename="../qucs/components/coaxialline.cpp" line="+23"/>
         <source>relative permittivity of dielectric</source>
         <translation>dielektriğin bağıl geçirgenliği</translation>
     </message>
     <message>
-        <location filename="../qucs/components/twistedpair.cpp" line="-4"/>
+        <location line="+2"/>
         <location filename="../qucs/components/rectline.cpp" line="+6"/>
-        <location filename="../qucs/components/coaxialline.cpp" line="+2"/>
+        <location filename="../qucs/components/twistedpair.cpp" line="-4"/>
         <source>specific resistance of conductor</source>
         <translation>iletkenin özgül direnci</translation>
     </message>
     <message>
-        <location line="-2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/rectline.cpp" line="-4"/>
-        <location filename="../qucs/components/coaxialline.cpp" line="+2"/>
+        <location filename="../qucs/components/twistedpair.cpp" line="-2"/>
         <source>relative permeability of conductor</source>
         <translation>iletkenin bağıl geçirgenliği</translation>
     </message>
     <message>
-        <location filename="../qucs/components/coaxialline.cpp" line="+2"/>
+        <location line="+2"/>
         <source>inner diameter of shield</source>
         <translation>kalkanın iç çapı</translation>
     </message>
@@ -4547,21 +4999,21 @@ olmalı fakat şu anda %1 !</translation>
         <translation>içteki iletkenin çapı</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/rectline.cpp" line="-4"/>
-        <location filename="../qucs/components/coaxialline.cpp" line="+2"/>
         <source>mechanical length of the line</source>
         <translation>hattın mekanik uzunluğu</translation>
     </message>
     <message>
-        <location filename="../qucs/components/twistedpair.cpp" line="+4"/>
-        <location filename="../qucs/components/substrate.cpp" line="+68"/>
+        <location line="+2"/>
         <location filename="../qucs/components/rectline.cpp" line="+6"/>
-        <location filename="../qucs/components/coaxialline.cpp" line="+2"/>
+        <location filename="../qucs/components/substrate.cpp" line="+69"/>
+        <location filename="../qucs/components/twistedpair.cpp" line="+4"/>
         <source>loss tangent</source>
         <translation>loss tangent</translation>
     </message>
     <message>
-        <location filename="../qucs/components/coaxialline.cpp" line="+16"/>
+        <location line="+16"/>
         <source>Coaxial Line</source>
         <translation>Eşeksenli Hat</translation>
     </message>
@@ -4601,65 +5053,65 @@ olmalı fakat şu anda %1 !</translation>
         <translation>giriş uçlarının sayısı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/logical_inv.cpp" line="-2"/>
-        <location filename="../qucs/components/logical_buf.cpp" line="-2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/digi_source.cpp" line="+60"/>
-        <location filename="../qucs/components/component.cpp" line="+2"/>
+        <location filename="../qucs/components/logical_buf.cpp" line="-2"/>
+        <location filename="../qucs/components/logical_inv.cpp" line="-2"/>
         <source>voltage of high level</source>
         <translation>yüksek seviyenin gerilimi</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="+143"/>
-        <location line="+18"/>
-        <location line="+21"/>
+        <location line="+259"/>
+        <location line="+54"/>
+        <location filename="../qucs/components/vacomponent.cpp" line="+331"/>
         <location line="+24"/>
-        <location line="+17"/>
+        <location filename="../qucs/dialogs/matchdialog.cpp" line="+581"/>
+        <location line="+34"/>
+        <location line="+97"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+1524"/>
+        <location filename="../qucs/schematic_file.cpp" line="+123"/>
+        <location line="+115"/>
+        <location line="+20"/>
+        <location line="+22"/>
+        <location line="+30"/>
         <location line="+74"/>
         <location line="+38"/>
         <location line="+37"/>
         <location line="+83"/>
         <location line="+46"/>
-        <location line="+80"/>
-        <location line="+208"/>
+        <location line="+79"/>
+        <location line="+225"/>
         <location line="+5"/>
-        <location line="+39"/>
+        <location line="+45"/>
         <location line="+5"/>
         <location line="+6"/>
-        <location line="+68"/>
-        <location line="+59"/>
-        <location line="+18"/>
+        <location line="+49"/>
+        <location line="+41"/>
+        <location line="+38"/>
         <location line="+29"/>
         <location line="+6"/>
         <location line="+8"/>
         <location line="+19"/>
-        <location line="+16"/>
+        <location line="+17"/>
         <location line="+6"/>
         <location line="+8"/>
         <location line="+15"/>
         <location line="+26"/>
-        <location line="+62"/>
-        <location filename="../qucs/qucs_actions.cpp" line="+1430"/>
-        <location filename="../qucs/dialogs/matchdialog.cpp" line="+581"/>
-        <location line="+34"/>
-        <location line="+97"/>
-        <location filename="../qucs/components/vacomponent.cpp" line="+334"/>
-        <location line="+24"/>
-        <location filename="../qucs/components/component.cpp" line="+259"/>
-        <location line="+46"/>
-        <location filename="../qucs-powercombining/qucspowercombiningtool.cpp" line="+789"/>
+        <location line="+56"/>
         <location filename="../qucs-filter/quarterwave_filter.cpp" line="+46"/>
+        <location filename="../qucs-powercombining/qucspowercombiningtool.cpp" line="+789"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../qucs/components/component.cpp" line="-45"/>
+        <location line="-53"/>
         <source>Format Error:
 Wrong line start!</source>
         <translation>Biçim Hatası:
 Yanlış satır başlangıcı!</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+29"/>
         <source>Format Error:
 Unknown component!
 %1
@@ -4688,58 +5140,58 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>eşyüzey hattı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/msrstub.cpp" line="+44"/>
-        <location filename="../qucs/components/msopen.cpp" line="+45"/>
-        <location filename="../qucs/components/msline.cpp" line="-12"/>
-        <location filename="../qucs/components/mslange.cpp" line="-13"/>
-        <location filename="../qucs/components/msgap.cpp" line="+53"/>
-        <location filename="../qucs/components/mscoupled.cpp" line="-13"/>
-        <location filename="../qucs/components/cpwstep.cpp" line="+68"/>
-        <location filename="../qucs/components/cpwshort.cpp" line="+64"/>
-        <location filename="../qucs/components/cpwopen.cpp" line="+65"/>
+        <location line="+38"/>
         <location filename="../qucs/components/cpwgap.cpp" line="+66"/>
-        <location filename="../qucs/components/coplanar.cpp" line="+38"/>
+        <location filename="../qucs/components/cpwopen.cpp" line="+65"/>
+        <location filename="../qucs/components/cpwshort.cpp" line="+64"/>
+        <location filename="../qucs/components/cpwstep.cpp" line="+68"/>
+        <location filename="../qucs/components/mscoupled.cpp" line="-13"/>
+        <location filename="../qucs/components/msgap.cpp" line="+53"/>
+        <location filename="../qucs/components/mslange.cpp" line="-13"/>
+        <location filename="../qucs/components/msline.cpp" line="-12"/>
+        <location filename="../qucs/components/msopen.cpp" line="+48"/>
+        <location filename="../qucs/components/msrstub.cpp" line="+44"/>
         <source>name of substrate definition</source>
         <translation>alttabaka tanımının adı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/msopen.cpp" line="+2"/>
-        <location filename="../qucs/components/msline.cpp" line="+2"/>
-        <location filename="../qucs/components/mslange.cpp" line="+2"/>
-        <location filename="../qucs/components/mscoupled.cpp" line="+2"/>
-        <location filename="../qucs/components/cpwshort.cpp" line="+2"/>
-        <location filename="../qucs/components/cpwopen.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/cpwgap.cpp" line="+2"/>
-        <location filename="../qucs/components/coplanar.cpp" line="+2"/>
+        <location filename="../qucs/components/cpwopen.cpp" line="+2"/>
+        <location filename="../qucs/components/cpwshort.cpp" line="+2"/>
+        <location filename="../qucs/components/mscoupled.cpp" line="+2"/>
+        <location filename="../qucs/components/mslange.cpp" line="+2"/>
+        <location filename="../qucs/components/msline.cpp" line="+2"/>
+        <location filename="../qucs/components/msopen.cpp" line="+2"/>
         <source>width of the line</source>
         <translation>çizgi kalınlığı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/cpwshort.cpp" line="+2"/>
-        <location filename="../qucs/components/cpwopen.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/cpwgap.cpp" line="+2"/>
-        <location filename="../qucs/components/coplanar.cpp" line="+2"/>
+        <location filename="../qucs/components/cpwopen.cpp" line="+2"/>
+        <location filename="../qucs/components/cpwshort.cpp" line="+2"/>
         <source>width of a gap</source>
         <translation>aralığın genişliği</translation>
     </message>
     <message>
-        <location filename="../qucs/components/msline.cpp" line="+2"/>
-        <location filename="../qucs/components/mslange.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/mscoupled.cpp" line="+2"/>
-        <location filename="../qucs/components/coplanar.cpp" line="+2"/>
+        <location filename="../qucs/components/mslange.cpp" line="+2"/>
+        <location filename="../qucs/components/msline.cpp" line="+2"/>
         <source>length of the line</source>
         <translation>çizgi uzunluğu</translation>
     </message>
     <message>
-        <location filename="../qucs/components/cpwstep.cpp" line="+8"/>
-        <location filename="../qucs/components/cpwshort.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/cpwopen.cpp" line="+4"/>
-        <location filename="../qucs/components/coplanar.cpp" line="+2"/>
+        <location filename="../qucs/components/cpwshort.cpp" line="+2"/>
+        <location filename="../qucs/components/cpwstep.cpp" line="+8"/>
         <source>material at the backside of the substrate</source>
         <translation>alttabakanın arka yüzündeki malzeme</translation>
     </message>
     <message>
-        <location filename="../qucs/components/coplanar.cpp" line="+3"/>
+        <location line="+3"/>
         <source>use approximation instead of precise equation</source>
         <translation>hassas eşitlik yerine yaklaşım kullan</translation>
     </message>
@@ -4814,21 +5266,21 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>eşyüzey adım</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mstee.cpp" line="+2"/>
+        <location line="+46"/>
         <location filename="../qucs/components/mscross.cpp" line="+2"/>
-        <location filename="../qucs/components/cpwstep.cpp" line="+46"/>
+        <location filename="../qucs/components/mstee.cpp" line="+2"/>
         <source>width of line 1</source>
         <translation>1. çizginin genişliği</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/mscross.cpp" line="+2"/>
-        <location filename="../qucs/components/cpwstep.cpp" line="+2"/>
+        <location filename="../qucs/components/mstee.cpp" line="+2"/>
         <source>width of line 2</source>
         <translation>2. çizginin genişliği</translation>
     </message>
     <message>
-        <location filename="../qucs/components/cpwstep.cpp" line="+2"/>
+        <location line="+2"/>
         <source>distance between ground planes</source>
         <translation>toprak yüzeyleri arasındaki mesafe</translation>
     </message>
@@ -4838,12 +5290,12 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Eşyüzey Adım</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ctline.cpp" line="-51"/>
+        <location filename="../qucs/components/ctline.cpp" line="-52"/>
         <source>coupled transmission lines</source>
         <translation>kuplajlı iletim hatları</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+38"/>
         <source>characteristic impedance of even mode</source>
         <translation>çift modun karakteristik empedansı</translation>
     </message>
@@ -4853,15 +5305,15 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>tek modun karakteristik empedansı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tline_4port.cpp" line="-4"/>
-        <location filename="../qucs/components/tline.cpp" line="-4"/>
+        <location line="+2"/>
         <location filename="../qucs/components/rlcg.cpp" line="-2"/>
-        <location filename="../qucs/components/ctline.cpp" line="+2"/>
+        <location filename="../qucs/components/tline.cpp" line="-4"/>
+        <location filename="../qucs/components/tline_4port.cpp" line="-4"/>
         <source>electrical length of the line</source>
         <translation>hattın elektriksel uzunluğu</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ctline.cpp" line="+2"/>
+        <location line="+2"/>
         <source>relative dielectric constant of even mode</source>
         <translation>çift modun bağıl dielektrik sabiti</translation>
     </message>
@@ -4906,44 +5358,44 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>dc benzetim</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tr_sim.cpp" line="-6"/>
-        <location filename="../qucs/components/hb_sim.cpp" line="+8"/>
+        <location line="-32"/>
         <location filename="../qucs/components/etr_sim.cpp" line="-6"/>
-        <location filename="../qucs/components/dc_sim.cpp" line="-32"/>
+        <location filename="../qucs/components/hb_sim.cpp" line="+8"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="-6"/>
         <source>relative tolerance for convergence</source>
         <translation>yakınsama için göreli hoşgörü</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/hb_sim.cpp" line="-4"/>
         <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
-        <location filename="../qucs/components/dc_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/hb_sim.cpp" line="-4"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
         <source>absolute tolerance for currents</source>
         <translation>akımlar için mutlak hoşgörü</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/hb_sim.cpp" line="+2"/>
         <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
-        <location filename="../qucs/components/dc_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/hb_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
         <source>absolute tolerance for voltages</source>
         <translation>gerilimler için mutlak hoşgörü</translation>
     </message>
     <message>
-        <location filename="../qucs/components/dc_sim.cpp" line="+2"/>
+        <location line="+2"/>
         <source>put operating points into dataset</source>
         <translation>çalışma noktaları bilgisini veri topluluguna koy</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tr_sim.cpp" line="-6"/>
-        <location filename="../qucs/components/hb_sim.cpp" line="+4"/>
+        <location line="+3"/>
         <location filename="../qucs/components/etr_sim.cpp" line="-6"/>
-        <location filename="../qucs/components/dc_sim.cpp" line="+3"/>
+        <location filename="../qucs/components/hb_sim.cpp" line="+4"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="-6"/>
         <source>maximum number of iterations until error</source>
         <translation>hataya kadar en çok deneme sayısı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/dc_sim.cpp" line="+2"/>
+        <location line="+2"/>
         <source>save subcircuit nodes into dataset</source>
         <translation>alt-devre düğümlerini veri topluluguna kaydet</translation>
     </message>
@@ -4953,9 +5405,9 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>tercih edilen yakınsama cebri</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tr_sim.cpp" line="+16"/>
+        <location line="+3"/>
         <location filename="../qucs/components/etr_sim.cpp" line="+16"/>
-        <location filename="../qucs/components/dc_sim.cpp" line="+3"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+16"/>
         <source>method for solving the circuit matrix</source>
         <translation>devre tablosu çözüm yöntemi</translation>
     </message>
@@ -4985,31 +5437,31 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Set ve sıfırlamalı D flip flop verilog cihazı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tff_SR.cpp" line="-5"/>
-        <location filename="../qucs/components/jkff_SR.cpp" line="-5"/>
+        <location line="+3"/>
         <location filename="../qucs/components/gatedDlatch.cpp" line="-5"/>
-        <location filename="../qucs/components/dff_SR.cpp" line="+3"/>
+        <location filename="../qucs/components/jkff_SR.cpp" line="-5"/>
+        <location filename="../qucs/components/tff_SR.cpp" line="-5"/>
         <source>cross coupled gate transfer function high scaling factor</source>
         <translation>çapraz bağlı kapı transfer fonksiyonu yüksek ölçekleme faktörü</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/jkff_SR.cpp" line="+2"/>
         <location filename="../qucs/components/gatedDlatch.cpp" line="+2"/>
-        <location filename="../qucs/components/dff_SR.cpp" line="+2"/>
+        <location filename="../qucs/components/jkff_SR.cpp" line="+2"/>
+        <location filename="../qucs/components/tff_SR.cpp" line="+2"/>
         <source>cross coupled gate transfer function low scaling factor</source>
         <translation>çapraz bağlı kapı transfer fonksiyonu düşük ölçekleme faktörü</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/jkff_SR.cpp" line="+2"/>
         <location filename="../qucs/components/gatedDlatch.cpp" line="+2"/>
-        <location filename="../qucs/components/dff_SR.cpp" line="+2"/>
+        <location filename="../qucs/components/jkff_SR.cpp" line="+2"/>
+        <location filename="../qucs/components/tff_SR.cpp" line="+2"/>
         <source>cross coupled gate delay</source>
         <translation>çapraz bağlı kapı gecikmesi</translation>
     </message>
     <message>
-        <location filename="../qucs/components/dff_SR.cpp" line="+22"/>
+        <location line="+22"/>
         <source>D-FlipFlop w/ SR</source>
         <translation>SR ile D-FlipFlop</translation>
     </message>
@@ -5019,46 +5471,46 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>diyak (çift-yön tetiklemeli diyot)</translation>
     </message>
     <message>
+        <location line="+25"/>
         <location filename="../qucs/components/triac.cpp" line="-14"/>
-        <location filename="../qucs/components/diac.cpp" line="+25"/>
         <source>(bidirectional) breakover voltage</source>
         <translation>(çift-yön) kɪrɪlma gerilimi</translation>
     </message>
     <message>
-        <location filename="../qucs/components/diac.cpp" line="+2"/>
+        <location line="+2"/>
         <source>(bidirectional) breakover current</source>
         <translation>(çift-yön) kɪrɪlma akɪmɪ</translation>
     </message>
     <message>
-        <location filename="../qucs/components/triac.cpp" line="+4"/>
+        <location line="+2"/>
         <location filename="../qucs/components/thyristor.cpp" line="-10"/>
-        <location filename="../qucs/components/diac.cpp" line="+2"/>
+        <location filename="../qucs/components/triac.cpp" line="+4"/>
         <source>parasitic capacitance</source>
         <translation>asalak sığa</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location filename="../qucs/components/thyristor.cpp" line="+4"/>
         <location filename="../qucs/components/diode.cpp" line="-54"/>
-        <location filename="../qucs/components/diac.cpp" line="+4"/>
+        <location filename="../qucs/components/thyristor.cpp" line="+4"/>
+        <location filename="../qucs/components/triac.cpp" line="+4"/>
         <source>emission coefficient</source>
         <translation>yayım katsayısı</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/thyristor.cpp" line="+2"/>
-        <location filename="../qucs/components/diac.cpp" line="+2"/>
+        <location filename="../qucs/components/triac.cpp" line="+2"/>
         <source>intrinsic junction resistance</source>
         <translation>asıl eklem direnci</translation>
     </message>
     <message>
-        <location filename="../qucs/components/diac.cpp" line="+12"/>
+        <location line="+12"/>
         <source>Diac</source>
         <translation>Diyak</translation>
     </message>
     <message>
         <location filename="../qucs/components/digi_sim.cpp" line="+23"/>
-        <location line="+28"/>
+        <location line="+29"/>
         <source>digital simulation</source>
         <translation>dijital benzetim</translation>
     </message>
@@ -5084,13 +5536,13 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>dijital kaynak</translation>
     </message>
     <message>
-        <location filename="../qucs/components/source_ac.cpp" line="-8"/>
-        <location filename="../qucs/components/digi_source.cpp" line="-23"/>
+        <location line="-23"/>
+        <location filename="../qucs/components/source_ac.cpp" line="-11"/>
         <source>number of the port</source>
         <translation>uç numarası</translation>
     </message>
     <message>
-        <location filename="../qucs/components/digi_source.cpp" line="+2"/>
+        <location line="+2"/>
         <source>initial output value</source>
         <translation>ilk çıkış değeri</translation>
     </message>
@@ -5105,28 +5557,28 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>diyot</translation>
     </message>
     <message>
+        <location line="+7"/>
         <location filename="../qucs/components/photodiode.cpp" line="-40"/>
-        <location filename="../qucs/components/diode.cpp" line="+7"/>
         <source>zero-bias junction capacitance</source>
         <translation>sıfır-kutuplama eklem sığası</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tunneldiode.cpp" line="-7"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+3"/>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/MESFET.cpp" line="-72"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+3"/>
+        <location filename="../qucs/components/tunneldiode.cpp" line="-7"/>
         <source>grading coefficient</source>
         <translation>değişim katsayısı</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/photodiode.cpp" line="-6"/>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location filename="../qucs/components/tunneldiode.cpp" line="+2"/>
         <source>junction potential</source>
         <translation>eklem gerilimi</translation>
     </message>
     <message>
-        <location filename="../qucs/components/diode.cpp" line="+4"/>
+        <location line="+4"/>
         <source>linear capacitance</source>
         <translation>doğrusal sığa</translation>
     </message>
@@ -5146,30 +5598,30 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>omik (Shotky etkisi yok) seri direnç</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/photodiode.cpp" line="+15"/>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
         <source>transit time</source>
         <translation>geçis süresi</translation>
     </message>
     <message>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location line="+2"/>
         <source>high-injection knee current (0=infinity)</source>
         <translation>yüksek-enjeksiyon bükülme akımı (0=sonsuz)</translation>
     </message>
     <message>
+        <location line="+8"/>
         <location filename="../qucs/components/photodiode.cpp" line="-21"/>
-        <location filename="../qucs/components/diode.cpp" line="+8"/>
         <source>reverse breakdown voltage</source>
         <translation>ters kırılma gerilimi</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/diode.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+3"/>
         <source>current at reverse breakdown voltage</source>
         <translation>ters kırılma geriliminde akım</translation>
     </message>
     <message>
-        <location filename="../qucs/components/diode.cpp" line="+8"/>
+        <location line="+8"/>
         <source>Bv linear temperature coefficient</source>
         <translation>Bv doğrusal sıcaklık katsayısı</translation>
     </message>
@@ -5199,13 +5651,13 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>M ikinci dereceden sıcaklık katsayısı</translation>
     </message>
     <message>
+        <location line="+4"/>
         <location filename="../qucs/components/tunneldiode.cpp" line="+7"/>
-        <location filename="../qucs/components/diode.cpp" line="+4"/>
         <source>default area for diode</source>
         <translation>diyot için varsayılan alan</translation>
     </message>
     <message>
-        <location filename="../qucs/components/diode.cpp" line="+89"/>
+        <location line="+90"/>
         <source>Diode</source>
         <translation>Diyot</translation>
     </message>
@@ -5215,19 +5667,19 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>veri voltaj seviye kaydırıcı (dijitalden analoğa) verilog cihazı</translation>
     </message>
     <message>
+        <location line="+3"/>
         <location filename="../qucs/components/DLS_nto1.cpp" line="-4"/>
-        <location filename="../qucs/components/DLS_1ton.cpp" line="+3"/>
         <source>voltage level</source>
         <translation>voltaj seviyesi</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location filename="../qucs/components/DLS_1ton.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/DLS_nto1.cpp" line="+3"/>
         <source>time delay</source>
         <translation>zaman gecikmesi</translation>
     </message>
     <message>
-        <location filename="../qucs/components/DLS_1ton.cpp" line="+20"/>
+        <location line="+20"/>
         <source>D2A Level Shifter</source>
         <translation>D2A Seviye Değiştirici</translation>
     </message>
@@ -5237,17 +5689,7 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>veri voltaj seviye kaydırıcı (analogdan dijitale) verilog cihazı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/phototransistor.cpp" line="-61"/>
-        <location line="+3"/>
-        <location line="+5"/>
-        <location line="+8"/>
-        <location filename="../qucs/components/photodiode.cpp" line="-2"/>
-        <location line="+6"/>
-        <location filename="../qucs/components/nigbt.cpp" line="-8"/>
-        <location line="+3"/>
-        <location filename="../qucs/components/logic_1.cpp" line="+28"/>
-        <location filename="../qucs/components/logic_0.cpp" line="+28"/>
-        <location filename="../qucs/components/log_amp.cpp" line="-29"/>
+        <location line="+4"/>
         <location filename="../qucs/components/hic2_full.cpp" line="-173"/>
         <location line="+10"/>
         <location line="+10"/>
@@ -5263,18 +5705,28 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <location line="+26"/>
         <location line="+3"/>
         <location line="+3"/>
+        <location filename="../qucs/components/log_amp.cpp" line="-29"/>
+        <location filename="../qucs/components/logic_0.cpp" line="+28"/>
+        <location filename="../qucs/components/logic_1.cpp" line="+28"/>
         <location filename="../qucs/components/MESFET.cpp" line="-58"/>
         <location line="+20"/>
         <location line="+3"/>
         <location line="+3"/>
         <location line="+12"/>
         <location line="+3"/>
-        <location filename="../qucs/components/DLS_nto1.cpp" line="+4"/>
+        <location filename="../qucs/components/nigbt.cpp" line="-8"/>
+        <location line="+3"/>
+        <location filename="../qucs/components/photodiode.cpp" line="-2"/>
+        <location line="+6"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="-61"/>
+        <location line="+3"/>
+        <location line="+5"/>
+        <location line="+8"/>
         <source>V</source>
         <translation>V</translation>
     </message>
     <message>
-        <location filename="../qucs/components/DLS_nto1.cpp" line="+22"/>
+        <location line="+22"/>
         <source>A2D Level Shifter</source>
         <translation>A2D Seviye Değiştirici</translation>
     </message>
@@ -5314,13 +5766,13 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>harici kontrollü gerilim kaynağı</translation>
     </message>
     <message>
+        <location line="+45"/>
         <location filename="../qucs/components/volt_dc.cpp" line="+48"/>
-        <location filename="../qucs/components/ecvs.cpp" line="+45"/>
         <source>voltage in Volts</source>
         <translation>Volt cinsinden gerilim</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ecvs.cpp" line="+18"/>
+        <location line="+18"/>
         <source>Externally Controlled Voltage Source</source>
         <translation>Harici Kontrollü Voltaj Kaynağı</translation>
     </message>
@@ -5330,7 +5782,7 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qucs/components/jfet.cpp" line="-40"/>
+        <location filename="../qucs/components/jfet.cpp" line="-48"/>
         <location filename="../qucs/components/MESFET.cpp" line="-39"/>
         <source>transconductance parameter</source>
         <translation>ters iletkenlik (transconductance) değişkeni</translation>
@@ -5341,11 +5793,11 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>A/V**2</translation>
     </message>
     <message>
-        <location line="+33"/>
         <location filename="../qucs/components/hic2_full.cpp" line="-198"/>
         <location filename="../qucs/components/MESFET.cpp" line="+4"/>
         <location line="+3"/>
         <location line="+3"/>
+        <location filename="../qucs/components/nigbt.cpp" line="+33"/>
         <source>1/V</source>
         <translation>1/V</translation>
     </message>
@@ -5354,7 +5806,7 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation type="vanished">V/K</translation>
     </message>
     <message>
-        <location filename="../qucs/components/hic2_full.cpp" line="-63"/>
+        <location line="-63"/>
         <source>HICUM Level 2 v2.22 verilog device</source>
         <translation>HICUM Seviye 2 v2.22 verilog cihazı</translation>
     </message>
@@ -5931,6 +6383,7 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../qucs/components/vdmos.cpp" line="+78"/>
         <source>Thermal capacitance</source>
         <translation>Termal kapasitans</translation>
     </message>
@@ -5970,22 +6423,22 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>HICUM L2 v2.22</translation>
     </message>
     <message>
-        <location filename="../qucs/components/potentiometer.cpp" line="-27"/>
-        <location line="+19"/>
-        <location filename="../qucs/components/phototransistor.cpp" line="+18"/>
-        <location line="+3"/>
-        <location line="+3"/>
-        <location filename="../qucs/components/photodiode.cpp" line="-12"/>
-        <location line="+38"/>
-        <location filename="../qucs/components/log_amp.cpp" line="+3"/>
-        <location line="+6"/>
-        <location filename="../qucs/components/hic2_full.cpp" line="-234"/>
+        <location line="-234"/>
         <location line="+3"/>
         <location line="+11"/>
         <location line="+3"/>
         <location line="+16"/>
         <location line="+84"/>
+        <location filename="../qucs/components/log_amp.cpp" line="+3"/>
+        <location line="+6"/>
         <location filename="../qucs/components/MESFET.cpp" line="+39"/>
+        <location filename="../qucs/components/photodiode.cpp" line="-12"/>
+        <location line="+38"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="+18"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <location filename="../qucs/components/potentiometer.cpp" line="-27"/>
+        <location line="+19"/>
         <source>Ohm</source>
         <translation>Ohm</translation>
     </message>
@@ -5995,13 +6448,6 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>F/m</translation>
     </message>
     <message>
-        <location filename="../qucs/components/phototransistor.cpp" line="-47"/>
-        <location line="+35"/>
-        <location line="+3"/>
-        <location filename="../qucs/components/photodiode.cpp" line="-35"/>
-        <location line="+6"/>
-        <location filename="../qucs/components/log_amp.cpp" line="-20"/>
-        <location line="+3"/>
         <location filename="../qucs/components/hic2_full.cpp" line="-182"/>
         <location line="+11"/>
         <location line="+5"/>
@@ -6012,15 +6458,19 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <location line="+5"/>
         <location line="+39"/>
         <location line="+5"/>
+        <location filename="../qucs/components/log_amp.cpp" line="-20"/>
+        <location line="+3"/>
         <location filename="../qucs/components/MESFET.cpp" line="+62"/>
+        <location filename="../qucs/components/photodiode.cpp" line="-35"/>
+        <location line="+6"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="-47"/>
+        <location line="+35"/>
+        <location line="+3"/>
         <source>A</source>
         <translation>A</translation>
     </message>
     <message>
-        <location line="-20"/>
-        <location line="+8"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+6"/>
-        <location filename="../qucs/components/hic2_full.cpp" line="+11"/>
+        <location line="+11"/>
         <location line="+3"/>
         <location line="+10"/>
         <location line="+10"/>
@@ -6031,6 +6481,9 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <location filename="../qucs/components/MESFET.cpp" line="-52"/>
         <location line="+3"/>
         <location line="+3"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+6"/>
+        <location filename="../qucs/components/phototransistor.cpp" line="-20"/>
+        <location line="+8"/>
         <source>F</source>
         <translation>F</translation>
     </message>
@@ -6040,27 +6493,28 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>diyot bağıl alanı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/potentiometer.cpp" line="+5"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+2"/>
-        <location filename="../qucs/components/nigbt.cpp" line="+8"/>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="+4"/>
         <location filename="../qucs/components/log_amp.cpp" line="+34"/>
         <location filename="../qucs/components/MESFET.cpp" line="+60"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="-6"/>
+        <location filename="../qucs/components/nigbt.cpp" line="+8"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+2"/>
+        <location filename="../qucs/components/potentiometer.cpp" line="+5"/>
+        <location filename="../qucs/components/vdmos.cpp" line="+6"/>
         <source>parameter measurement temperature</source>
         <translation>değişken ölçüm sıcaklığı</translation>
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+1"/>
+        <location filename="../qucs/components/MESFET.cpp" line="+1"/>
         <location filename="../qucs/components/nigbt.cpp" line="+1"/>
         <location line="+3"/>
-        <location filename="../qucs/components/log_amp.cpp" line="+1"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+1"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+1"/>
+        <location filename="../qucs/components/potentiometer.cpp" line="+1"/>
         <source>Celsius</source>
         <translation>Celsius</translation>
     </message>
     <message>
-        <location filename="../qucs/components/eqndefined.cpp" line="+32"/>
+        <location filename="../qucs/components/eqndefined.cpp" line="+33"/>
         <source>equation defined device</source>
         <translation>eşitlikle tanımlanmış cihaz</translation>
     </message>
@@ -6076,23 +6530,23 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+234"/>
+        <location line="+233"/>
         <source>current equation</source>
         <translation>akım eşitliği</translation>
     </message>
     <message>
-        <location line="-232"/>
-        <location line="+234"/>
+        <location line="-231"/>
+        <location line="+233"/>
         <source>charge equation</source>
         <translation>yük eşitliği</translation>
     </message>
     <message>
-        <location line="-216"/>
+        <location line="-215"/>
         <source>Equation Defined Device</source>
         <translation>Eşitlikle Tanımlanmış Cihaz</translation>
     </message>
     <message>
-        <location filename="../qucs/components/equation.cpp" line="+29"/>
+        <location filename="../qucs/components/equation.cpp" line="+30"/>
         <source>equation</source>
         <translation>eşitlik</translation>
     </message>
@@ -6103,13 +6557,13 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Eşitlik</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <location filename="../qucs/components/componentdialog.cpp" line="-162"/>
+        <location filename="../qucs/components/componentdialog.cpp" line="-165"/>
+        <location filename="../qucs/components/equation.cpp" line="+13"/>
         <source>put result into dataset</source>
         <translation>sonucu veri topluluğuna koy</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location filename="../qucs/components/equation.cpp" line="+36"/>
         <source>Qucsator equation</source>
         <translation>Qucsator denklemi</translation>
     </message>
@@ -6119,67 +6573,67 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>harici tahrikli geçici simülasyon</translation>
     </message>
     <message>
+        <location line="+7"/>
         <location filename="../qucs/components/tr_sim.cpp" line="-25"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="+7"/>
         <source>integration method</source>
         <translation>sürekli toplam yöntemi</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="+3"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+3"/>
         <source>order of integration method</source>
         <translation>sürekli toplam yönteminin mertebesi</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
         <source>initial step size in seconds</source>
         <translation>saniye cinsinden ilk adım</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
         <source>minimum step size in seconds</source>
         <translation>saniye cinsinden en küçük adım</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="+12"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+12"/>
         <source>relative tolerance of local truncation error</source>
         <translation>yerel kesme hatasının göreli hoşgörüsü</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
         <source>absolute tolerance of local truncation error</source>
         <translation>yerel kesme hatasının mutlak hoşgörüsü</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
         <source>overestimation of local truncation error</source>
         <translation>yerel kesme hatasının abartısı</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="+5"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+5"/>
         <source>relax time step raster</source>
         <translation>gevşeme zamanı adım uzunluğu</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/spicecomponents/sp_sens_tr_xyce.cpp" line="+45"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
         <source>perform an initial DC analysis</source>
         <translation>Baslangıç için bir DC çözümlemesi gerçeklestir</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tr_sim.cpp" line="+4"/>
-        <location filename="../qucs/components/etr_sim.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+6"/>
         <source>maximum step size in seconds</source>
         <translation>saniye cinsinden en büyük adım büyüklüğü</translation>
     </message>
     <message>
-        <location filename="../qucs/components/etr_sim.cpp" line="+14"/>
+        <location line="+14"/>
         <source>External transient simulation</source>
         <translation>Harici geçici simülasyon</translation>
     </message>
@@ -6289,13 +6743,13 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>hibrit (simetrik olmayan 3dB bağlayıcı)</translation>
     </message>
     <message>
+        <location line="+38"/>
         <location filename="../qucs/components/phaseshifter.cpp" line="-2"/>
-        <location filename="../qucs/components/hybrid.cpp" line="+38"/>
         <source>phase shift in degree</source>
         <translation>derece cinsinden açı kayması</translation>
     </message>
     <message>
-        <location filename="../qucs/components/hybrid.cpp" line="+13"/>
+        <location line="+13"/>
         <source>Hybrid</source>
         <translation>Hibrit</translation>
     </message>
@@ -6315,19 +6769,19 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>atma&apos; nın en yüksek akım değeri</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/vexp.cpp" line="+60"/>
-        <location filename="../qucs/components/iexp.cpp" line="+2"/>
         <source>start time of the exponentially rising edge</source>
         <translation>üstel olarak yükselen kenarın başlangıç zamanı</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/iexp.cpp" line="+2"/>
+        <location filename="../qucs/components/vexp.cpp" line="+2"/>
         <source>start of exponential decay</source>
         <translation>üstel düşüşün başlangıcı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/iexp.cpp" line="+2"/>
+        <location line="+2"/>
         <source>time constant of the rising edge</source>
         <translation>yükselen kenarın zaman sabiti</translation>
     </message>
@@ -6347,26 +6801,27 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>dosya tabanlı akım kaynağı</translation>
     </message>
     <message>
+        <location line="+30"/>
         <location filename="../qucs/components/vfile.cpp" line="-6"/>
-        <location filename="../qucs/components/ifile.cpp" line="+30"/>
         <source>name of the sample file</source>
         <translation>örnek dosyanın ismi</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../qucs/components/sparamfile.cpp" line="+40"/>
-        <location filename="../qucs/components/ifile.cpp" line="+2"/>
+        <location filename="../qucs/components/spdeembed.cpp" line="+32"/>
+        <location filename="../qucs/components/vfile.cpp" line="+2"/>
         <source>interpolation type</source>
         <translation>interpolasyon çeşidi</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/ifile.cpp" line="+2"/>
+        <location filename="../qucs/components/vfile.cpp" line="+2"/>
         <source>repeat waveform</source>
         <translation>dalga şeklini tekrarla</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ifile.cpp" line="+1"/>
+        <location line="+1"/>
         <source>current gain</source>
         <translation>akım kazancı</translation>
     </message>
@@ -6376,7 +6831,7 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Dosya Tabanlı Akım Kaynağı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/inductor.cpp" line="+25"/>
+        <location filename="../qucs/components/inductor.cpp" line="+26"/>
         <source>inductor</source>
         <translation>indüktör</translation>
     </message>
@@ -6391,7 +6846,7 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Geçici hal benzetim için başlangıç akım degeri</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+56"/>
         <source>Inductor</source>
         <translation>İnduktör</translation>
     </message>
@@ -6421,35 +6876,35 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>darbe akımı</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/vpulse.cpp" line="+61"/>
-        <location filename="../qucs/components/ipulse.cpp" line="+2"/>
         <source>start time of the pulse</source>
         <translation>darbenin başlangıç zamanı</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/ipulse.cpp" line="+2"/>
+        <location filename="../qucs/components/vpulse.cpp" line="+2"/>
         <source>ending time of the pulse</source>
         <translation>darbenin bitiş zamanı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/vrect.cpp" line="+62"/>
-        <location filename="../qucs/components/vpulse.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/irect.cpp" line="+70"/>
-        <location filename="../qucs/components/ipulse.cpp" line="+2"/>
+        <location filename="../qucs/components/vpulse.cpp" line="+2"/>
+        <location filename="../qucs/components/vrect.cpp" line="+62"/>
         <source>rise time of the leading edge</source>
         <translation>yükselen kenarın yükselme zamanı</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/vpulse.cpp" line="+2"/>
         <location filename="../qucs/components/irect.cpp" line="+2"/>
-        <location filename="../qucs/components/ipulse.cpp" line="+2"/>
+        <location filename="../qucs/components/vpulse.cpp" line="+2"/>
+        <location filename="../qucs/components/vrect.cpp" line="+2"/>
         <source>fall time of the trailing edge</source>
         <translation>düşen kenarın düşme süresi</translation>
     </message>
     <message>
-        <location filename="../qucs/components/ipulse.cpp" line="+16"/>
+        <location line="+16"/>
         <source>Current Pulse</source>
         <translation>Akım Darbesi</translation>
     </message>
@@ -6464,25 +6919,25 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>yüksek darbenin akımı</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/vrect.cpp" line="-6"/>
-        <location filename="../qucs/components/irect.cpp" line="+2"/>
         <source>duration of high pulses</source>
         <translation>yüksek darbelerin süresi</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/irect.cpp" line="+2"/>
+        <location filename="../qucs/components/vrect.cpp" line="+2"/>
         <source>duration of low pulses</source>
         <translation>düşük darbelerin süresi</translation>
     </message>
     <message>
         <location line="+6"/>
-        <location filename="../qucs/components/irect.cpp" line="+6"/>
+        <location filename="../qucs/components/vrect.cpp" line="+6"/>
         <source>initial delay time</source>
         <translation>başlangıç gecikme zamanı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/irect.cpp" line="+49"/>
+        <location line="+49"/>
         <source>Rectangle Current</source>
         <translation>Diktörgen Akım</translation>
     </message>
@@ -6502,13 +6957,13 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>jonksiyon alan etkili transistör</translation>
     </message>
     <message>
+        <location line="+6"/>
         <location filename="../qucs/components/nigbt.cpp" line="-10"/>
-        <location filename="../qucs/components/jfet.cpp" line="+6"/>
         <source>threshold voltage</source>
         <translation>eşik gerilimi</translation>
     </message>
     <message>
-        <location filename="../qucs/components/jfet.cpp" line="+4"/>
+        <location line="+4"/>
         <source>channel-length modulation parameter</source>
         <translation>kanal uzunluğu modülasyon parametresi</translation>
     </message>
@@ -6583,7 +7038,7 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>JFET için varsayılan alan</translation>
     </message>
     <message>
-        <location line="+76"/>
+        <location line="+80"/>
         <source>n-JFET</source>
         <translation>n-JFET</translation>
     </message>
@@ -6647,16 +7102,16 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>boyutlama çarpan hatası</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <location line="+11"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+19"/>
         <location filename="../qucs/components/potentiometer.cpp" line="-12"/>
         <location line="+3"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+19"/>
-        <location filename="../qucs/components/log_amp.cpp" line="+1"/>
-        <location line="+11"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../qucs/components/log_amp.cpp" line="-9"/>
+        <location line="-9"/>
         <source>input I1 bias current</source>
         <translation>I1 giriş kutuplama akımı</translation>
     </message>
@@ -6671,13 +7126,13 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>onluk sayısı</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/potentiometer.cpp" line="-4"/>
-        <location filename="../qucs/components/log_amp.cpp" line="+2"/>
         <source>conformity error</source>
         <translation>uygunluk hatası</translation>
     </message>
     <message>
-        <location filename="../qucs/components/log_amp.cpp" line="+3"/>
+        <location line="+3"/>
         <source>output offset error</source>
         <translation>çıkış fark (offset) hatası</translation>
     </message>
@@ -6993,19 +7448,19 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>kapı ters kırılma akımı</translation>
     </message>
     <message>
+        <location line="-57"/>
         <location filename="../qucs/components/photodiode.cpp" line="-10"/>
-        <location filename="../qucs/components/MESFET.cpp" line="-57"/>
         <source>energy gap</source>
         <translation>enerji boşluğu</translation>
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+1"/>
+        <location filename="../qucs/components/photodiode.cpp" line="+1"/>
         <source>eV</source>
         <translation>eV</translation>
     </message>
     <message>
-        <location filename="../qucs/components/MESFET.cpp" line="+4"/>
+        <location line="+4"/>
         <source>zero bias gate-drain junction capacitance</source>
         <translation>sıfır öngerilim geçit-boşaltma bağlantı kapasitansı</translation>
     </message>
@@ -7075,14 +7530,14 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Vto sıcaklık katsayısı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/triac.cpp" line="+2"/>
+        <location line="+2"/>
         <location filename="../qucs/components/thyristor.cpp" line="+2"/>
-        <location filename="../qucs/components/MESFET.cpp" line="+2"/>
+        <location filename="../qucs/components/triac.cpp" line="+2"/>
         <source>gate resistance</source>
         <translation>kapı direnci</translation>
     </message>
     <message>
-        <location filename="../qucs/components/MESFET.cpp" line="+1"/>
+        <location line="+1"/>
         <location line="+3"/>
         <location line="+3"/>
         <location line="+15"/>
@@ -7243,25 +7698,25 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>MOS alan etkili transistör</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mosfet_sub.cpp" line="+105"/>
-        <location filename="../qucs/components/mosfet.cpp" line="+23"/>
+        <location line="+23"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+102"/>
         <source>n-MOSFET</source>
         <translation>n-MOSFET</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <location filename="../qucs/components/mosfet.cpp" line="+10"/>
+        <location line="+10"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+11"/>
         <source>p-MOSFET</source>
         <translation>p-MOSFET</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <location filename="../qucs/components/mosfet.cpp" line="+16"/>
+        <location line="+16"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+17"/>
         <source>depletion MOSFET</source>
         <translation>bosaltım MOSFET</translation>
     </message>
     <message>
-        <location line="-227"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="-224"/>
         <source>zero-bias threshold voltage</source>
         <translation>sıfır-kutuplama eşik gerilimi</translation>
     </message>
@@ -7451,15 +7906,16 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>kaynak eklemi çevresi</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <location filename="../qucs/components/jfet.cpp" line="-84"/>
-        <location filename="../qucs/components/diode.cpp" line="-85"/>
-        <location filename="../qucs/components/bjtsub.cpp" line="-7"/>
+        <location filename="../qucs/components/bjtsub.cpp" line="-11"/>
+        <location filename="../qucs/components/diode.cpp" line="-86"/>
+        <location filename="../qucs/components/jfet.cpp" line="-88"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+12"/>
+        <location filename="../qucs/components/vdmos.cpp" line="+2"/>
         <source>Use global SPICE temperature</source>
         <translation>Global SPICE sıcaklığı kullanın</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location filename="../qucs/components/mosfet_sub.cpp" line="+12"/>
         <source>MOS field-effect transistor with substrate</source>
         <translation>Alt tabakalı MOS alan etkili transistör</translation>
     </message>
@@ -7469,47 +7925,53 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>mikrostrip köşe</translation>
     </message>
     <message>
+        <location line="+28"/>
         <location filename="../qucs/components/msmbend.cpp" line="+2"/>
-        <location filename="../qucs/components/mscorner.cpp" line="+28"/>
         <source>width of line</source>
         <translation>hattın kalınlığı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mscorner.cpp" line="+14"/>
+        <location line="+14"/>
         <source>Microstrip Corner</source>
         <translation>Mikrostrip Köşe</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mscoupled.cpp" line="-39"/>
+        <location filename="../qucs/components/mscoupled.cpp" line="-40"/>
         <source>coupled microstrip line</source>
         <translation>çiftlenmiş mikrostrip hat</translation>
     </message>
     <message>
+        <location line="+42"/>
         <location filename="../qucs/components/mslange.cpp" line="+2"/>
-        <location filename="../qucs/components/mscoupled.cpp" line="+41"/>
         <source>spacing between the lines</source>
         <translation>hatlar arasındaki aralık</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/mscoupled.cpp" line="+2"/>
+        <location filename="../qucs/components/mslange.cpp" line="+2"/>
         <source>microstrip model</source>
         <translation>mikrostrip modeli</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mstee.cpp" line="+7"/>
-        <location filename="../qucs/components/msstep.cpp" line="+9"/>
-        <location filename="../qucs/components/msopen.cpp" line="+5"/>
-        <location filename="../qucs/components/msline.cpp" line="+5"/>
-        <location filename="../qucs/components/mslange.cpp" line="+2"/>
-        <location filename="../qucs/components/msgap.cpp" line="+11"/>
+        <location line="+2"/>
         <location filename="../qucs/components/mscross.cpp" line="+9"/>
-        <location filename="../qucs/components/mscoupled.cpp" line="+2"/>
+        <location filename="../qucs/components/msgap.cpp" line="+11"/>
+        <location filename="../qucs/components/mslange.cpp" line="+2"/>
+        <location filename="../qucs/components/msline.cpp" line="+5"/>
+        <location filename="../qucs/components/msopen.cpp" line="+5"/>
+        <location filename="../qucs/components/msstep.cpp" line="+9"/>
+        <location filename="../qucs/components/mstee.cpp" line="+7"/>
         <source>microstrip dispersion model</source>
         <translation>mikrostrip dagılım (dispersiyon) modeli</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mscoupled.cpp" line="+17"/>
+        <location line="+5"/>
+        <location filename="../qucs/components/msline.cpp" line="+5"/>
+        <source>Transisent model</source>
+        <translation>Geçici durum modeli</translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>Coupled Microstrip Line</source>
         <translation>Çiftlenmiş Mikrostrip Hat</translation>
     </message>
@@ -7519,34 +7981,34 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>mikrostrip çapraz</translation>
     </message>
     <message>
+        <location line="+13"/>
         <location filename="../qucs/components/mstee.cpp" line="-5"/>
-        <location filename="../qucs/components/mscross.cpp" line="+13"/>
         <source>width of line 3</source>
         <translation>3. hattın genişliği</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mscross.cpp" line="+2"/>
+        <location line="+2"/>
         <source>width of line 4</source>
         <translation>4. hattın genişliği</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mstee.cpp" line="+2"/>
-        <location filename="../qucs/components/msstep.cpp" line="-3"/>
-        <location filename="../qucs/components/msopen.cpp" line="-3"/>
-        <location filename="../qucs/components/msline.cpp" line="-3"/>
+        <location line="+2"/>
         <location filename="../qucs/components/msgap.cpp" line="-3"/>
-        <location filename="../qucs/components/mscross.cpp" line="+2"/>
+        <location filename="../qucs/components/msline.cpp" line="-8"/>
+        <location filename="../qucs/components/msopen.cpp" line="-3"/>
+        <location filename="../qucs/components/msstep.cpp" line="-3"/>
+        <location filename="../qucs/components/mstee.cpp" line="+2"/>
         <source>quasi-static microstrip model</source>
         <translation>yarı-durgun mikrostrip model</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <location filename="../qucs/components/mscross.cpp" line="+6"/>
+        <location line="+6"/>
+        <location filename="../qucs/components/mstee.cpp" line="+8"/>
         <source>show port numbers in symbol or not</source>
         <translation>simgede uç numaralarını göster ya da gösterme</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mscross.cpp" line="+17"/>
+        <location line="+17"/>
         <source>Microstrip Cross</source>
         <translation>Mikrostrip Çapraz</translation>
     </message>
@@ -7586,12 +8048,12 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Mikroşerit Lange Kuplör</translation>
     </message>
     <message>
-        <location filename="../qucs/components/msline.cpp" line="-28"/>
+        <location filename="../qucs/components/msline.cpp" line="-29"/>
         <source>microstrip line</source>
         <translation>mikrostrip hat</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+52"/>
         <source>Microstrip Line</source>
         <translation>Mikrostrip Hat</translation>
     </message>
@@ -7606,12 +8068,12 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Mikrostrip Destekli Kıvrım</translation>
     </message>
     <message>
-        <location filename="../qucs/components/msopen.cpp" line="-25"/>
+        <location filename="../qucs/components/msopen.cpp" line="-26"/>
         <source>microstrip open</source>
         <translation>mikrostrip açık</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+32"/>
         <source>microstrip open end model</source>
         <translation>mikrostrip açık uç modeli</translation>
     </message>
@@ -7656,14 +8118,14 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Model</translation>
     </message>
     <message>
+        <location line="-4"/>
         <location filename="../qucs/components/potentiometer.cpp" line="-9"/>
         <location line="+7"/>
-        <location filename="../qucs/components/msrstub.cpp" line="-4"/>
         <source>degrees</source>
         <translation>derece</translation>
     </message>
     <message>
-        <location filename="../qucs/components/msrstub.cpp" line="+18"/>
+        <location line="+18"/>
         <source>Microstrip Radial Stub</source>
         <translation>Mikroşerit Radyal Saplama</translation>
     </message>
@@ -7723,25 +8185,25 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>karşılıklı iki sargı</translation>
     </message>
     <message>
+        <location line="+37"/>
         <location filename="../qucs/components/mutual2.cpp" line="+86"/>
-        <location filename="../qucs/components/mutual.cpp" line="+37"/>
         <source>inductance of coil 1</source>
         <translation>sargı 1&apos; in dogusturu etkisi (endüktans)</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/mutual.cpp" line="+2"/>
+        <location filename="../qucs/components/mutual2.cpp" line="+2"/>
         <source>inductance of coil 2</source>
         <translation>sargı 2&apos; nin dogusturu etkisi (endüktansı)</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location filename="../qucs/components/mutual.cpp" line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/components/mutual2.cpp" line="+4"/>
         <source>coupling factor between coil 1 and 2</source>
         <translation>sargı 1 ve 2 arasındaki çiftlenim çarpanı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/mutual.cpp" line="+14"/>
+        <location line="+14"/>
         <source>Mutual Inductors</source>
         <translation>Karşılıklı Sargılar</translation>
     </message>
@@ -7947,45 +8409,45 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>NIGBT</translation>
     </message>
     <message>
-        <location filename="../qucs/components/noise_vv.cpp" line="-51"/>
-        <location filename="../qucs/components/noise_iv.cpp" line="-57"/>
         <location filename="../qucs/components/noise_ii.cpp" line="-63"/>
+        <location filename="../qucs/components/noise_iv.cpp" line="-57"/>
+        <location filename="../qucs/components/noise_vv.cpp" line="-51"/>
         <source>correlated current sources</source>
         <translation>Bağlantılı/ilişkili akım kaynakları</translation>
     </message>
     <message>
+        <location line="+53"/>
         <location filename="../qucs/components/noise_iv.cpp" line="+47"/>
-        <location filename="../qucs/components/noise_ii.cpp" line="+53"/>
         <source>current power spectral density of source 1</source>
         <translation>1. kaynağın akım gücü yelpaze yoğunluğu</translation>
     </message>
     <message>
-        <location filename="../qucs/components/noise_ii.cpp" line="+2"/>
+        <location line="+2"/>
         <source>current power spectral density of source 2</source>
         <translation>2. kaynağın akım gücü yelpaze yoğunluğu</translation>
     </message>
     <message>
-        <location filename="../qucs/components/noise_vv.cpp" line="+45"/>
+        <location line="+2"/>
         <location filename="../qucs/components/noise_iv.cpp" line="+4"/>
-        <location filename="../qucs/components/noise_ii.cpp" line="+2"/>
+        <location filename="../qucs/components/noise_vv.cpp" line="+45"/>
         <source>normalized correlation coefficient</source>
         <translation>düzgeleme (normalize) ilişki sabiti</translation>
     </message>
     <message>
         <location line="+20"/>
         <location filename="../qucs/components/noise_iv.cpp" line="+20"/>
-        <location filename="../qucs/components/noise_ii.cpp" line="+20"/>
+        <location filename="../qucs/components/noise_vv.cpp" line="+20"/>
         <source>Correlated Noise Sources</source>
         <translation>Bağlantılı/ilişkili Gürültü Kaynakları</translation>
     </message>
     <message>
-        <location line="-22"/>
         <location filename="../qucs/components/noise_iv.cpp" line="-22"/>
+        <location filename="../qucs/components/noise_vv.cpp" line="-22"/>
         <source>voltage power spectral density of source 2</source>
         <translation>kaynak 2 deki gerilim gücü yelpaze yoğunluğu</translation>
     </message>
     <message>
-        <location line="-2"/>
+        <location filename="../qucs/components/noise_vv.cpp" line="-2"/>
         <source>voltage power spectral density of source 1</source>
         <translation>kaynak 1 deki gerilim gücü yelpaze yoğunluğu</translation>
     </message>
@@ -8020,14 +8482,14 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>2bit desen üreteci verilog cihazı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/pad4bit.cpp" line="+19"/>
+        <location line="+3"/>
         <location filename="../qucs/components/pad3bit.cpp" line="+19"/>
-        <location filename="../qucs/components/pad2bit.cpp" line="+3"/>
+        <location filename="../qucs/components/pad4bit.cpp" line="+19"/>
         <source>pad output value</source>
         <translation>ped çıkış değeri</translation>
     </message>
     <message>
-        <location filename="../qucs/components/pad2bit.cpp" line="+20"/>
+        <location line="+20"/>
         <source>2Bit Pattern</source>
         <translation>2Bit Desen</translation>
     </message>
@@ -8063,25 +8525,25 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>üzerinde değişken süpürümünün uygulanacağı benzetim</translation>
     </message>
     <message>
+        <location line="+4"/>
         <location filename="../qucs/spicecomponents/sp_sens.cpp" line="+2"/>
-        <location filename="../qucs/components/param_sweep.cpp" line="+4"/>
         <source>parameter to sweep</source>
         <translation>süpürülecek değişken</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/param_sweep.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_sens.cpp" line="+2"/>
         <source>start value for sweep</source>
         <translation>süpürüm için başlangıç değeri</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/param_sweep.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_sens.cpp" line="+2"/>
         <source>stop value for sweep</source>
         <translation>süpürüm için başlangıç değeri</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_sens.cpp" line="+2"/>
         <source>Simulation step</source>
         <translation>Simülasyon adımı</translation>
     </message>
@@ -8121,13 +8583,13 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>duyarlılık</translation>
     </message>
     <message>
+        <location line="+1"/>
         <location filename="../qucs/components/phototransistor.cpp" line="+30"/>
-        <location filename="../qucs/components/photodiode.cpp" line="+1"/>
         <source>A/W</source>
         <translation>A/W</translation>
     </message>
     <message>
-        <location filename="../qucs/components/photodiode.cpp" line="+2"/>
+        <location line="+2"/>
         <source>shunt resistance</source>
         <translation>şönt direnci</translation>
     </message>
@@ -8226,26 +8688,26 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>taşıyıcı genliği</translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/spicecomponents/isffm.cpp" line="+62"/>
+        <location filename="../qucs/spicecomponents/vsffm.cpp" line="+2"/>
         <source>carrier signal frequency</source>
         <translation>taşıyıcı sinyal frekansı</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/spicecomponents/isffm.cpp" line="+2"/>
         <location filename="../qucs/components/pm_modulator.cpp" line="+21"/>
+        <location filename="../qucs/spicecomponents/isffm.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/vsffm.cpp" line="+2"/>
         <source>modulation index</source>
         <translation>değişim (modülasyon) indisi</translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/spicecomponents/isffm.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/vsffm.cpp" line="+2"/>
         <source>modulating signal frequency</source>
         <translation>modüle edici sinyal frekansı</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location filename="../qucs/spicecomponents/vsffm.cpp" line="+16"/>
         <source>V(SFFM)</source>
         <translation>V(SFFM)</translation>
     </message>
@@ -8320,7 +8782,7 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>SPICE T:</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+35"/>
         <source>Characteristic impedance</source>
         <translation>Karakteristik empedans</translation>
     </message>
@@ -8360,8 +8822,8 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Son 2&apos;deki ilk akım</translation>
     </message>
     <message>
-        <location line="+15"/>
         <location filename="../qucs/components/potentiometer.cpp" line="+1"/>
+        <location filename="../qucs/spicecomponents/LTL_SPICE.cpp" line="+14"/>
         <source>T</source>
         <translation>T</translation>
     </message>
@@ -8387,12 +8849,12 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>sıcaklık modeli için malzeme parametresi</translation>
     </message>
     <message>
-        <location filename="../qucs/components/relais.cpp" line="-50"/>
+        <location filename="../qucs/components/relais.cpp" line="-16"/>
         <source>relay</source>
         <translation>gecikme</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+8"/>
         <source>threshold voltage in Volts</source>
         <translation>Volt cinsinden eşik gerilimi</translation>
     </message>
@@ -8412,22 +8874,37 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>&quot;kapalı&quot; durumunun Ohm cinsinden direnci</translation>
     </message>
     <message>
-        <location line="+54"/>
-        <source>Relay</source>
-        <translation>Gecikme</translation>
+        <location line="+4"/>
+        <location filename="../qucs/components/switch.cpp" line="+51"/>
+        <source>Switch type)</source>
+        <translation>Anahtar türü</translation>
     </message>
     <message>
-        <location filename="../qucs/components/resistor.cpp" line="-15"/>
+        <location line="+116"/>
+        <source>Relay SPST</source>
+        <translation>Röle SPST</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Relay SPDT</source>
+        <translation>Röle SPDT</translation>
+    </message>
+    <message>
+        <source>Relay</source>
+        <translation type="vanished">Gecikme</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/resistor.cpp" line="-25"/>
         <source>resistor</source>
         <translation>direnç</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+6"/>
         <source>ohmic resistance in Ohms</source>
         <translation>Ohm cinsinden omik direnç</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+8"/>
         <source>first order temperature coefficient</source>
         <translation>birinci derece sıcaklık katsayısı</translation>
     </message>
@@ -8437,12 +8914,12 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>ikinci derece sıcaklık katsayısı</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>temperature at which parameters were extracted (Qucsator only)</source>
         <translation>parametrelerin çıkarıldığı sıcaklık (yalnızca Qucsator)</translation>
     </message>
     <message>
-        <location line="+106"/>
+        <location line="+107"/>
         <source>Resistor</source>
         <translation>Direnç (EU)</translation>
     </message>
@@ -8457,41 +8934,43 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>eşitlikle tanımlanmış RF devre elemanı</translation>
     </message>
     <message>
+        <location line="+8"/>
         <location filename="../qucs/components/rfedd2p.cpp" line="+36"/>
-        <location filename="../qucs/components/rfedd.cpp" line="+8"/>
         <source>type of parameters</source>
         <translation>değişkenlerin çeşidi</translation>
     </message>
     <message>
+        <location line="+2"/>
         <location filename="../qucs/components/sparamfile.cpp" line="+7"/>
-        <location filename="../qucs/components/rfedd.cpp" line="+2"/>
+        <location filename="../qucs/components/spdeembed.cpp" line="+7"/>
         <source>number of ports</source>
         <translation>giriş/çıkış uç sayısı</translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="+2"/>
         <location filename="../qucs/components/rfedd2p.cpp" line="+2"/>
-        <location filename="../qucs/components/rfedd.cpp" line="+2"/>
+        <location filename="../qucs/components/sparamfile.cpp" line="-5"/>
+        <location filename="../qucs/components/spdeembed.cpp" line="-5"/>
         <source>representation during DC analysis</source>
         <translation>DC hesabı süresince gösterim</translation>
     </message>
     <message>
-        <location filename="../qucs/components/rfedd2p.cpp" line="+5"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location line="+2"/>
-        <location filename="../qucs/components/rfedd.cpp" line="+5"/>
+        <location line="+5"/>
         <location line="+2"/>
         <location line="+2"/>
         <location line="+2"/>
         <location line="+83"/>
         <location line="+5"/>
         <location line="+9"/>
+        <location filename="../qucs/components/rfedd2p.cpp" line="+5"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
         <source>parameter equation</source>
         <translation>değişken eşitliği</translation>
     </message>
     <message>
-        <location filename="../qucs/components/rfedd.cpp" line="-79"/>
+        <location line="-79"/>
         <source>Equation Defined RF Device</source>
         <translation>Eşitlikle Tanımlanmış RF Devre Elemanı</translation>
     </message>
@@ -8583,16 +9062,21 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
     <message>
         <location line="+2"/>
         <source>(available) ac power in dBm</source>
-        <translation type="unfinished"></translation>
+        <translation>(kullanılabilir) AC güç, dBm cinsinden</translation>
     </message>
     <message>
         <source>(available) ac power in Watts</source>
         <translation type="vanished">(Olanaklı) AC güç, W</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+9"/>
         <source>enable transient model as sine source [true,false]</source>
         <translation>sinüs kaynağı olarak geçici modeli etkinleştir [true,false]</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>disable as a source (AC and transient), passive termination only [true,false]</source>
+        <translation>kaynak olarak devre dışı bırak (AC ve geçici durum), yalnızca pasif sonlandırma [true,false]</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -8641,11 +9125,13 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
     </message>
     <message>
         <location line="+9"/>
+        <location filename="../qucs/components/spdeembed.cpp" line="-6"/>
         <source>name of the s parameter file</source>
         <translation>s değişken dosyasının ismi</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../qucs/components/spdeembed.cpp" line="+2"/>
         <source>data type</source>
         <translation>veri çeşidi</translation>
     </message>
@@ -8666,6 +9152,7 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
     </message>
     <message>
         <location line="+75"/>
+        <location filename="../qucs/components/spdeembed.cpp" line="+104"/>
         <source>file</source>
         <translation>dosya</translation>
     </message>
@@ -8690,13 +9177,13 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>spice</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="+443"/>
-        <location filename="../qucs/components/spicefile.cpp" line="+68"/>
+        <location line="+68"/>
+        <location filename="../qucs/schematic_file.cpp" line="+455"/>
         <source>ERROR: No file name in SPICE component &quot;%1&quot;.</source>
         <translation>HATA: SPICE bileşeni &quot;%1&quot; de dosya ismi yok.</translation>
     </message>
     <message>
-        <location filename="../qucs/components/spicefile.cpp" line="+10"/>
+        <location line="+10"/>
         <source>ERROR: Cannot open SPICE file &quot;%1&quot;.</source>
         <translation>HATA: SPICE dosyası &quot;%1&quot; açılamıyor.</translation>
     </message>
@@ -8711,13 +9198,13 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>HATA: Çevrilmiş SPICE dosyası &quot;%1&quot; açılamıyor.</translation>
     </message>
     <message>
-        <location filename="../qucs/mouseactions.cpp" line="+1010"/>
-        <location filename="../qucs/components/spicefile.cpp" line="+81"/>
+        <location line="+81"/>
+        <location filename="../qucs/mouseactions.cpp" line="+886"/>
         <source>Info</source>
         <translation>Bilgi</translation>
     </message>
     <message>
-        <location filename="../qucs/components/spicefile.cpp" line="+1"/>
+        <location line="+1"/>
         <source>Preprocessing SPICE file &quot;%1&quot;.</source>
         <translation>&quot;%1&quot; SPICE dosyası işleniyor.</translation>
     </message>
@@ -8742,7 +9229,7 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>&quot;%1&quot; SPICE dosyası çevriliyor.</translation>
     </message>
     <message>
-        <location filename="../qucs/components/subcircuit.cpp" line="+30"/>
+        <location filename="../qucs/components/subcircuit.cpp" line="+31"/>
         <source>subcircuit</source>
         <translation>alt-devre</translation>
     </message>
@@ -8781,12 +9268,12 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Alt-devre Ucu</translation>
     </message>
     <message>
-        <location filename="../qucs/components/substrate.cpp" line="-44"/>
+        <location filename="../qucs/components/substrate.cpp" line="-45"/>
         <source>substrate definition</source>
         <translation>substrat (alt tabaka) tanımlaması</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+39"/>
         <source>relative permittivity</source>
         <translation>göreli geçirgenlik</translation>
     </message>
@@ -8811,19 +9298,19 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>rms alttabaka kabalığı/pürüzlülügü</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <location filename="../qucs/components/spiralinductor.cpp" line="-13"/>
         <location filename="../qucs/components/circularloop.cpp" line="-6"/>
+        <location filename="../qucs/components/spiralinductor.cpp" line="-13"/>
+        <location filename="../qucs/components/substrate.cpp" line="+14"/>
         <source>Substrate</source>
         <translation>Substrat (alt tabaka)</translation>
     </message>
     <message>
-        <location filename="../qucs/components/switch.cpp" line="+25"/>
+        <location filename="../qucs/components/switch.cpp" line="-26"/>
         <source>switch (time controlled)</source>
         <translation>anahtar (zaman denetimli)</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+6"/>
         <source>initial state</source>
         <translation>ilk durum</translation>
     </message>
@@ -8843,30 +9330,39 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>&quot;kapalı&quot; durumunun ohm cinsinden direnci</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/resistor.cpp" line="-122"/>
-        <location filename="../qucs/components/indq.cpp" line="+75"/>
-        <location filename="../qucs/components/capq.cpp" line="+74"/>
+        <location line="+36"/>
+        <source>Switch SPST</source>
+        <translation>Anahtar SPST</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Swtich SPDT</source>
+        <translation>Anahtar SPDT</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/capq.cpp" line="+75"/>
+        <location filename="../qucs/components/indq.cpp" line="+82"/>
+        <location filename="../qucs/components/resistor.cpp" line="-127"/>
+        <location filename="../qucs/components/switch.cpp" line="-41"/>
         <source>simulation temperature in degree Celsius (Qucsator only)</source>
         <translation>Santigrat derece cinsinden simülasyon sıcaklığı (yalnızca Qucsator)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/switch.cpp" line="+4"/>
         <source>Max possible switch transition time (transition time 1/100 smallest value in &apos;time&apos;, or this number)</source>
         <translation>Mümkün olan maksimum anahtar geçiş süresi (geçiş süresi 1/100 &apos;zaman&apos;daki en küçük değer veya bu sayı)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Resistance transition shape (Qucsator only)</source>
         <translation>Direnç geçiş şekli (sadece Qucsator)</translation>
     </message>
     <message>
-        <location line="+22"/>
         <source>Switch</source>
-        <translation>Anahtar</translation>
+        <translation type="vanished">Anahtar</translation>
     </message>
     <message>
-        <location filename="../qucs/components/symtrafo.cpp" line="+27"/>
+        <location filename="../qucs/components/symtrafo.cpp" line="+28"/>
         <source>ideal symmetrical transformer</source>
         <translation>fikirsel benzeşimli dönüştürücü (transformatör)</translation>
     </message>
@@ -8916,20 +9412,20 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Tristör</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tline.cpp" line="-29"/>
+        <location filename="../qucs/components/tline.cpp" line="-30"/>
         <source>ideal transmission line</source>
         <translation>fikirsel iletim hattı</translation>
     </message>
     <message>
+        <location line="+28"/>
         <location filename="../qucs/components/tline_4port.cpp" line="-2"/>
-        <location filename="../qucs/components/tline.cpp" line="+27"/>
         <source>characteristic impedance</source>
         <translation>kendine has (karakteristik) özdirenç</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location filename="../qucs/components/tline.cpp" line="+4"/>
         <location filename="../qucs/components/taperedline.cpp" line="-2"/>
+        <location filename="../qucs/components/tline.cpp" line="+4"/>
+        <location filename="../qucs/components/tline_4port.cpp" line="+4"/>
         <source>attenuation factor per length in 1/m</source>
         <translation>1/m cinsinden uzunluk başına zayıflama katsayısı</translation>
     </message>
@@ -8939,17 +9435,17 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>İletim Hattı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tline_4port.cpp" line="-35"/>
+        <location filename="../qucs/components/tline_4port.cpp" line="-36"/>
         <source>ideal 4-terminal transmission line</source>
         <translation>mükemmel 4-uçlu iletim hattı</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+52"/>
         <source>4-Terminal Transmission Line</source>
         <translation>4-Uçlu İletim Hattı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/tr_sim.cpp" line="-48"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="-55"/>
         <source>transient simulation</source>
         <translation>kalımsız benzetim</translation>
     </message>
@@ -8964,19 +9460,19 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Analiz modu</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+10"/>
+        <location filename="../qucs/components/tr_sim.cpp" line="+13"/>
+        <location filename="../qucs/spicecomponents/sp_sens_tr_xyce.cpp" line="+2"/>
         <source>start time in seconds</source>
         <translation>saniye cinsinden başlangıç zamanı</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/components/tr_sim.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_sens_tr_xyce.cpp" line="+2"/>
         <source>stop time in seconds</source>
         <translation>saniye cinsinden durma zamanı</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_sens_tr_xyce.cpp" line="+2"/>
         <source>simulation time step</source>
         <translation>simülasyon zaman adımı</translation>
     </message>
@@ -8991,7 +9487,8 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>benzetim zaman adımlarının sayısı</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+36"/>
+        <location filename="../qucs/spicecomponents/sp_spectrum.cpp" line="+40"/>
         <source>perform initial DC (set &quot;no&quot; to activate UIC)</source>
         <translation>ilk DC&apos;yi gerçekleştirin (UIC&apos;yi etkinleştirmek için &quot;hayır&quot; olarak ayarlayın)</translation>
     </message>
@@ -9001,12 +9498,12 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Kalımsız benzetim</translation>
     </message>
     <message>
-        <location filename="../qucs/components/transformer.cpp" line="+24"/>
+        <location filename="../qucs/components/transformer.cpp" line="+27"/>
         <source>ideal transformer</source>
         <translation>fikirsel dönüştürücü (transformatör)</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+40"/>
         <source>voltage transformation ratio</source>
         <translation>gerilim dönüşüm oranı</translation>
     </message>
@@ -9142,12 +9639,12 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Sembol dosyası bulunamadı: %1</translation>
     </message>
     <message>
-        <location filename="../qucs/components/vccs.cpp" line="-41"/>
+        <location filename="../qucs/components/vccs.cpp" line="-45"/>
         <source>voltage controlled current source</source>
         <translation>gerilim denetimli akım kaynağı</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+44"/>
         <source>forward transconductance</source>
         <translation>ileri tersiletkenlik</translation>
     </message>
@@ -9157,7 +9654,7 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Gerilim Denetimli Akım Kaynağı</translation>
     </message>
     <message>
-        <location filename="../qucs/components/vcvs.cpp" line="-43"/>
+        <location filename="../qucs/components/vcvs.cpp" line="-51"/>
         <source>voltage controlled voltage source</source>
         <translation>gerilim denetimli gerilim kaynağı</translation>
     </message>
@@ -9177,7 +9674,7 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Gerilim Kontrollü Direnç</translation>
     </message>
     <message>
-        <location filename="../qucs/components/vcvs.cpp" line="+57"/>
+        <location filename="../qucs/components/vcvs.cpp" line="+65"/>
         <source>Voltage Controlled Voltage Source</source>
         <translation>Gerilim Denetimli Gerilim Kaynağı</translation>
     </message>
@@ -9198,15 +9695,15 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>verilog</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="+47"/>
+        <location line="+45"/>
         <location filename="../qucs/components/vhdlfile.cpp" line="+221"/>
-        <location filename="../qucs/components/verilogfile.cpp" line="+45"/>
+        <location filename="../qucs/schematic_file.cpp" line="+47"/>
         <source>ERROR: No file name in %1 component &quot;%2&quot;.</source>
         <translation>HATA: %1 bileşeni &quot;%2&quot; de dosya ismi yok.</translation>
     </message>
     <message>
+        <location line="+11"/>
         <location filename="../qucs/components/vhdlfile.cpp" line="+11"/>
-        <location filename="../qucs/components/verilogfile.cpp" line="+11"/>
         <source>ERROR: Cannot open %1 file &quot;%2&quot;.</source>
         <translation>HATA: %1 dosyası &quot;%2&quot; açılamıyor.
 </translation>
@@ -9284,8 +9781,8 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>AC gerilim kaynağı (SPICE)</translation>
     </message>
     <message>
-        <location line="+44"/>
         <location filename="../qucs/components/volt_ac.cpp" line="+54"/>
+        <location filename="../qucs/spicecomponents/volt_ac_SPICE.cpp" line="+44"/>
         <source>ac Voltage Source</source>
         <translation>ac Gerilim Kaynağı</translation>
     </message>
@@ -9340,7 +9837,7 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>darbenin gerilimi</translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+49"/>
         <source>Voltage Pulse</source>
         <translation>Gerilim Darbesi</translation>
     </message>
@@ -9370,13 +9867,13 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Yer Eğrisi</translation>
     </message>
     <message>
-        <location filename="../qucs/diagrams/diagram.h" line="+29"/>
+        <location filename="../qucs/diagrams/diagram.h" line="+30"/>
         <source> &lt;invalid&gt;</source>
         <translation> &lt;geçersiz&gt;</translation>
     </message>
     <message>
+        <location filename="../qucs/diagrams/marker.cpp" line="+300"/>
         <location filename="../qucs/diagrams/tabdiagram.cpp" line="+264"/>
-        <location filename="../qucs/diagrams/marker.cpp" line="+278"/>
         <source>invalid</source>
         <translation>geçersiz</translation>
     </message>
@@ -9416,17 +9913,17 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Smith Geçirgenlik</translation>
     </message>
     <message>
-        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+88"/>
-        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+165"/>
         <location filename="../qucs/diagrams/tabdiagram.cpp" line="-95"/>
+        <location filename="../qucs/diagrams/timingdiagram.cpp" line="+165"/>
+        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+88"/>
         <source>no variables</source>
         <translation>değişken yok</translation>
     </message>
     <message>
-        <location line="+133"/>
+        <location line="+144"/>
         <location filename="../qucs/diagrams/timingdiagram.cpp" line="+49"/>
         <location line="+89"/>
-        <location filename="../qucs/diagrams/tabdiagram.cpp" line="+144"/>
+        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+133"/>
         <source>wrong dependency</source>
         <translation>hatalı bağımlılık</translation>
     </message>
@@ -9434,12 +9931,12 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <location line="+7"/>
         <location filename="../qucs/diagrams/timingdiagram.cpp" line="-122"/>
         <location line="+113"/>
-        <location filename="../qucs/diagrams/tabdiagram.cpp" line="+7"/>
+        <location filename="../qucs/diagrams/truthdiagram.cpp" line="+7"/>
         <source>no data</source>
         <translation>veri yok</translation>
     </message>
     <message>
-        <location filename="../qucs/diagrams/tabdiagram.cpp" line="+98"/>
+        <location line="+98"/>
         <source>Tabular</source>
         <translation>Tablo</translation>
     </message>
@@ -9454,7 +9951,7 @@ Yanlış &quot;bileşen-component&quot; satır biçimi!</translation>
         <translation>Doğruluk Tablosu</translation>
     </message>
     <message>
-        <location filename="../qucs/dialogs/librarydialog.cpp" line="-304"/>
+        <location filename="../qucs/dialogs/librarydialog.cpp" line="-303"/>
         <source>ERROR: Cannot open file &quot;%1&quot;.
 </source>
         <translation>HATA: &quot;%1&quot; dosyası açılamıyor.
@@ -9499,39 +9996,39 @@ Overwrite ?</source>
         <translation>Inkscape başlatma hatası!</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+3450"/>
+        <location filename="../qucs/qucs.cpp" line="-752"/>
         <source>Successfully exported</source>
         <translation>Başarıyla dışa aktarıldı</translation>
     </message>
     <message>
-        <location filename="../qucs/imagewriter.cpp" line="+13"/>
         <location filename="../qucs/extsimkernels/externsimdialog.cpp" line="+67"/>
+        <location filename="../qucs/imagewriter.cpp" line="+13"/>
         <source>Disk write error!</source>
         <translation>Disk yazma hatası!</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location filename="../qucs/imagewriter.cpp" line="+5"/>
         <source>Unsupported format of graphics file. 
 Use PNG, JPEG or SVG graphics!</source>
         <translation>Desteklenmeyen grafik dosyası biçimi.
 PNG, JPEG veya SVG grafiklerini kullanın!</translation>
     </message>
     <message>
-        <location filename="../qucs/misc.cpp" line="+420"/>
+        <location filename="../qucs/misc.cpp" line="+452"/>
         <location line="+64"/>
         <source>Error: Wrong time format in &quot;%1&quot;. Use positive number with units</source>
         <translation>Hata: &quot;%1&quot; de zaman biçimi yanlış. Birimi olan artı değerlikli sayı kulanın</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="+128"/>
-        <location line="+20"/>
-        <location filename="../qucs/qucs.cpp" line="-2552"/>
-        <location filename="../qucs/module.cpp" line="+128"/>
+        <location filename="../qucs/module.cpp" line="+149"/>
+        <location filename="../qucs/qucs.cpp" line="-2808"/>
+        <location filename="../qucs/qucs_actions.cpp" line="+154"/>
+        <location line="+21"/>
         <source>verilog-a user devices</source>
         <translation>verilog-a kullanıcı cihazları</translation>
     </message>
     <message>
-        <location filename="../qucs/module.cpp" line="+68"/>
+        <location line="+68"/>
         <location line="+2"/>
         <source>lumped components</source>
         <translation>topaklanmış bileşenler</translation>
@@ -9593,11 +10090,12 @@ PNG, JPEG veya SVG grafiklerini kullanın!</translation>
     </message>
     <message>
         <location line="+4"/>
+        <location line="+340"/>
         <source>equations</source>
         <translation>denklemler</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="-330"/>
         <source>SPICE components</source>
         <translation>SPICE bileşenleri</translation>
     </message>
@@ -9618,44 +10116,64 @@ PNG, JPEG veya SVG grafiklerini kullanın!</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>magnetic cores</source>
+        <translation>manyetik nüveler</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <location line="+2"/>
         <location line="+2"/>
         <source>Qucs legacy devices</source>
         <translation>Qucs eski cihazlar</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+1776"/>
-        <location line="+91"/>
-        <location line="+862"/>
-        <location filename="../qucs/module.cpp" line="-24"/>
+        <location line="-26"/>
         <location line="+4"/>
+        <location filename="../qucs/qucs.cpp" line="+1948"/>
+        <location line="+96"/>
+        <location line="+1071"/>
         <source>diagrams</source>
         <translation>diyagramlar</translation>
     </message>
     <message>
-        <location line="-2861"/>
-        <location filename="../qucs/module.cpp" line="+2"/>
         <location line="+2"/>
+        <location line="+2"/>
+        <location filename="../qucs/qucs.cpp" line="-3253"/>
         <source>paintings</source>
         <translation>tablolar</translation>
     </message>
     <message>
-        <location filename="../qucs/module.cpp" line="+2"/>
+        <location line="+2"/>
         <source>external sim components</source>
         <translation>harici sim bileşenleri</translation>
     </message>
     <message>
-        <location filename="../qucs/mouseactions.cpp" line="-142"/>
+        <location filename="../qucs/mouseactions.cpp" line="-168"/>
+        <source>Set Net Properties...</source>
+        <translation>Net Özelliklerini Ayarla...</translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Edit Properties</source>
         <translation>Özellikleri Düzenle</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+43"/>
+        <source>Show Legend</source>
+        <translation>Göstergeyi Göster</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Export as image</source>
         <translation>Görüntü olarak dışa aktar</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+7"/>
+        <source>Copy as Image</source>
+        <translation>Görüntü Olarak Kopyala</translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>power matching</source>
         <translation>güç uyumu</translation>
     </message>
@@ -9670,67 +10188,67 @@ PNG, JPEG veya SVG grafiklerini kullanın!</translation>
         <translation>2-uç uyumu</translation>
     </message>
     <message>
-        <location line="+75"/>
+        <location line="+77"/>
         <source>The ground potential cannot be labeled!</source>
         <translation>Toprak gerilimi yaftalanamaz!</translation>
     </message>
     <message>
-        <location filename="../qucs/paintings/arrow.cpp" line="+111"/>
+        <location filename="../qucs/paintings/arrow.cpp" line="+89"/>
         <source>Arrow</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../qucs/paintings/ellipse.cpp" line="+99"/>
+        <location filename="../qucs/paintings/ellipse.cpp" line="+81"/>
         <source>Ellipse</source>
         <translation>Elips</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+9"/>
         <source>filled Ellipse</source>
         <translation>içi dolu elips</translation>
     </message>
     <message>
-        <location line="+269"/>
+        <location line="+246"/>
         <source>Edit Ellipse Properties</source>
         <translation>Elips Özelliklerini Değiştir</translation>
     </message>
     <message>
-        <location filename="../qucs/paintings/ellipsearc.cpp" line="+93"/>
+        <location filename="../qucs/paintings/ellipsearc.cpp" line="+67"/>
         <source>Elliptic Arc</source>
         <translation>Elips şeklinde yay</translation>
     </message>
     <message>
-        <location line="+304"/>
+        <location line="+308"/>
         <source>Edit Arc Properties</source>
         <translation>Yay Özelliklerini Değiştir</translation>
     </message>
     <message>
-        <location filename="../qucs/paintings/graphicline.cpp" line="+91"/>
+        <location filename="../qucs/paintings/graphicline.cpp" line="+67"/>
         <source>Line</source>
         <translation>Hat</translation>
     </message>
     <message>
-        <location line="+240"/>
+        <location line="+191"/>
         <source>Edit Line Properties</source>
         <translation>Hat Özelliklerini Değiştir</translation>
     </message>
     <message>
-        <location filename="../qucs/paintings/graphictext.cpp" line="+110"/>
+        <location filename="../qucs/paintings/graphictext.cpp" line="+73"/>
         <source>Text</source>
         <translation>Metin</translation>
     </message>
     <message>
-        <location filename="../qucs/paintings/rectangle.cpp" line="+100"/>
+        <location filename="../qucs/paintings/rectangle.cpp" line="+80"/>
         <source>Rectangle</source>
         <translation>Dik Dörtgen</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+9"/>
         <source>filled Rectangle</source>
         <translation>içi dolu dik dörtgen</translation>
     </message>
     <message>
-        <location line="+272"/>
+        <location line="+258"/>
         <source>Edit Rectangle Properties</source>
         <translation>Dik dörtgen özelliklerini değiştir</translation>
     </message>
@@ -9740,7 +10258,7 @@ PNG, JPEG veya SVG grafiklerini kullanın!</translation>
         <translation>Belge Yazdır</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-147"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-174"/>
         <source>Cannot create output file!</source>
         <translation>Çıktı dosyası oluşturulamıyor!</translation>
     </message>
@@ -9749,28 +10267,28 @@ PNG, JPEG veya SVG grafiklerini kullanın!</translation>
         <translation type="vanished">isimsiz</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="-1530"/>
-        <location line="+938"/>
+        <location filename="../qucs/schematic_file.cpp" line="-1649"/>
+        <location line="+1051"/>
         <source>Format Error:
 &apos;Painting&apos; field is not closed!</source>
         <translation>Biçim Hatası:
 &apos;Boyama-Painting&apos; alanı kapalı değil!</translation>
     </message>
     <message>
-        <location line="-920"/>
+        <location line="-936"/>
         <source>Wrong document version: </source>
         <translation>Belge sürümü yanlış:</translation>
     </message>
     <message>
-        <location line="+21"/>
-        <location line="+24"/>
+        <location line="+20"/>
+        <location line="+22"/>
         <source>Clipboard Format Error:
 Unknown field!</source>
         <translation>Not tahtası biçim hatası: 
 Bilinmeyen alan!</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+30"/>
         <source>Cannot save C++ file &quot;%1&quot;!</source>
         <translation>C++ dosyası &quot;%1&quot; kaydedilemiyor!</translation>
     </message>
@@ -9796,12 +10314,12 @@ Bilinmeyen alan!</translation>
         <translation>JSON sembol dosyası &quot;%1&quot; kaydedilemiyor!</translation>
     </message>
     <message>
-        <location line="+80"/>
+        <location line="+79"/>
         <source>Cannot save document!</source>
         <translation>Belge kaydedilemiyor!</translation>
     </message>
     <message>
-        <location line="+208"/>
+        <location line="+225"/>
         <location line="+5"/>
         <source>Format Error:
 Wrong property field limiter!</source>
@@ -9809,7 +10327,7 @@ Wrong property field limiter!</source>
 yanlış özellik alan sınırı!</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+45"/>
         <source>Format Error:
 Unknown property: </source>
         <translation>Biçim Hatası:
@@ -9830,21 +10348,21 @@ Sayı yazılması beklendi!</translation>
 &apos;Özellik-Property&apos; alanı kapatılmadı!</translation>
     </message>
     <message>
-        <location line="+68"/>
+        <location line="+49"/>
         <source>Format Error:
 &apos;Component&apos; field is not closed!</source>
         <translation>Biçim Hatası:
 &apos;Bileşen-Component&apos; alanı kapatılmadı!</translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+41"/>
         <source>Format Error:
 Wrong &apos;wire&apos; line format!</source>
         <translation>Biçim Hatası:
 Yanlış &apos;bağlantı - wire&apos; satırı!</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+38"/>
         <source>Format Error:
 &apos;Wire&apos; field is not closed!</source>
         <translation>Biçim Hatası:
@@ -9879,7 +10397,7 @@ Wrong &apos;painting&apos; line delimiter!</source>
 Yanlış &apos;boyama - painting&apos; satır ayıracı!</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <source>Format Error:
 Unknown painting!</source>
         <translation>Biçim Hatası:
@@ -9904,17 +10422,17 @@ Yanlış &apos;boyama - painting&apos; satır biçimi!</translation>
         <translation>Yanlış belge çeşidi:</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location filename="../qucs/components/component.cpp" line="-26"/>
         <location filename="../qucs/dialogs/matchdialog.cpp" line="-125"/>
         <location line="+131"/>
-        <location filename="../qucs/components/component.cpp" line="-26"/>
-        <location filename="../qucs-transcalc/qucstrans.cpp" line="+1134"/>
+        <location filename="../qucs/schematic_file.cpp" line="+9"/>
         <location filename="../qucs-filter/stepz_filter.cpp" line="+45"/>
+        <location filename="../qucs-transcalc/qucstrans.cpp" line="+1211"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="../qucs/schematic_file.cpp" line="+1"/>
         <source>Wrong document version 
 </source>
         <translation>Yanlış belge sürümü
@@ -9926,14 +10444,19 @@ Yanlış &apos;boyama - painting&apos; satır biçimi!</translation>
         <translation>Yine de açmayı denedin mi?</translation>
     </message>
     <message>
-        <location line="+50"/>
+        <location line="+44"/>
         <source>File Format Error:
 Unknown field!</source>
         <translation>Dosya Biçim Hatası:
 Bilinmeyen alan!</translation>
     </message>
     <message>
-        <location line="+316"/>
+        <location line="+315"/>
+        <source>ERROR: Component &quot;%1&quot; (%2) is not compatible with the selected simulator &quot;%3&quot;.</source>
+        <translation>HATA: &quot;%1&quot; (%2) bileşeni seçili &quot;%3&quot; simülatörüyle uyumlu değil.</translation>
+    </message>
+    <message>
+        <location line="+13"/>
         <source>ERROR: Component &quot;%1&quot; has no analog model.</source>
         <translation>HATA: Bileşen &quot;%1&quot; in analog bir modeli yok.</translation>
     </message>
@@ -9958,12 +10481,12 @@ Bilinmeyen alan!</translation>
         <translation>HATA: &quot;%1&quot;: &quot;%2&quot; kütüphane bileşeni &quot;%3 &quot;ten yüklenemiyor</translation>
     </message>
     <message>
-        <location line="+214"/>
+        <location line="+212"/>
         <source>WARNING: Ignore simulation component in subcircuit &quot;%1&quot;.</source>
         <translation>UYARI: &quot;%1&quot; alt-devresindeki benzetim bileşenini gözardı et.</translation>
     </message>
     <message>
-        <location line="+217"/>
+        <location line="+213"/>
         <source>WARNING: Equations in &quot;%1&quot; are &apos;time&apos; typed.</source>
         <translation>UYARI: &quot;%1&quot; içindeki denklemler &apos;zaman&apos; ile yazılmıştır.</translation>
     </message>
@@ -10198,45 +10721,45 @@ daha düşük geçirgenliğe ve daha büyük yüksekliğe sahip bir alt tabaka.
         <translation>BAHARAT V(TRNOISE):</translation>
     </message>
     <message>
-        <location line="+29"/>
         <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+60"/>
+        <location filename="../qucs/spicecomponents/vTRNOISE.cpp" line="+29"/>
         <source> Rms noise amplitude Gaussian)</source>
         <translation> Rms gürültü genliği Gauss)</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/vTRNOISE.cpp" line="+2"/>
         <source>Time step</source>
         <translation>Zaman adımı</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/vTRNOISE.cpp" line="+2"/>
         <source>1/f exponent (0  &lt; alpha &lt; 2)</source>
         <translation>1/f üssü (0 &lt; alfa &lt; 2)</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
-        <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/vTRNOISE.cpp" line="+2"/>
         <location line="+2"/>
         <source>Amplitude (1/f)</source>
         <translation>Genlik (1/f)</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/vTRNOISE.cpp" line="+2"/>
         <source>Trap capture time</source>
         <translation>Tuzak yakalama süresi</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/spicecomponents/iTRNOISE.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/vTRNOISE.cpp" line="+2"/>
         <source>Trap emission time</source>
         <translation>Tuzak emisyon süresi</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location filename="../qucs/spicecomponents/vTRNOISE.cpp" line="+16"/>
         <source>V(TRNOISE)</source>
         <translation>V(TRNOISE)</translation>
     </message>
@@ -10260,42 +10783,42 @@ Kullanılmadığında devam satırlarını boş bırakın.</translation>
         <translation>SPICE V(AM): sadece ngspice.</translation>
     </message>
     <message>
-        <location line="+28"/>
         <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="+55"/>
+        <location filename="../qucs/spicecomponents/vAmpMod.cpp" line="+28"/>
         <source>voltage amplitude</source>
         <translation>gerilim genliği</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/vAmpMod.cpp" line="+2"/>
         <source>offset voltage</source>
         <translation>ofset gerilimi</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/vAmpMod.cpp" line="+2"/>
         <source>modulation frequency</source>
         <translation>modülasyon frekansı</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/vAmpMod.cpp" line="+2"/>
         <source>carrier frequency</source>
         <translation>taşıyıcı frekansı</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/spicecomponents/iAmpMod.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/vAmpMod.cpp" line="+2"/>
         <source>signal delay</source>
         <translation>sinyal gecikmesi</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location filename="../qucs/spicecomponents/vAmpMod.cpp" line="+16"/>
         <source>V(AM)</source>
         <translation>V(AM)</translation>
     </message>
     <message>
-        <location filename="../qucs/spicecomponents/src_eqndef.cpp" line="+8"/>
+        <location filename="../qucs/spicecomponents/src_eqndef.cpp" line="+9"/>
         <source>SPICE B (V type):
 Multiple line ngspice or Xyce B specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.  </source>
@@ -10386,8 +10909,8 @@ Kullanılmadığında devam satırlarını boş bırakın.  </translation>
         <translation>.spiceinit içeriği</translation>
     </message>
     <message>
-        <location filename="../qucs/spicecomponents/sp_spectrum.cpp" line="+25"/>
-        <location line="+28"/>
+        <location filename="../qucs/spicecomponents/sp_spectrum.cpp" line="-15"/>
+        <location line="+29"/>
         <source>Spectrum analysis</source>
         <translation>Spektrum analizi</translation>
     </message>
@@ -10397,19 +10920,19 @@ Kullanılmadığında devam satırlarını boş bırakın.  </translation>
         <translation>Xyce ile DC .SENS simülasyonu</translation>
     </message>
     <message>
-        <location line="+9"/>
         <location filename="../qucs/spicecomponents/sp_sens_tr_xyce.cpp" line="-26"/>
+        <location filename="../qucs/spicecomponents/sp_sens_xyce.cpp" line="+9"/>
         <source>Output expressions</source>
         <translation>Çıktı ifadeleri</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs/spicecomponents/sp_sens_tr_xyce.cpp" line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_sens_xyce.cpp" line="+2"/>
         <source>Reference parameter for .SENS analysis</source>
         <translation>SENS analizi için referans parametre</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/spicecomponents/sp_sens_xyce.cpp" line="+2"/>
         <source>Parameter for DC sweep</source>
         <translation>DC tarama için parametre</translation>
     </message>
@@ -10429,9 +10952,9 @@ Kullanılmadığında devam satırlarını boş bırakın.  </translation>
         <translation>DC taraması için simülasyon adımı</translation>
     </message>
     <message>
-        <location line="+14"/>
         <location filename="../qucs/spicecomponents/sp_sens.cpp" line="-17"/>
         <location line="+31"/>
+        <location filename="../qucs/spicecomponents/sp_sens_xyce.cpp" line="+14"/>
         <source>DC sensitivity simulation</source>
         <translation>DC duyarlılık simülasyonu</translation>
     </message>
@@ -10499,6 +11022,106 @@ Kullanılmadığında devam satırlarını boş bırakın.  </translation>
         <translation>.OPTIONS Bölümü</translation>
     </message>
     <message>
+        <location line="+31"/>
+        <source>Device Model</source>
+        <translation>Aygıt Modeli</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Diagnostic Simulation Output</source>
+        <translation>Tanılama Simülasyon Çıktısı</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Time Integration</source>
+        <translation>Zaman İntegrasyonu</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Nonlinear Solver</source>
+        <translation>Doğrusal Olmayan Çözücü</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Transient Nonlinear Solver</source>
+        <translation>Geçici Durum Doğrusal Olmayan Çözücü</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>HB Nonlinear Solver</source>
+        <translation>HB Doğrusal Olmayan Çözücü</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Continuation/Bifurcation Tracking</source>
+        <translation>Süreklilik/Çatallanma İzleme</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Linear Solver</source>
+        <translation>Doğrusal Çözücü</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>HB Linear Solver</source>
+        <translation>HB Doğrusal Çözücü</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>AC Linear Solver</source>
+        <translation>AC Doğrusal Çözücü</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Output</source>
+        <translation>Çıkış</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Restart</source>
+        <translation>Yeniden Başlatma</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sampling analysis and non-intrusive Polynomial Chaos (PCE)</source>
+        <translation>Örnekleme analizi ve müdahalesiz Polinom Kaos (PCE)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>EmbeddedSampling and non-intrusive Polynomial Chaos (PCE)</source>
+        <translation>EmbeddedSampling ve müdahalesiz Polinom Kaos (PCE)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Fully intrusive Polynomial Chaos (PCE)</source>
+        <translation>Tam müdahaleci Polinom Kaos (PCE)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Direct and Adjoint sensitivities</source>
+        <translation>Doğrudan ve Eşlenik duyarlılıklar</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Harmonic Balance (HB)</source>
+        <translation>Harmonik Denge (HB)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Distribution</source>
+        <translation>Dağılım</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Measure</source>
+        <translation>Ölçüm</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Parsing</source>
+        <translation>Ayrıştırma</translation>
+    </message>
+    <message>
         <location filename="../qucs/spicecomponents/sp_nutmeg.cpp" line="+28"/>
         <source>Nutmeg equation</source>
         <translation>Küçük hindistan cevizi denklemi</translation>
@@ -10516,12 +11139,12 @@ Kullanılmadığında devam satırlarını boş bırakın.  </translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_noise.cpp" line="-15"/>
-        <location line="+34"/>
+        <location line="+36"/>
         <source>Noise simulation</source>
         <translation>Gürültü simülasyonu</translation>
     </message>
     <message>
-        <location line="-17"/>
+        <location line="-19"/>
         <source>Node at which the total output is desired</source>
         <translation>Toplam çıktının istendiği düğüm</translation>
     </message>
@@ -10529,6 +11152,11 @@ Kullanılmadığında devam satırlarını boş bırakın.  </translation>
         <location line="+2"/>
         <source>Independent source to which input noise is referred.</source>
         <translation>Giriş gürültüsünün referans alındığı bağımsız kaynak.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>If specified, the noise contributions are produced every PtsPerSummary frequency points</source>
+        <translation>Belirtilirse gürültü katkıları her PtsPerSummary frekans noktasında üretilir</translation>
     </message>
     <message>
         <location filename="../qucs/spicecomponents/sp_nodeset.cpp" line="+27"/>
@@ -10698,7 +11326,7 @@ Kullanılmadığında devam satırlarını boş bırakın.</translation>
         <translation>I(SFFM)</translation>
     </message>
     <message>
-        <location filename="../qucs/spicecomponents/incl_script.cpp" line="+27"/>
+        <location filename="../qucs/spicecomponents/incl_script.cpp" line="+28"/>
         <source>Include script before simulation</source>
         <translation>Simülasyondan önce komut dosyası ekleyin</translation>
     </message>
@@ -10868,7 +11496,7 @@ Kullanılmadığında devam satırlarını boş bırakın.  </translation>
         <translation> S(SW)</translation>
     </message>
     <message>
-        <location filename="../qucs/spicecomponents/S4Q_Ieqndef.cpp" line="+25"/>
+        <location filename="../qucs/spicecomponents/S4Q_Ieqndef.cpp" line="+26"/>
         <source>SPICE B (I type):
 Multiple line ngspice or Xyce B specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.  </source>
@@ -10971,8 +11599,8 @@ Kullanılmadığında devam satırlarını boş bırakın.</translation>
         <translation>J(PJF) JFET</translation>
     </message>
     <message>
-        <location filename="../qucs/spicecomponents/NPN_SPICE.cpp" line="+28"/>
         <location filename="../qucs/spicecomponents/BJT_SPICE.cpp" line="+28"/>
+        <location filename="../qucs/spicecomponents/NPN_SPICE.cpp" line="+28"/>
         <source>Q(NPN) BJT:
 Multiple line ngspice or Xyce Q model specifications allowed using &quot;+&quot; continuation lines.
 Leave continuation lines blank when NOT in use.</source>
@@ -10981,8 +11609,8 @@ Leave continuation lines blank when NOT in use.</source>
 Kullanılmadığında devam satırlarını boş bırakın.</translation>
     </message>
     <message>
-        <location line="+57"/>
-        <location filename="../qucs/spicecomponents/BJT_SPICE.cpp" line="+88"/>
+        <location line="+88"/>
+        <location filename="../qucs/spicecomponents/NPN_SPICE.cpp" line="+57"/>
         <source>Q(NPN) BJT</source>
         <translation>Q(NPN) BJT</translation>
     </message>
@@ -11184,7 +11812,7 @@ Kullanılmadığında devam satırlarını boş bırakın.</translation>
         <translation>Q(PNP) 5 pin</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic.cpp" line="+2679"/>
+        <location filename="../qucs/schematic.cpp" line="+2230"/>
         <source>The schematic name and dataset/display file name is not matching! This may happen if schematic was copied using the file manager instead of using File-&gt;SaveAs. Correct dataset and display names automatically?
 
 </source>
@@ -11213,7 +11841,7 @@ Kullanılmadığında devam satırlarını boş bırakın.</translation>
         <translation>Açık belge</translation>
     </message>
     <message>
-        <location filename="../qucs/extsimkernels/spicecompat.cpp" line="+394"/>
+        <location filename="../qucs/extsimkernels/spicecompat.cpp" line="+393"/>
         <source>Not Specified</source>
         <translation>Belirtilmemiş</translation>
     </message>
@@ -11244,50 +11872,50 @@ Kullanılmadığında devam satırlarını boş bırakın.</translation>
         <translation>Netlisti kaydet</translation>
     </message>
     <message>
-        <location filename="../qucs/components/indq.cpp" line="-45"/>
+        <location filename="../qucs/components/indq.cpp" line="-52"/>
         <source>Lossy inductor</source>
         <translation>Kayıplı indüktör</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+39"/>
         <source>Inductance</source>
         <translation>Endüktans</translation>
     </message>
     <message>
-        <location line="+2"/>
         <location filename="../qucs/components/capq.cpp" line="-7"/>
+        <location filename="../qucs/components/indq.cpp" line="+2"/>
         <source>Quality factor</source>
         <translation>Kalite faktörü</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/capq.cpp" line="+2"/>
+        <location line="+3"/>
+        <location filename="../qucs/components/indq.cpp" line="+4"/>
         <source>Frequency at which Q is measured</source>
         <translation>Q&apos;nun ölçüldüğü frekans</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location filename="../qucs/components/capq.cpp" line="+2"/>
+        <location line="+1"/>
+        <location filename="../qucs/components/indq.cpp" line="+2"/>
         <source>Q frequency profile</source>
         <translation>Q frekans profili</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location filename="../qucs/components/indq.cpp" line="+18"/>
         <source>Inductor with Q</source>
         <translation>Q ile İndüktör</translation>
     </message>
     <message>
-        <location filename="../qucs/components/capq.cpp" line="-42"/>
+        <location filename="../qucs/components/capq.cpp" line="-43"/>
         <source>Lossy capacitor</source>
         <translation>Kayıplı kondansatör</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+38"/>
         <source>Capacitance</source>
         <translation>Kapasitans</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+21"/>
         <source>Capacitor with Q</source>
         <translation>Q ile Kondansatör</translation>
     </message>
@@ -11360,13 +11988,13 @@ Kullanılmadığında devam satırlarını boş bırakın.</translation>
         <translation>Baskılı döngü indüktörü</translation>
     </message>
     <message>
-        <location line="+25"/>
         <location filename="../qucs/components/circline.cpp" line="-29"/>
+        <location filename="../qucs/components/circularloop.cpp" line="+25"/>
         <source>Radius</source>
         <translation>Yarıçap</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location filename="../qucs/components/circularloop.cpp" line="+17"/>
         <source>Circular loop</source>
         <translation>Dairesel döngü</translation>
     </message>
@@ -11406,7 +12034,7 @@ Kullanılmadığında devam satırlarını boş bırakın.</translation>
         <translation>Sıcaklık modeli için malzeme parametresi</translation>
     </message>
     <message>
-        <location filename="../qucs/paintings/portsymbol.cpp" line="+241"/>
+        <location filename="../qucs/paintings/portsymbol.cpp" line="+269"/>
         <location line="+35"/>
         <source>Port name</source>
         <translation>Liman adı</translation>
@@ -11428,13 +12056,13 @@ Kullanılmadığında devam satırlarını boş bırakın.</translation>
         <translation>Spiral tip</translation>
     </message>
     <message>
-        <location line="+3"/>
         <location filename="../qucs/components/circularloop.cpp" line="-19"/>
+        <location filename="../qucs/components/spiralinductor.cpp" line="+3"/>
         <source>Width of line</source>
         <translation>Çizgi genişliği</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location filename="../qucs/components/spiralinductor.cpp" line="+2"/>
         <source>Inner diameter</source>
         <translation>İç çap</translation>
     </message>
@@ -11445,6 +12073,7 @@ Kullanılmadığında devam satırlarını boş bırakın.</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../qucs/magnetics/winding.cpp" line="+70"/>
         <source>Number of turns</source>
         <translation>Dönüş sayısı</translation>
     </message>
@@ -11456,18 +12085,659 @@ Kullanılmadığında devam satırlarını boş bırakın.</translation>
     <message>
         <location filename="../qucs/spicecomponents/sp_csparameter.cpp" line="+27"/>
         <source>.CSPARAM section</source>
-        <translation type="unfinished"></translation>
+        <translation>.CSPARAM bölümü</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+6"/>
         <source>.CSPARAM</source>
-        <translation type="unfinished"></translation>
+        <translation>.CSPARAM</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>.CSPARAM Section</source>
-        <translation type="unfinished"></translation>
+        <translation>.CSPARAM Bölümü</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/monte_carlo.cpp" line="+22"/>
+        <location line="+34"/>
+        <source>Monte Carlo simulation</source>
+        <translation>Monte Carlo simülasyonu</translation>
+    </message>
+    <message>
+        <location line="-23"/>
+        <source>simulation to run the Monte Carlo analysis on</source>
+        <translation>Monte Carlo analizinin uygulanacağı simülasyon</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>number of Monte Carlo runs</source>
+        <translation>Monte Carlo çalıştırma sayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Variable name defined in .PARAM block to apply variation; or semicolon separated list of variables</source>
+        <translation>Değişimin uygulanacağı, .PARAM bloğunda tanımlı değişken adı ya da noktalı virgülle ayrılmış değişken listesi</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Initial value or semicolon separated list of values</source>
+        <translation>Başlangıç değeri ya da noktalı virgülle ayrılmış değer listesi</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Variable relative variance</source>
+        <translation>Değişkenin göreli varyansı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Sigmas number for Gauss distribution</source>
+        <translation>Gauss dağılımı için sigma sayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Distribution function [unif,gauss]</source>
+        <translation>Dağılım fonksiyonu [unif,gauss]</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/spdeembed.cpp" line="-113"/>
+        <source>S parameter file de-embedding</source>
+        <translation>S parametre dosyası ile de-embedding</translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <source>de-embedding n-port S parameter file</source>
+        <translation>de-embedding için n uçlu S parametre dosyası</translation>
+    </message>
+    <message>
+        <location line="+165"/>
+        <source>Invalid port count</source>
+        <translation>Geçersiz uç sayısı</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The file &quot;%1&quot; specifies %2 port(s).
+
+De-embedding requires an even number of ports.</source>
+        <translation>&quot;%1&quot; dosyası %2 uç tanımlıyor.
+
+De-embedding için uç sayısı çift olmalıdır.</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/systemcommand.cpp" line="+19"/>
+        <location line="+6"/>
+        <location line="+6"/>
+        <source>System Command</source>
+        <translation>Sistem Komutu</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Command</source>
+        <translation>Komut</translation>
+    </message>
+    <message>
+        <location filename="../qucs/components/vdmos.cpp" line="-113"/>
+        <source>VDMOS power transistor</source>
+        <translation>VDMOS güç transistörü</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Device multiplier</source>
+        <translation>Aygıt çarpanı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Zero-bias threshold voltage (V)</source>
+        <translation>Sıfır öngerilim eşik gerilimi (V)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Transconductance parameter (A/V^2)</source>
+        <translation>İletkenlik geçiş parametresi (A/V^2)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Surface potential (V)</source>
+        <translation>Yüzey potansiyeli (V)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Channel length modulation (1/V)</source>
+        <translation>Kanal uzunluğu modülasyonu (1/V)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Vgs influence on mobility (1/V)</source>
+        <translation>Vgs&apos;nin hareketliliğe etkisi (1/V)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>drain ohmic resistance (Ohm)</source>
+        <translation>drain omik direnci (Ohm)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>source ohmic resistance (Ohm)</source>
+        <translation>source omik direnci (Ohm)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>gate ohmic resistance (Ohm)</source>
+        <translation>gate omik direnci (Ohm)</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Quasi saturation resistance fitting parameter (Ohm)</source>
+        <translation>Yarı doyum direnci uydurma parametresi (Ohm)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Quasi saturation voltage fitting parameter (V)</source>
+        <translation>Yarı doyum gerilimi uydurma parametresi (V)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Conductance multiplier in triode region</source>
+        <translation>Triyot bölgesinde iletkenlik çarpanı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>shift along gate voltage axis in the dual parameter subthreshold model (V)</source>
+        <translation>çift parametreli eşik altı modelinde gate gerilimi ekseni boyunca kayma (V)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>slope in the single parameter subthreshold model (V)</source>
+        <translation>tek parametreli eşik altı modelinde eğim (V)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Vds breakdown voltage (V)</source>
+        <translation>Vds kırılma gerilimi (V)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Current at Vds=bv (A)</source>
+        <translation>Vds=bv iken akım (A)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Vds breakdown emission coefficient</source>
+        <translation>Vds kırılma yayım katsayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Drain-source shunt resistance</source>
+        <translation>Drain-source paralel direnci</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Body diode ohmic resistance</source>
+        <translation>Gövde diyotu omik direnci</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Body diode emission coefficient</source>
+        <translation>Gövde diyotu yayım katsayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Body diode transit time</source>
+        <translation>Gövde diyotu geçiş süresi</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Body diode activation energy for temperature effect on Is</source>
+        <translation>Gövde diyotunun Is üzerindeki sıcaklık etkisi için aktivasyon enerjisi</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Body diode saturation current temperature exponent</source>
+        <translation>Gövde diyotu doyum akımı sıcaklık üsteli</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Body diode saturation current</source>
+        <translation>Gövde diyotu doyum akımı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Body diode junction potential</source>
+        <translation>Gövde diyotu eklem potansiyeli</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Body diode coefficient for forward-bias depletion capacitance formula</source>
+        <translation>Gövde diyotu ileri öngerilim tüketim kapasitansı formülü katsayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Zero-bias body diode junction capacitance (F)</source>
+        <translation>Sıfır öngerilimde gövde diyotu eklem kapasitansı (F)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Body diode grading coefficient</source>
+        <translation>Gövde diyotu derecelendirme katsayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Minimum non-linear G-D capacitance (F)</source>
+        <translation>En küçük doğrusal olmayan G-D kapasitansı (F)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Maximum non-linear G-D capacitance (F)</source>
+        <translation>En büyük doğrusal olmayan G-D kapasitansı (F)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Non-linear Cgd capacitance parameter</source>
+        <translation>Doğrusal olmayan Cgd kapasitansı parametresi</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Gate-source capacitance (F)</source>
+        <translation>Gate-source kapasitansı (F)</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Linear Vth0 temperature coefficient</source>
+        <translation>Vth0 doğrusal sıcaklık katsayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Exponent of gain temperature dependency</source>
+        <translation>Kazancın sıcaklık bağımlılığı üsteli</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Drain resistance rd0 temperature exponent</source>
+        <translation>Drain direnci rd0 sıcaklık üsteli</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Drain resistance rd1 temperature exponent</source>
+        <translation>Drain direnci rd1 sıcaklık üsteli</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Drain resistance linear temperature coefficient</source>
+        <translation>Drain direnci doğrusal sıcaklık katsayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Drain resistance quadratic temperature coefficient</source>
+        <translation>Drain direnci ikinci dereceden sıcaklık katsayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Gate resistance linear temperature coefficient</source>
+        <translation>Gate direnci doğrusal sıcaklık katsayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Gate resistance quadratic temperature coefficient</source>
+        <translation>Gate direnci ikinci dereceden sıcaklık katsayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Source resistance linear temperature coefficient</source>
+        <translation>Source direnci doğrusal sıcaklık katsayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Source resistance quadratic temperature coefficient</source>
+        <translation>Source direnci ikinci dereceden sıcaklık katsayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Body resistance linear temperature coefficient</source>
+        <translation>Gövde direnci doğrusal sıcaklık katsayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Body resistance quadratic temperature coefficient</source>
+        <translation>Gövde direnci ikinci dereceden sıcaklık katsayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Linear temperature coefficient of ksubthres</source>
+        <translation>ksubthres doğrusal sıcaklık katsayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Quadratic temperature coefficient of ksubthres</source>
+        <translation>ksubthres ikinci dereceden sıcaklık katsayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Thermal resistance junction-case</source>
+        <translation>Eklem-kılıf ısıl direnci</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Thermal resistance case-ambient (w/o heatsink)</source>
+        <translation>Kılıf-ortam ısıl direnci (soğutucusuz)</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Thermal model</source>
+        <translation>Isıl model</translation>
+    </message>
+    <message>
+        <location line="+66"/>
+        <source>n-VDMOS</source>
+        <translation>n-VDMOS</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>p-VDMOS</source>
+        <translation>p-VDMOS</translation>
+    </message>
+    <message>
+        <location filename="../qucs/magnetics/ja_core.cpp" line="+31"/>
+        <source>Magnetic core
+</source>
+        <translation>Manyetik nüve
+</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Domains wall density (A/m)</source>
+        <translation>Domen duvarı yoğunluğu (A/m)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Domains pinning (A/m)</source>
+        <translation>Domen sabitlenmesi (A/m)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Magnetization reversibility</source>
+        <translation>Mıknatıslanma tersinirliği</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Saturation magnetization (A/m)</source>
+        <translation>Doyum mıknatıslanması (A/m)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Interdomain coupling</source>
+        <translation>Domenler arası bağlaşım</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Magnetic path length (m)</source>
+        <translation>Manyetik yol uzunluğu (m)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Core cross section area (m^2)</source>
+        <translation>Nüve kesit alanı (m^2)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Air gap length (m)</source>
+        <translation>Hava aralığı uzunluğu (m)</translation>
+    </message>
+    <message>
+        <location line="+54"/>
+        <source>Magnetic core</source>
+        <translation>Manyetik nüve</translation>
+    </message>
+    <message>
+        <location filename="../qucs/magnetics/winding.cpp" line="-41"/>
+        <location line="+57"/>
+        <source>Winding</source>
+        <translation>Sargı</translation>
+    </message>
+    <message>
+        <location line="-17"/>
+        <source>CORE component name</source>
+        <translation>CORE bileşeninin adı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Series resistance</source>
+        <translation>Seri direnç</translation>
+    </message>
+    <message>
+        <location filename="../qucs/paintings/imagepainting.cpp" line="+288"/>
+        <source>Image Properties</source>
+        <translation>Görüntü Özellikleri</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Image Path:</source>
+        <translation>Görüntü Yolu:</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Browse...</source>
+        <translation>Gözat...</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Gallery...</source>
+        <translation>Galeri...</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Image embedded in schematic</source>
+        <translation>Şemaya gömülü görüntü</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location line="+187"/>
+        <source>External image file</source>
+        <translation>Harici görüntü dosyası</translation>
+    </message>
+    <message>
+        <location line="-184"/>
+        <source>No image loaded</source>
+        <translation>Görüntü yüklenmedi</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Width:</source>
+        <translation>Genişlik:</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Height:</source>
+        <translation>Yükseklik:</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Keep aspect ratio</source>
+        <translation>En-boy oranını koru</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Reset to original dimensions</source>
+        <translation>Özgün boyutlara sıfırla</translation>
+    </message>
+    <message>
+        <location line="+63"/>
+        <source>Image</source>
+        <translation>Görüntü</translation>
+    </message>
+    <message>
+        <location line="+71"/>
+        <source>Images (*.bmp *.gif *.jpg *.jpeg *.png *.svg)</source>
+        <translation>Görüntüler (*.bmp *.gif *.jpg *.jpeg *.png *.svg)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Select Image</source>
+        <translation>Görüntü Seç</translation>
+    </message>
+    <message>
+        <location filename="../qucs/qucsshortcutmanager.cpp" line="+270"/>
+        <source>Shortcut &apos;%1&apos; is reserved and cannot be used</source>
+        <translation>&apos;%1&apos; kısayolu ayrılmış, kullanılamaz</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Invalid key sequence</source>
+        <translation>Geçersiz tuş dizisi</translation>
+    </message>
+    <message>
+        <location filename="../qucs/schematicvalidator.cpp" line="+77"/>
+        <source>Missing subcircuit</source>
+        <translation>Eksik alt devre</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cannot load subcircuit file &apos;%1&apos;.</source>
+        <translation>&apos;%1&apos; alt devre dosyası yüklenemiyor.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Check that the subcircuit file exists and is a valid schematic.</source>
+        <translation>Alt devre dosyasının var olduğunu ve geçerli bir şema olduğunu kontrol edin.</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>[in subcircuit &apos;%1&apos;] %2</source>
+        <translation>[&apos;%1&apos; alt devresinde] %2</translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Wrong sweep</source>
+        <translation>Hatalı tarama</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 uses a &apos;list&apos; frequency sweep, which %2 does not support.</source>
+        <translation>%1 &apos;list&apos; frekans taraması kullanıyor, %2 bunu desteklemiyor.</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Use lin or log frequency sweep in %1</source>
+        <translation>%1 içinde lin ya da log frekans taraması kullanın</translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Wrong Monte Carlo runs count</source>
+        <translation>Hatalı Monte Carlo çalıştırma sayısı</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 uses a malformed or negative runs count</source>
+        <translation>%1 bozuk ya da negatif bir çalıştırma sayısı kullanıyor</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Set Runs property as positive integer number at component %1</source>
+        <translation>%1 bileşeninde Runs özelliğini pozitif bir tam sayı olarak ayarlayın</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <location line="+25"/>
+        <source>Monte Carlo simulation conflict</source>
+        <translation>Monte Carlo simülasyonu çakışması</translation>
+    </message>
+    <message>
+        <location line="-23"/>
+        <source>Two Monte Carlo simulations points to the same simulation</source>
+        <translation>İki Monte Carlo simülasyonu aynı simülasyonu gösteriyor</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Delete one of conflictiing Monte Carlo simulation blocks</source>
+        <translation>Çakışan Monte Carlo simülasyon bloklarından birini silin</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Monte Carlo and Parameter sweep simulations attached to the same block</source>
+        <translation>Monte Carlo ve parametre taraması simülasyonları aynı bloğa bağlı</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Delete one of simulation blocks</source>
+        <translation>Simülasyon bloklarından birini silin</translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <source>Wrong S-parameter simulation setup</source>
+        <translation>Hatalı S-parametre simülasyonu kurulumu</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The schematic has %1 AC power source. Ngspice requires at least 2 for S-parameter analysis.</source>
+        <translation>Şemada %1 AC güç kaynağı var. Ngspice, S-parametre analizi için en az 2 tane gerektirir.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>If this is a 1-port SP simulation, add another AC Power souce component with the negative port connected to GND</source>
+        <translation>Bu tek uçlu bir SP simülasyonuysa, negatif ucu GND&apos;ye bağlı bir AC güç kaynağı bileşeni daha ekleyin</translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Missing simulation block</source>
+        <translation>Eksik simülasyon bloğu</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The schematic does not contain any active simulation block.</source>
+        <translation>Şemada etkin bir simülasyon bloğu yok.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Add a simulation block (e.g. .AC, .SP, .TR, .DC) to the schematic.</source>
+        <translation>Şemaya bir simülasyon bloğu ekleyin (ör. .AC, .SP, .TR, .DC).</translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <location line="+15"/>
+        <location line="+11"/>
+        <source>Dangling wire</source>
+        <translation>Boşta kalan bağlantı hattı</translation>
+    </message>
+    <message>
+        <location line="-25"/>
+        <source>Wire is not connected to anything at either end (near (%1, %2) and (%3, %4)).</source>
+        <translation>Bağlantı hattının iki ucu da hiçbir yere bağlı değil ((%1, %2) ve (%3, %4) yakınında).</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Remove the wire.</source>
+        <translation>Bağlantı hattını kaldırın.</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <location line="+11"/>
+        <source>Wire has an unconnected end near (%1, %2).</source>
+        <translation>Bağlantı hattının (%1, %2) yakınında bağlı olmayan bir ucu var.</translation>
+    </message>
+    <message>
+        <location line="-9"/>
+        <location line="+11"/>
+        <source>Terminate the open end or remove the dangling wire.</source>
+        <translation>Açık ucu sonlandırın ya da boşta kalan bağlantı hattını kaldırın.</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>%1 component at (%2, %3)</source>
+        <translation>(%2, %3) konumundaki %1 bileşeni</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Disconnected port</source>
+        <translation>Bağlı olmayan uç</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Port of %1 is not connected to anything.</source>
+        <translation>%1 ucu hiçbir yere bağlı değil.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Connect this pin to the intended net, or check for a typo in the net label.</source>
+        <translation>Bu pini amaçlanan nete bağlayın ya da net etiketinde yazım hatası olup olmadığını kontrol edin.</translation>
     </message>
 </context>
 <context>
@@ -11797,13 +13067,13 @@ Aktif Filtre sentez programı
 <context>
     <name>QucsApp</name>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-651"/>
-        <location line="+1729"/>
+        <location filename="../qucs/qucs.cpp" line="-654"/>
+        <location line="+1833"/>
         <source>Schematic</source>
         <translation>Tasarım</translation>
     </message>
     <message>
-        <location line="-1727"/>
+        <location line="-1831"/>
         <source>Data Display</source>
         <translation>Veri Göstergesi</translation>
     </message>
@@ -11814,47 +13084,47 @@ Aktif Filtre sentez programı
     </message>
     <message>
         <location line="+1"/>
-        <location line="+1697"/>
+        <location line="+1801"/>
         <source>VHDL Sources</source>
         <translation>VHDL Kaynakları</translation>
     </message>
     <message>
-        <location line="-1696"/>
-        <location line="+1697"/>
+        <location line="-1800"/>
+        <location line="+1801"/>
         <source>Verilog Sources</source>
         <translation>Verilog Kaynakları</translation>
     </message>
     <message>
-        <location line="-1696"/>
-        <location line="+1697"/>
+        <location line="-1800"/>
+        <location line="+1801"/>
         <source>Verilog-A Sources</source>
         <translation>Verilog-A Kaynakları</translation>
     </message>
     <message>
-        <location line="-1696"/>
-        <location line="+1697"/>
+        <location line="-1800"/>
+        <location line="+1801"/>
         <source>Octave Scripts</source>
         <translation>Octave Komut Dosyaları</translation>
     </message>
     <message>
-        <location line="-1696"/>
+        <location line="-1800"/>
         <source>Spice Files</source>
         <translation>Baharat Dosyaları</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-19"/>
-        <location filename="../qucs/qucs.cpp" line="+1"/>
-        <location line="+1699"/>
+        <location line="+1"/>
+        <location line="+1803"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-20"/>
         <source>Any File</source>
         <translation>Herhangi Bir Dosya</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+361"/>
+        <location line="+424"/>
         <source>The schematic search path has been refreshed.</source>
         <translation>Şematik arama yolu yenilendi.</translation>
     </message>
     <message>
-        <location line="+705"/>
+        <location line="+782"/>
         <source>Verilog</source>
         <translation>Verilog</translation>
     </message>
@@ -11864,7 +13134,7 @@ Aktif Filtre sentez programı
         <translation>VHDL</translation>
     </message>
     <message>
-        <location line="-1201"/>
+        <location line="-1348"/>
         <source>Open file</source>
         <translation>Dosya aç</translation>
     </message>
@@ -11874,7 +13144,7 @@ Aktif Filtre sentez programı
         <translation>Belge salt okunur modda açıldı! Simülasyon çalışmayacaktır. Lütfen belgeyi yazma izninizin olduğu dizine kopyalayın!</translation>
     </message>
     <message>
-        <location line="+354"/>
+        <location line="+424"/>
         <source>Open example…</source>
         <translation>Açık örnek...</translation>
     </message>
@@ -11889,34 +13159,34 @@ Aktif Filtre sentez programı
         <translation>Açık örnek iptal edildi</translation>
     </message>
     <message>
-        <location line="+491"/>
-        <location line="+951"/>
-        <location line="+30"/>
+        <location line="+496"/>
+        <location line="+1057"/>
+        <location line="+31"/>
         <source>Simulate schematic</source>
         <translation>Şematik simülasyon</translation>
     </message>
     <message>
-        <location line="-980"/>
+        <location line="-1087"/>
         <source>DC bias simulation mode is not supported for digital schematic!</source>
         <translation>DC bias simülasyon modu dijital şematik için desteklenmez!</translation>
     </message>
     <message>
-        <location line="+343"/>
+        <location line="+415"/>
         <source>Schematics</source>
         <translation>Tasarılar</translation>
     </message>
     <message>
-        <location line="-2546"/>
+        <location line="-2787"/>
         <source>New</source>
         <translation>Yeni</translation>
     </message>
     <message>
-        <location line="-221"/>
+        <location line="-224"/>
         <source>Symbol only</source>
         <translation>Yalnızca sembol</translation>
     </message>
     <message>
-        <location line="+107"/>
+        <location line="+110"/>
         <location line="+33"/>
         <source>QucsatorRF found at: </source>
         <translation>QucsatorRF&apos;de bulundu:</translation>
@@ -12020,39 +13290,23 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <translation>Octave Dock</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-654"/>
-        <location line="+154"/>
-        <location line="+12"/>
-        <location line="+17"/>
-        <location line="+11"/>
-        <location line="+8"/>
-        <location line="+7"/>
-        <location line="+17"/>
-        <location line="+59"/>
-        <location line="+32"/>
-        <location line="+16"/>
-        <location line="+10"/>
-        <location line="+5"/>
-        <location line="+245"/>
-        <location line="+51"/>
-        <location line="+120"/>
-        <location filename="../qucs/qucs.cpp" line="+106"/>
+        <location line="+106"/>
         <location line="+4"/>
-        <location line="+613"/>
-        <location line="+25"/>
-        <location line="+20"/>
-        <location line="+19"/>
-        <location line="+10"/>
+        <location line="+134"/>
+        <location line="+493"/>
+        <location line="+73"/>
+        <location line="+5"/>
+        <location line="+63"/>
         <location line="+79"/>
         <location line="+6"/>
         <location line="+111"/>
-        <location line="+870"/>
+        <location line="+957"/>
         <location line="+5"/>
         <location line="+4"/>
-        <location line="+311"/>
+        <location line="+326"/>
         <location line="+28"/>
-        <location line="+75"/>
-        <location line="+109"/>
+        <location line="+127"/>
+        <location line="+115"/>
         <location line="+23"/>
         <location line="+130"/>
         <location line="+101"/>
@@ -12060,76 +13314,143 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <location line="+7"/>
         <location line="+7"/>
         <location line="+6"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-671"/>
+        <location line="+162"/>
+        <location line="+13"/>
+        <location line="+15"/>
+        <location line="+11"/>
+        <location line="+8"/>
+        <location line="+8"/>
+        <location line="+17"/>
+        <location line="+55"/>
+        <location line="+32"/>
+        <location line="+17"/>
+        <location line="+11"/>
+        <location line="+6"/>
+        <location line="+253"/>
+        <location line="+50"/>
+        <location line="+150"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-2570"/>
+        <location line="-2811"/>
         <source>Cannot open &quot;%1&quot;.</source>
         <translation>&quot;%1&quot; açılamıyor.</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+2285"/>
+        <location line="+2526"/>
         <location line="+23"/>
         <source>Library is corrupt.</source>
         <translation>Kütüphane bozuk.</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-955"/>
-        <location line="+13"/>
-        <location line="+13"/>
-        <location line="+13"/>
-        <location line="+35"/>
-        <location line="+13"/>
-        <location line="+770"/>
-        <location filename="../qucs/qucs.cpp" line="-2057"/>
-        <location line="+497"/>
-        <location line="+73"/>
+        <location line="-2414"/>
+        <source>No simulation backend found! Simulaiton not possible.
+This may happen by the following reasons:
+
+1. You are using portable version and have moved installation directory.
+2. The simulators were removed from system or the paths configured wrong.
+
+Please configure simulator paths in Simulation-&gt;Simulator settings menu.
+</source>
+        <translation>Simülasyon arka ucu bulunamadı! Simülasyon yapılamaz.
+Bunun nedeni şunlar olabilir:
+
+1. Taşınabilir sürümü kullanıyorsunuz ve kurulum dizinini taşıdınız.
+2. Simülatörler sistemden kaldırıldı ya da yolları yanlış yapılandırıldı.
+
+Lütfen simülatör yollarını Simülasyon-&gt;Simülatör ayarları menüsünden yapılandırın.
+</translation>
+    </message>
+    <message>
+        <location line="+122"/>
+        <location line="+470"/>
+        <location line="+99"/>
+        <location line="+76"/>
         <location line="+70"/>
         <location line="+11"/>
         <location line="+26"/>
-        <location line="+273"/>
+        <location line="+299"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-984"/>
+        <location line="+12"/>
+        <location line="+12"/>
+        <location line="+12"/>
+        <location line="+32"/>
+        <location line="+12"/>
+        <location line="+780"/>
         <source>Info</source>
         <translation>Bilgi</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-949"/>
+        <location line="-1050"/>
         <source>Default icon not found:
  %1.png</source>
         <translation>Varsayılan simge bulunamadı:
  1.png</translation>
     </message>
     <message>
-        <location line="+270"/>
+        <location line="+273"/>
         <source>-port</source>
         <translation>-uç</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+58"/>
         <source>Copying Qucs document</source>
         <translation>Qucs belgesini kopyalama</translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+740"/>
+        <location line="+833"/>
+        <location line="+2184"/>
         <source>The document contains unsaved changes!
 </source>
         <translation>Belge kaydedilmemiş değişiklikler içeriyor!
 </translation>
     </message>
     <message>
-        <location line="-739"/>
+        <location line="-3016"/>
         <source>Do you want to save the changes before copying?</source>
         <translation>Kopyalamadan önce değişiklikleri kaydetmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_init.cpp" line="+74"/>
+        <location line="+2987"/>
+        <location line="+5"/>
+        <source>System Command</source>
+        <translation>Sistem Komutu</translation>
+    </message>
+    <message>
+        <location line="-4"/>
+        <source>Could not launch the specified terminal emulator &apos;%1&apos;.
+Check the &apos;terminal&apos; property or leave it empty for auto-detection.</source>
+        <translation>Belirtilen terminal öykünücüsü (emülatör) &apos;%1&apos; başlatılamadı.
+&apos;terminal&apos; özelliğini kontrol edin ya da otomatik algılama için boş bırakın.</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Could not find a terminal emulator. Tried: xterm, konsole, gnome-terminal, qterminal.
+Install one or run without console mode.</source>
+        <translation>Terminal öykünücüsü (emülatör) bulunamadı. Denenenler: xterm, konsole, gnome-terminal, qterminal.
+Birini kurun ya da konsol modu olmadan çalıştırın.</translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Renaming Qucs-S document</source>
+        <translation>Qucs-S belgesi yeniden adlandırılıyor</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Do you want to save and rename?</source>
+        <translation>Kaydedip yeniden adlandırmak istiyor musunuz?</translation>
+    </message>
+    <message>
+        <location filename="../qucs/qucs_init.cpp" line="+76"/>
         <source>&amp;Save</source>
         <translation>&amp;Kaydet</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+23"/>
+        <location filename="../qucs/qucs.cpp" line="-2994"/>
         <source>Copy file</source>
         <translation>Dosya kopyalama</translation>
     </message>
@@ -12144,34 +13465,31 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <translation>hata</translation>
     </message>
     <message>
-        <location line="+31"/>
         <source>Cannot rename an open file!</source>
-        <translation>Açık bir dosya yeniden adlandırılamaz!</translation>
+        <translation type="vanished">Açık bir dosya yeniden adlandırılamaz!</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+46"/>
         <source>Rename file</source>
         <translation>Dosyayı yeniden adlandır</translation>
     </message>
     <message>
-        <location line="+27"/>
         <source>Cannot delete an open file!</source>
-        <translation>Açık bir dosya silinemez!</translation>
+        <translation type="vanished">Açık bir dosya silinemez!</translation>
     </message>
     <message>
-        <location line="-760"/>
-        <location line="+765"/>
-        <location line="+215"/>
-        <location line="+293"/>
-        <location line="+708"/>
-        <location line="+544"/>
+        <location line="-751"/>
+        <location line="+821"/>
+        <location line="+240"/>
+        <location line="+319"/>
+        <location line="+777"/>
+        <location line="+609"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
     <message>
-        <location line="-1759"/>
         <source>This will delete the file permanently! Continue ?</source>
-        <translation>Dosya kalıcı olarak silinecek! Devam ?</translation>
+        <translation type="vanished">Dosya kalıcı olarak silinecek! Devam ?</translation>
     </message>
     <message>
         <source>No</source>
@@ -12182,7 +13500,7 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <translation type="vanished">Evet</translation>
     </message>
     <message>
-        <location line="-152"/>
+        <location line="-2138"/>
         <source>unknown</source>
         <translation>Bilinmiyor</translation>
     </message>
@@ -12232,12 +13550,12 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <translation>yapılandırma</translation>
     </message>
     <message>
-        <location line="-631"/>
+        <location line="-645"/>
         <source>Cannot create work directory !</source>
         <translation>Çalışma dizini oluşturulamıyor !</translation>
     </message>
     <message>
-        <location line="+831"/>
+        <location line="+909"/>
         <source>Cannot create project directory !</source>
         <translation>Tasarım dizini oluşturulamıyor !</translation>
     </message>
@@ -12250,7 +13568,7 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <translation type="vanished">- Tasarım:</translation>
     </message>
     <message>
-        <location line="+56"/>
+        <location line="+59"/>
         <source>Choose Project Directory for Opening</source>
         <translation>Açılacak Tasarım Dizinini Seçin</translation>
     </message>
@@ -12260,12 +13578,11 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <translation>Seçili Tasarım yok !</translation>
     </message>
     <message>
-        <location line="-134"/>
         <source>Cannot delete file: %1</source>
-        <translation>Dosya silinemiyor: %1</translation>
+        <translation type="vanished">Dosya silinemiyor: %1</translation>
     </message>
     <message>
-        <location line="-494"/>
+        <location line="-703"/>
         <location line="+108"/>
         <location line="+3"/>
         <location line="+94"/>
@@ -12274,7 +13591,7 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <translation>Arama sonuçları</translation>
     </message>
     <message>
-        <location line="-654"/>
+        <location line="-660"/>
         <source>Search Lib Components</source>
         <translation>Lib Bileşenlerini Ara</translation>
     </message>
@@ -12294,12 +13611,12 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <translation>Modeli göster</translation>
     </message>
     <message>
-        <location line="+534"/>
+        <location line="+540"/>
         <source>verilog-a user devices</source>
         <translation>verilog-a kullanıcı cihazları</translation>
     </message>
     <message>
-        <location line="+224"/>
+        <location line="+232"/>
         <source>Cannot copy file to identical name: %1</source>
         <translation>Dosya aynı ada kopyalanamıyor: %1</translation>
     </message>
@@ -12309,17 +13626,49 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <translation>Şematik kopyalanamıyor: %1</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+41"/>
         <source>Enter new filename:</source>
         <translation>Yeni dosya adını girin:</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+33"/>
+        <source>A file named &apos;%1&apos; already exists!</source>
+        <translation>&apos;%1&apos; adında bir dosya zaten var!</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Cannot rename file: %1</source>
         <translation>Dosya yeniden adlandırılamıyor: %1</translation>
     </message>
     <message>
-        <location line="+109"/>
+        <location line="+21"/>
+        <source>No files selected for deletion!</source>
+        <translation>Silinecek dosya seçilmedi!</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>This will delete %1 files permanently! Continue?</source>
+        <translation>Bu işlem %1 dosyayı kalıcı olarak silecek! Devam edilsin mi?</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>This will delete the file permanently! Continue?</source>
+        <translation>Bu işlem dosyayı kalıcı olarak silecek! Devam edilsin mi?</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>file is open</source>
+        <translation>dosya açık</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Could not delete the following files:
+</source>
+        <translation>Aşağıdaki dosyalar silinemedi:
+</translation>
+    </message>
+    <message>
+        <location line="+82"/>
         <source>Cannot access project directory: %1</source>
         <translation>Proje dizinine erişilemiyor: %1</translation>
     </message>
@@ -12378,40 +13727,40 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <translation>Yeni tasarı oluşturuluyor...</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_init.cpp" line="+916"/>
-        <location filename="../qucs/qucs_actions.cpp" line="-1087"/>
-        <location line="+15"/>
-        <location line="+364"/>
-        <location line="+402"/>
-        <location filename="../qucs/qucs.cpp" line="-5"/>
+        <location line="-5"/>
         <location line="+13"/>
         <location line="+12"/>
-        <location line="+87"/>
-        <location line="+37"/>
+        <location line="+100"/>
+        <location line="+44"/>
         <location line="+5"/>
-        <location line="+133"/>
+        <location line="+139"/>
         <location line="+5"/>
         <location line="+35"/>
         <location line="+57"/>
-        <location line="+42"/>
-        <location line="+220"/>
+        <location line="+99"/>
+        <location line="+224"/>
         <location line="+30"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-1076"/>
+        <location line="+14"/>
+        <location line="+339"/>
+        <location line="+407"/>
+        <location filename="../qucs/qucs_init.cpp" line="+1107"/>
         <source>Ready.</source>
         <translation>Hazır.</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="-657"/>
+        <location line="-744"/>
         <source>Creating new text editor...</source>
         <translation>Yeni metin düzenleyici oluşturuluyor...</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-411"/>
-        <location filename="../qucs/qucs.cpp" line="+80"/>
+        <location line="+93"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-416"/>
         <source>Opening file...</source>
         <translation>Dosya açılıyor...</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs.cpp" line="+2"/>
+        <location line="+2"/>
         <source>Enter a Schematic Name</source>
         <translation>Tasarı Adı Giriniz</translation>
     </message>
@@ -12421,18 +13770,18 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <translation>Açma işlemi iptal edildi</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+44"/>
         <source>Saving file...</source>
         <translation>Dosya kaydediliyor...</translation>
     </message>
     <message>
         <location line="+6"/>
-        <location line="+138"/>
+        <location line="+144"/>
         <source>Saving aborted</source>
         <translation>Kayıt iptal edildi</translation>
     </message>
     <message>
-        <location line="-93"/>
+        <location line="-99"/>
         <source>Qucs Netlist</source>
         <translation>Qucs Net Listesi</translation>
     </message>
@@ -12458,7 +13807,7 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <translation>Belge Adı Giriniz</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+25"/>
         <source>The file &apos;</source>
         <translation>Dosya &apos;</translation>
     </message>
@@ -12513,7 +13862,7 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <translation type="vanished">&amp;Gözardı et</translation>
     </message>
     <message>
-        <location line="+243"/>
+        <location line="+304"/>
         <source>untitled</source>
         <translation>isimsiz</translation>
     </message>
@@ -12543,7 +13892,7 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <translation>Diyagramlar olmadan ayarlamanın hiçbir etkisi yoktur. Şematik üzerine en az bir diyagram ekleyin.</translation>
     </message>
     <message>
-        <location line="+677"/>
+        <location line="+750"/>
         <source>Symbol editing supported only for schematics and Verilog-A documents!</source>
         <translation>Sembol düzenleme yalnızca şemalar ve Verilog-A belgeleri için desteklenir!</translation>
     </message>
@@ -12553,28 +13902,73 @@ NOT: Sadece QucsatorRF bulundu. Bu simülatör genel amaçlı şemalar için ön
         <translation>Sembollerin Verilog-A kaynaklarına eklenmesi kullanımdan kaldırılmıştır ve yeni tasarımlar için önerilmez. Bunun yerine SPICE jenerik cihazını kullanın. Daha fazla ayrıntı için belgelere bakın.</translation>
     </message>
     <message>
-        <location line="+372"/>
+        <location line="+406"/>
         <source>Schematic not saved! Simulation of unsaved schematic not possible. Save schematic first!</source>
         <translation>Şematik kaydedilmedi! Kaydedilmemiş şemanın simülasyonu mümkün değil. Önce şemayı kaydedin!</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+31"/>
         <source>Simulation of text document is not possible!</source>
         <translation>Metin belgesinin simülasyonu mümkün değildir!</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+43"/>
+        <source>Issues found</source>
+        <translation>Sorunlar bulundu</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Schematic issues found</source>
+        <translation>Şemada sorunlar bulundu</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>The schematic contains %1 issue(s)</source>
+        <translation>Şemada %1 sorun var</translation>
+    </message>
+    <message>
+        <location line="+28"/>
+        <source>Issue</source>
+        <translation>Sorun</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Ok</source>
+        <translation>Tamam</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Go back to the schematic and fix the issues</source>
+        <translation>Şemaya dön ve sorunları düzelt</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Simulate Anyway</source>
+        <translation>Yine de Simüle Et</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Run the simulation</source>
+        <translation>Simülasyonu çalıştır</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>OK</source>
+        <translation>Tamam</translation>
+    </message>
+    <message>
+        <location line="+23"/>
         <source>This action is supported only for SPICE simulators!</source>
         <translation>Bu eylem yalnızca SPICE simülatörleri için desteklenir!</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+38"/>
         <location line="+31"/>
         <source>Save CDL netlist failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>CDL net listesi kaydedilemedi!</translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+66"/>
         <source>Save Verilog-A module</source>
         <translation>Verilog-A modülünü kaydet</translation>
     </message>
@@ -12599,7 +13993,7 @@ Verilog-A modülünü oluşturmak için alt devre kullanın!</translation>
         <translation type="vanished">Uygulamadan gerçekten çıkmak mı istiyorsunuz?</translation>
     </message>
     <message>
-        <location line="-1089"/>
+        <location line="-1310"/>
         <source>The document was modified by another program !</source>
         <translation>Belge başka bir yazılım tarafından değiştirilmiş !</translation>
     </message>
@@ -12617,7 +14011,7 @@ Verilog-A modülünü oluşturmak için alt devre kullanın!</translation>
         <translation type="vanished">Tut</translation>
     </message>
     <message>
-        <location line="+173"/>
+        <location line="+180"/>
         <source>Cannot create </source>
         <translation>Oluşturulamıyor</translation>
     </message>
@@ -12627,12 +14021,12 @@ Verilog-A modülünü oluşturmak için alt devre kullanın!</translation>
         <translation>Kurulu sayfa yok !</translation>
     </message>
     <message>
-        <location line="+76"/>
+        <location line="+128"/>
         <source>Cannot start &quot;%1&quot;!</source>
         <translation>&quot;%1&quot; başlatılamıyor!</translation>
     </message>
     <message>
-        <location line="+362"/>
+        <location line="+368"/>
         <source>Could not load S[1,1].</source>
         <translation>Yüklenemiyor S(1.1).</translation>
     </message>
@@ -12657,32 +14051,32 @@ Verilog-A modülünü oluşturmak için alt devre kullanın!</translation>
         <translation>Yanlış dayanak!</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_actions.cpp" line="-380"/>
+        <location filename="../qucs/qucs_actions.cpp" line="-354"/>
         <source>Cutting selection...</source>
         <translation>Seçili kesiliyor...</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+15"/>
         <source>Copying selection to clipboard...</source>
         <translation>Seçili not tahtasına çoğaltılıyor...</translation>
     </message>
     <message>
-        <location line="+225"/>
-        <location line="+13"/>
-        <location line="+13"/>
-        <location line="+13"/>
-        <location line="+35"/>
-        <location line="+13"/>
+        <location line="+212"/>
+        <location line="+12"/>
+        <location line="+12"/>
+        <location line="+12"/>
+        <location line="+32"/>
+        <location line="+12"/>
         <source>At least two elements must be selected !</source>
         <translation>En az iki eleman seçilmeli !</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+52"/>
         <source>Opening aborted, file not found.</source>
         <translation>Açılış iptal edildi, dosya bulunamadı.</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+44"/>
         <source>Cannot start text editor! 
 
 %1</source>
@@ -12691,7 +14085,7 @@ Verilog-A modülünü oluşturmak için alt devre kullanın!</translation>
 %1</translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+27"/>
         <source>Show netlist</source>
         <translation>Net listeyi göster</translation>
     </message>
@@ -12701,14 +14095,16 @@ Verilog-A modülünü oluşturmak için alt devre kullanın!</translation>
         <translation>Şematik sekme değil!</translation>
     </message>
     <message>
-        <location line="+125"/>
+        <location line="+134"/>
         <source>Executable %1 not found! 
 
 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 çalıştırılabilir dosyası bulunamadı! 
+
+(%2)</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Cannot start %1 program! 
 
 (%2)</source>
@@ -12717,7 +14113,7 @@ Verilog-A modülünü oluşturmak için alt devre kullanın!</translation>
 (%2)</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+15"/>
         <source>Layouting of display pages is not supported!</source>
         <translation>Ekran sayfalarının düzenlenmesi desteklenmiyor!</translation>
     </message>
@@ -12727,7 +14123,7 @@ Verilog-A modülünü oluşturmak için alt devre kullanın!</translation>
         <translation>Netlist yazılamıyor!</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Digital schematic not supported!</source>
         <translation>Dijital şematik desteklenmiyor!</translation>
     </message>
@@ -12744,7 +14140,7 @@ Verilog-A modülünü oluşturmak için alt devre kullanın!</translation>
 %1</translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+54"/>
         <source>No project open!</source>
         <translation>Açık tasarım yok!</translation>
     </message>
@@ -12759,12 +14155,12 @@ Verilog-A modülünü oluşturmak için alt devre kullanın!</translation>
         <translation>Hiçbir dosya kopyalanmadı.</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>Cannot open &quot;%1&quot; !</source>
         <translation>&quot;%1&quot; açılamıyor !</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Overwrite</source>
         <translation>Üzerine yaz</translation>
     </message>
@@ -12781,17 +14177,17 @@ Overwrite ?</source>
         <translation>&quot;%1&quot; oluşturulamıyor !</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>Cannot read &quot;%1&quot; !</source>
         <translation>&quot;%1&quot; okunamıyor !</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Cannot write &quot;%1&quot; !</source>
         <translation>&quot;%1&quot; yazılamıyor !</translation>
     </message>
     <message>
-        <location line="+245"/>
+        <location line="+253"/>
         <source>Please open project with subcircuits!</source>
         <translation>Lütfen alt devre tasarımını açın!</translation>
     </message>
@@ -12800,22 +14196,22 @@ Overwrite ?</source>
         <translation type="vanished">Önce tasarımı açın lütfen!</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+50"/>
         <source>Please select a diagram graph!</source>
         <translation>Lütfen bir çizge grafigi seçin!</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>Enter an Output File Name</source>
         <translation>Çıktı Kütügünün Adını Girin</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>CSV file</source>
         <translation>CVS dosyası</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <source>Output file already exists!</source>
         <translation>Çıktı dosyası zaten var!</translation>
     </message>
@@ -12825,7 +14221,7 @@ Overwrite ?</source>
         <translation>Üzerine yazılsın mı?</translation>
     </message>
     <message>
-        <location line="+98"/>
+        <location line="+124"/>
         <source>Symbol files not found in: %1
 
 Is the project open?
@@ -12836,7 +14232,7 @@ Proje açık mı?
 Verilog-A sembollerini kaydettiniz mi?</translation>
     </message>
     <message>
-        <location line="+92"/>
+        <location line="+90"/>
         <source>admsXml</source>
         <translation>admsXml</translation>
     </message>
@@ -12861,7 +14257,7 @@ Verilog-A sembollerini kaydettiniz mi?</translation>
         <translation>OpenVAF Dock</translation>
     </message>
     <message>
-        <location filename="../qucs/qucs_init.cpp" line="-941"/>
+        <location filename="../qucs/qucs_init.cpp" line="-1135"/>
         <source>&amp;New</source>
         <translation>&amp;Yeni</translation>
     </message>
@@ -12880,7 +14276,7 @@ Creates a new schematic or data display document</source>
 Veri görüntüleme ya da tasarı belgesi oluşturur</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>New &amp;Text</source>
         <translation>Yeni &amp;Metin</translation>
     </message>
@@ -12904,7 +14300,7 @@ Creates a new text document</source>
 Yeni bir metin belgesi oluşturur</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>&amp;Open...</source>
         <translation>&amp;Aç...</translation>
     </message>
@@ -12923,7 +14319,7 @@ Opens an existing document</source>
 Varolan bir belgeyi açar</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Saves the current document</source>
         <translation>Geçerli belgeyi kaydeder</translation>
     </message>
@@ -12942,12 +14338,12 @@ Geçerli belgeyi kaydeder</translation>
         <translation>Farklı kaydet...</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Saves the current document under a new filename</source>
         <translation>Geçerli belgeyi yeni adı altında kaydet</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Save As
 
 Saves the current document under a new filename</source>
@@ -12956,7 +14352,7 @@ Saves the current document under a new filename</source>
 Geçerli belgeyi yeni bir ad altında kaydeder</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Save &amp;All</source>
         <translation>Tümünü &amp;Kaydet</translation>
     </message>
@@ -12980,7 +14376,7 @@ Saves all open documents</source>
 Tüm açık belgeleri kaydeder</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>&amp;Close</source>
         <translation>&amp;Kapat</translation>
     </message>
@@ -12999,6 +14395,82 @@ Closes the current document</source>
 Geçerli belgeyi kapatır</translation>
     </message>
     <message>
+        <location line="+4"/>
+        <source>Close all but current</source>
+        <translation>Geçerli olan dışında tümünü kapat</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Closes all documents except the current one</source>
+        <translation>Geçerli belge dışındaki tüm belgeleri kapatır</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Close all but current
+
+Closes all documents except the current one</source>
+        <translation>Geçerli olan dışında tümünü kapat
+
+Geçerli belge dışındaki tüm belgeleri kapatır</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Close all left</source>
+        <translation>Soldakilerin tümünü kapat</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Closes all documents to the left of the current one</source>
+        <translation>Geçerli belgenin solundaki tüm belgeleri kapatır</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Close all left
+
+Closes all documents to the left of the current one</source>
+        <translation>Soldakilerin tümünü kapat
+
+Geçerli belgenin solundaki tüm belgeleri kapatır</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Close all right</source>
+        <translation>Sağdakilerin tümünü kapat</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Closes all documents to the right of the current one</source>
+        <translation>Geçerli belgenin sağındaki tüm belgeleri kapatır</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Close all right
+
+Closes all documents to the right of the current one</source>
+        <translation>Sağdakilerin tümünü kapat
+
+Geçerli belgenin sağındaki tüm belgeleri kapatır</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Close &amp;All</source>
+        <translation>&amp;Tümünü Kapat</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Closes all documents</source>
+        <translation>Tüm belgeleri kapatır</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Close All
+
+Closes all documents</source>
+        <translation>Tümünü Kapat
+
+Tüm belgeleri kapatır</translation>
+    </message>
+    <message>
         <location line="+9"/>
         <source>Clear Recent</source>
         <translation>Güncel Haberleri Temizle</translation>
@@ -13009,7 +14481,7 @@ Geçerli belgeyi kapatır</translation>
         <translation>&amp;Örnekler</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+26"/>
         <source>&amp;Edit Circuit Symbol</source>
         <translation>Devre &amp;Simgesini Değiştir</translation>
     </message>
@@ -13052,7 +14524,7 @@ Sets properties of the file</source>
 Dosya ayarlarını yapar</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+9"/>
         <source>&amp;Print...</source>
         <translation>&amp;Yazdır...</translation>
     </message>
@@ -13086,7 +14558,7 @@ Geçerli belgeyi yazdırır</translation>
         <translation>Sayfaya Sığdırarak Yazdır</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Print Fit to Page
 
 Print and fit content to the page size</source>
@@ -13191,7 +14663,7 @@ Seçili bilesenleri üst köşelerine hizala</translation>
         <translation>Seçili bilesenleri alta hizala</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Align bottom
 
 Align selected elements to their lower edge</source>
@@ -13210,7 +14682,7 @@ Seçili bilesenleri alt köşelerine hizala</translation>
         <translation>Seçili bilesenleri sola hizala</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Align left
 
 Align selected elements to their left edge</source>
@@ -13396,12 +14868,12 @@ degistir</translation>
         <translation>Ctrl+X</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Cuts out the selection and puts it into the clipboard</source>
         <translation>Seçili kısmı keser ve not tahtasına koyar</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Cut
 
 Cuts out the selection and puts it into the clipboard</source>
@@ -13410,7 +14882,7 @@ Cuts out the selection and puts it into the clipboard</source>
 Seçili kısmı keser ve not tahtasına koyar</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>&amp;Copy</source>
         <translation>&amp;Çoğalt</translation>
     </message>
@@ -13429,17 +14901,17 @@ Copies the selection into the clipboard</source>
 Seçili kısmı not tahtasına çoğaltır</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>&amp;Paste</source>
         <translation>&amp;Yapıştır</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Pastes the clipboard contents to the cursor position</source>
         <translation>Not tahtası içeriğini işaretleyicinin bulunduğu yere yapıştırır</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Paste
 
 Pastes the clipboard contents to the cursor position</source>
@@ -13448,12 +14920,12 @@ Pastes the clipboard contents to the cursor position</source>
 Not tahtası içeriğini işaretleyicinin bulunduğu yere yapıştırır</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>&amp;Delete</source>
         <translation>&amp;Sil</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Deletes the selected components</source>
         <translation>Seçili bilşenleri siler</translation>
     </message>
@@ -13491,12 +14963,12 @@ Bir metin parçasını arar</translation>
         <translation>Görüntü olarak dışa aktar...</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Exports the current document to an image file</source>
         <translation>Geçerli belgeyi bir görüntü dosyasına aktarır</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Export as image
 
 Exports the current document to an image file</source>
@@ -13591,7 +15063,12 @@ Opens an existing project</source>
 Varolan bir tasarımı açar</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+10"/>
+        <source>Clear recent</source>
+        <translation>Son kullanılanları temizle</translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>&amp;Delete Project...</source>
         <translation>Tasarımı &amp;Sil...</translation>
     </message>
@@ -13654,7 +15131,7 @@ Geçerli olan tasarımı kapatır</translation>
         <translation>Dosyaları tasarım dizinine kopyalar</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Add Files to Project
 
 Copies files to project directory</source>
@@ -13687,72 +15164,71 @@ Create Library from Subcircuits</source>
 Alt devrelerden bir kütüphane olusturur</translation>
     </message>
     <message>
-        <location line="+198"/>
         <source>S-parameter Viewer</source>
-        <translation>S-parametre Görüntüleyici</translation>
+        <translation type="vanished">S-parametre Görüntüleyici</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Starts S-parameter viewer</source>
-        <translation>S-parametre görüntüleyiciyi başlatır</translation>
+        <translation type="vanished">S-parametre görüntüleyiciyi başlatır</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>S-parameter Viewer
 
 Starts S-parameter viewer</source>
-        <translation>S-parametre Görüntüleyici
+        <translation type="vanished">S-parametre Görüntüleyici
 
 S-parametre görüntüleyiciyi başlatır</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+291"/>
         <source>Tune</source>
-        <translation type="unfinished"></translation>
+        <translation>Ayarla</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>Ayarlayıcı</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Allows to live tune variables and show the result in the dataview</source>
-        <translation type="unfinished"></translation>
+        <translation>Değişkenleri canlı olarak ayarlamayı ve sonucu veri görünümünde göstermeyi sağlar</translation>
     </message>
     <message>
-        <location line="+21"/>
-        <location line="+1"/>
-        <location filename="../qucs/qucs.cpp" line="+321"/>
+        <location filename="../qucs/qucs.cpp" line="+469"/>
         <location line="+13"/>
         <location line="+18"/>
+        <location filename="../qucs/qucs_init.cpp" line="+27"/>
+        <location line="+1"/>
         <source>Save CDL netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>CDL net listesini kaydet</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location filename="../qucs/qucs_init.cpp" line="+44"/>
         <source>Show Grid (current document)</source>
-        <translation type="unfinished"></translation>
+        <translation>Izgarayı Göster (geçerli belge)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Alt+G</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+G</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show or hide the grid for the current document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geçerli belgenin ızgarasını gösterir ya da gizler.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show / Hide Grid
 
 Show or hide the grid for the current document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Izgarayı Göster / Gizle
+
+Geçerli belgenin ızgarasını gösterir ya da gizler.</translation>
     </message>
     <message>
-        <location line="+50"/>
+        <location line="+59"/>
         <source>&amp;About Qucs-S</source>
         <translation>&amp;Qucs-S Hakkında</translation>
     </message>
@@ -13794,12 +15270,12 @@ Install Content of a Package</source>
 Bohça içerigini yükle</translation>
     </message>
     <message>
-        <location line="-124"/>
+        <location line="-163"/>
         <source>Convert data file</source>
         <translation>Veri dosyasını dönüştür</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Import/Export Data
 
 Convert data file to various file formats</source>
@@ -13808,12 +15284,12 @@ Convert data file to various file formats</source>
 Veri dosyasını çeşitli dosya formatlarına dönüştürme</translation>
     </message>
     <message>
-        <location line="-203"/>
+        <location line="-271"/>
         <source>Export to &amp;CSV...</source>
         <translation>&amp;CVS&apos;e aktar...</translation>
     </message>
     <message>
-        <location line="-276"/>
+        <location line="-361"/>
         <source>New symbol</source>
         <translation>Yeni sembol</translation>
     </message>
@@ -13832,12 +15308,12 @@ Creates a new schematic symbol document</source>
 Yeni bir şematik sembol belgesi oluşturur</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+81"/>
         <source>Starts file chooser dialog to open one of example schematics</source>
         <translation>Örnek şemalardan birini açmak için dosya seçici iletişim kutusunu başlatır</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Examples
 
 Start file chooser dialog and open one of example schematics</source>
@@ -13846,7 +15322,7 @@ Start file chooser dialog and open one of example schematics</source>
 Dosya seçici iletişim kutusunu başlatın ve örnek şemalardan birini açın</translation>
     </message>
     <message>
-        <location line="+229"/>
+        <location line="+278"/>
         <source>Ctrl+Shift+C</source>
         <translation>Ctrl+Shift+C</translation>
     </message>
@@ -13856,7 +15332,7 @@ Dosya seçici iletişim kutusunu başlatın ve örnek şemalardan birini açın<
         <translation>Grafik verisini CVS kütügüne çevirir</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Export to CSV
 
 Convert graph data to CSV file</source>
@@ -13875,7 +15351,7 @@ Grafik verisini CVS kütügüne çevirir</translation>
         <translation>admsXml ve C++ derleyicisini çalıştırın</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Build Verilog-A module
 Runs amdsXml and C++ compiler</source>
         <translation>Verilog-A modülü oluşturun
@@ -13892,7 +15368,7 @@ amdsXml ve C++ derleyicisini çalıştırır</translation>
         <translation>Yüklenecek Verilog-A sembollerini seçin</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Load Verilog-A module
 Let the user select and load symbols</source>
         <translation>Verilog-A modülünü yükle
@@ -13904,7 +15380,7 @@ Kullanıcının sembolleri seçmesine ve yüklemesine izin verin</translation>
         <translation>Tümünü Görüntüle</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Show the whole page</source>
         <translation>Tüm sayfayı göster</translation>
     </message>
@@ -13918,7 +15394,7 @@ Shows the whole page content</source>
 Tüm sayfa içeriğini görüntüler</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Zoom to selection</source>
         <translation>Seçime yakınlaştır</translation>
     </message>
@@ -13942,7 +15418,7 @@ Zoom to selected components</source>
 Seçili bileşenlere yakınlaştırma</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>View 1:1</source>
         <translation>Görüntüle 1:1</translation>
     </message>
@@ -13952,7 +15428,7 @@ Seçili bileşenlere yakınlaştırma</translation>
         <translation>Büyütme olmaksızın görüntüler</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>View 1:1
 
 Shows the page content without magnification</source>
@@ -13961,7 +15437,7 @@ Shows the page content without magnification</source>
 Sayfa içeriğini büyütme olmaksızın görüntüler</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Zoom in</source>
         <translation>Büyüt</translation>
     </message>
@@ -13980,7 +15456,7 @@ Zooms the current view</source>
 Geçerli görünümü büyütür</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Zoom out</source>
         <translation>Küçült</translation>
     </message>
@@ -13999,7 +15475,7 @@ Zooms out the current view</source>
 Geçerli manzarayı uzaklaştırır</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Select</source>
         <translation>Seç</translation>
     </message>
@@ -14033,7 +15509,7 @@ Seçme durumunu etkinleştirir</translation>
         <translation>Tüm bilesenleri seçer</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Select All
 
 Selects all elements of the document</source>
@@ -14057,7 +15533,7 @@ Belgenin tüm bilesenlerini seçer</translation>
         <translation>Tüm isaretleyicileri seçer</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Select Markers
 
 Selects all diagram markers of the document</source>
@@ -14066,7 +15542,55 @@ Selects all diagram markers of the document</source>
 Belgedeki tüm çizge isaretleyicilerini seçer</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
+        <source>Move and Stretch</source>
+        <translation>Taşı ve Uzat</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>M</source>
+        <translation>M</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Move the selected components and stretch the connected wiring</source>
+        <translation>Seçili bileşenleri taşır ve bağlı hatları uzatır</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Move selection (Stretching Wires)
+
+</source>
+        <translation>Seçimi taşı (hatları uzatarak)
+
+</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Move</source>
+        <translation>Taşı</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Shift+M</source>
+        <translation>Shift+M</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Move the selected components and disconnect wiring</source>
+        <translation>Seçili bileşenleri taşır ve hat bağlantılarını koparır</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Move selection (Disconnecting Wires)
+
+</source>
+        <translation>Seçimi taşı (hat bağlantılarını koparak)
+
+</translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Rotate</source>
         <translation>Döndür</translation>
     </message>
@@ -14090,12 +15614,12 @@ Rotates the selected component by 90� counter-clockwise</source>
 Seçili bileşeni saatin tersi yönde 90° çevirir {90�?}</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+73"/>
         <source>Ctrl+W</source>
         <translation>Ctrl+W</translation>
     </message>
     <message>
-        <location line="+56"/>
+        <location line="+61"/>
         <source>Power combining</source>
         <translation>Güç birleştirme</translation>
     </message>
@@ -14110,8 +15634,8 @@ Seçili bileşeni saatin tersi yönde 90° çevirir {90�?}</translation>
         <translation>QucsPowerCombining&apos;i başlatır</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+17"/>
+        <location line="+2"/>
+        <location line="+29"/>
         <source>Power combining
 
 Starts power combining calculation program</source>
@@ -14120,7 +15644,45 @@ Starts power combining calculation program</source>
 Güç birleştirme hesaplama programını başlatır</translation>
     </message>
     <message>
-        <location line="-9"/>
+        <location line="-25"/>
+        <source>S-parameter Viewer &amp;&amp; RF Circuit Synthesis</source>
+        <translation>S-parametre Görüntüleyici &amp;&amp; RF Devre Sentezi</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Starts the S-parameter Viewer &amp;&amp; RF Circuit Synthesis Tool</source>
+        <translation>S-parametre Görüntüleyici &amp;&amp; RF Devre Sentezi aracını başlatır</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>S-parameter Viewer &amp;&amp; RF Circuit Synthesis
+
+Starts the S-parameter Viewer &amp;&amp; RF Circuit Synthesis Tool</source>
+        <translation>S-parametre Görüntüleyici &amp;&amp; RF Devre Sentezi
+
+S-parametre Görüntüleyici &amp;&amp; RF Devre Sentezi aracını başlatır</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Receiver calculator</source>
+        <translation>Alıcı hesaplayıcı</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Starts receiver calculator</source>
+        <translation>Alıcı hesaplayıcıyı başlatır</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Receiver calculator
+
+Starts receiver calculator</source>
+        <translation>Alıcı hesaplayıcı
+
+Alıcı hesaplayıcıyı başlatır</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Data files converter</source>
         <translation>Veri dosyaları dönüştürücü</translation>
     </message>
@@ -14130,7 +15692,7 @@ Güç birleştirme hesaplama programını başlatır</translation>
         <translation>Ctrl+8</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>RF Layout</source>
         <translation>RF Düzeni</translation>
     </message>
@@ -14145,7 +15707,7 @@ Güç birleştirme hesaplama programını başlatır</translation>
         <translation>Qucs-RFLayout&apos;u başlatır</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+24"/>
         <source>View Data Display/Schematic
 
 Changes to data display or schematic page</source>
@@ -14154,17 +15716,27 @@ Changes to data display or schematic page</source>
 Veri ekranında veya şematik sayfada değişiklikler</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+28"/>
+        <source>CDL Settings...</source>
+        <translation>CDL Ayarları...</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>CDL Settings</source>
+        <translation>CDL Ayarları</translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>Set Diagram Limits</source>
         <translation>Diyagram Sınırlarını Ayarlama</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Pick the diagram limits using the mouse. Right click for default.</source>
         <translation>Fareyi kullanarak diyagram sınırlarını seçin. Varsayılan için sağ tıklayın.</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Set Diagram Limits
 
 Pick the diagram limits using the mouse. Right click for default.</source>
@@ -14173,7 +15745,7 @@ Pick the diagram limits using the mouse. Right click for default.</source>
 Fareyi kullanarak diyagram sınırlarını seçin. Varsayılan için sağ tıklayın.</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+6"/>
         <source>Reset Diagram Limits</source>
         <translation>Diyagram Sınırlarını Sıfırla</translation>
     </message>
@@ -14183,12 +15755,12 @@ Fareyi kullanarak diyagram sınırlarını seçin. Varsayılan için sağ tıkla
         <translation>Ctrl+Shift+E</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Resets the limits for all axis to auto.</source>
         <translation>Tüm eksenler için limitleri otomatik olarak sıfırlar.</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Reset Diagram Limits
 
 Resets the limits for all axis to auto.</source>
@@ -14197,7 +15769,7 @@ Resets the limits for all axis to auto.</source>
 Tüm eksenler için limitleri otomatik olarak sıfırlar.</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+26"/>
         <source>Simulators Settings...</source>
         <translation>Simülatör Ayarları...</translation>
     </message>
@@ -14214,7 +15786,7 @@ Rotates the selected component by 90° counter-clockwise</source>
 Seçili bileşeni saatin tersi yönde 90° çevirir</translation>
     </message>
     <message>
-        <location line="-209"/>
+        <location line="-269"/>
         <source>Mirror about X Axis</source>
         <translation>X Ekseni Etrafında Aynala</translation>
     </message>
@@ -14229,7 +15801,7 @@ Seçili bileşeni saatin tersi yönde 90° çevirir</translation>
         <translation>Seçili elemanın x ekseni etrafında ayna görüntüsünü alır</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Mirror about X Axis
 
 Mirrors the selected item about X Axis</source>
@@ -14238,7 +15810,7 @@ Mirrors the selected item about X Axis</source>
 Seçili elemanı x ekseni etrafında aynalar</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Mirror about Y Axis</source>
         <translation>Y Ekseni Etrafında Aynala</translation>
     </message>
@@ -14253,7 +15825,7 @@ Seçili elemanı x ekseni etrafında aynalar</translation>
         <translation>Seçili elemanın y ekseni etrafında ayna görüntüsünü alır</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Mirror about Y Axis
 
 Mirrors the selected item about Y Axis</source>
@@ -14262,7 +15834,7 @@ Mirrors the selected item about Y Axis</source>
 Seçili elemanı y ekseni etrafında aynalar</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Go into Subcircuit</source>
         <translation>Alt-Devreye Git</translation>
     </message>
@@ -14301,7 +15873,7 @@ Alt-devrenin içine girer</translation>
         <translation>Bir üst katmana çık</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Pop out
 
 Goes up one hierarchy level, i.e. leaves subcircuit</source>
@@ -14310,7 +15882,7 @@ Goes up one hierarchy level, i.e. leaves subcircuit</source>
 Devre sıradüzeninde (hiyerarsi) bir üst katmana çıkar, yani alt-devreyi terkeder</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Deactivate/Activate</source>
         <translation>Kapat/Etkinleştir</translation>
     </message>
@@ -14325,7 +15897,7 @@ Devre sıradüzeninde (hiyerarsi) bir üst katmana çıkar, yani alt-devreyi ter
         <translation>Seçili bilşenleri Kapatır/Etkinlestirir</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Deactivate/Activate
 
 Deactivate/Activate the selected components</source>
@@ -14334,7 +15906,7 @@ Deactivate/Activate the selected components</source>
 Seçili bilesenleri Kapatır/Etkinlestirir</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Insert Equation</source>
         <translation>Eşitlik Ekle</translation>
     </message>
@@ -14349,7 +15921,7 @@ Seçili bilesenleri Kapatır/Etkinlestirir</translation>
         <translation>Eşitlik ekler</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Insert Equation
 
 Inserts a user defined equation</source>
@@ -14358,7 +15930,7 @@ Inserts a user defined equation</source>
 Kullanıcı tarafından belirlenen bit eşitlik ekler</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Insert Ground</source>
         <translation>Toprak Ekle</translation>
     </message>
@@ -14382,7 +15954,7 @@ Inserts a ground symbol</source>
 Toprak simgesi ekler</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Insert Port</source>
         <translation>Uç Ekle</translation>
     </message>
@@ -14420,7 +15992,7 @@ Inserts a wire</source>
 Bağlantı hattı ekler</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Wire Label</source>
         <translation>Bağlantı Hattı Yaftası</translation>
     </message>
@@ -14531,7 +16103,7 @@ QucsFilter uygulamasını başlatır</translation>
         <translation>QucsActiveFilter&apos;ı başlatır</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Active filter synthesis
 
 Starts QucsActiveFilter</source>
@@ -14555,7 +16127,7 @@ QucsActiveFilter&apos;ı başlatır</translation>
         <translation>QucsTrans uygulamasını başlatır</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Line calculation
 
 Starts transmission line calculator</source>
@@ -14595,7 +16167,7 @@ Bileşen Kütüphanesi uygulamasını başlatır</translation>
         <translation>Karşılaştırma Devresi Oluşturur</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Matching Circuit
 
 Dialog for Creating Matching Circuit</source>
@@ -14619,7 +16191,7 @@ Karşılaştırma Devresi Oluşturma İletişim Penceresi</translation>
         <translation>QucsAttenuator&apos;ı baslatır</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Attenuator synthesis
 
 Starts attenuator calculation program</source>
@@ -14628,13 +16200,13 @@ Starts attenuator calculation program</source>
 Zayıflatıcı olusturma yazılımını baslatır</translation>
     </message>
     <message>
-        <location line="+26"/>
-        <location line="+411"/>
+        <location line="+40"/>
+        <location line="+448"/>
         <source>Simulate</source>
         <translation>Benzetimi Başlat</translation>
     </message>
     <message>
-        <location line="-409"/>
+        <location line="-446"/>
         <source>Simulates the current schematic</source>
         <translation>Geçerli tasarıyı benzetime tabi tutar</translation>
     </message>
@@ -14648,7 +16220,7 @@ Simulates the current schematic</source>
 Geçerli tasarıyı benzetime tabi tutar</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+12"/>
         <source>View Data Display/Schematic</source>
         <translation>Veri Göstergesi/Tasarı Görüntüle</translation>
     </message>
@@ -14666,7 +16238,7 @@ Geçerli tasarıyı benzetime tabi tutar</translation>
 </translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Calculate DC bias</source>
         <translation>DC kutuplama hesapla</translation>
     </message>
@@ -14676,7 +16248,7 @@ Geçerli tasarıyı benzetime tabi tutar</translation>
         <translation>DC kutuplanma durumunu hesaplar ve gösterir</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Calculate DC bias
 
 Calculates DC bias and shows it</source>
@@ -14685,9 +16257,9 @@ Calculates DC bias and shows it</source>
 DC kutuplanma durumunu hesaplar ve gösterir</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location filename="../qucs/qucs.cpp" line="-69"/>
+        <location filename="../qucs/qucs_init.cpp" line="+3"/>
         <location line="+1"/>
-        <location filename="../qucs/qucs.cpp" line="-63"/>
         <source>Save netlist</source>
         <translation>Netlisti kaydet</translation>
     </message>
@@ -14696,7 +16268,7 @@ DC kutuplanma durumunu hesaplar ve gösterir</translation>
         <translation type="vanished">Netlisti dosyaya kaydet</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location filename="../qucs/qucs_init.cpp" line="+23"/>
         <source>Set Marker on Graph</source>
         <translation>Grafik Üzerine İşaretçi Koy</translation>
     </message>
@@ -14706,7 +16278,7 @@ DC kutuplanma durumunu hesaplar ve gösterir</translation>
         <translation>Çizgenin grafiği üzerine bir işaretçi koyar</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Set Marker
 
 Sets a marker on a diagram&apos;s graph</source>
@@ -14715,7 +16287,7 @@ Sets a marker on a diagram&apos;s graph</source>
 Çizgenin grafiği üzerine işaretçi koyar</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+33"/>
         <source>Show Last Messages</source>
         <translation>Son îletileri Göster</translation>
     </message>
@@ -14725,7 +16297,7 @@ Sets a marker on a diagram&apos;s graph</source>
         <translation>Son benzetim iletilerini gösterir</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Show Last Messages
 
 Shows the messages of the last simulation</source>
@@ -14744,7 +16316,7 @@ Son benzetimden olan iletileri gösterir</translation>
         <translation>Son benzetim bağlantı dizelgesini gösterir</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Show Last Netlist
 
 Shows the netlist of the last simulation</source>
@@ -14753,7 +16325,7 @@ Shows the netlist of the last simulation</source>
 Son benzetimde hazırlanan son bağlantı dizelgesini gösterir</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Build Verilog-A module from subcircuit</source>
         <translation>Alt devreden Verilog-A modülü oluşturma</translation>
     </message>
@@ -14800,7 +16372,7 @@ Durumçubuğunu Etkinleştirir/kapatır</translation>
         <translation>Gözlem Penceresini açar/kapar</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Browse Window
 
 Enables/disables the browse dock window</source>
@@ -14809,7 +16381,7 @@ Enables/disables the browse dock window</source>
 Gözlem Penceresini açar/kapar</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>&amp;Octave Window</source>
         <translation>&amp;Oktav Penceresi</translation>
     </message>
@@ -14819,7 +16391,7 @@ Gözlem Penceresini açar/kapar</translation>
         <translation>Octave dock penceresini gösterir/gizler</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Octave Window
 
 Shows/hides the Octave dock window</source>
@@ -14828,7 +16400,7 @@ Shows/hides the Octave dock window</source>
 Octave dock penceresini gösterir/gizler</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>Help Index...</source>
         <translation>Yardım - İçindekiler...</translation>
     </message>
@@ -14857,7 +16429,7 @@ Qucs uygulamasındaki gömülü yardım hizmetinin içindekiler bölümü</trans
         <translation>Qucs İle Başlarken</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Getting Started
 
 Short introduction into Qucs</source>
@@ -14902,17 +16474,23 @@ About Qt by Trolltech</source>
 Trolltech tarafından Qt hakkında</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+6"/>
         <source>&amp;File</source>
         <translation>&amp;Dosya</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+6"/>
+        <source>Close</source>
+        <translation>Kapat</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <location line="+78"/>
         <source>Open Recent</source>
         <translation>Açık Güncel</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="-52"/>
         <source>&amp;Edit</source>
         <translation>&amp;Düzen</translation>
     </message>
@@ -14922,56 +16500,56 @@ Trolltech tarafından Qt hakkında</translation>
         <translation>&amp;Hizalama</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+15"/>
         <source>&amp;Insert</source>
         <translation>&amp;Ekle</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+9"/>
         <source>&amp;Project</source>
         <translation>&amp;Tasarım</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+30"/>
         <source>&amp;Tools</source>
         <translation>&amp;Araçlar</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <source>Compact modelling</source>
         <translation>Kompakt modelleme</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+5"/>
         <source>&amp;Simulation</source>
         <translation>&amp;Benzetim</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+14"/>
         <source>&amp;View</source>
         <translation>&amp;Görünüm</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+14"/>
         <source>&amp;Help</source>
         <translation>&amp;Yardım</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+10"/>
         <source>&amp;Technical Papers</source>
         <translation>&amp;Teknik Makaleler</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <location line="+20"/>
+        <location line="+7"/>
         <location line="+19"/>
+        <location line="+18"/>
         <source>Open </source>
         <translation>Açık</translation>
     </message>
     <message>
-        <location line="-38"/>
-        <location line="+20"/>
+        <location line="-36"/>
         <location line="+19"/>
+        <location line="+18"/>
         <source>
 
 Open </source>
@@ -14980,126 +16558,127 @@ Open </source>
 Açık</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-26"/>
         <source>Technical &amp;Reports</source>
         <translation>Teknik &amp;Raporlar</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+18"/>
         <source>T&amp;utorials</source>
         <translation>T&amp;eğitimler</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+34"/>
         <source>File</source>
         <translation>Dosya</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+11"/>
         <source>Edit</source>
         <translation>Düzenle</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
         <source>View</source>
         <translation>Görünüm</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Work</source>
         <translation>İş</translation>
     </message>
     <message>
         <location line="+36"/>
-        <location line="+43"/>
+        <location line="+41"/>
         <source>no warnings</source>
         <translation>uyarı yok</translation>
     </message>
     <message>
-        <location line="-22"/>
+        <location line="-21"/>
         <source>Warnings in last simulation! Press F5</source>
         <translation>Son benzetimdeki uyarılar ! için F5&apos;e basınız</translation>
+    </message>
+    <message>
+        <location filename="../qucs/mouseactions.cpp" line="-816"/>
+        <source>Wiring mode: free. RMB to switch to orthogonal.</source>
+        <translation>Bağlantı modu: serbest. Dik moda geçmek için sağ tıklayın.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Wiring mode: orthogonal. RMB to switch to free.</source>
+        <translation>Bağlantı modu: dik. Serbest moda geçmek için sağ tıklayın.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Wiring mode: orthogonal. RMB to cycle through variants.</source>
+        <translation>Bağlantı modu: dik. Seçenekler arasında geçmek için sağ tıklayın.</translation>
     </message>
 </context>
 <context>
     <name>QucsAttenuator</name>
     <message>
-        <location filename="../qucs-s-spar-viewer/qucsattenuator.cpp" line="+48"/>
         <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+48"/>
         <source>&amp;File</source>
         <translation>&amp;Dosya</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+2"/>
         <source>&amp;Quit</source>
         <translation>&amp;Çıkış</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+2"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+6"/>
-        <location line="+2"/>
         <source>&amp;Help</source>
         <translation>&amp;Yardım</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+5"/>
         <source>&amp;About</source>
         <translation>&amp;Hakkında</translation>
     </message>
     <message>
         <location line="+7"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+7"/>
         <source>About Qt...</source>
         <translation>Qt Hakkında...</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+12"/>
         <source>Topology</source>
         <translation>Topoloji</translation>
     </message>
     <message>
-        <location line="+34"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+35"/>
+        <location line="+35"/>
         <source>Input</source>
         <translation>Giris</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+9"/>
+        <location line="+9"/>
         <source>Attenuation:</source>
         <translation>Zayıflama çarpanı:</translation>
     </message>
     <message>
-        <location line="+39"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+37"/>
+        <location line="+37"/>
         <source>Pin:</source>
         <translation>Pim:</translation>
     </message>
     <message>
         <location line="+25"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+25"/>
         <source>Freq:</source>
         <translation>Frekans:</translation>
     </message>
     <message>
         <location line="+39"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+39"/>
         <source>Put into Clipboard</source>
         <translation>Panoya yerleştir</translation>
     </message>
     <message>
         <location line="+76"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+76"/>
         <source>R4:</source>
         <translation>R4:</translation>
     </message>
     <message>
         <location line="+92"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+92"/>
         <source>Copyright (C) 2024 by</source>
         <translation>Telif Hakkı (C) 2024 tarafından</translation>
     </message>
@@ -15108,14 +16687,12 @@ Açık</translation>
         <translation type="vanished">1</translation>
     </message>
     <message>
-        <location line="-262"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="-260"/>
+        <location line="-260"/>
         <source>dB</source>
         <translation>dB</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+3"/>
         <source>Zin:</source>
         <translation>Zin:</translation>
     </message>
@@ -15128,8 +16705,7 @@ Açık</translation>
         <translation type="vanished">Ohm</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+13"/>
+        <location line="+13"/>
         <source>Zout:</source>
         <translation>Zout:</translation>
     </message>
@@ -15138,14 +16714,12 @@ Açık</translation>
         <translation type="vanished">Hesapla ve not tahtasına koy</translation>
     </message>
     <message>
-        <location line="+82"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+81"/>
+        <location line="+81"/>
         <source>Output</source>
         <translation>Çıkıs</translation>
     </message>
     <message>
         <location line="+11"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+11"/>
         <source>R1:</source>
         <translation>R1:</translation>
     </message>
@@ -15158,26 +16732,16 @@ Açık</translation>
         <location line="+7"/>
         <location line="+13"/>
         <location line="+7"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+2"/>
-        <location line="+7"/>
-        <location line="+13"/>
-        <location line="+7"/>
-        <location line="+13"/>
-        <location line="+7"/>
-        <location line="+13"/>
-        <location line="+7"/>
         <source>--</source>
         <translation>--</translation>
     </message>
     <message>
         <location line="-49"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="-49"/>
         <source>R2:</source>
         <translation>R2:</translation>
     </message>
     <message>
         <location line="+20"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+20"/>
         <source>R3:</source>
         <translation>R3:</translation>
     </message>
@@ -15187,31 +16751,26 @@ Açık</translation>
     </message>
     <message>
         <location line="+85"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+85"/>
         <source>Qucs Attenuator Help</source>
         <translation>Qucs Zayıflatıcı Yardım</translation>
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+1"/>
         <source>QucsAttenuator is an attenuator synthesis program. To create a attenuator, simply enter all the input parameters and press the calculation button. Immediately, the schematic of the attenuator is calculated and put into the clipboard. Now go to Qucs, open an schematic and press CTRL-V (paste from clipboard). The attenuator schematic can now be inserted. Have lots of fun!</source>
         <translation>QucsAttenuator bir zayıflatıcı sentez programıdır. Bir zayıflatıcı oluşturmak için, tüm giriş parametrelerini girmeniz ve hesaplama düğmesine basmanız yeterlidir. Hemen, zayıflatıcının şeması hesaplanır ve panoya yerleştirilir. Şimdi Qucs&apos;a gidin, bir şematik açın ve CTRL-V&apos;ye (panodan yapıştır) basın. Zayıflatıcı şeması artık eklenebilir. İyi eğlenceler!</translation>
     </message>
     <message>
         <location line="+14"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+14"/>
         <source>About Qt</source>
         <translation>Qt Hakkında</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+5"/>
         <source>About...</source>
         <translation>Hakkında...</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+2"/>
         <source>
 Attenuator synthesis program
 </source>
@@ -15222,8 +16781,6 @@ Zayıflatıcı tasarım yazılımı
     <message>
         <location line="+1"/>
         <location line="+2"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+1"/>
-        <location line="+2"/>
         <source>Copyright (C) 2006 by</source>
         <translation>Çoğaltma hakkı/Telif (Ç) 2006 </translation>
     </message>
@@ -15232,8 +16789,7 @@ Zayıflatıcı tasarım yazılımı
         <translation type="vanished">Basarılı!</translation>
     </message>
     <message>
-        <location line="+316"/>
-        <location filename="../qucs-attenuator/qucsattenuator.cpp" line="+321"/>
+        <location line="+321"/>
         <source>Error: Set Attenuation less than %1 dB</source>
         <translation>Hata: Zayıflamayı %1 dB&apos;den daha az ayarlayın</translation>
     </message>
@@ -15725,7 +17281,7 @@ Enables/disables the table of contents</source>
 <context>
     <name>QucsSettingsDialog</name>
     <message>
-        <location filename="../qucs/dialogs/qucssettingsdialog.cpp" line="+79"/>
+        <location filename="../qucs/dialogs/qucssettingsdialog.cpp" line="+80"/>
         <source>Edit Qucs Properties</source>
         <translation>Qucs Özelliklerini Değiştir</translation>
     </message>
@@ -15734,7 +17290,7 @@ Enables/disables the table of contents</source>
         <translation type="vanished">Harf (tekrar yüklendikten sonra atanmak üzere):</translation>
     </message>
     <message>
-        <location line="+94"/>
+        <location line="+123"/>
         <source>Large font size:</source>
         <translation>Büyük yazı tipi boyutu:</translation>
     </message>
@@ -15744,7 +17300,7 @@ Enables/disables the table of contents</source>
         <translation>Belge Ardalan Rengi:</translation>
     </message>
     <message>
-        <location line="-60"/>
+        <location line="-89"/>
         <source>Language (set after reload):</source>
         <translation>Dil (tekrar yüklemeden sonra etkinleşmek üzere):</translation>
     </message>
@@ -15854,7 +17410,7 @@ Enables/disables the table of contents</source>
         <translation>Çince</translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+88"/>
         <source>Schematic font (set after reload):</source>
         <translation>Şematik yazı tipi (yeniden yüklemeden sonra ayarlanır):</translation>
     </message>
@@ -15864,7 +17420,7 @@ Enables/disables the table of contents</source>
         <translation>Uygulama yazı tipi (yeniden yüklemeden sonra ayarlanır):</translation>
     </message>
     <message>
-        <location line="-56"/>
+        <location line="-85"/>
         <source>Kazakh</source>
         <translation>Kazakça</translation>
     </message>
@@ -15899,7 +17455,7 @@ Enables/disables the table of contents</source>
         <translation>Qucs&apos;un daha yeni sürümleriyle oluşturulmuş belgeleri de yüklemeyi deneyin.</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+77"/>
         <source>Draw diagrams with anti-aliasing feature:</source>
         <translation>Kenar yumuşatma özelliği ile diyagramlar çizin:</translation>
     </message>
@@ -15924,7 +17480,7 @@ Enables/disables the table of contents</source>
         <translation>Daha pürüzsüz bir görünüm için metin için kenar yumuşatma kullanın.</translation>
     </message>
     <message>
-        <location line="-52"/>
+        <location line="-81"/>
         <source>Show trace name prefix on diagrams:</source>
         <translation>Diyagramlarda iz adı önekini gösterin:</translation>
     </message>
@@ -15935,28 +17491,68 @@ Enables/disables the table of contents</source>
     </message>
     <message>
         <location line="+4"/>
+        <source>Always prefix the dataset with simulation label:</source>
+        <translation>Veri kümesinde her zaman simülasyon etiketini önek olarak kullan:</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Always use the prefix for dataset, i.e. &quot;tr1.v(out)&quot; rather than &quot;v(out)&quot;</source>
+        <translation>Veri kümesinde her zaman öneki kullan, yani &quot;v(out)&quot; yerine &quot;tr1.v(out)&quot;</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Flexible wires (requires restart):</source>
+        <translation>Esnek bağlantı hatları (yeniden başlatma gerekir):</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Validate schematic before simulating:</source>
+        <translation>Simülasyondan önce şemayı doğrula:</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Check the schematic for common issues before running the simulation.</source>
+        <translation>Simülasyonu çalıştırmadan önce şemayı yaygın sorunlar için kontrol et.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Validate schematic after saving:</source>
+        <translation>Kaydettikten sonra şemayı doğrula:</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Check the schematic for common issues after saving.</source>
+        <translation>Kaydettikten sonra şemayı yaygın sorunlar için kontrol et.</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+2"/>
+        <source>Set custom shortcut:</source>
+        <translation>Özel kısayol ayarla:</translation>
+    </message>
+    <message>
+        <location line="+37"/>
         <source>Grid Color (set after reload):</source>
-        <translation type="unfinished"></translation>
+        <translation>Izgara rengi (yeniden yüklemeden sonra geçerli):</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Default graph line thickness:</source>
-        <translation type="unfinished"></translation>
+        <translation>Varsayılan grafik çizgi kalınlığı:</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>App Style:</source>
-        <translation type="unfinished"></translation>
+        <translation>Uygulama Stili:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Görünüm</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -16057,11 +17653,61 @@ uygun bir uygulama ile açılabilsinler.</translation>
     </message>
     <message>
         <location line="+8"/>
-        <source>Edit the standard paths and external applications</source>
-        <translation>Standart yolları ve harici uygulamaları düzenleme</translation>
+        <source>Standard Paths and External Applications</source>
+        <translation>Standart Yollar ve Harici Uygulamalar</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+91"/>
+        <location line="+896"/>
+        <source>Clear All Paths</source>
+        <translation>Tüm Yolları Temizle</translation>
+    </message>
+    <message>
+        <location line="-126"/>
+        <source>Add Path With Subfolders</source>
+        <translation>Alt Klasörleriyle Yol Ekle</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Select the paths to add to the search list:</source>
+        <translation>Arama listesine eklenecek yolları seçin:</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Select / Deselect all</source>
+        <translation>Tümünü seç / Seçimi kaldır</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>%1 of %1 paths selected</source>
+        <translation>%1 / %1 yol seçili</translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>%1 of %2 paths selected</source>
+        <translation>%1 / %2 yol seçili</translation>
+    </message>
+    <message>
+        <location line="+51"/>
+        <source>✕</source>
+        <translation>✕</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Remove this path</source>
+        <translation>Bu yolu kaldır</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Are you sure you want to remove all %1 search paths?</source>
+        <translation>%1 arama yolunun tümünü kaldırmak istediğinizden emin misiniz?</translation>
+    </message>
+    <message>
+        <source>Edit the standard paths and external applications</source>
+        <translation type="vanished">Standart yolları ve harici uygulamaları düzenleme</translation>
+    </message>
+    <message>
+        <location line="-985"/>
         <source>Qucs Home:</source>
         <translation>Qucs Home:</translation>
     </message>
@@ -16073,7 +17719,7 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <location line="+7"/>
         <location line="+7"/>
         <source>Browse</source>
-        <translation type="unfinished">Gözat</translation>
+        <translation>Gözat</translation>
     </message>
     <message>
         <location line="-31"/>
@@ -16101,27 +17747,27 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation>RF Yerleşim Yolu:</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+11"/>
+        <source>Subcircuit Search Paths</source>
+        <translation>Alt Devre Arama Yolları</translation>
+    </message>
+    <message>
+        <location line="+21"/>
         <source>Subcircuit Search Path List</source>
         <translation>Alt Devre Arama Yolu Listesi</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+11"/>
         <source>Add Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Yol Ekle</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Add Path With SubFolders</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt Klasörleriyle Yol Ekle</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Remove Path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+10"/>
+        <location line="+16"/>
         <source>Locations</source>
         <translation>Konumlar</translation>
     </message>
@@ -16146,7 +17792,7 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation>Varsayılan Değerler</translation>
     </message>
     <message>
-        <location line="+73"/>
+        <location line="+78"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
@@ -16156,7 +17802,7 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation>Bu ek zaten kayıtlı!</translation>
     </message>
     <message>
-        <location line="+510"/>
+        <location line="+556"/>
         <source>Select the home directory</source>
         <translation>Ev dizinini seçin</translation>
     </message>
@@ -16186,16 +17832,249 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation>Qucs-RFLayout yürütülebilir dosyasını seçin</translation>
     </message>
     <message>
-        <location line="+28"/>
-        <location line="+20"/>
+        <location line="+10"/>
+        <location line="+19"/>
         <source>Select a directory</source>
         <translation>Bir dizin seçin</translation>
     </message>
 </context>
 <context>
+    <name>QucsShortcutDialog</name>
+    <message>
+        <location filename="../qucs/dialogs/qucsshortcutdialog.cpp" line="+49"/>
+        <source>Edit Qucs-S Shortcuts</source>
+        <translation>Qucs-S Kısayollarını Düzenle</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Action</source>
+        <translation>Eylem</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Shortcut Key</source>
+        <translation>Kısayol Tuşu</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Search shortcuts...</source>
+        <translation>Kısayollarda ara...</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Remove shortcut</source>
+        <translation>Kısayolu kaldır</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+193"/>
+        <source>Reset Category</source>
+        <translation>Kategoriyi Sıfırla</translation>
+    </message>
+    <message>
+        <location line="-192"/>
+        <source>Reset All</source>
+        <translation>Tümünü Sıfırla</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>OK</source>
+        <translation>Tamam</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Import</source>
+        <translation>İçe Aktar</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Export</source>
+        <translation>Dışa Aktar</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Categories:</source>
+        <translation>Kategoriler:</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>&lt;b&gt;Note:&lt;/b&gt; Double-click a shortcut to change it</source>
+        <translation>&lt;b&gt;Not:&lt;/b&gt; Bir kısayolu değiştirmek için üzerine çift tıklayın</translation>
+    </message>
+    <message>
+        <location line="+106"/>
+        <location line="+396"/>
+        <source>Modified from default: %1</source>
+        <translation>Varsayılandan farklı: %1</translation>
+    </message>
+    <message>
+        <location line="-377"/>
+        <location line="+400"/>
+        <source>Info</source>
+        <translation>Bilgi</translation>
+    </message>
+    <message>
+        <location line="-399"/>
+        <source>Please select an action first!</source>
+        <translation>Lütfen önce bir eylem seçin!</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>✓ Shortcut removed</source>
+        <translation>✓ Kısayol kaldırıldı</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Reset all shortcuts in &apos;%1&apos; to defaults?</source>
+        <translation>&apos;%1&apos; içindeki tüm kısayollar varsayılana sıfırlansın mı?</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Reset All Shortcuts</source>
+        <translation>Tüm Kısayolları Sıfırla</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Reset ALL shortcuts to factory defaults?
+
+This cannot be undone!</source>
+        <translation>TÜM kısayollar fabrika varsayılanlarına sıfırlansın mı?
+
+Bu işlem geri alınamaz!</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+32"/>
+        <location line="+31"/>
+        <source>Success</source>
+        <translation>Başarılı</translation>
+    </message>
+    <message>
+        <location line="-62"/>
+        <source>All shortcuts have been reset to defaults.</source>
+        <translation>Tüm kısayollar varsayılana sıfırlandı.</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Import Shortcut Map</source>
+        <translation>Kısayol Haritasını İçe Aktar</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Shortcuts imported successfully from:
+%1</source>
+        <translation>Kısayollar başarıyla içe aktarıldı:
+%1</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+32"/>
+        <location line="+269"/>
+        <source>Error</source>
+        <translation>Hata</translation>
+    </message>
+    <message>
+        <location line="-300"/>
+        <source>Failed to import shortcuts from:
+%1
+
+Please check that the file is a valid Qucs-S shortcut file.</source>
+        <translation>Kısayollar içe aktarılamadı:
+%1
+
+Lütfen dosyanın geçerli bir Qucs-S kısayol dosyası olduğunu kontrol edin.</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Export Shortcut Map</source>
+        <translation>Kısayol Haritasını Dışa Aktar</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Shortcuts exported successfully to:
+%1</source>
+        <translation>Kısayollar başarıyla dışa aktarıldı:
+%1</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Failed to export shortcuts to:
+%1</source>
+        <translation>Kısayollar dışa aktarılamadı:
+%1</translation>
+    </message>
+    <message>
+        <location line="+144"/>
+        <source>⌨ Press key combination...</source>
+        <translation>⌨ Tuş kombinasyonuna basın...</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>ℹ️ Press your desired key combination (or ESC to cancel)</source>
+        <translation>ℹ️ İstediğiniz tuş kombinasyonuna basın (iptal için ESC)</translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <location line="+62"/>
+        <source>❌ Cancelled</source>
+        <translation>❌ İptal edildi</translation>
+    </message>
+    <message>
+        <location line="-30"/>
+        <source>Invalid Shortcut</source>
+        <translation>Geçersiz Kısayol</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>❌ Invalid shortcut</source>
+        <translation>❌ Geçersiz kısayol</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>This shortcut is already used by:
+
+</source>
+        <translation>Bu kısayol zaten şunun tarafından kullanılıyor:
+
+</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>
+Please assign other shortcut</source>
+        <translation>
+Lütfen başka bir kısayol atayın</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Conflict Detected</source>
+        <translation>Çakışma Algılandı</translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>✓ Shortcut set to: %1</source>
+        <translation>✓ Kısayol ayarlandı: %1</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Failed to set shortcut!</source>
+        <translation>Kısayol ayarlanamadı!</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>❌ Failed to set shortcut</source>
+        <translation>❌ Kısayol ayarlanamadı</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Please select an action first to set a shortcut!</source>
+        <translation>Kısayol atamak için lütfen önce bir eylem seçin!</translation>
+    </message>
+</context>
+<context>
     <name>QucsTranscalc</name>
     <message>
-        <location filename="../qucs-transcalc/qucstrans.cpp" line="-846"/>
+        <location filename="../qucs-transcalc/qucstrans.cpp" line="-923"/>
         <source>&amp;File</source>
         <translation>&amp;Dosya</translation>
     </message>
@@ -16352,14 +18231,14 @@ uygun bir uygulama ile açılabilsinler.</translation>
     </message>
     <message>
         <location line="+6"/>
-        <location line="+592"/>
-        <location line="+171"/>
+        <location line="+622"/>
+        <location line="+218"/>
         <location line="+19"/>
         <source>Ready.</source>
         <translation>Hazır.</translation>
     </message>
     <message>
-        <location line="-731"/>
+        <location line="-808"/>
         <location line="+6"/>
         <location line="+6"/>
         <location line="+6"/>
@@ -16638,7 +18517,17 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation>Kalemi hesaplama için işaretle</translation>
     </message>
     <message>
-        <location line="+216"/>
+        <location line="+34"/>
+        <source>Material</source>
+        <translation>Malzeme</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Custom</source>
+        <translation>Özel</translation>
+    </message>
+    <message>
+        <location line="+197"/>
         <source>About...</source>
         <translation>Hakkında...</translation>
     </message>
@@ -16678,7 +18567,7 @@ uygun bir uygulama ile açılabilsinler.</translation>
 </translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+53"/>
         <location line="+11"/>
         <source>Values are consistent.</source>
         <translation>Değerler tutarlı.</translation>
@@ -16694,7 +18583,7 @@ uygun bir uygulama ile açılabilsinler.</translation>
         <translation>Değerler tutarlı değil.</translation>
     </message>
     <message>
-        <location line="+132"/>
+        <location line="+179"/>
         <source>Loading file...</source>
         <translation>Dosya Yükleniyor...</translation>
     </message>
@@ -16755,131 +18644,100 @@ uygun bir uygulama ile açılabilsinler.</translation>
 <context>
     <name>Qucs_S_SPAR_Viewer</name>
     <message>
-        <location filename="../qucs-s-spar-viewer/qucs-s-spar-viewer.cpp" line="+56"/>
         <source>&amp;File</source>
-        <translation>&amp;Dosya</translation>
+        <translation type="vanished">&amp;Dosya</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>&amp;Quit</source>
-        <translation>&amp;Çıkış</translation>
+        <translation type="vanished">&amp;Çıkış</translation>
     </message>
     <message>
-        <location line="+4"/>
         <source>&amp;Open session file</source>
-        <translation>&amp;Oturum dosyasını aç</translation>
+        <translation type="vanished">&amp;Oturum dosyasını aç</translation>
     </message>
     <message>
-        <location line="+4"/>
         <source>&amp;Save session as ...</source>
-        <translation>&amp;Oturumu farklı kaydet ...</translation>
+        <translation type="vanished">&amp;Oturumu farklı kaydet ...</translation>
     </message>
     <message>
-        <location line="+4"/>
         <source>&amp;Save session</source>
-        <translation>&amp;Oturumu kaydet</translation>
+        <translation type="vanished">&amp;Oturumu kaydet</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <location line="+2"/>
         <source>&amp;Help</source>
-        <translation>&amp;Yardım</translation>
+        <translation type="vanished">&amp;Yardım</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>&amp;About</source>
-        <translation>&amp;Hakkında</translation>
+        <translation type="vanished">&amp;Hakkında</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>About Qt...</source>
-        <translation>Qt Hakkında...</translation>
+        <translation type="vanished">Qt Hakkında...</translation>
     </message>
     <message>
-        <location line="+464"/>
         <source>Qucs-S S-parameter Help</source>
-        <translation>Qucs-S S-parametre Yardımı</translation>
+        <translation type="vanished">Qucs-S S-parametre Yardımı</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>This is a simple viewer for S-parameter data.
 It can show several .snp files at a time in the same diagram. Trace markers can also be added so that the user can read the trace value at at an specific frequency.</source>
-        <translation>Bu, S-parametre verileri için basit bir görüntüleyicidir.
+        <translation type="vanished">Bu, S-parametre verileri için basit bir görüntüleyicidir.
 Aynı anda birkaç .snp dosyasını aynı diyagramda gösterebilir. İz işaretleyicileri de eklenebilir, böylece kullanıcı belirli bir frekanstaki iz değerini okuyabilir.</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>About Qt</source>
-        <translation>Qt Hakkında</translation>
+        <translation type="vanished">Qt Hakkında</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>About...</source>
-        <translation>Hakkında...</translation>
+        <translation type="vanished">Hakkında...</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>
 Copyright (C) 2024 by</source>
-        <translation>
+        <translation type="vanished">
 Telif Hakkı (C) 2024 tarafından</translation>
     </message>
     <message>
-        <location line="+16"/>
         <source>S-Parameter Files (*.s1p *.s2p *.s3p *.s4p);;All Files (*.*)</source>
-        <translation>S-Parametre Dosyaları (*.s1p *.s2p *.s3p *.s4p);;Tüm Dosyalar (*.*)</translation>
+        <translation type="vanished">S-Parametre Dosyaları (*.s1p *.s2p *.s3p *.s4p);;Tüm Dosyalar (*.*)</translation>
     </message>
     <message>
-        <location line="+41"/>
-        <location line="+565"/>
-        <location line="+800"/>
-        <location line="+569"/>
         <source>Warning</source>
-        <translation>Uyarı</translation>
+        <translation type="vanished">Uyarı</translation>
     </message>
     <message>
-        <location line="-1933"/>
         <source>This file is already in the dataset.</source>
-        <translation>Bu dosya zaten veri kümesinde bulunmaktadır.</translation>
+        <translation type="vanished">Bu dosya zaten veri kümesinde bulunmaktadır.</translation>
     </message>
     <message>
-        <location line="+565"/>
         <source>This trace is already shown</source>
-        <translation>Bu iz zaten gösterilmiştir</translation>
+        <translation type="vanished">Bu iz zaten gösterilmiştir</translation>
     </message>
     <message>
-        <location line="+800"/>
-        <location line="+569"/>
         <source>The display contains no traces.</source>
-        <translation>Ekran hiçbir iz içermez.</translation>
+        <translation type="vanished">Ekran hiçbir iz içermez.</translation>
     </message>
     <message>
-        <location line="+220"/>
-        <location line="+24"/>
         <source>Error</source>
-        <translation>Hata</translation>
+        <translation type="vanished">Hata</translation>
     </message>
     <message>
-        <location line="-23"/>
-        <location line="+24"/>
         <source>Nothing to save: No data was loaded.</source>
-        <translation>Kaydedilecek bir şey yok: Hiçbir veri yüklenmedi.</translation>
+        <translation type="vanished">Kaydedilecek bir şey yok: Hiçbir veri yüklenmedi.</translation>
     </message>
     <message>
-        <location line="-18"/>
         <source>Save session</source>
-        <translation>Oturumu kaydet</translation>
+        <translation type="vanished">Oturumu kaydet</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location line="+201"/>
         <source>Qucs-S snp viewer session (*.spar);</source>
-        <translation>Qucs-S snp görüntüleyici oturumu (*.spar);</translation>
+        <translation type="vanished">Qucs-S snp görüntüleyici oturumu (*.spar);</translation>
     </message>
     <message>
-        <location line="-2"/>
         <source>Open S-parameter Viewer Session</source>
-        <translation>S-parametre Görüntüleyici Oturumunu Açın</translation>
+        <translation type="vanished">S-parametre Görüntüleyici Oturumunu Açın</translation>
     </message>
 </context>
 <context>
@@ -16923,7 +18781,7 @@ Telif Hakkı (C) 2024 tarafından</translation>
 <context>
     <name>Schematic</name>
     <message>
-        <location filename="../qucs/schematic.cpp" line="-2582"/>
+        <location filename="../qucs/schematic.cpp" line="-2162"/>
         <source>Title</source>
         <translation>Baslık</translation>
     </message>
@@ -16943,7 +18801,7 @@ Telif Hakkı (C) 2024 tarafından</translation>
         <translation>Düzeltme:</translation>
     </message>
     <message>
-        <location line="+104"/>
+        <location line="+100"/>
         <source>Edit Schematic</source>
         <translation>Şemayı Düzenle</translation>
     </message>
@@ -16981,18 +18839,21 @@ Edits the symbol for this schematic</source>
 Bu tasarının simgesini düzenler</translation>
     </message>
     <message>
-        <location line="+1621"/>
+        <location line="+1306"/>
         <source>generic</source>
         <translation>jenerik</translation>
     </message>
     <message>
-        <location filename="../qucs/schematic_file.cpp" line="-1474"/>
+        <location filename="../qucs/schematic_file.cpp" line="-1482"/>
         <location line="+22"/>
+        <location line="+16"/>
+        <location line="+6"/>
+        <location line="+15"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location line="-21"/>
+        <location line="-58"/>
         <source>Program admsXml not found: %1
 
 Set the admsXml location on the application settings.</source>
@@ -17006,7 +18867,18 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <translation>Durum</translation>
     </message>
     <message>
-        <location line="+917"/>
+        <location line="+12"/>
+        <location line="+6"/>
+        <source>Cannot open %1</source>
+        <translation>%1 açılamıyor</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Cannot write %1</source>
+        <translation>%1 yazılamıyor</translation>
+    </message>
+    <message>
+        <location line="+898"/>
         <source>Netlist error</source>
         <translation>Netlist hatası</translation>
     </message>
@@ -17016,7 +18888,7 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <translation>S2Spice uyarısı</translation>
     </message>
     <message>
-        <location line="+155"/>
+        <location line="+153"/>
         <source>ERROR: Cannot create library file &quot;%s&quot;.</source>
         <translation>HATA: &quot;%s&quot; kütüphanesi oluşturulamıyor.</translation>
     </message>
@@ -17080,9 +18952,52 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
     </message>
 </context>
 <context>
+    <name>SelFromLibDialog</name>
+    <message>
+        <location filename="../qucs/dialogs/selfromlibdialog.cpp" line="+22"/>
+        <source>Library</source>
+        <translation>Kütüphane</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Component</source>
+        <translation>Bileşen</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Description</source>
+        <translation>Açıklama</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>OK</source>
+        <translation>Tamam</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Apply</source>
+        <translation>Uygula</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Cancel</source>
+        <translation>İptal</translation>
+    </message>
+    <message>
+        <location line="+65"/>
+        <source>Select model</source>
+        <translation>Model seç</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>No model selected from list</source>
+        <translation>Listeden model seçilmedi</translation>
+    </message>
+</context>
+<context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../qucs/dialogs/settingsdialog.cpp" line="-312"/>
+        <location filename="../qucs/dialogs/settingsdialog.cpp" line="-362"/>
         <source>Edit File Properties</source>
         <translation>Dosya Özelliklerini Düzenle</translation>
     </message>
@@ -17144,12 +19059,42 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <translation>Izgara</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+22"/>
         <source>no Frame</source>
         <translation>Penceresiz</translation>
     </message>
     <message>
+        <location line="+3"/>
+        <source>DIN A0 landscape</source>
+        <translation>DIN A0 yatay</translation>
+    </message>
+    <message>
         <location line="+1"/>
+        <source>DIN A0 portrait</source>
+        <translation>DIN A0 dikey</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>DIN A1 landscape</source>
+        <translation>DIN A1 yatay</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>DIN A1 portrait</source>
+        <translation>DIN A1 dikey</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>DIN A2 landscape</source>
+        <translation>DIN A2 yatay</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>DIN A2 portrait</source>
+        <translation>DIN A2 dikey</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>DIN A5 landscape</source>
         <translation>DIN A5 yatay</translation>
     </message>
@@ -17159,7 +19104,7 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <translation>DIN A5 dikey</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-3"/>
         <source>DIN A4 landscape</source>
         <translation>DIN A4 yatay</translation>
     </message>
@@ -17169,7 +19114,7 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <translation>DIN A4 dikey</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-3"/>
         <source>DIN A3 landscape</source>
         <translation>DIN A3 yatay</translation>
     </message>
@@ -17179,7 +19124,17 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <translation>DIN A3 dikey</translation>
     </message>
     <message>
+        <location line="+5"/>
+        <source>DIN A6 landscape</source>
+        <translation>DIN A6 yatay</translation>
+    </message>
+    <message>
         <location line="+1"/>
+        <source>DIN A6 portrait</source>
+        <translation>DIN A6 dikey</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Letter landscape</source>
         <translation>Manzara mektubu</translation>
     </message>
@@ -17189,7 +19144,7 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <translation>Mektup portresi</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+17"/>
         <source>Frame</source>
         <translation>Pencereli</translation>
     </message>
@@ -17218,7 +19173,7 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
     </message>
     <message>
         <location line="+21"/>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Progress:</source>
         <translation>İlerleme:</translation>
     </message>
@@ -17249,7 +19204,7 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <translation>bağlantı dizelgesi oluşturuluyor...</translation>
     </message>
     <message>
-        <location line="+326"/>
+        <location line="+438"/>
         <location line="+24"/>
         <source>Error</source>
         <translation>Hata</translation>
@@ -17261,7 +19216,7 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <translation>Netlist okunamıyor!</translation>
     </message>
     <message>
-        <location line="-356"/>
+        <location line="-468"/>
         <source>ERROR: Simulator is still running!</source>
         <translation>HATA: Simülatör hala çalışıyor!</translation>
     </message>
@@ -17286,8 +19241,33 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <translation>SIM HATASI: QucsConv başlatılamıyor!</translation>
     </message>
     <message>
-        <location line="+105"/>
-        <location line="+103"/>
+        <location line="+86"/>
+        <source>ERROR: Cannot remove temporary file &quot;%1&quot;!</source>
+        <translation>HATA: &quot;%1&quot; geçici dosyası silinemiyor!</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>ERROR: Cannot create temporary HDL file &quot;%1&quot;!</source>
+        <translation>HATA: &quot;%1&quot; geçici HDL dosyası oluşturulamıyor!</translation>
+    </message>
+    <message>
+        <location line="+67"/>
+        <source>ERROR: Digital simulation executable is not configured.</source>
+        <translation>HATA: Dijital simülasyon programı yapılandırılmamış.</translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>ERROR: Digital simulation stage &quot;%1&quot; crashed!</source>
+        <translation>HATA: &quot;%1&quot; dijital simülasyon aşaması çöktü!</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>ERROR: Digital simulation stage &quot;%1&quot; exited with code %2.</source>
+        <translation>HATA: &quot;%1&quot; dijital simülasyon aşaması %2 koduyla sonlandı.</translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <location line="+81"/>
         <source>done.
 </source>
         <translation>Bitti.
@@ -17305,12 +19285,12 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <translation>HATA: &quot;%1&quot; oluşturulamıyor!</translation>
     </message>
     <message>
-        <location line="+306"/>
+        <location line="+293"/>
         <source>ERROR: Cannot start </source>
         <translation>HATA: Başlatılamıyor</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+28"/>
         <source>Starting </source>
         <translation>Başlangıç</translation>
     </message>
@@ -17396,7 +19376,7 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <translation type="vanished">Ekstra simülatör parametreleri</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+17"/>
         <source>Apply changes</source>
         <translation>Değişiklikleri uygula</translation>
     </message>
@@ -17410,31 +19390,43 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
         <source>Select ...</source>
         <translation>Seçin ...</translation>
     </message>
     <message>
-        <location line="-14"/>
+        <location line="-18"/>
         <source>Ngspice compatibility mode</source>
         <translation>Ngspice uyumluluk modu</translation>
     </message>
     <message>
-        <location line="-3"/>
+        <location line="-5"/>
+        <source>Icarus Verilog executable location</source>
+        <translation>Icarus Verilog programının konumu</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>GHDL executable location</source>
+        <translation>GHDL programının konumu</translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Ngspice CLI parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Ngspice komut satırı parametreleri</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Xyce CLI parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Xyce komut satırı parametreleri</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>SpiceOpus CLI parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>SpiceOpus komut satırı parametreleri</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+47"/>
         <source>SPICE settings</source>
         <translation>SPICE ayarları</translation>
     </message>
@@ -17444,12 +19436,17 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <translation>Qucsator ayarları</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+12"/>
+        <source>Digital simulation settings</source>
+        <translation>Dijital simülasyon ayarları</translation>
+    </message>
+    <message>
+        <location line="+23"/>
         <source>Setup simulators executable location</source>
         <translation>Simülatörlerin çalıştırılabilir konumunu ayarlama</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+29"/>
         <source>Select Ngspice executable location</source>
         <translation>Ngspice çalıştırılabilir konumunu seçin</translation>
     </message>
@@ -17467,6 +19464,16 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <location line="+8"/>
         <source>Select Qucsator executable location</source>
         <translation>Qucsator çalıştırılabilir konumunu seçin</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Select Icarus Verilog executable location</source>
+        <translation>Icarus Verilog programının konumunu seçin</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Select GHDL executable location</source>
+        <translation>GHDL programının konumunu seçin</translation>
     </message>
 </context>
 <context>
@@ -17496,17 +19503,19 @@ Uygulama ayarlarında admsXml konumunu ayarlayın.</translation>
         <source>Set SPICE parameters string as a plain text.
 Example:
 V0=1.0 I0=2.0</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE parametre dizgesini düz metin olarak girin.
+Örnek:
+V0=1.0 I0=2.0</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Show</source>
-        <translation type="unfinished">Göster</translation>
+        <translation>Göster</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>SPICE parameters:</source>
-        <translation type="unfinished"></translation>
+        <translation>SPICE parametreleri:</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -17564,7 +19573,7 @@ V0=1.0 I0=2.0</source>
         <translation>İptal Et</translation>
     </message>
     <message>
-        <location line="+169"/>
+        <location line="+170"/>
         <source>Select a file</source>
         <translation>Bir dosya seç</translation>
     </message>
@@ -17680,14 +19689,17 @@ V0=1.0 I0=2.0</source>
         <location line="+51"/>
         <source>No symbol files found at the following path:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Şu yolda sembol dosyası bulunamadı:
+</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>
 Check you installation!
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+Kurulumunuzu kontrol edin!
+</translation>
     </message>
     <message>
         <location line="+80"/>
@@ -17700,7 +19712,7 @@ Check you installation!
         <translation>SPICE kütüphane cihazını düzenleme</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+53"/>
         <source>Failed open file: </source>
         <translation>Dosya açılamadı:</translation>
     </message>
@@ -17718,15 +19730,15 @@ Kütüphanede SUBCKT yönergesi bulunamadı</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location line="+36"/>
+        <location line="+39"/>
         <location line="+129"/>
-        <location line="+155"/>
+        <location line="+179"/>
         <location line="+15"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location line="-299"/>
+        <location line="-323"/>
         <source>Failed to open file: </source>
         <translation></translation>
     </message>
@@ -17741,17 +19753,16 @@ Kütüphanede SUBCKT yönergesi bulunamadı</translation>
         <translation>Sembol dosyası yüklenemedi!</translation>
     </message>
     <message>
-        <location line="+68"/>
+        <location line="+92"/>
         <source>Open SPICE library</source>
         <translation>SPICE kütüphanesini açın</translation>
     </message>
     <message>
-        <location line="+2"/>
         <source>SPICE files (*.cir +.ckt *.sp *.lib)</source>
-        <translation>SPICE dosyaları (*.cir +.ckt *.sp *.lib)</translation>
+        <translation type="vanished">SPICE dosyaları (*.cir +.ckt *.sp *.lib)</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+12"/>
         <source>Open symbol file</source>
         <translation>Sembol dosyasını aç</translation>
     </message>
@@ -17761,14 +19772,19 @@ Kütüphanede SUBCKT yönergesi bulunamadı</translation>
         <translation>Şematik sembol (*.sym)</translation>
     </message>
     <message>
-        <location line="-403"/>
-        <location line="+423"/>
+        <location line="-437"/>
+        <location line="+457"/>
         <location line="+10"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
     <message>
-        <location line="-10"/>
+        <location line="-42"/>
+        <source>SPICE files (*.cir *.ckt *.sp *.lib)</source>
+        <translation>SPICE dosyaları (*.cir *.ckt *.sp *.lib)</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>All pins must be assigned</source>
         <translation>Tüm pinler atanmalıdır</translation>
     </message>
@@ -17785,9 +19801,38 @@ Kütüphanede SUBCKT yönergesi bulunamadı</translation>
     </message>
 </context>
 <context>
+    <name>SvgGalleryDialog</name>
+    <message>
+        <location filename="../qucs/paintings/SVGGalleryDialog.cpp" line="+15"/>
+        <source>SVG Symbol Gallery</source>
+        <translation>SVG Sembol Galerisi</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Search symbols...</source>
+        <translation>Sembollerde ara...</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Set Library Path...</source>
+        <translation>Kütüphane Yolunu Ayarla...</translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <location line="+133"/>
+        <source>User library: %1</source>
+        <translation>Kullanıcı kütüphanesi: %1</translation>
+    </message>
+    <message>
+        <location line="-7"/>
+        <source>Select SVG Library Folder</source>
+        <translation>SVG Kütüphane Klasörünü Seç</translation>
+    </message>
+</context>
+<context>
     <name>SweepDialog</name>
     <message>
-        <location filename="../qucs/dialogs/sweepdialog.cpp" line="+92"/>
+        <location filename="../qucs/dialogs/sweepdialog.cpp" line="+93"/>
         <source>Bias Points</source>
         <translation>Kutuplama Noktaları</translation>
     </message>
@@ -17800,7 +19845,7 @@ Kütüphanede SUBCKT yönergesi bulunamadı</translation>
 <context>
     <name>SymbolWidget</name>
     <message>
-        <location filename="../qucs/symbolwidget.cpp" line="+53"/>
+        <location filename="../qucs/symbolwidget.cpp" line="+54"/>
         <source>Symbol:</source>
         <translation>Simge:</translation>
     </message>
@@ -17811,7 +19856,7 @@ Kütüphanede SUBCKT yönergesi bulunamadı</translation>
         <translation>!Beni Sürükle Ve Bırak!</translation>
     </message>
     <message>
-        <location line="+274"/>
+        <location line="+338"/>
         <source>Warning: Symbol &apos;%1&apos; missing in Qucs Library.
 Drag and Drop may still work.
 Please contact the developers.</source>
@@ -17867,7 +19912,7 @@ Lütfen geliştiricilerle iletişime geçin.</translation>
 <context>
     <name>TextDoc</name>
     <message>
-        <location filename="../qucs/textdoc.cpp" line="+225"/>
+        <location filename="../qucs/textdoc.cpp" line="+242"/>
         <source>Edit Text Symbol</source>
         <translation>Metin Sembolünü Düzenle</translation>
     </message>
@@ -18004,33 +20049,33 @@ Bir Octave fonksiyonunun iskeletini ekler</translation>
 <context>
     <name>TunerDialog</name>
     <message>
-        <location filename="../qucs/dialogs/tuner.cpp" line="+666"/>
+        <location filename="../qucs/dialogs/tuner.cpp" line="+709"/>
         <location line="+1"/>
         <source>Tuner</source>
-        <translation type="unfinished"></translation>
+        <translation>Ayarlayıcı</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Close</source>
-        <translation type="unfinished">Kapat</translation>
+        <translation>Kapat</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Update Values</source>
-        <translation type="unfinished"></translation>
+        <translation>Değerleri Güncelle</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Reset Values</source>
-        <translation type="unfinished"></translation>
+        <translation>Değerleri Sıfırla</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+25"/>
         <source>Please select a component to tune</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen ayarlanacak bir bileşen seçin</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+43"/>
         <source>Add component</source>
         <translation>Bileşen ekleme</translation>
     </message>
@@ -18212,74 +20257,74 @@ Mikroelektronik grubundan kırmızı SPICE cihazı kullanın
 <context>
     <name>main</name>
     <message>
-        <location filename="../qucs/main.cpp" line="+1048"/>
+        <location filename="../qucs/main.cpp" line="+1062"/>
         <source>display this help and exit</source>
-        <translation type="unfinished"></translation>
+        <translation>bu yardımı göster ve çık</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>convert Qucs schematic into netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Qucs şemasını net listesine dönüştür</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>print Qucs schematic to file (eps needs inkscape)</source>
-        <translation type="unfinished"></translation>
+        <translation>Qucs şemasını dosyaya yazdır (eps için inkscape gerekir)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>set print page size (default A4)</source>
-        <translation type="unfinished"></translation>
+        <translation>yazdırma sayfa boyutunu ayarla (varsayılan A4)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>set dpi value (default 96)</source>
-        <translation type="unfinished"></translation>
+        <translation>dpi değerini ayarla (varsayılan 96)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>set color mode (default RGB)</source>
-        <translation type="unfinished"></translation>
+        <translation>renk modunu ayarla (varsayılan RGB)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>set orientation (default portraid)</source>
-        <translation type="unfinished"></translation>
+        <translation>yönlendirmeyi ayarla (varsayılan dikey)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>use file as input schematic</source>
-        <translation type="unfinished"></translation>
+        <translation>dosyayı giriş şeması olarak kullan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>use file as output netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>dosyayı çıkış net listesi olarak kullan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create Ngspice netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Ngspice net listesi oluştur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create CDL netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>CDL net listesi oluştur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Xyce netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Xyce net listesi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>execute Ngspice/Xyce immediately</source>
-        <translation type="unfinished"></translation>
+        <translation>Ngspice/Xyce&apos;ı hemen çalıştır</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create component icons under ./bitmaps_generated</source>
-        <translation type="unfinished"></translation>
+        <translation>bileşen simgelerini ./bitmaps_generated altında oluştur</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -18291,23 +20336,35 @@ Mikroelektronik grubundan kırmızı SPICE cihazı kullanın
      ([comp#]_data.csv)
    - CSV file with component properties.
      ([comp#]_props.csv)</source>
-        <translation type="unfinished"></translation>
+        <translation>belgelendirme için veri dök:
+* kategorileri içeren dosya: categories.txt
+* her kategori için bir dizin (ör. ./lumped
+   components/)
+   - bileşen verilerini içeren CSV dosyası
+     ([comp#]_data.csv)
+   - bileşen özelliklerini içeren CSV dosyası.
+     ([comp#]_props.csv)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>list component entry formats for schematic and netlist</source>
-        <translation type="unfinished"></translation>
+        <translation>şema ve net listesi için bileşen girdi biçimlerini listele</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>write netlist to console</source>
-        <translation type="unfinished"></translation>
+        <translation>net listesini konsola yaz</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>resolve spice prefix during netlist CDL</source>
+        <translation>CDL net listesi oluştururken SPICE önekini çözümle</translation>
     </message>
 </context>
 <context>
     <name>tunerElement</name>
     <message>
-        <location filename="../qucs/dialogs/tuner.cpp" line="-577"/>
+        <location filename="../qucs/dialogs/tuner.cpp" line="-613"/>
         <source>Max.:</source>
         <translation>Maks.:</translation>
     </message>
@@ -18327,20 +20384,20 @@ Mikroelektronik grubundan kırmızı SPICE cihazı kullanın
         <translation>Adım</translation>
     </message>
     <message>
-        <location line="+242"/>
-        <location line="+57"/>
+        <location line="+264"/>
+        <location line="+58"/>
         <source>ERROR</source>
-        <translation type="unfinished"></translation>
+        <translation>HATA</translation>
     </message>
     <message>
-        <location line="-57"/>
+        <location line="-58"/>
         <source>Entered step is not correct</source>
-        <translation type="unfinished"></translation>
+        <translation>Girilen adım değeri doğru değil</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+58"/>
         <source>Value not correct</source>
-        <translation type="unfinished"></translation>
+        <translation>Değer doğru değil</translation>
     </message>
 </context>
 </TS>
