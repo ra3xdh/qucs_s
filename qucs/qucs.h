@@ -454,7 +454,8 @@ public:
   QAction *insWire, *insLabel, *insGround, *insPort, *insEquation, *magPlus,
       *editRotate, *editMirror, *editMirrorY, *editPaste, *select, *editStretch,
       *editMove, *editActivate, *wire, *editDelete, *setMarker,
-      *setDiagramLimits, *resetDiagramLimits, *showGrid, *onGrid, *moveText,
+      *setDiagramLimits, *resetDiagramLimits, *showGrid, *showNetNames, *onGrid,
+      *moveText,
       *helpIndex, *helpGetStart, *callEditor, *callFilter, *callLine,
       *callActiveFilter, *showMsg, *showNet, *alignTop, *alignBottom,
       *alignLeft, *alignRight, *distrHor, *distrVert, *selectAll, *callMatch,
@@ -492,6 +493,7 @@ public slots:
   void slotSetDiagramLimits(bool);
   void slotResetDiagramLimits();
   void slotShowGrid();     // turn the grid on or off
+  void slotShowNetNames(bool); // show/hide netlist node names over the schematic
   void slotOnGrid(bool);   // set selected elements on grid
   void slotMoveText(bool); // move property text of components
   void slotZoomIn(bool);
