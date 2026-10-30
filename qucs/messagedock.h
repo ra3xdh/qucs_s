@@ -41,9 +41,9 @@ public:
 public:
 
   // builderTabs page indexes
-  static constexpr int kVaTab = 0;
-  static constexpr int kCompilerTab = 1;
-  static constexpr int kSimulationTab = 2;
+    static constexpr int kSimulationTab = 0;
+  static constexpr int kVaTab = 1;
+  static constexpr int kCompilerTab = 2;
 
   QDockWidget *msgDock;
 
