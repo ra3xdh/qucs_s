@@ -588,11 +588,6 @@ bool Ngspice::findMathFuncInc(QString &mathf_inc)
 void Ngspice::slotProcessOutput()
 {
     QString s = a_simProcess->readAllStandardOutput();
-    QRegularExpression percentage_pattern("^%\\d\\d*\\.\\d\\d.*$");
-    if (percentage_pattern.match(s).hasMatch()) {
-        int percent = round(QStringView(s).mid(1,5).toFloat());
-        emit progress(percent);
-    }
     a_output += s;
     if (a_console != nullptr) {
         a_console->insertPlainText(s);

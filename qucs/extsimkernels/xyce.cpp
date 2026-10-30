@@ -449,7 +449,6 @@ void Xyce::slotFinished()
 
     if (a_netlistQueue.isEmpty()) {
         emit finished();
-        emit progress(100);
         return;
     } else {
         nextSimulation();
@@ -471,12 +470,7 @@ bool Xyce::waitEndOfSimulation()
  */
 void Xyce::slotProcessOutput()
 {
-    //***** Percent complete: 85.4987 %
     QString s = a_simProcess->readAllStandardOutput();
-    if (s.contains("Percent complete:")) {
-        int percent = round(s.section(' ',3,3,QString::SectionSkipEmpty).toFloat());
-        emit progress(percent);
-    }
     a_output += s;
     if (a_console != nullptr) {
         a_console->insertPlainText(s);
@@ -514,7 +508,6 @@ void Xyce::nextSimulation()
                   "Navigate to the \"simulations\" group in the components panel (left)"
                   " and drag simulation to the schematic sheet. Then define its parameters.\n"
                   "Exiting...\n";
-        emit progress(100);
         emit finished(); // nothing to simulate
     }
 }

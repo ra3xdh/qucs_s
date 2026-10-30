@@ -32,7 +32,6 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
     a_editSimConsole(new QPlainTextEdit(this)),
     a_statusIcon(new QLabel(this)),
     a_statusText(new QLabel(this)),
-    a_simProgress(new QProgressBar(this)),
     a_ngspice(new Ngspice(sch,this)),
     a_xyce(new Xyce(sch,this)),
     a_wasSimulated(true),
@@ -59,18 +58,13 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
     a_ngspice->setConsole(a_editSimConsole);
     a_xyce->setConsole(a_editSimConsole);
 
-    connect(a_ngspice,SIGNAL(progress(int)),a_simProgress,SLOT(setValue(int)));
-    connect(a_xyce,SIGNAL(progress(int)),a_simProgress,SLOT(setValue(int)));
-
     // A single status line above the console, as in an IDE output pane.
     // Save netlist acts on this session: the menu Save netlist uses the
     // active document, which is the data display after a simulation.
     a_statusText->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
-    a_simProgress->setMaximumWidth(200);
     QHBoxLayout *statusLine = new QHBoxLayout;
     statusLine->addWidget(a_statusIcon);
     statusLine->addWidget(a_statusText,1);
-    statusLine->addWidget(a_simProgress);
 
     QVBoxLayout *vl_top = new QVBoxLayout;
     vl_top->setContentsMargins(0, 0, 0, 0);

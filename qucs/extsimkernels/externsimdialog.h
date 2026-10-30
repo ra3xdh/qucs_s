@@ -39,8 +39,6 @@ private:
     QLabel *a_statusText;
     QStringList a_statusLog;
 
-    QProgressBar *a_simProgress;
-
     Ngspice *a_ngspice;
     Xyce *a_xyce;
 
