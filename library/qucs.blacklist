@@ -25,3 +25,4 @@ Neon.lib
 Optocoupler.lib
 VDMOS.lib
 VDMOS_IR.lib
+AnalogSwitches.lib
