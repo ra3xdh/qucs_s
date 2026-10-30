@@ -845,6 +845,19 @@ void QucsApp::slotChangeSimulator(int index) {
       return;
     }
 
+    // The running session reads DefaultSimulator when it finishes
+    if (spiceSimulationRunning()) {
+        // Restore before the message box: it runs a nested event loop
+        const int current = simulatorsCombobox->findData(QucsSettings.DefaultSimulator);
+        if (current >= 0) {
+            simulatorsCombobox->setCurrentIndex(current);
+        }
+        QMessageBox::warning(this, tr("Simulate schematic"),
+                             tr("A simulation is already running. Please wait "
+                                "until it has finished."));
+        return;
+    }
+
     QucsSettings.DefaultSimulator = simu;
     saveApplSettings();
 
@@ -2881,6 +2894,13 @@ void QucsApp::slotAfterSimulation(int Status, SimMessage *sim)
 // ------------------------------------------------------------------------
 void QucsApp::slotDCbias()
 {
+  if (QucsSettings.DefaultSimulator != spicecompat::simQucsator &&
+      spiceSimulationRunning()) {
+    QMessageBox::warning(this, tr("Simulate schematic"),
+                         tr("A simulation is already running. Please wait "
+                            "until it has finished."));
+    return;
+  }
   getDoc()->setShowBias(0);
   slotSimulate();
 }
@@ -3718,6 +3738,13 @@ void QucsApp::slotSaveSchematicToGraphicsFile(bool diagram)
 
 void QucsApp::slotSimSettings()
 {
+    // Changing the simulator paths may change DefaultSimulator
+    if (spiceSimulationRunning()) {
+        QMessageBox::warning(this, tr("Simulate schematic"),
+                             tr("A simulation is already running. Please wait "
+                                "until it has finished."));
+        return;
+    }
     SimSettingsDialog *SetDlg = new SimSettingsDialog(this);
     SetDlg->exec();
     delete SetDlg;
@@ -3737,11 +3764,39 @@ void QucsApp::slotAbortTuningSimulation()
     }
 }
 
+bool QucsApp::spiceSimulationRunning() const {
+  return a_activeSpiceSimDlg && a_activeSpiceSimDlg->isRunning();
+}
+
+void QucsApp::slotStopSimulation() {
+  if (spiceSimulationRunning()) {
+    a_activeSpiceSimDlg->stopSimulation();
+  }
+}
+
+void QucsApp::slotUpdateSimulationControls() {
+  simulationStop->setEnabled(spiceSimulationRunning());
+}
+
 void QucsApp::slotSimulateWithSpice()
 {
+    // Only one external SPICE simulation at a time: they share work files
+    if (spiceSimulationRunning()) {
+        QMessageBox::warning(this, tr("Simulate schematic"),
+                             tr("A simulation is already running. Please wait "
+                                "until it has finished."));
+        if (TuningMode) {
+            tunerDia->SimulationEnded();
+        }
+        return;
+    }
+
     if (!isTextDocument(DocumentTab->currentWidget()))
     {
         Schematic* schematic(dynamic_cast<Schematic*>(DocumentTab->currentWidget()));
+        // Keep the active document: in tuning mode it may be a data display
+        // page, which is where the results must be shown afterwards.
+        Schematic* origin = schematic;
         if (TuningMode)
         {
             QFileInfo Info(schematic->getDocName());
@@ -3769,10 +3824,20 @@ void QucsApp::slotSimulateWithSpice()
             slotFileSaveAs();
             schematic->setShowBias(biasState);
         }
+        // Only the last session is kept. deleteLater(): the previous session
+        // may still be emitting simulated() (tuner rerun).
+        if (a_activeSpiceSimDlg && !a_activeSpiceSimDlg->isRunning()) {
+            a_activeSpiceSimDlg->deleteLater();
+        }
         ExternSimDialog *SimDlg = new ExternSimDialog(schematic, false);
+        SimDlg->setOriginDocument(origin);
+        a_activeSpiceSimDlg = SimDlg;
+        // Before the dock is shown: the session is not a window
+        messageDock->setSimulationSession(SimDlg);
         connect(SimDlg, SIGNAL(simulated(ExternSimDialog*)), this, SLOT(slotAfterSpiceSimulation(ExternSimDialog*)));
         connect(SimDlg, SIGNAL(warnings()), this, SLOT(slotShowWarnings()));
         connect(SimDlg, SIGNAL(success()), this, SLOT(slotResetWarnings()));
+        connect(SimDlg, SIGNAL(runningChanged(bool)), this, SLOT(slotUpdateSimulationControls()));
 
         if (TuningMode || schematic->getShowBias() == 0)
         {
@@ -3781,8 +3846,10 @@ void QucsApp::slotSimulateWithSpice()
         }
         else
         {
-            SimDlg->exec();
+            messageDock->showSimulationLog();
         }
+        // F2 starts the session in its constructor, before the connection
+        slotUpdateSimulationControls();
         /*disconnect(SimDlg, SIGNAL(simulated()), this, SLOT(slotAfterSpiceSimulation()));
         disconnect(SimDlg, SIGNAL(warnings()), this, SLOT(slotShowWarnings()));
         disconnect(SimDlg, SIGNAL(success()), this, SLOT(slotResetWarnings()));*/
@@ -3994,19 +4061,22 @@ void QucsApp::slotSaveCdlNetlist()
 
 void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
 {
-    Schematic *sch = (Schematic*)DocumentTab->currentWidget();
+    // May be null if the origin document was closed during the simulation
+    Schematic* sch = SimDlg->originDocument();
     disconnect(SimDlg,SIGNAL(simulated(ExternSimDialog *)),
                this,SLOT(slotAfterSpiceSimulation(ExternSimDialog *)));
     disconnect(SimDlg,SIGNAL(warnings()),this,SLOT(slotShowWarnings()));
     disconnect(SimDlg,SIGNAL(success()),this,SLOT(slotResetWarnings()));
     if (TuningMode && SimDlg->hasError()) {
-        if (!m_tunerAbortForRerun) SimDlg->show();
+        if (!m_tunerAbortForRerun) {
+            messageDock->showSimulationLog();
+        }
         m_tunerAbortForRerun = false;
         a_tunerExternSimDlg = nullptr;
         tunerDia->SimulationEnded();
         return;
     }
-    if (SimDlg->wasSimulated()) {
+    if (sch != nullptr && SimDlg->wasSimulated()) {
         if(sch->getSimOpenDpl()) {
             if (sch->getShowBias() < 1) {
                 if (!TuningMode) {
@@ -4024,19 +4094,20 @@ void QucsApp::slotAfterSpiceSimulation(ExternSimDialog *SimDlg)
         }
     }
 
-    sch->reloadGraphs();
-    sch->viewport()->update();
-    if(sch->getSimRunScript()) {
-      // run script
-      octave->startOctave();
-      octave->runOctaveScript(sch->getScript());
+    if (sch != nullptr) {
+        sch->reloadGraphs();
+        sch->viewport()->update();
+        if (sch->getSimRunScript()) {
+          // run script
+          octave->startOctave();
+          octave->runOctaveScript(sch->getScript());
+        }
     }
     if (TuningMode) {
         m_tunerAbortForRerun = false;
         a_tunerExternSimDlg = nullptr;
         tunerDia->SimulationEnded();
     }
-    if (sch->getShowBias()>0 || QucsMain->TuningMode) SimDlg->close();
 
     // Run post-simulation system commands
     runPostSimCommands(sch);

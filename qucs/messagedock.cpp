@@ -23,6 +23,8 @@
 
 #include <QDockWidget>
 #include <QTextBlock>
+#include <QToolBar>
+#include <QVBoxLayout>
 #include <QDebug>
 
 /*!
@@ -48,16 +50,24 @@ MessageDock::MessageDock(QucsApp *App_): QWidget()
     admsOutput = new QPlainTextEdit();
     admsOutput->setReadOnly(true);
 
-    builderTabs->insertTab(0,admsOutput,tr("admsXml"));
+    builderTabs->insertTab(kVaTab,admsOutput,tr("admsXml"));
 
 
     // 2) add a dock for the cpp compiler messages
     cppOutput = new QPlainTextEdit();
     cppOutput->setReadOnly(true);
 
-    builderTabs->insertTab(1,cppOutput,tr("Compiler"));
+    builderTabs->insertTab(kCompilerTab,cppOutput,tr("Compiler"));
 
-    msgDock = new QDockWidget(tr("admsXml Dock"));
+    // 3) add a page for the simulation console (empty for now)
+    QWidget *simulationPage = new QWidget();
+    simulationLayout = new QVBoxLayout(simulationPage);
+    simulationLayout->setContentsMargins(0, 0, 0, 0);
+
+    builderTabs->insertTab(kSimulationTab,simulationPage,tr("Simulation"));
+
+    msgDock = new QDockWidget(tr("Messages"));
+    msgDock->setObjectName("MessageDock");
     msgDock->setWidget(builderTabs);
     App_->addDockWidget(Qt::BottomDockWidgetArea, msgDock);
 
@@ -80,8 +90,66 @@ void MessageDock::reset()
     admsOutput->clear();
     cppOutput->clear();
 
-    builderTabs->setTabIcon(0,QPixmap());
-    builderTabs->setTabIcon(1,QPixmap());
+    builderTabs->setTabIcon(kVaTab,QPixmap());
+    builderTabs->setTabIcon(kCompilerTab,QPixmap());
+}
+
+/*!
+ * \brief MessageDock::setSimulationSession shows \p session in the
+ *        Simulation tab instead of the previous one
+ *
+ * The session is reparented to the Simulation tab. The previous session is
+ * only removed from the layout and hidden: deleting it is up to the caller.
+ * Neither the dock visibility nor the current tab are changed.
+ */
+void MessageDock::setSimulationSession(QWidget *session)
+{
+    if (session == simulationSession) {
+        return;
+    }
+    if (simulationSession) {
+        simulationLayout->removeWidget(simulationSession);
+        simulationSession->hide();
+    }
+    simulationSession = session;
+    if (session) {
+        simulationLayout->addWidget(session);
+        session->show();
+    }
+}
+
+/*!
+ * \brief MessageDock::setSimulationActions adds \p start and \p stop as a
+ *        compact toolbar above the session in the Simulation tab
+ *
+ * The actions stay owned by the caller, which also keeps their enabled state.
+ */
+void MessageDock::setSimulationActions(QAction *start, QAction *stop)
+{
+    QToolBar *bar = new QToolBar(simulationLayout->parentWidget());
+    bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    bar->addAction(start);
+    bar->addAction(stop);
+    simulationLayout->insertWidget(0, bar);
+}
+
+/*!
+ * \brief MessageDock::showSimulationLog shows the dock on the Simulation tab
+ */
+void MessageDock::showSimulationLog()
+{
+    msgDock->show();
+    msgDock->raise();
+    builderTabs->setCurrentIndex(kSimulationTab);
+}
+
+/*!
+ * \brief MessageDock::showBuildLog shows the dock on the Verilog-A build tab
+ */
+void MessageDock::showBuildLog()
+{
+    msgDock->show();
+    builderTabs->setCurrentIndex(kVaTab);
 }
 
 /*!
@@ -137,9 +205,9 @@ void MessageDock::slotAdmsChanged()
 
     // Change adms tab icon
     if (error)
-         builderTabs->setTabIcon(0,QPixmap(":/bitmaps/svg/error.svg"));
+         builderTabs->setTabIcon(kVaTab,QPixmap(":/bitmaps/svg/error.svg"));
     else
-         builderTabs->setTabIcon(0,QPixmap(":/bitmaps/svg/ok_apply.svg"));
+         builderTabs->setTabIcon(kVaTab,QPixmap(":/bitmaps/svg/ok_apply.svg"));
 }
 
 /*!
@@ -160,9 +228,9 @@ void MessageDock::slotCppChanged()
 
     // Change compiler tab icon
     if (error)
-         builderTabs->setTabIcon(1,QPixmap(":/bitmaps/svg/error.svg"));
+         builderTabs->setTabIcon(kCompilerTab,QPixmap(":/bitmaps/svg/error.svg"));
     else
-         builderTabs->setTabIcon(1,QPixmap(":/bitmaps/svg/ok_apply.svg"));
+         builderTabs->setTabIcon(kCompilerTab,QPixmap(":/bitmaps/svg/ok_apply.svg"));
 }
 
 /*!

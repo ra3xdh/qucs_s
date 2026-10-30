@@ -23,6 +23,7 @@
 #include <QFileSystemModel>
 #include <QHash>
 #include <QMainWindow>
+#include <QPointer>
 #include <QSortFilterProxyModel>
 #include <QStack>
 #include <QString>
@@ -127,7 +128,7 @@ public:
   SearchDialog *SearchDia; // global in order to keep values
   TunerDialog *tunerDia;   // global in order to keep values
   SimMessage *sim;         // global in order to keep values
-  ExternSimDialog *a_tunerExternSimDlg = nullptr;
+  QPointer<ExternSimDialog> a_tunerExternSimDlg;
   bool m_tunerAbortForRerun = false;
 
   SchematicValidator a_validator; // Schematic validation
@@ -241,6 +242,8 @@ private slots:
   void slotSaveCdlNetlist();
   void slotCdlSettings();
   void slotAfterSpiceSimulation(ExternSimDialog *SimDlg);
+  void slotStopSimulation();
+  void slotUpdateSimulationControls();
   void slotBuildVAModule();
   /*void slotBuildXSPICEIfs(int mode = 0);
   void slotEDDtoIFS();
@@ -299,7 +302,7 @@ public:
       *projClose, *applSettings, *refreshSchPath, *editCut, *editCopy, *magAll,
       *magSel, *magOne, *magMinus, *filePrintFit, *tune, *symEdit, *intoH,
       *popH, *simulate, *save_netlist, *dpl_sch, *undo, *redo, *dcbias,
-      *saveCdlNetlist, *cdlSettings;
+      *saveCdlNetlist, *cdlSettings, *simulationStop;
 
   // Navigate tabs
   QAction *TabFirstAction;    /// Action for raising the first document tab
@@ -577,6 +580,12 @@ private:
   /// @note This method is called from both @c slotAfterSimulation() and
   ///       @c slotAfterSpiceSimulation(), covering all simulation backends.
   void runPostSimCommands(Schematic* sch);
+
+  /// @brief Returns true while an external SPICE simulation is running.
+  bool spiceSimulationRunning() const;
+
+  // Last external SPICE simulation session (may still be running)
+  QPointer<ExternSimDialog> a_activeSpiceSimDlg;
 
   QString lastExportFilename;
 };

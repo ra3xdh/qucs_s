@@ -21,6 +21,7 @@
 
 #include "extsimkernels/spicecompat.h"
 #include "main.h"
+#include "messagedock.h"
 #include "misc.h"
 #include "octave_window.h"
 #include "qucs.h"
@@ -34,6 +35,7 @@
 #include <QMessageBox>
 #include <QShortcut>
 #include <QStatusBar>
+#include <QStyle>
 #include <QTimer>
 #include <QToolBar>
 
@@ -709,6 +711,15 @@ void QucsApp::initActions() {
   simulate->setWhatsThis(tr("Simulate\n\nSimulates the current schematic"));
   connect(simulate, SIGNAL(triggered()), SLOT(slotSimulate()));
 
+  simulationStop = new QAction(style()->standardIcon(QStyle::SP_MediaStop),
+                               tr("Stop"), this);
+  simulationStop->setStatusTip(tr("Stops the running simulation"));
+  simulationStop->setWhatsThis(
+      tr("Stop\n\nStops the running SPICE simulation"));
+  simulationStop->setEnabled(false); // enabled while a session can be stopped
+  connect(simulationStop, SIGNAL(triggered()), SLOT(slotStopSimulation()));
+  messageDock->setSimulationActions(simulate, simulationStop);
+
   tune = new QAction(QIcon((":/bitmaps/svg/tune.svg")), tr("Tune"), this);
   tune->setShortcut(Qt::Key_F3);
   tune->setStatusTip(tr("Tuner"));
@@ -1000,6 +1011,7 @@ void QucsApp::initMenuBar() {
 
   simMenu = new QMenu(tr("&Simulation")); // menuBar entry simMenu
   simMenu->addAction(simulate);
+  simMenu->addAction(simulationStop);
   simMenu->addAction(tune);
   simMenu->addAction(dpl_sch);
   simMenu->addAction(dcbias);
@@ -1025,6 +1037,7 @@ void QucsApp::initMenuBar() {
   // viewMenu->setCheckable(true);
   viewMenu->addAction(viewBrowseDock);
   viewMenu->addAction(viewOctaveDock);
+  viewMenu->addAction(messageDock->msgDock->toggleViewAction());
 
   helpMenu = new QMenu(tr("&Help")); // menuBar entry helpMenu
   helpMenu->addAction(helpIndex);

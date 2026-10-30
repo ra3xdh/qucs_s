@@ -23,28 +23,25 @@
 #include "externsimdialog.h"
 #include "main.h"
 
+// The session is owned by the application, not by the simulated schematic:
+// it may outlive the document (see slotDocumentDestroyed()). It is not a
+// window: QucsApp shows it in the message dock.
 ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netlist_mode) :
-    QDialog(sch),
+    QWidget(QucsMain),
     a_schematic(sch),
-    a_buttonStopSim(new QPushButton(tr("Stop"),this)),
     a_buttonSaveNetlist(new QPushButton(tr("Save netlist"),this)),
-    a_buttonExit(new QPushButton(tr("Exit"),this)),
     a_editSimConsole(new QPlainTextEdit(this)),
-    a_simStatusLog(new QListWidget),
+    a_statusIcon(new QLabel(this)),
+    a_statusText(new QLabel(this)),
     a_simProgress(new QProgressBar(this)),
     a_ngspice(new Ngspice(sch,this)),
     a_xyce(new Xyce(sch,this)),
     a_wasSimulated(true),
     a_hasError(false),
-    a_netlist2Console(netlist2Console)
+    a_netlist2Console(netlist2Console),
+    a_running(false)
 {
     const QString workdir(QucsSettings.S4Qworkdir);
-
-    QSettings settings("qucs", "qucs_s");
-    restoreGeometry(settings.value("ExternSimDialog/geometry").toByteArray());
-
-    setWindowTitle(tr("Simulate with external simulator"));
-    setMinimumWidth(500);
 
     QFileInfo inf(workdir);
     if (!inf.exists()) {
@@ -52,41 +49,37 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
         dir.mkpath(workdir);
     }
 
-    connect(a_buttonStopSim,SIGNAL(clicked()),a_ngspice,SLOT(killThemAll()));
-    connect(a_buttonStopSim,SIGNAL(clicked()),a_xyce,SLOT(killThemAll()));
-    a_buttonStopSim->setEnabled(false);
+    connect(sch,SIGNAL(destroyed()),this,SLOT(slotDocumentDestroyed()));
 
     connect(a_buttonSaveNetlist,SIGNAL(clicked()),this,SLOT(slotSaveNetlist()));
-
-    connect(a_buttonExit,SIGNAL(clicked()),this,SLOT(slotExit()));
-    connect(a_buttonExit,SIGNAL(clicked()),a_ngspice,SLOT(killThemAll()));
-    connect(a_buttonExit,SIGNAL(clicked()),a_xyce,SLOT(killThemAll()));
-
-    QGroupBox *grp_1 = new QGroupBox(tr("Simulation console"),this);
-    QVBoxLayout *vbl1 = new QVBoxLayout;
 
     QFont font;
     font.setFamily("monospace");
     font.setPointSize(10);
     a_editSimConsole->setFont(font);
     a_editSimConsole->setReadOnly(true);
-    vbl1->addWidget(a_editSimConsole);
-    grp_1->setLayout(vbl1);
+    a_editSimConsole->setFrameShape(QFrame::NoFrame);
     a_ngspice->setConsole(a_editSimConsole);
     a_xyce->setConsole(a_editSimConsole);
 
     connect(a_ngspice,SIGNAL(progress(int)),a_simProgress,SLOT(setValue(int)));
     connect(a_xyce,SIGNAL(progress(int)),a_simProgress,SLOT(setValue(int)));
 
+    // A single status line above the console, as in an IDE output pane.
+    // Save netlist acts on this session: the menu Save netlist uses the
+    // active document, which is the data display after a simulation.
+    a_statusText->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    a_simProgress->setMaximumWidth(200);
+    QHBoxLayout *statusLine = new QHBoxLayout;
+    statusLine->addWidget(a_statusIcon);
+    statusLine->addWidget(a_statusText,1);
+    statusLine->addWidget(a_simProgress);
+    statusLine->addWidget(a_buttonSaveNetlist);
+
     QVBoxLayout *vl_top = new QVBoxLayout;
-    vl_top->addWidget(grp_1,3);
-    vl_top->addWidget(a_simStatusLog,1);
-    vl_top->addWidget(a_simProgress);
-    QHBoxLayout *hl1 = new QHBoxLayout;
-    hl1->addWidget(a_buttonStopSim);
-    hl1->addWidget(a_buttonSaveNetlist);
-    hl1->addWidget(a_buttonExit);
-    vl_top->addLayout(hl1);
+    vl_top->setContentsMargins(0, 0, 0, 0);
+    vl_top->addLayout(statusLine);
+    vl_top->addWidget(a_editSimConsole,1);
     setLayout(vl_top);
 
     slotSetSimulator();
@@ -97,7 +90,6 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
 
 ExternSimDialog::~ExternSimDialog()
 {
-    a_ngspice->killThemAll();
 }
 
 void ExternSimDialog::slotSetSimulator()
@@ -159,8 +151,10 @@ void ExternSimDialog::slotSetSimulator()
 
 void ExternSimDialog::slotProcessOutput()
 {
+    // Cleared before emitting simulated(), so that a tuner rerun started from
+    // there is not rejected as a concurrent simulation.
+    setRunning(false);
     a_buttonSaveNetlist->setEnabled(true);
-    a_buttonStopSim->setEnabled(false);
     QString out;
 
     // Set temporary safe output name
@@ -230,7 +224,6 @@ void ExternSimDialog::slotProcessOutput()
     //if (out.contains("error",Qt::CaseInsensitive))
     //    a_hasError = true;
     emit simulated(this);
-    //if (a_schematic->getShowBias()>0 || QucsMain->TuningMode) this->close();
 }
 
 
@@ -249,6 +242,7 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
     switch (err) {
     case QProcess::FailedToStart:
         msg = tr("Failed to start simulator!");
+        setRunning(false); // no finished() follows this error
         break;
     case QProcess::Crashed:
         msg = tr("Simulator crashed!");
@@ -269,16 +263,20 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
 
 void ExternSimDialog::slotStart()
 {
-    a_buttonStopSim->setEnabled(true);
     a_buttonSaveNetlist->setEnabled(false);
+    // a_running is set before starting the kernel: checker errors are
+    // reported synchronously and must be able to clear it again.
     switch (QucsSettings.DefaultSimulator) {
     case spicecompat::simNgspice:
+        setRunning(true);
         a_ngspice->slotSimulate();
         break;
     case spicecompat::simXyce:
+        setRunning(true);
         a_xyce->slotSimulate();
         break;
     case spicecompat::simSpiceOpus:
+        setRunning(true);
         a_ngspice->slotSimulate();
         break;
     default: break;
@@ -287,9 +285,58 @@ void ExternSimDialog::slotStart()
 
 void ExternSimDialog::slotStop()
 {
-    a_buttonStopSim->setEnabled(false);
+    // The tuner may still hold a session aborted by slotDocumentDestroyed()
+    if (a_ngspice == nullptr) {
+        return;
+    }
     a_buttonSaveNetlist->setEnabled(true);
     a_ngspice->killThemAll();
+}
+
+/*!
+ * \brief ExternSimDialog::stopSimulation stops the running simulation. Only
+ *        the kernel of the running simulator has a process; Xyce also drops
+ *        its pending analyses. The session then finishes as usual through
+ *        slotProcessOutput().
+ */
+void ExternSimDialog::stopSimulation()
+{
+    // The kernels are gone once the document was closed
+    if (a_ngspice != nullptr) {
+        a_ngspice->killThemAll();
+    }
+    if (a_xyce != nullptr) {
+        a_xyce->stop();
+    }
+}
+
+void ExternSimDialog::setRunning(bool running)
+{
+    if (a_running == running) {
+        return;
+    }
+    a_running = running;
+    emit runningChanged(running);
+}
+
+void ExternSimDialog::slotDocumentDestroyed()
+{
+    // The kernels keep a raw pointer to the schematic and may still use it
+    // (e.g. Xyce between analyses, DC bias conversion). Destroying them
+    // stops the simulator without further callbacks (~AbstractSpiceKernel).
+    delete a_ngspice;
+    a_ngspice = nullptr;
+    delete a_xyce;
+    a_xyce = nullptr;
+
+    a_buttonSaveNetlist->setEnabled(false);
+
+    if (a_running) {
+        setRunning(false);
+        const QString msg = tr("Simulation aborted: the document was closed.");
+        a_editSimConsole->insertPlainText("\n" + msg + "\n");
+        addLogEntry(msg, this->style()->standardIcon(QStyle::SP_MessageBoxCritical));
+    }
 }
 
 void ExternSimDialog::slotSaveNetlist()
@@ -332,15 +379,6 @@ void ExternSimDialog::slotSaveNetlist()
     }
 }
 
-void ExternSimDialog::slotExit()
-{
-    // Save window size / position and close this dialog.
-    QSettings settings("qucs","qucs_s");
-    settings.setValue("ExternSimDialog/geometry", saveGeometry());  
-
-    accept();
-}
-
 void ExternSimDialog::saveLog()
 {
     QString filename = QucsSettings.tempFilesDir.filePath("log.txt");
@@ -355,10 +393,11 @@ void ExternSimDialog::saveLog()
 
 void ExternSimDialog::addLogEntry(const QString &text, const QIcon &icon)
 {
-    QListWidgetItem *itm = new QListWidgetItem;
-    itm->setText(text);
-    itm->setIcon(icon);
-    a_simStatusLog->addItem(itm);
+    const int size = style()->pixelMetric(QStyle::PM_SmallIconSize, nullptr, this);
+    a_statusIcon->setPixmap(icon.pixmap(size, size));
+    a_statusText->setText(text);
+    a_statusLog.append(text);
+    a_statusText->setToolTip(a_statusLog.join('\n'));
 }
 
 bool ExternSimDialog::logContainsError(const QString &out)
