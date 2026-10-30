@@ -33,8 +33,6 @@ class ExternSimDialog : public QWidget
 private:
     QPointer<Schematic> a_schematic;
 
-    QPushButton *a_buttonSaveNetlist;
-
     QPlainTextEdit *a_editSimConsole;
     // Status line: last log entry; the whole log is its tooltip
     QLabel *a_statusIcon;

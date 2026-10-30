@@ -29,7 +29,6 @@
 ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netlist_mode) :
     QWidget(QucsMain),
     a_schematic(sch),
-    a_buttonSaveNetlist(new QPushButton(tr("Save netlist"),this)),
     a_editSimConsole(new QPlainTextEdit(this)),
     a_statusIcon(new QLabel(this)),
     a_statusText(new QLabel(this)),
@@ -50,8 +49,6 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
     }
 
     connect(sch,SIGNAL(destroyed()),this,SLOT(slotDocumentDestroyed()));
-
-    connect(a_buttonSaveNetlist,SIGNAL(clicked()),this,SLOT(slotSaveNetlist()));
 
     QFont font;
     font.setFamily("monospace");
@@ -74,7 +71,6 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
     statusLine->addWidget(a_statusIcon);
     statusLine->addWidget(a_statusText,1);
     statusLine->addWidget(a_simProgress);
-    statusLine->addWidget(a_buttonSaveNetlist);
 
     QVBoxLayout *vl_top = new QVBoxLayout;
     vl_top->setContentsMargins(0, 0, 0, 0);
@@ -154,7 +150,6 @@ void ExternSimDialog::slotProcessOutput()
     // Cleared before emitting simulated(), so that a tuner rerun started from
     // there is not rejected as a concurrent simulation.
     setRunning(false);
-    a_buttonSaveNetlist->setEnabled(true);
     QString out;
 
     // Set temporary safe output name
@@ -263,7 +258,6 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
 
 void ExternSimDialog::slotStart()
 {
-    a_buttonSaveNetlist->setEnabled(false);
     // a_running is set before starting the kernel: checker errors are
     // reported synchronously and must be able to clear it again.
     switch (QucsSettings.DefaultSimulator) {
@@ -289,7 +283,6 @@ void ExternSimDialog::slotStop()
     if (a_ngspice == nullptr) {
         return;
     }
-    a_buttonSaveNetlist->setEnabled(true);
     a_ngspice->killThemAll();
 }
 
@@ -328,8 +321,6 @@ void ExternSimDialog::slotDocumentDestroyed()
     a_ngspice = nullptr;
     delete a_xyce;
     a_xyce = nullptr;
-
-    a_buttonSaveNetlist->setEnabled(false);
 
     if (a_running) {
         setRunning(false);
