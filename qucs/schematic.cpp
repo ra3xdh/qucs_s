@@ -2076,7 +2076,25 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
       return;
     }
 
-           // do not close untitled document to avoid segfault
+    // A project folder (<name>_prj) was dropped: open it as a project.
+    // Opening a project closes all documents, including this one, so the
+    // call is deferred until we have left this event handler.
+    for (const QUrl &url : std::as_const(urls)) {
+        if (!url.isLocalFile()) {
+          continue;
+        }
+      const QString dirPath = QDir::cleanPath(url.toLocalFile());
+      if (QFileInfo(dirPath).isDir() && dirPath.endsWith("_prj")) {
+        Event->acceptProposedAction();
+        QucsApp *app = a_App;
+        QMetaObject::invokeMethod(
+            app, [app, dirPath]() { app->openProject(dirPath); },
+            Qt::QueuedConnection);
+        return;
+      }
+    }
+
+    // do not close untitled document to avoid segfault
     QucsDoc *d = QucsMain->getDoc(0);
     bool changed = d->getDocChanged();
     d->setDocChanged(true);
@@ -2107,6 +2125,12 @@ void Schematic::contentsDropEvent(QDropEvent *Event)
         setChanged(true, true);
         continue; // allow dropping multiple images at once
       }
+
+      // Ignore folders that are not Qucs-S projects
+      if (QFileInfo(filePath).isDir()) {
+          continue;
+       }
+
       // For non-image files, fallback to original page opening behavior
       a_App->gotoPage(filePath);
     }

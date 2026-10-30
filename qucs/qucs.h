@@ -345,7 +345,6 @@ private:
   void printCurrentDocument(bool);
   bool saveFile(QucsDoc *Doc = 0);
   bool saveAs();
-  void openProject(const QString &);
   bool deleteProject(const QString &);
   void updatePortNumber(QucsDoc *, int);
   int fillComboBox(bool);
@@ -377,6 +376,7 @@ private:
   QWidget *getSchematicWidget(QucsDoc *Doc);
 
 public:
+  void openProject(const QString &);
   void readProjects();
   void
   updatePathList(void); // update the list of paths, pruning non-existing paths
