@@ -29,11 +29,9 @@
 ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netlist_mode) :
     QWidget(QucsMain),
     a_schematic(sch),
-    a_buttonSaveNetlist(new QPushButton(tr("Save netlist"),this)),
     a_editSimConsole(new QPlainTextEdit(this)),
     a_statusIcon(new QLabel(this)),
     a_statusText(new QLabel(this)),
-    a_simProgress(new QProgressBar(this)),
     a_ngspice(new Ngspice(sch,this)),
     a_xyce(new Xyce(sch,this)),
     a_wasSimulated(true),
@@ -51,8 +49,6 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
 
     connect(sch,SIGNAL(destroyed()),this,SLOT(slotDocumentDestroyed()));
 
-    connect(a_buttonSaveNetlist,SIGNAL(clicked()),this,SLOT(slotSaveNetlist()));
-
     QFont font;
     font.setFamily("monospace");
     font.setPointSize(10);
@@ -62,19 +58,13 @@ ExternSimDialog::ExternSimDialog(Schematic* sch, bool netlist2Console, bool netl
     a_ngspice->setConsole(a_editSimConsole);
     a_xyce->setConsole(a_editSimConsole);
 
-    connect(a_ngspice,SIGNAL(progress(int)),a_simProgress,SLOT(setValue(int)));
-    connect(a_xyce,SIGNAL(progress(int)),a_simProgress,SLOT(setValue(int)));
-
     // A single status line above the console, as in an IDE output pane.
     // Save netlist acts on this session: the menu Save netlist uses the
     // active document, which is the data display after a simulation.
     a_statusText->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
-    a_simProgress->setMaximumWidth(200);
     QHBoxLayout *statusLine = new QHBoxLayout;
     statusLine->addWidget(a_statusIcon);
     statusLine->addWidget(a_statusText,1);
-    statusLine->addWidget(a_simProgress);
-    statusLine->addWidget(a_buttonSaveNetlist);
 
     QVBoxLayout *vl_top = new QVBoxLayout;
     vl_top->setContentsMargins(0, 0, 0, 0);
@@ -154,7 +144,6 @@ void ExternSimDialog::slotProcessOutput()
     // Cleared before emitting simulated(), so that a tuner rerun started from
     // there is not rejected as a concurrent simulation.
     setRunning(false);
-    a_buttonSaveNetlist->setEnabled(true);
     QString out;
 
     // Set temporary safe output name
@@ -263,7 +252,6 @@ void ExternSimDialog::slotNgspiceStartError(QProcess::ProcessError err)
 
 void ExternSimDialog::slotStart()
 {
-    a_buttonSaveNetlist->setEnabled(false);
     // a_running is set before starting the kernel: checker errors are
     // reported synchronously and must be able to clear it again.
     switch (QucsSettings.DefaultSimulator) {
@@ -289,7 +277,6 @@ void ExternSimDialog::slotStop()
     if (a_ngspice == nullptr) {
         return;
     }
-    a_buttonSaveNetlist->setEnabled(true);
     a_ngspice->killThemAll();
 }
 
@@ -328,8 +315,6 @@ void ExternSimDialog::slotDocumentDestroyed()
     a_ngspice = nullptr;
     delete a_xyce;
     a_xyce = nullptr;
-
-    a_buttonSaveNetlist->setEnabled(false);
 
     if (a_running) {
         setRunning(false);

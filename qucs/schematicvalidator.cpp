@@ -280,6 +280,12 @@ QVector<ValidationIssue> SchematicValidator::checkMissingSimulation() const
 {
   QVector<ValidationIssue> issues;
 
+  // Skip this check for show DC bias mode
+  // Show DC bias may work without defined simulation
+  if (sch->getShowBias() == 0) {
+    return issues;
+  }
+
   // Dependent simulations have no effect without another attached simulation
   static const QStringList depSimulationsModels = {
       ".SW", ".MC"
