@@ -1,0 +1,412 @@
+<Qucs Library 26.1.1 "AnalogSwitches">
+
+<Component CD4051>
+  <Description>
+CMOS Single 8-Channel Analog Multiplexer/Demultiplexer
+XSPICE logic, transistor level switches
+Typical rON fitted to TI SCHS047 datasheet
+Ngspice only
+  </Description>
+  <Model>
+.Def:AnalogSwitches_CD4051 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 gnd Type="CD4051_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "CD4051.cir.lst">
+  <Spice>
+* CD4051B CMOS Single 8-Channel Analog Multiplexer/Demultiplexer
+* XSPICE logic, transistor level CMOS transmission gates.
+* Logic thresholds and gate drive follow the supply pins.
+* Pins 1..16 as in the DIP-16 package
+.SUBCKT CD4051B ch4 ch6 com ch7 ch5 inh vee vss c b a ch3 ch0 ch1 ch2 vdd
+XINA a da vdd vss CD405X_IN
+ANA da dna inv1
+XINB b db vdd vss CD405X_IN
+ANB db dnb inv1
+XINC c dc vdd vss CD405X_IN
+ANC dc dnc inv1
+XININH inh dinh vdd vss CD405X_IN
+ANINH dinh dninh inv1
+* channel is on when its address matches and INH is low
+ACH0 [dna dnb dnc dninh] ech0 and1
+ACH1 [da dnb dnc dninh] ech1 and1
+ACH2 [dna db dnc dninh] ech2 and1
+ACH3 [da db dnc dninh] ech3 and1
+ACH4 [dna dnb dc dninh] ech4 and1
+ACH5 [da dnb dc dninh] ech5 and1
+ACH6 [dna db dc dninh] ech6 and1
+ACH7 [da db dc dninh] ech7 and1
+AOUT [ech0 ech1 ech2 ech3 ech4 ech5 ech6 ech7] [sch0 sch1 sch2 sch3 sch4 sch5 sch6 sch7] dac1
+XSCH0 ch0 com sch0 vdd vee CD405X_SW
+XSCH1 ch1 com sch1 vdd vee CD405X_SW
+XSCH2 ch2 com sch2 vdd vee CD405X_SW
+XSCH3 ch3 com sch3 vdd vee CD405X_SW
+XSCH4 ch4 com sch4 vdd vee CD405X_SW
+XSCH5 ch5 com sch5 vdd vee CD405X_SW
+XSCH6 ch6 com sch6 vdd vee CD405X_SW
+XSCH7 ch7 com sch7 vdd vee CD405X_SW
+RQ vdd vss 1e9
+* Logic input: normalised to VDD-VSS, CMOS thresholds 30% / 70% of supply
+.SUBCKT CD405X_IN in dout vdd vss
+BN n 0 V=(V(in)-V(vss))/max(V(vdd)-V(vss),0.1)
+AN [n] [dout] adc1
+CIN in vss 5p
+.model adc1 adc_bridge(in_low=0.3 in_high=0.7)
+.ENDS CD405X_IN
+*
+* Transmission gate, en is 0..1 and is level shifted to VEE..VDD
+.SUBCKT CD405X_SW io1 io2 en vdd vee
+BGN gn 0 V=V(vee)+V(en)*(V(vdd)-V(vee))
+BGP gp 0 V=V(vdd)-V(en)*(V(vdd)-V(vee))
+MN io1 gn io2 vee CD405XN
+MP io1 gp io2 vdd CD405XP
+DN1 vee io1 CD405XD
+DN2 vee io2 CD405XD
+DP1 io1 vdd CD405XD
+DP2 io2 vdd CD405XD
+.model CD405XD D(IS=1f)
+* CD4007 parameters from the CD4066 model; W, RD, RS fitted to the
+* typical rON of TI SCHS047 (470/180/125 Ohm at VDD=5/10/15 V)
+.MODEL CD405XN NMOS(LEVEL=1 VTO=1.44 KP=320u L=10u W=36u GAMMA=0 PHI=.6
++ LAMBDA=10m RD=18 RS=18 IS=16.64p CBD=2.0p CBS=2.0p CGSO=0.1p CGDO=0.1p
++ PB=.8 TOX=1200n)
+.MODEL CD405XP PMOS(LEVEL=1 VTO=-1.2 KP=110u L=10u W=72u GAMMA=0 PHI=.6
++ LAMBDA=40m RD=18 RS=18 IS=16.64p CBD=4.0p CBS=4.0p CGSO=0.2p CGDO=0.2p
++ PB=.8 TOX=1200n)
+.ENDS CD405X_SW
+*
+.model inv1 d_inverter(rise_delay=10n fall_delay=10n)
+* shortcut: fixed delay, near the 10 V datasheet value; real tpd scales with VDD
+.model and1 d_and(rise_delay=100n fall_delay=100n)
+.model dac1 dac_bridge(out_low=0 out_high=1 out_undef=0.5 t_rise=50n t_fall=50n)
+.ENDS CD4051B
+
+.SUBCKT AnalogSwitches_CD4051  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 CD4051B
+.ENDS
+  </Spice>
+  <Symbol>
+    <Rectangle -100 -100 200 200 #000080 2 1 #c0c0c0 1 0>
+    <Line -120 -80 20 0 #000080 2 1>
+    <Text -96 -89 10 #000000 0 "CH0">
+    <.PortSym -120 -80 13 0 P13>
+    <Line -120 -60 20 0 #000080 2 1>
+    <Text -96 -69 10 #000000 0 "CH1">
+    <.PortSym -120 -60 14 0 P14>
+    <Line -120 -40 20 0 #000080 2 1>
+    <Text -96 -49 10 #000000 0 "CH2">
+    <.PortSym -120 -40 15 0 P15>
+    <Line -120 -20 20 0 #000080 2 1>
+    <Text -96 -29 10 #000000 0 "CH3">
+    <.PortSym -120 -20 12 0 P12>
+    <Line -120 0 20 0 #000080 2 1>
+    <Text -96 -9 10 #000000 0 "CH4">
+    <.PortSym -120 0 1 0 P1>
+    <Line -120 20 20 0 #000080 2 1>
+    <Text -96 11 10 #000000 0 "CH5">
+    <.PortSym -120 20 5 0 P5>
+    <Line -120 40 20 0 #000080 2 1>
+    <Text -96 31 10 #000000 0 "CH6">
+    <.PortSym -120 40 2 0 P2>
+    <Line -120 60 20 0 #000080 2 1>
+    <Text -96 51 10 #000000 0 "CH7">
+    <.PortSym -120 60 4 0 P4>
+    <Line 100 -10 20 0 #000080 2 1>
+    <Text 67 -19 10 #000000 0 "COM">
+    <.PortSym 120 -10 3 180 P3>
+    <Line 0 -100 0 -20 #000080 2 1>
+    <Text -12 -98 10 #000000 0 "VDD">
+    <.PortSym 0 -120 16 0 P16>
+    <Line -80 100 0 20 #000080 2 1>
+    <Text -90 84 8 #000000 0 "A">
+    <.PortSym -80 120 11 0 P11>
+    <Line -50 100 0 20 #000080 2 1>
+    <Text -60 84 8 #000000 0 "B">
+    <.PortSym -50 120 10 0 P10>
+    <Line -20 100 0 20 #000080 2 1>
+    <Text -30 84 8 #000000 0 "C">
+    <.PortSym -20 120 9 0 P9>
+    <Line 10 100 0 20 #000080 2 1>
+    <Text 0 84 8 #000000 0 "INH">
+    <.PortSym 10 120 6 0 P6>
+    <Line 40 100 0 20 #000080 2 1>
+    <Text 30 84 8 #000000 0 "VSS">
+    <.PortSym 40 120 8 0 P8>
+    <Line 70 100 0 20 #000080 2 1>
+    <Text 60 84 8 #000000 0 "VEE">
+    <.PortSym 70 120 7 0 P7>
+    <.ID 110 -116 X>
+  </Symbol>
+</Component>
+
+<Component CD4052>
+  <Description>
+CMOS Differential 4-Channel Analog Multiplexer/Demultiplexer
+XSPICE logic, transistor level switches
+Typical rON fitted to TI SCHS047 datasheet
+Ngspice only
+  </Description>
+  <Model>
+.Def:AnalogSwitches_CD4052 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 gnd Type="CD4052_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "CD4052.cir.lst">
+  <Spice>
+* CD4052B CMOS Differential 4-Channel Analog Multiplexer/Demultiplexer
+* XSPICE logic, transistor level CMOS transmission gates.
+* Logic thresholds and gate drive follow the supply pins.
+* Pins 1..16 as in the DIP-16 package
+.SUBCKT CD4052B y0 y2 ycom y3 y1 inh vee vss b a x3 x0 xcom x1 x2 vdd
+XINA a da vdd vss CD405X_IN
+ANA da dna inv1
+XINB b db vdd vss CD405X_IN
+ANB db dnb inv1
+XININH inh dinh vdd vss CD405X_IN
+ANINH dinh dninh inv1
+* channel is on when its address matches and INH is low
+AX0 [dna dnb dninh] ex0 and1
+AX1 [da dnb dninh] ex1 and1
+AX2 [dna db dninh] ex2 and1
+AX3 [da db dninh] ex3 and1
+AY0 [dna dnb dninh] ey0 and1
+AY1 [da dnb dninh] ey1 and1
+AY2 [dna db dninh] ey2 and1
+AY3 [da db dninh] ey3 and1
+AOUT [ex0 ex1 ex2 ex3 ey0 ey1 ey2 ey3] [sx0 sx1 sx2 sx3 sy0 sy1 sy2 sy3] dac1
+XSX0 x0 xcom sx0 vdd vee CD405X_SW
+XSX1 x1 xcom sx1 vdd vee CD405X_SW
+XSX2 x2 xcom sx2 vdd vee CD405X_SW
+XSX3 x3 xcom sx3 vdd vee CD405X_SW
+XSY0 y0 ycom sy0 vdd vee CD405X_SW
+XSY1 y1 ycom sy1 vdd vee CD405X_SW
+XSY2 y2 ycom sy2 vdd vee CD405X_SW
+XSY3 y3 ycom sy3 vdd vee CD405X_SW
+RQ vdd vss 1e9
+* Logic input: normalised to VDD-VSS, CMOS thresholds 30% / 70% of supply
+.SUBCKT CD405X_IN in dout vdd vss
+BN n 0 V=(V(in)-V(vss))/max(V(vdd)-V(vss),0.1)
+AN [n] [dout] adc1
+CIN in vss 5p
+.model adc1 adc_bridge(in_low=0.3 in_high=0.7)
+.ENDS CD405X_IN
+*
+* Transmission gate, en is 0..1 and is level shifted to VEE..VDD
+.SUBCKT CD405X_SW io1 io2 en vdd vee
+BGN gn 0 V=V(vee)+V(en)*(V(vdd)-V(vee))
+BGP gp 0 V=V(vdd)-V(en)*(V(vdd)-V(vee))
+MN io1 gn io2 vee CD405XN
+MP io1 gp io2 vdd CD405XP
+DN1 vee io1 CD405XD
+DN2 vee io2 CD405XD
+DP1 io1 vdd CD405XD
+DP2 io2 vdd CD405XD
+.model CD405XD D(IS=1f)
+* CD4007 parameters from the CD4066 model; W, RD, RS fitted to the
+* typical rON of TI SCHS047 (470/180/125 Ohm at VDD=5/10/15 V)
+.MODEL CD405XN NMOS(LEVEL=1 VTO=1.44 KP=320u L=10u W=36u GAMMA=0 PHI=.6
++ LAMBDA=10m RD=18 RS=18 IS=16.64p CBD=2.0p CBS=2.0p CGSO=0.1p CGDO=0.1p
++ PB=.8 TOX=1200n)
+.MODEL CD405XP PMOS(LEVEL=1 VTO=-1.2 KP=110u L=10u W=72u GAMMA=0 PHI=.6
++ LAMBDA=40m RD=18 RS=18 IS=16.64p CBD=4.0p CBS=4.0p CGSO=0.2p CGDO=0.2p
++ PB=.8 TOX=1200n)
+.ENDS CD405X_SW
+*
+.model inv1 d_inverter(rise_delay=10n fall_delay=10n)
+* shortcut: fixed delay, near the 10 V datasheet value; real tpd scales with VDD
+.model and1 d_and(rise_delay=100n fall_delay=100n)
+.model dac1 dac_bridge(out_low=0 out_high=1 out_undef=0.5 t_rise=50n t_fall=50n)
+.ENDS CD4052B
+
+.SUBCKT AnalogSwitches_CD4052  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 CD4052B
+.ENDS
+  </Spice>
+  <Symbol>
+    <Rectangle -90 -100 170 200 #000080 2 1 #c0c0c0 1 0>
+    <Line -110 -80 20 0 #000080 2 1>
+    <Text -86 -89 10 #000000 0 "X0">
+    <.PortSym -110 -80 12 0 P12>
+    <Line -110 -60 20 0 #000080 2 1>
+    <Text -86 -69 10 #000000 0 "X1">
+    <.PortSym -110 -60 14 0 P14>
+    <Line -110 -40 20 0 #000080 2 1>
+    <Text -86 -49 10 #000000 0 "X2">
+    <.PortSym -110 -40 15 0 P15>
+    <Line -110 -20 20 0 #000080 2 1>
+    <Text -86 -29 10 #000000 0 "X3">
+    <.PortSym -110 -20 11 0 P11>
+    <Line -110 0 20 0 #000080 2 1>
+    <Text -86 -9 10 #000000 0 "Y0">
+    <.PortSym -110 0 1 0 P1>
+    <Line -110 20 20 0 #000080 2 1>
+    <Text -86 11 10 #000000 0 "Y1">
+    <.PortSym -110 20 5 0 P5>
+    <Line -110 40 20 0 #000080 2 1>
+    <Text -86 31 10 #000000 0 "Y2">
+    <.PortSym -110 40 2 0 P2>
+    <Line -110 60 20 0 #000080 2 1>
+    <Text -86 51 10 #000000 0 "Y3">
+    <.PortSym -110 60 4 0 P4>
+    <Line 80 -50 20 0 #000080 2 1>
+    <Text 38 -59 10 #000000 0 "XCOM">
+    <.PortSym 100 -50 13 180 P13>
+    <Line 80 30 20 0 #000080 2 1>
+    <Text 38 21 10 #000000 0 "YCOM">
+    <.PortSym 100 30 3 180 P3>
+    <Line 0 -100 0 -20 #000080 2 1>
+    <Text -12 -98 10 #000000 0 "VDD">
+    <.PortSym 0 -120 16 0 P16>
+    <Line -70 100 0 20 #000080 2 1>
+    <Text -80 84 8 #000000 0 "A">
+    <.PortSym -70 120 10 0 P10>
+    <Line -40 100 0 20 #000080 2 1>
+    <Text -50 84 8 #000000 0 "B">
+    <.PortSym -40 120 9 0 P9>
+    <Line -10 100 0 20 #000080 2 1>
+    <Text -20 84 8 #000000 0 "INH">
+    <.PortSym -10 120 6 0 P6>
+    <Line 20 100 0 20 #000080 2 1>
+    <Text 10 84 8 #000000 0 "VSS">
+    <.PortSym 20 120 8 0 P8>
+    <Line 50 100 0 20 #000080 2 1>
+    <Text 40 84 8 #000000 0 "VEE">
+    <.PortSym 50 120 7 0 P7>
+    <.ID 90 -116 X>
+  </Symbol>
+</Component>
+
+<Component CD4053>
+  <Description>
+CMOS Triple 2-Channel Analog Multiplexer/Demultiplexer
+XSPICE logic, transistor level switches
+Typical rON fitted to TI SCHS047 datasheet
+Ngspice only
+  </Description>
+  <Model>
+.Def:AnalogSwitches_CD4053 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 gnd Type="CD4053_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "CD4053.cir.lst">
+  <Spice>
+* CD4053B CMOS Triple 2-Channel Analog Multiplexer/Demultiplexer
+* XSPICE logic, transistor level CMOS transmission gates.
+* Logic thresholds and gate drive follow the supply pins.
+* Pins 1..16 as in the DIP-16 package
+.SUBCKT CD4053B by bx cy cxy cx inh vee vss c b a ax ay axy bxy vdd
+XINA a da vdd vss CD405X_IN
+ANA da dna inv1
+XINB b db vdd vss CD405X_IN
+ANB db dnb inv1
+XINC c dc vdd vss CD405X_IN
+ANC dc dnc inv1
+XININH inh dinh vdd vss CD405X_IN
+ANINH dinh dninh inv1
+* channel is on when its address matches and INH is low
+AAX [dna dninh] eax and1
+AAY [da dninh] eay and1
+ABX [dnb dninh] ebx and1
+ABY [db dninh] eby and1
+ACX [dnc dninh] ecx and1
+ACY [dc dninh] ecy and1
+AOUT [eax eay ebx eby ecx ecy] [sax say sbx sby scx scy] dac1
+XSAX ax axy sax vdd vee CD405X_SW
+XSAY ay axy say vdd vee CD405X_SW
+XSBX bx bxy sbx vdd vee CD405X_SW
+XSBY by bxy sby vdd vee CD405X_SW
+XSCX cx cxy scx vdd vee CD405X_SW
+XSCY cy cxy scy vdd vee CD405X_SW
+RQ vdd vss 1e9
+* Logic input: normalised to VDD-VSS, CMOS thresholds 30% / 70% of supply
+.SUBCKT CD405X_IN in dout vdd vss
+BN n 0 V=(V(in)-V(vss))/max(V(vdd)-V(vss),0.1)
+AN [n] [dout] adc1
+CIN in vss 5p
+.model adc1 adc_bridge(in_low=0.3 in_high=0.7)
+.ENDS CD405X_IN
+*
+* Transmission gate, en is 0..1 and is level shifted to VEE..VDD
+.SUBCKT CD405X_SW io1 io2 en vdd vee
+BGN gn 0 V=V(vee)+V(en)*(V(vdd)-V(vee))
+BGP gp 0 V=V(vdd)-V(en)*(V(vdd)-V(vee))
+MN io1 gn io2 vee CD405XN
+MP io1 gp io2 vdd CD405XP
+DN1 vee io1 CD405XD
+DN2 vee io2 CD405XD
+DP1 io1 vdd CD405XD
+DP2 io2 vdd CD405XD
+.model CD405XD D(IS=1f)
+* CD4007 parameters from the CD4066 model; W, RD, RS fitted to the
+* typical rON of TI SCHS047 (470/180/125 Ohm at VDD=5/10/15 V)
+.MODEL CD405XN NMOS(LEVEL=1 VTO=1.44 KP=320u L=10u W=36u GAMMA=0 PHI=.6
++ LAMBDA=10m RD=18 RS=18 IS=16.64p CBD=2.0p CBS=2.0p CGSO=0.1p CGDO=0.1p
++ PB=.8 TOX=1200n)
+.MODEL CD405XP PMOS(LEVEL=1 VTO=-1.2 KP=110u L=10u W=72u GAMMA=0 PHI=.6
++ LAMBDA=40m RD=18 RS=18 IS=16.64p CBD=4.0p CBS=4.0p CGSO=0.2p CGDO=0.2p
++ PB=.8 TOX=1200n)
+.ENDS CD405X_SW
+*
+.model inv1 d_inverter(rise_delay=10n fall_delay=10n)
+* shortcut: fixed delay, near the 10 V datasheet value; real tpd scales with VDD
+.model and1 d_and(rise_delay=100n fall_delay=100n)
+.model dac1 dac_bridge(out_low=0 out_high=1 out_undef=0.5 t_rise=50n t_fall=50n)
+.ENDS CD4053B
+
+.SUBCKT AnalogSwitches_CD4053  gnd _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 
+X1 _net0 _net1 _net2 _net3 _net4 _net5 _net6 _net7 _net8 _net9 _net10 _net11 _net12 _net13 _net14 _net15 CD4053B
+.ENDS
+  </Spice>
+  <Symbol>
+    <Rectangle -100 -80 200 160 #000080 2 1 #c0c0c0 1 0>
+    <Line -120 -60 20 0 #000080 2 1>
+    <Text -96 -69 10 #000000 0 "AX">
+    <.PortSym -120 -60 12 0 P12>
+    <Line -120 -40 20 0 #000080 2 1>
+    <Text -96 -49 10 #000000 0 "AY">
+    <.PortSym -120 -40 13 0 P13>
+    <Line -120 -20 20 0 #000080 2 1>
+    <Text -96 -29 10 #000000 0 "BX">
+    <.PortSym -120 -20 2 0 P2>
+    <Line -120 0 20 0 #000080 2 1>
+    <Text -96 -9 10 #000000 0 "BY">
+    <.PortSym -120 0 1 0 P1>
+    <Line -120 20 20 0 #000080 2 1>
+    <Text -96 11 10 #000000 0 "CX">
+    <.PortSym -120 20 5 0 P5>
+    <Line -120 40 20 0 #000080 2 1>
+    <Text -96 31 10 #000000 0 "CY">
+    <.PortSym -120 40 3 0 P3>
+    <Line 100 -50 20 0 #000080 2 1>
+    <Text 67 -59 10 #000000 0 "AXY">
+    <.PortSym 120 -50 14 180 P14>
+    <Line 100 -10 20 0 #000080 2 1>
+    <Text 67 -19 10 #000000 0 "BXY">
+    <.PortSym 120 -10 15 180 P15>
+    <Line 100 30 20 0 #000080 2 1>
+    <Text 67 21 10 #000000 0 "CXY">
+    <.PortSym 120 30 4 180 P4>
+    <Line 0 -80 0 -20 #000080 2 1>
+    <Text -12 -78 10 #000000 0 "VDD">
+    <.PortSym 0 -100 16 0 P16>
+    <Line -80 80 0 20 #000080 2 1>
+    <Text -90 64 8 #000000 0 "A">
+    <.PortSym -80 100 11 0 P11>
+    <Line -50 80 0 20 #000080 2 1>
+    <Text -60 64 8 #000000 0 "B">
+    <.PortSym -50 100 10 0 P10>
+    <Line -20 80 0 20 #000080 2 1>
+    <Text -30 64 8 #000000 0 "C">
+    <.PortSym -20 100 9 0 P9>
+    <Line 10 80 0 20 #000080 2 1>
+    <Text 0 64 8 #000000 0 "INH">
+    <.PortSym 10 100 6 0 P6>
+    <Line 40 80 0 20 #000080 2 1>
+    <Text 30 64 8 #000000 0 "VSS">
+    <.PortSym 40 100 8 0 P8>
+    <Line 70 80 0 20 #000080 2 1>
+    <Text 60 64 8 #000000 0 "VEE">
+    <.PortSym 70 100 7 0 P7>
+    <.ID 110 -96 X>
+  </Symbol>
+</Component>
