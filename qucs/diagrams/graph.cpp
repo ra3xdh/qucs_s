@@ -24,7 +24,7 @@
 
 #include <QPainter>
 #include <QDebug>
-#include <QPainterPath>
+#include <QPolygonF>
 #include <QtAlgorithms>
 
 class Diagram;
@@ -642,7 +642,19 @@ void Graph::drawLines(QPainter* painter) const {
 
   }//finish lines calculation
 
-  painter->drawLines(lines);
+  // Keep the dash pattern continuous across connected graph segments.
+  QPolygonF polyline;
+  for (const auto& line : std::as_const(lines)) {
+    if (!polyline.isEmpty() && polyline.last() != line.p1()) {
+      painter->drawPolyline(polyline);
+      polyline.clear();
+    }
+    if (polyline.isEmpty()) {
+      polyline << line.p1();
+    }
+    polyline << line.p2();
+  }
+  painter->drawPolyline(polyline);
   painter->restore();
 }
 
