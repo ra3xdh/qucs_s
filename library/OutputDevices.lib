@@ -1,0 +1,174 @@
+<Qucs Library 26.1.1 "OutputDevices">
+
+<Component DC_Motor>
+  <Description>
+Permanent magnet DC motor
+Pins: P, N - armature; W - angular velocity output (V = rad/s);
+T - motor torque output (V = N*m)
+Ngspice only
+  </Description>
+  <Model>
+.Def:OutputDevices_DC_Motor _net0 _net1 _net2 _net3 La="1.5m" Ra="0.5" Ke="0.05" Kt="0.05" Jm="250u" Bm="0.1m" Tl="0"
+Sub:X1 _net0 _net1 _net2 _net3 gnd Type="DC_Motor_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "DC_Motor.cir.lst">
+  <Spice>
+* DC motor, electrical and mechanical equations:
+*   V(p,n) = La*dI/dt + Ra*I + Ke*w
+*   Jm*dw/dt = Kt*I - Bm*w - Tl
+* The mechanical side is a capacitor Jm whose voltage is w (rad/s)
+.SUBCKT DC_MOTOR p n w t La=1.5m Ra=0.5 Ke=0.05 Kt=0.05 Jm=250u Bm=0.1m Tl=0
+LA p 1 {La}
+RA 1 2 {Ra}
+VI 2 3 0
+BEMF 3 n V={Ke}*V(vel)
+BT 0 vel I={Kt}*I(VI)-{Tl}
+CJ vel 0 {Jm}
+GB vel 0 vel 0 {Bm}
+BW w 0 V=V(vel)
+BTQ t 0 V={Kt}*I(VI)
+.ENDS DC_MOTOR
+
+.SUBCKT OutputDevices_DC_Motor  gnd _net0 _net1 _net2 _net3 La=1.5m Ra=0.5 Ke=0.05 Kt=0.05 Jm=250u Bm=0.1m Tl=0
+X1 _net0 _net1 _net2 _net3 DC_MOTOR La={La} Ra={Ra} Ke={Ke} Kt={Kt} Jm={Jm} Bm={Bm} Tl={Tl}
+.ENDS
+  </Spice>
+  <Symbol>
+    <Ellipse -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Text -7 -11 14 #000080 0 "M">
+    <Line 0 -40 0 20 #000080 2 1>
+    <Line 0 20 0 20 #000080 2 1>
+    <Line 17 -10 23 0 #000080 2 1>
+    <Line 17 10 23 0 #000080 2 1>
+    <Text 5 -40 10 #000000 0 "+">
+    <Text 28 -26 8 #000000 0 "W">
+    <Text 28 12 8 #000000 0 "T">
+    <.PortSym 0 -40 1 0 P1>
+    <.PortSym 0 40 2 0 P2>
+    <.PortSym 40 -10 3 180 P3>
+    <.PortSym 40 10 4 180 P4>
+    <.ID 30 -56 X "1=La=1.5m=Armature inductance (H)=" "1=Ra=0.5=Armature resistance (Ohm)=" "1=Ke=0.05=Back EMF constant (V*s/rad)=" "1=Kt=0.05=Torque constant (N*m/A)=" "1=Jm=250u=Moment of inertia (kg*m^2)=" "1=Bm=0.1m=Viscous friction (N*m*s/rad)=" "1=Tl=0=Load torque (N*m)=">
+  </Symbol>
+</Component>
+
+<Component Stepper_Motor>
+  <Description>
+Two phase bipolar stepper motor
+Based on the model by Dave Wilson (TI)
+Pins: AP, AN - coil A; BP, BN - coil B;
+W - angular velocity output (V = rad/s); ANG - shaft angle output (V = rad)
+Ngspice only
+  </Description>
+  <Model>
+.Def:OutputDevices_Stepper_Motor _net0 _net1 _net2 _net3 _net4 _net5 K="4.545m" Kd="120n" StepAngle="18" Rs="227" Ls="55m" Td="1u" Jm="3.5n" Jl="0" Tl="0"
+Sub:X1 _net0 _net1 _net2 _net3 _net4 _net5 gnd Type="Stepper_Motor_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "Stepper_Motor.cir.lst">
+  <Spice>
+* Two phase bipolar stepper motor, N = 90/StepAngle rotor pole pairs
+*   EMF_A = -K*w*sin(N*theta), EMF_B = K*w*cos(N*theta)
+*   T = -K*Ia*sin(N*theta) + K*Ib*cos(N*theta) - Td*sin(2*N*theta)
+*   (Jm+Jl)*dw/dt = T - Kd*w - Tl
+.SUBCKT STEPPER_MOTOR ap an bp bn w angle K=4.545m Kd=120n StepAngle=18
++ Rs=227 Ls=55m Td=1u Jm=3.5n Jl=0 Tl=0
+.PARAM N={90/StepAngle}
+LA ap 1 {Ls}
+RA 1 2 {Rs}
+VIA 2 3 0
+BEA 3 an V=-{K}*V(vel)*sin({N}*V(th))
+LB bp 4 {Ls}
+RB 4 5 {Rs}
+VIB 5 6 0
+BEB 6 bn V={K}*V(vel)*cos({N}*V(th))
+BT 0 vel I=-{K}*I(VIA)*sin({N}*V(th))+{K}*I(VIB)*cos({N}*V(th))
++ -{Td}*sin(2*{N}*V(th))-{Tl}
+CJ vel 0 {Jm+Jl}
+GD vel 0 vel 0 {Kd}
+* theta is the integral of w
+GTH 0 th vel 0 1
+CTH th 0 1
+BW w 0 V=V(vel)
+BA angle 0 V=V(th)
+.ENDS STEPPER_MOTOR
+
+.SUBCKT OutputDevices_Stepper_Motor  gnd _net0 _net1 _net2 _net3 _net4 _net5 K=4.545m Kd=120n StepAngle=18 Rs=227 Ls=55m Td=1u Jm=3.5n Jl=0 Tl=0
+X1 _net0 _net1 _net2 _net3 _net4 _net5 STEPPER_MOTOR K={K} Kd={Kd}
++ StepAngle={StepAngle} Rs={Rs} Ls={Ls} Td={Td} Jm={Jm} Jl={Jl} Tl={Tl}
+.ENDS
+  </Spice>
+  <Symbol>
+    <Rectangle -50 -50 100 100 #000080 2 1 #c0c0c0 1 0>
+    <Ellipse -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Text -7 -11 14 #000080 0 "M">
+    <Line -70 -30 20 0 #000080 2 1>
+    <Line -70 -10 20 0 #000080 2 1>
+    <Line -70 10 20 0 #000080 2 1>
+    <Line -70 30 20 0 #000080 2 1>
+    <Line 50 -10 20 0 #000080 2 1>
+    <Line 50 10 20 0 #000080 2 1>
+    <Text -46 -38 8 #000000 0 "A+">
+    <Text -46 -18 8 #000000 0 "A-">
+    <Text -46 2 8 #000000 0 "B+">
+    <Text -46 22 8 #000000 0 "B-">
+    <Text 36 -18 8 #000000 0 "W">
+    <Text 22 2 8 #000000 0 "ANG">
+    <.PortSym -70 -30 1 0 P1>
+    <.PortSym -70 -10 2 0 P2>
+    <.PortSym -70 10 3 0 P3>
+    <.PortSym -70 30 4 0 P4>
+    <.PortSym 70 -10 5 180 P5>
+    <.PortSym 70 10 6 180 P6>
+    <.ID 60 -66 X "1=K=4.545m=Motor constant Ke = Kt (V*s/rad)=" "1=Kd=120n=Damping (N*m*s/rad)=" "1=StepAngle=18=Full step angle (deg)=" "1=Rs=227=Coil resistance (Ohm)=" "1=Ls=55m=Coil inductance (H)=" "1=Td=1u=Detent torque (N*m)=" "1=Jm=3.5n=Motor inertia (kg*m^2)=" "1=Jl=0=Load inertia (kg*m^2)=" "1=Tl=0=Load torque (N*m)=">
+  </Symbol>
+</Component>
+
+<Component Lamp>
+  <Description>
+Incandescent lamp with thermal filament model
+Courtesy of Jim Thompson, http://www.analog-innovations.com/
+Ngspice only
+  </Description>
+  <Model>
+.Def:OutputDevices_Lamp _net0 _net1 Vo="28" Io="25m" Rcold="112" Tau="22m" Tamb="300"
+Sub:X1 _net0 _net1 gnd Type="Lamp_cir"
+.Def:End
+  </Model>
+  <ModelIncludes "Lamp.cir.lst">
+  <Spice>
+*****************************************************************
+** INCANDESCENT LAMP SUBCIRCUIT
+** Filament resistance is proportional to absolute temperature,
+**   R = Rcold*T/300, (T - Tamb) = Rth*P - Rth*Cth*dT/dt
+** Rth follows from the nominal operating point (Vo, Io).
+** Rewritten with ngspice B sources, behaviour unchanged.
+*****************************************************************
+** REPOSTING OF THIS FILE MUST INCLUDE THE FOLLOWING ACKNOWLEDGEMENT:
+** COURTESY OF JIM THOMPSON, <http://www.analog-innovations.com/>
+*****************************************************************
+.SUBCKT LAMP 1 2 Vo=28 Io=25m Rcold=112 Tau=22m Tamb=300
+.PARAM Rth={300*(Vo-Io*Rcold)/(Io*Io*Vo*Rcold)}
+BI 1 2 I=V(1,2)*300/({Rcold}*V(temp))
+* V(temp) is the filament temperature in kelvins
+BP 0 temp I=V(1,2)*V(1,2)*300/({Rcold}*V(temp))
+RTH temp amb {Rth}
+CTH temp amb {Tau/Rth}
+VAMB amb 0 {Tamb}
+.ENDS LAMP
+
+.SUBCKT OutputDevices_Lamp  gnd _net0 _net1 Vo=28 Io=25m Rcold=112 Tau=22m Tamb=300
+X1 _net0 _net1 LAMP Vo={Vo} Io={Io} Rcold={Rcold} Tau={Tau} Tamb={Tamb}
+.ENDS
+  </Spice>
+  <Symbol>
+    <Ellipse -20 -20 40 40 #000080 2 1 #c0c0c0 1 0>
+    <Line -14 -14 28 28 #000080 2 1>
+    <Line -14 14 28 -28 #000080 2 1>
+    <Line -40 0 20 0 #000080 2 1>
+    <Line 20 0 20 0 #000080 2 1>
+    <.PortSym -40 0 1 0 P1>
+    <.PortSym 40 0 2 180 P2>
+    <.ID 20 -36 X "1=Vo=28=Nominal operating voltage (V)=" "1=Io=25m=Nominal operating current (A)=" "1=Rcold=112=Filament resistance at 300 K (Ohm)=" "1=Tau=22m=Filament thermal time constant (s)=" "1=Tamb=300=Ambient temperature (K)=">
+  </Symbol>
+</Component>

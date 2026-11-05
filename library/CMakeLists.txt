@@ -34,6 +34,7 @@ OpAmps.lib
 OpAmp_140.lib
 OpAmp_544.lib
 Optocoupler.lib
+OutputDevices.lib
 PhotovoltaicRelay.lib
 PMOSFETs.lib
 PWM_Controller.lib
