@@ -642,7 +642,21 @@ void Graph::drawLines(QPainter* painter) const {
 
   }//finish lines calculation
 
-  painter->drawLines(lines);
+  // Draw connected segments as polylines: a dash pattern restarts at the
+  // beginning of every separately drawn line, so with short segments dashed
+  // and dotted graphs would look solid
+  QPolygonF polyline;
+  for (const auto& l : std::as_const(lines)) {
+    if (!polyline.isEmpty() && polyline.last() != l.p1()) {
+      painter->drawPolyline(polyline);
+      polyline.clear();
+    }
+    if (polyline.isEmpty()) {
+      polyline << l.p1();
+    }
+    polyline << l.p2();
+  }
+  painter->drawPolyline(polyline);
   painter->restore();
 }
 
