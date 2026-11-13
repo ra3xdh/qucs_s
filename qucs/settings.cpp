@@ -95,6 +95,7 @@ void settingsManager::initDefaults()
     // 2) Appearance tab
     m_Defaults["GraphAntiAliasing"] = false;        // Use anti-aliasing for graphs for a smoother appearance
     m_Defaults["TextAntiAliasing"] = true;          // Use anti-aliasing for text for a smoother appearance
+    m_Defaults["ShowNetNames"] = false;             // Show netlist node names over the schematic
 
     // Not used - Keeping for now
     m_Defaults["AllowLayingWiresAnew"] = false;

@@ -111,6 +111,7 @@ struct tQucsSettings {
   bool hasDarkTheme;
   bool fullTraceName;
   bool alwaysPrefixDataset;
+  bool ShowNetNames; // show netlist node names over the schematic
 
   bool firstRun;
 };

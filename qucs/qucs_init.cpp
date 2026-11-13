@@ -804,6 +804,18 @@ void QucsApp::initActions() {
       "Show / Hide Grid\n\nShow or hide the grid for the current document."));
   connect(showGrid, SIGNAL(triggered()), SLOT(slotShowGrid()));
 
+  showNetNames = new QAction(QIcon(":/bitmaps/svg/nodename.svg"),
+                             tr("Show Net Names"), this);
+  showNetNames->setCheckable(true);
+  showNetNames->setChecked(QucsSettings.ShowNetNames);
+  showNetNames->setStatusTip(
+      tr("Show or hide the netlist node names of unlabeled nets."));
+  showNetNames->setWhatsThis(tr(
+      "Show / Hide Net Names\n\nShow or hide the netlist node names over the "
+      "schematic. Only nets without a label are annotated, as _net0, _net1, "
+      "..."));
+  connect(showNetNames, SIGNAL(toggled(bool)), SLOT(slotShowNetNames(bool)));
+
   showMsg = new QAction(tr("Show Last Messages"), this);
   showMsg->setShortcut(Qt::Key_F5);
   showMsg->setStatusTip(tr("Shows last simulation messages"));
@@ -1033,6 +1045,7 @@ void QucsApp::initMenuBar() {
   viewMenu->addAction(setDiagramLimits);
   viewMenu->addSeparator();
   viewMenu->addAction(showGrid);
+  viewMenu->addAction(showNetNames);
   viewMenu->addSeparator();
   // viewMenu->setCheckable(true);
   viewMenu->addAction(viewBrowseDock);
@@ -1147,6 +1160,8 @@ void QucsApp::initToolBar() {
   viewToolbar->addAction(magOne);
   viewToolbar->addAction(magPlus);
   viewToolbar->addAction(magMinus);
+  viewToolbar->addSeparator();
+  viewToolbar->addAction(showNetNames);
 
   workToolbar = new QToolBar(tr("Work"));
   this->addToolBar(workToolbar);
@@ -1630,6 +1645,9 @@ void QucsApp::setDefaultShortcut() {
 
   mgr.registerCommand("View.Grid", "View", "Show Grid", showGrid,
                       QKeySequence(Qt::ALT | Qt::Key_G));
+
+  mgr.registerCommand("View.NetNames", "View", "Show Net Names", showNetNames,
+                      QKeySequence(Qt::ALT | Qt::Key_N));
 
   mgr.registerCommand("View.Dock", "View", "Dock Window", viewBrowseDock,
                       QKeySequence());
