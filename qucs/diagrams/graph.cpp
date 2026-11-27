@@ -18,16 +18,44 @@
 #include "misc.h"
 #include "diagram.h"
 
+#include <algorithm>
 #include <cstdlib>
 #include <iostream>
 #include <cmath>
 
 #include <QPainter>
 #include <QDebug>
-#include <QPainterPath>
+#include <QPolygonF>
 #include <QtAlgorithms>
 
 class Diagram;
+
+void setGraphPenStyle(QPen& pen, graphstyle_t style) {
+  pen.setJoinStyle(Qt::RoundJoin);
+  pen.setCapStyle(Qt::RoundCap);
+
+  const qreal width = pen.widthF() > 0.0 ? pen.widthF() : 1.0;
+  const auto setPattern = [&pen, width](qreal dashLength, qreal gapLength) {
+    // Dash lengths use pen-width units, and round caps extend each dash.
+    const qreal dash = std::max(qreal(0.1), (dashLength - width) / width);
+    const qreal gap = (gapLength + width) / width;
+    pen.setDashPattern({dash, gap});
+  };
+
+  switch (style) {
+    case GRAPHSTYLE_DASH:
+      setPattern(10.0, 6.0);
+      break;
+    case GRAPHSTYLE_DOT:
+      setPattern(2.0, 4.0);
+      break;
+    case GRAPHSTYLE_LONGDASH:
+      setPattern(24.0, 8.0);
+      break;
+    default:
+      pen.setStyle(Qt::SolidLine);
+  }
+}
 
 Graph::Graph(Diagram const* d, const QString& _Line) :
   Element(),
@@ -460,21 +488,7 @@ void Graph::drawLines(QPainter* painter) const {
   painter->save();
 
   QPen pen = painter->pen();
-  pen.setJoinStyle(Qt::RoundJoin);
-  pen.setCapStyle(Qt::RoundCap);
-  switch(Style) {
-    case GRAPHSTYLE_DASH:
-      pen.setDashPattern({10.0, 6.0});  // stroke len, space len
-      break;
-    case GRAPHSTYLE_DOT:
-      pen.setDashPattern({2.0, 4.0});
-      break;
-    case GRAPHSTYLE_LONGDASH:
-      pen.setDashPattern({24.0, 8.0});
-      break;
-    default:
-      pen.setStyle(Qt::SolidLine);
-  }
+  setGraphPenStyle(pen, Style);
   painter->setPen(pen);
 
   if ( ! linesCalculated.isValid()
@@ -642,7 +656,19 @@ void Graph::drawLines(QPainter* painter) const {
 
   }//finish lines calculation
 
-  painter->drawLines(lines);
+  // Keep the dash pattern continuous across connected graph segments.
+  QPolygonF polyline;
+  for (const auto& line : std::as_const(lines)) {
+    if (!polyline.isEmpty() && polyline.last() != line.p1()) {
+      painter->drawPolyline(polyline);
+      polyline.clear();
+    }
+    if (polyline.isEmpty()) {
+      polyline << line.p1();
+    }
+    polyline << line.p2();
+  }
+  painter->drawPolyline(polyline);
   painter->restore();
 }
 
