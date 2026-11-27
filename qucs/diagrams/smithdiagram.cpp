@@ -61,7 +61,8 @@ void SmithDiagram::calcCoordinate(const double*, const double* yD, const double*
   double yr = yD[0];
   double yi = yD[1];
   *px = float((yr/yAxis.up + 1.0)*double(x2)/2.0);
-  *py = float((yi/yAxis.up + 1.0)*double(y2)/2.0);
+  // The chart is drawn in an x2-by-x2 square (calcDiagram); a non-square y2 must not skew data.
+  *py = float((yi/yAxis.up + 1.0)*double(x2)/2.0);
 
   if(std::isfinite(*px))
     if(std::isfinite(*py))
